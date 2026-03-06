@@ -1,29 +1,35 @@
 export default function Navbar() {
   return (
-    <nav className="w-full bg-gray-950 border-b border-gray-800 px-6 py-4">
+    <nav
+      className="w-full sticky top-0 z-50 px-6 py-4 backdrop-blur-md"
+      style={{
+        backgroundColor: "rgba(0, 0, 0, 0.75)",
+        borderBottom: "1px solid rgba(6, 182, 212, 0.12)",
+      }}
+    >
       <div className="max-w-5xl mx-auto flex items-center justify-between">
-        <span className="text-white font-bold text-lg tracking-tight">
-          DevOps Flow Lab
-        </span>
+        <a href="/" className="text-white font-bold text-lg tracking-tight">
+          DevOps <span className="text-cyan-400">Flow Lab</span>
+        </a>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-7">
           <a
-            href="#"
+            href="/#hoe-het-werkt"
             className="text-gray-400 hover:text-white text-sm transition-colors"
           >
-            Flow
+            Hoe het werkt
           </a>
           <a
-            href="#"
+            href="/#missies"
             className="text-gray-400 hover:text-white text-sm transition-colors"
           >
-            Feedback
+            Missies
           </a>
           <a
-            href="#"
-            className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+            href="/api/auth/signin"
+            className="bg-cyan-500 hover:bg-cyan-400 text-black text-sm font-bold px-5 py-2 transition-colors"
           >
-            Login
+            Start gratis
           </a>
         </div>
       </div>
