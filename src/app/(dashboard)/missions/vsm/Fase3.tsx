@@ -84,7 +84,6 @@ function SortableCard({
       aria-label={id}
       {...attributes}
       style={{
-        ...attributes.style,
         transform: CSS.Transform.toString(transform),
         transition,
         opacity: isDragging ? 0.25 : 1,
