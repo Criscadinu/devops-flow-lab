@@ -80,11 +80,11 @@ function SortableCard({
   return (
     <div
       ref={setNodeRef}
-      style={{ transform: CSS.Transform.toString(transform), transition, opacity: isDragging ? 0.25 : 1 }}
       className="flex items-center gap-3 px-4 py-3 border select-none"
       aria-label={id}
       {...attributes}
       style={{
+        ...attributes.style,
         transform: CSS.Transform.toString(transform),
         transition,
         opacity: isDragging ? 0.25 : 1,
