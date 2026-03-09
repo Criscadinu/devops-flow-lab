@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { Syne } from "next/font/google";
+import { Fase3 } from "./Fase3";
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 
@@ -94,7 +95,8 @@ const panels = [
       <>
         "Code schrijven duurt <mark>3 dagen</mark>. Maar daarna wacht ik
         gemiddeld <mark>3 dagen</mark> op een code review. De review zelf duurt{" "}
-        <mark>4 uur</mark>. Twee, drie weken later hoor ik of het door QA is."
+        <mark>4 uur</mark>. En dan wacht het nog <mark>1 dag</mark> voor QA
+        het oppakt."
       </>
     ),
   },
@@ -377,22 +379,10 @@ function Phase2() {
   );
 }
 
-// ─── Phase 3 — Placeholder ────────────────────────────────────────────────────
+// ─── Phase 3 — Interactive exercise ──────────────────────────────────────────
 
 function Phase3() {
-  return (
-    <div className="flex-1 px-6 py-14">
-      <div className="max-w-3xl mx-auto flex flex-col gap-8">
-        <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-          Jouw VSM Analyse
-        </h2>
-        <p className="text-gray-500 text-base leading-relaxed">
-          De interactieve oefening wordt hier gebouwd.
-        </p>
-        <CTA href="?fase=4" label="→ Bekijk het resultaat" sub="Fase 4 van 4 — Resultaat" />
-      </div>
-    </div>
-  );
+  return <Fase3 />;
 }
 
 // ─── Phase 4 — Placeholder ────────────────────────────────────────────────────
