@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { Syne } from "next/font/google";
 import { Fase3 } from "./Fase3";
+import { Fase4 } from "./Fase4";
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 
@@ -385,22 +386,10 @@ function Phase3() {
   return <Fase3 />;
 }
 
-// ─── Phase 4 — Placeholder ────────────────────────────────────────────────────
+// ─── Phase 4 — Mission complete ───────────────────────────────────────────────
 
 function Phase4() {
-  return (
-    <div className="flex-1 px-6 py-14">
-      <div className="max-w-3xl mx-auto flex flex-col gap-8">
-        <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-          Missie voltooid
-        </h2>
-        <p className="text-gray-500 text-base leading-relaxed">
-          Resultaat en DORA impact komt hier.
-        </p>
-        <CTA href="/dashboard" label="← Terug naar dashboard" />
-      </div>
-    </div>
-  );
+  return <Fase4 />;
 }
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
