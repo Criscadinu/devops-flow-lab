@@ -20,7 +20,7 @@ function MissionHeader({ fase }: { fase: number }) {
           Value Stream Mapping
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
-          Fase {fase} van 4
+          Phase {fase} of 4
         </span>
       </div>
       <div className="max-w-5xl mx-auto mt-3">
@@ -49,7 +49,7 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
   );
 }
 
-// ─── Phase 1 — De situatie bij Nexus Corp ────────────────────────────────────
+// ─── Phase 1 - The situation at Nexus Corp ────────────────────────────────────
 
 const panels = [
   {
@@ -62,9 +62,9 @@ const panels = [
     badgeBorder: "rgba(6,182,212,0.3)",
     quote: (
       <>
-        "Welkom. We deployen één keer per maand. Een feature duurt gemiddeld{" "}
-        <mark>6 weken</mark> van idee tot productie. Ik weet niet waar de tijd
-        naartoe gaat — maar de druk van boven wordt groter."
+        &ldquo;Welcome. We deploy once a month. A feature takes an average of{" "}
+        <mark>6 weeks</mark> from idea to production. I don&apos;t know where the time
+        goes - but pressure from above is growing.&rdquo;
       </>
     ),
   },
@@ -78,9 +78,9 @@ const panels = [
     badgeBorder: "rgba(167,139,250,0.3)",
     quote: (
       <>
-        "Een ticket staat gemiddeld <mark>5 dagen</mark> in de backlog voor een
-        developer het oppakt. Ik schrijf gedetailleerde specs — dat kost me{" "}
-        <mark>2 dagen</mark> per feature."
+        &ldquo;A ticket sits in the backlog for an average of <mark>5 days</mark> before a
+        developer picks it up. I write detailed specs - that costs me{" "}
+        <mark>2 days</mark> per feature.&rdquo;
       </>
     ),
   },
@@ -94,10 +94,10 @@ const panels = [
     badgeBorder: "rgba(34,197,94,0.3)",
     quote: (
       <>
-        "Code schrijven duurt <mark>3 dagen</mark>. Maar daarna wacht ik
-        gemiddeld <mark>3 dagen</mark> op een code review. De review zelf duurt{" "}
-        <mark>4 uur</mark>. En dan wacht het nog <mark>1 dag</mark> voor QA
-        het oppakt."
+        &ldquo;Writing code takes <mark>3 days</mark>. But then I wait an average of{" "}
+        <mark>3 days</mark> for a code review. The review itself takes{" "}
+        <mark>4 hours</mark>. And then it waits another <mark>1 day</mark> before QA
+        picks it up.&rdquo;
       </>
     ),
   },
@@ -111,9 +111,9 @@ const panels = [
     badgeBorder: "rgba(251,146,60,0.3)",
     quote: (
       <>
-        "Wij krijgen alles tegelijk aan het einde van de sprint. Testen duurt{" "}
-        <mark>2 dagen</mark>, maar we wachten gemiddeld <mark>5 dagen</mark>{" "}
-        voor we kunnen beginnen — de testomgeving is bezet of niet stabiel."
+        &ldquo;We get everything at once at the end of the sprint. Testing takes{" "}
+        <mark>2 days</mark>, but we wait an average of <mark>5 days</mark>{" "}
+        before we can start - the test environment is busy or not stable.&rdquo;
       </>
     ),
   },
@@ -127,29 +127,29 @@ const panels = [
     badgeBorder: "rgba(239,68,68,0.3)",
     quote: (
       <>
-        "Acceptatietest in ACC duurt <mark>1 dag</mark>. Maar deployment naar
-        ACC? Gemiddeld <mark>8 dagen</mark> wachten — moet ingepland worden.
-        Deploy naar productie is handmatig, duurt <mark>4 uur</mark>, staat
-        vast op de laatste vrijdag — gemiddeld <mark>12 dagen</mark> wachttijd."
+        &ldquo;Acceptance testing in ACC takes <mark>1 day</mark>. But deployment to
+        ACC? An average of <mark>8 days</mark> waiting - it has to be scheduled.
+        Deploy to production is manual, takes <mark>4 hours</mark>, locked to the
+        last Friday - an average of <mark>12 days</mark> wait time.&rdquo;
       </>
     ),
   },
   {
-    initials: "JIJ",
-    name: "Jij",
+    initials: "YOU",
+    name: "You",
     role: "New Engineer",
-    badge: "SPELER",
+    badge: "PLAYER",
     accent: "rgb(6,182,212)",
     badgeBg: "rgba(6,182,212,0.08)",
     badgeBorder: "rgba(6,182,212,0.3)",
     isPlayer: true,
     quote: (
       <>
-        "Je hebt alles gehoord. De frustratie is voelbaar. Maar jij ziet het
-        patroon. Dit is geen mensen-probleem. Dit is een systeem-probleem."
+        &ldquo;You&apos;ve heard it all. The frustration is tangible. But you see the
+        pattern. This is not a people problem. This is a systems problem.&rdquo;
       </>
     ),
-    outro: "Tijd om de waardestroom in kaart te brengen.",
+    outro: "Time to map the value stream.",
   },
 ];
 
@@ -164,10 +164,10 @@ function Phase1() {
             className="text-4xl text-white tracking-tight leading-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Dag één. Nexus Corp.
+            Day one. Nexus Corp.
           </h2>
           <p className="text-gray-400 text-base leading-relaxed">
-            Luister goed. Alle informatie die je nodig hebt zit in deze gesprekken.
+            Listen carefully. All the information you need is in these conversations.
           </p>
         </div>
 
@@ -248,8 +248,8 @@ function Phase1() {
 
         <CTA
           href="?fase=2"
-          label="Begrijp de theorie →"
-          sub="Fase 2 van 4 — Wat is een value stream?"
+          label="Understand the theory →"
+          sub="Phase 2 of 4 - What is a value stream?"
         />
       </div>
 
@@ -266,7 +266,7 @@ function Phase1() {
   );
 }
 
-// ─── Phase 2 — De theorie ─────────────────────────────────────────────────────
+// ─── Phase 2 - The theory ─────────────────────────────────────────────────────
 
 function Phase2() {
   return (
@@ -279,13 +279,12 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Wat is een Value Stream?
+            What is a Value Stream?
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            Een value stream is alles wat nodig is om een idee om te zetten in werkende
-            software bij de klant. Van het moment dat een developer begint te coderen tot
-            het moment dat de feature live staat. Elke stap kost tijd — en niet elke stap
-            voegt waarde toe.
+            A value stream is everything needed to turn an idea into working software for
+            the customer. From the moment a developer starts coding until the feature goes
+            live. Every step costs time - and not every step adds value.
           </p>
         </section>
 
@@ -295,7 +294,7 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            De twee soorten tijd
+            The two types of time
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -306,10 +305,10 @@ function Phase2() {
               <span className="text-xs font-mono tracking-widest uppercase" style={{ color: "rgb(34,197,94)" }}>
                 Process Time
               </span>
-              <p className="text-white font-medium">De tijd dat er écht aan gewerkt wordt</p>
+              <p className="text-white font-medium">The time when real work is being done</p>
               <p className="text-gray-500 text-sm leading-relaxed">
-                Een developer schrijft code, een reviewer bekijkt een pull request,
-                een pipeline draait tests. Actief werk dat waarde toevoegt.
+                A developer writes code, a reviewer looks at a pull request,
+                a pipeline runs tests. Active work that adds value.
               </p>
             </div>
 
@@ -320,10 +319,10 @@ function Phase2() {
               <span className="text-xs font-mono tracking-widest uppercase" style={{ color: "rgb(239,68,68)" }}>
                 Wait Time
               </span>
-              <p className="text-white font-medium">De tijd dat het werk wacht op iets of iemand</p>
+              <p className="text-white font-medium">The time when work waits for something or someone</p>
               <p className="text-gray-500 text-sm leading-relaxed">
-                Wachten op een review, op een goedkeuring, op een deployment-slot,
-                op een ander team. Geen waarde — wel tijd.
+                Waiting for a review, an approval, a deployment slot, another team.
+                No value - just time.
               </p>
             </div>
           </div>
@@ -331,10 +330,10 @@ function Phase2() {
           <div className="border border-gray-800 p-5" style={{ backgroundColor: "#090909" }}>
             <p className="text-gray-300 text-sm leading-relaxed">
               <span className="text-white font-semibold">
-                In de meeste organisaties is 80–90% van de lead time... wachttijd.
+                In most organizations, 80-90% of lead time is... wait time.
               </span>{" "}
-              Niet omdat mensen lui zijn, maar omdat het systeem zo is ingericht.
-              VSM maakt dat zichtbaar.
+              Not because people are lazy, but because the system is designed that way.
+              VSM makes that visible.
             </p>
           </div>
         </section>
@@ -345,16 +344,16 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            De vijf vragen van VSM
+            The five questions of VSM
           </h2>
 
           <ol className="flex flex-col border border-gray-800">
             {[
-              "Wat zijn de stappen van idee naar productie?",
-              "Hoelang duurt elke stap?",
-              "Hoelang wacht het werk tussen stappen?",
-              "Waar zitten de bottlenecks?",
-              "Wat kunnen we elimineren of versnellen?",
+              "What are the steps from idea to production?",
+              "How long does each step take?",
+              "How long does work wait between steps?",
+              "Where are the bottlenecks?",
+              "What can we eliminate or speed up?",
             ].map((q, i) => (
               <li
                 key={i}
@@ -372,21 +371,21 @@ function Phase2() {
 
         <CTA
           href="?fase=3"
-          label="Breng de waardestroom in kaart →"
-          sub="Fase 3 van 4 — Doe het zelf"
+          label="Map the value stream →"
+          sub="Phase 3 of 4 - Do it yourself"
         />
       </div>
     </div>
   );
 }
 
-// ─── Phase 3 — Interactive exercise ──────────────────────────────────────────
+// ─── Phase 3 - Interactive exercise ──────────────────────────────────────────
 
 function Phase3() {
   return <Fase3 />;
 }
 
-// ─── Phase 4 — Mission complete ───────────────────────────────────────────────
+// ─── Phase 4 - Mission complete ───────────────────────────────────────────────
 
 function Phase4() {
   return <Fase4 />;

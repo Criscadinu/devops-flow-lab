@@ -50,21 +50,21 @@ function Hero() {
         <div className="relative max-w-4xl mx-auto text-center flex flex-col items-center gap-10">
           <div className="inline-flex items-center gap-2 border border-cyan-800/70 text-cyan-400 text-xs font-mono uppercase tracking-widest px-4 py-2"
             style={{ backgroundColor: "rgba(0,255,255,0.04)" }}>
-            ▸ Hands-on DevOps leren
+            ▸ Hands-on DevOps learning
           </div>
 
           <h1
             className="text-6xl sm:text-7xl text-white leading-[1.05] tracking-tighter"
             style={{ ...H, fontWeight: 800 }}
           >
-            Lezen over DevOps<br />
-            <span className="text-cyan-400">is niet hetzelfde</span><br />
-            als het voelen.
+            Reading about DevOps<br />
+            <span className="text-cyan-400">is not the same</span><br />
+            as feeling it.
           </h1>
 
           <p className="text-lg text-gray-400 max-w-2xl leading-relaxed">
-            DevOps Flow Lab zet de theorie uit The DevOps Handbook, The Unicorn Project en DORA-onderzoek
-            om in echte missies. Je leert door te doen — niet door te lezen.
+            DevOps Flow Lab turns the theory from The DevOps Handbook, The Unicorn Project, and DORA research
+            into real missions. You learn by doing - not by reading.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
@@ -72,14 +72,14 @@ function Hero() {
               href="/api/auth/signin"
               className="bg-cyan-500 hover:bg-cyan-400 text-black font-bold px-8 py-4 transition-colors text-sm tracking-wide"
             >
-              Start gratis →
+              Start for free →
             </a>
             <a
               href="#hoe-het-werkt"
               className="border border-gray-700 hover:border-gray-500 text-gray-300 hover:text-white font-medium px-8 py-4 transition-colors text-sm"
               style={{ backgroundColor: "rgba(255,255,255,0.03)" }}
             >
-              Bekijk hoe het werkt
+              See how it works
             </a>
           </div>
         </div>
@@ -88,27 +88,27 @@ function Hero() {
   );
 }
 
-// ─── Voor wie? ────────────────────────────────────────────────────────────────
+// ─── For who? ─────────────────────────────────────────────────────────────────
 
 const audiences = [
   {
     role: "Engineers",
-    headline: "Bouw echte pipelines",
-    body: "Geen tutorials met nep-repos. Je werkt aan een fictief maar realistisch bedrijf, met legacy code, silo's en druk van bovenaf. Precies zoals het echt voelt.",
+    headline: "Build real pipelines",
+    body: "No tutorials with fake repos. You work on a fictional but realistic company, with legacy code, silos, and pressure from above. Exactly what it feels like for real.",
     accent: "text-cyan-400",
     borderLeft: "4px solid rgb(6 182 212)",
   },
   {
     role: "Managers",
-    headline: "Begrijp wat je team nodig heeft",
-    body: "Je hoeft niet zelf te deployen om te snappen waarom batch size ertoe doet, wat WIP-limieten oplossen en waarom DORA-metrics meer zeggen dan velocity.",
+    headline: "Understand what your team needs",
+    body: "You don't need to deploy yourself to understand why batch size matters, what WIP limits solve, and why DORA metrics say more than velocity.",
     accent: "text-violet-400",
     borderLeft: "4px solid rgb(167 139 250)",
   },
   {
     role: "Coaches & Trainers",
-    headline: "Gebruik het naast je training",
-    body: "Geef deelnemers iets om op terug te vallen na de training. Missies die de concepten uit jouw workshop verankeren — met meetbare voortgang.",
+    headline: "Use it alongside your training",
+    body: "Give participants something to fall back on after the training. Missions that anchor the concepts from your workshop - with measurable progress.",
     accent: "text-emerald-400",
     borderLeft: "4px solid rgb(52 211 153)",
   },
@@ -119,13 +119,13 @@ function AudienceSection() {
     <section className="py-24 px-6 border-t border-gray-900" style={{ backgroundColor: "#050d1a" }}>
       <div className="max-w-5xl mx-auto">
         <p className="text-xs uppercase tracking-widest text-gray-600 mb-3 text-center font-mono">
-          Voor wie?
+          Who is it for?
         </p>
         <h2
           className="text-4xl text-white text-center mb-14 tracking-tight"
           style={{ ...H, fontWeight: 800 }}
         >
-          Voor iedereen die DevOps écht wil begrijpen.
+          For everyone who truly wants to understand DevOps.
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-gray-800">
@@ -148,23 +148,23 @@ function AudienceSection() {
   );
 }
 
-// ─── Hoe het werkt ────────────────────────────────────────────────────────────
+// ─── How it works ─────────────────────────────────────────────────────────────
 
 const steps = [
   {
     n: "01",
-    title: "Je treedt in dienst bij Nexus Corp",
-    body: "Een fictief bedrijf met echte problemen. Lange deploymenttijden, silo's tussen dev en ops, handmatige processen en managers die cijfers willen zien. Jij bent de nieuwe engineer.",
+    title: "You join Nexus Corp",
+    body: "A fictional company with real problems. Long deployment times, silos between dev and ops, manual processes, and managers who want to see numbers. You are the new engineer.",
   },
   {
     n: "02",
-    title: "Je doorloopt missies op basis van de vakliteratuur",
-    body: "Elke missie is geworteld in The DevOps Handbook, DORA-onderzoek of Team Topologies. Je speelt situaties na uit de boeken — maar dan als deelnemer, niet als lezer.",
+    title: "You work through missions based on the literature",
+    body: "Every mission is rooted in The DevOps Handbook, DORA research, or Team Topologies. You replay situations from the books - but as a participant, not a reader.",
   },
   {
     n: "03",
-    title: "Je ziet je impact in echte DORA-metrics",
-    body: "Deployment frequency, lead time, MTTR, change failure rate — ze bewegen mee terwijl jij keuzes maakt. Je leert direct waarom bepaalde beslissingen de flow versnellen of blokkeren.",
+    title: "You see your impact in real DORA metrics",
+    body: "Deployment frequency, lead time, MTTR, change failure rate - they move as you make decisions. You learn directly why certain choices speed up or block the flow.",
   },
 ];
 
@@ -173,13 +173,13 @@ function HowItWorks() {
     <section id="hoe-het-werkt" className="py-24 px-6 border-t border-gray-900" style={{ backgroundColor: "#0d0d0d" }}>
       <div className="max-w-4xl mx-auto">
         <p className="text-xs uppercase tracking-widest text-gray-600 mb-3 text-center font-mono">
-          Hoe het werkt
+          How it works
         </p>
         <h2
           className="text-4xl text-white text-center mb-16 tracking-tight"
           style={{ ...H, fontWeight: 800 }}
         >
-          Drie stappen. Eén verhaal.
+          Three steps. One story.
         </h2>
 
         <div className="flex flex-col">
@@ -217,30 +217,30 @@ const doraMetrics = [
   {
     metric: "Deployment Frequency",
     label: "DF",
-    nexusCorp: "1× per maand",
-    target: "Meerdere keren per dag",
-    description: "Hoe vaak deployt het team naar productie?",
+    nexusCorp: "1× per month",
+    target: "Multiple times per day",
+    description: "How often does the team deploy to production?",
   },
   {
     metric: "Lead Time for Changes",
     label: "LT",
-    nexusCorp: "3–6 weken",
-    target: "Minder dan een dag",
-    description: "Hoe lang duurt het van commit tot productie?",
+    nexusCorp: "3-6 weeks",
+    target: "Less than a day",
+    description: "How long does it take from commit to production?",
   },
   {
     metric: "Change Failure Rate",
     label: "CFR",
     nexusCorp: "42%",
-    target: "Onder de 15%",
-    description: "Welk percentage changes veroorzaakt een incident?",
+    target: "Below 15%",
+    description: "What percentage of changes causes an incident?",
   },
   {
     metric: "Mean Time to Restore",
     label: "MTTR",
-    nexusCorp: "72 uur",
-    target: "Minder dan een uur",
-    description: "Hoe snel herstel je na een incident?",
+    nexusCorp: "72 hours",
+    target: "Less than an hour",
+    description: "How quickly do you recover after an incident?",
   },
 ];
 
@@ -255,10 +255,10 @@ function DoraSection() {
           className="text-4xl text-white text-center mb-4 tracking-tight"
           style={{ ...H, fontWeight: 800 }}
         >
-          Nexus Corp bij de start.
+          Nexus Corp at the start.
         </h2>
         <p className="text-gray-500 text-center text-sm mb-14 max-w-lg mx-auto">
-          Dit zijn de cijfers als jij in dienst treedt. Jij gaat ze veranderen.
+          These are the numbers when you join. You are going to change them.
         </p>
 
         {/* Sharp 4-column grid */}
@@ -278,7 +278,7 @@ function DoraSection() {
 
               <p className="text-xs text-gray-500 leading-snug">{d.metric}</p>
 
-              {/* Bad value — Nexus Corp */}
+              {/* Bad value - Nexus Corp */}
               <div>
                 <p className="text-xs text-gray-700 uppercase tracking-widest font-mono mb-1">Nexus Corp</p>
                 <p className="text-2xl font-mono font-bold text-red-500 leading-none">{d.nexusCorp}</p>
@@ -308,28 +308,28 @@ const books = [
   {
     title: "The DevOps Handbook",
     authors: "Kim, Humble, Debois, Willis",
-    line: "De drie manieren — Flow, Feedback, Continu leren — zijn de ruggengraat van elke missie in het lab.",
+    line: "The three ways - Flow, Feedback, Continuous learning - are the backbone of every mission in the lab.",
     borderLeft: "4px solid rgb(251 146 60)",
     label: "text-orange-400",
   },
   {
     title: "The Unicorn Project",
     authors: "Gene Kim",
-    line: "De Vijf Idealen komen terug als ontwerpdoelen: localiteit, focus, flow, verbetering en klantgerichtheid.",
+    line: "The Five Ideals return as design goals: locality, focus, flow, improvement, and customer focus.",
     borderLeft: "4px solid rgb(244 114 182)",
     label: "text-pink-400",
   },
   {
     title: "State of DevOps",
     authors: "DORA Research",
-    line: "DORA-metrics zijn geen abstracties. Ze bewegen in real-time terwijl jij beslist hoe je werkt.",
+    line: "DORA metrics are not abstractions. They move in real-time as you decide how you work.",
     borderLeft: "4px solid rgb(96 165 250)",
     label: "text-blue-400",
   },
   {
     title: "Team Topologies",
     authors: "Skelton & Pais",
-    line: "Teamstructuur bepaalt flow. Missies rond Conway's Law en interactiepatronen laten je dat zelf ontdekken.",
+    line: "Team structure determines flow. Missions around Conway's Law and interaction patterns let you discover that yourself.",
     borderLeft: "4px solid rgb(52 211 153)",
     label: "text-emerald-400",
   },
@@ -340,16 +340,16 @@ function BooksSection() {
     <section className="py-24 px-6 border-t border-gray-900" style={{ backgroundColor: "#050d1a" }}>
       <div className="max-w-5xl mx-auto">
         <p className="text-xs uppercase tracking-widest text-gray-600 mb-3 text-center font-mono">
-          De theorie ken je. Nu de praktijk.
+          You know the theory. Now the practice.
         </p>
         <h2
           className="text-4xl text-white text-center mb-4 tracking-tight"
           style={{ ...H, fontWeight: 800 }}
         >
-          Gebouwd op de beste vakliteratuur.
+          Built on the best literature.
         </h2>
         <p className="text-gray-500 text-center max-w-xl mx-auto mb-14 text-sm leading-relaxed">
-          DevOps Flow Lab is geen samenvatting van deze boeken. Het is de plek waar je ze beleeft.
+          DevOps Flow Lab is not a summary of these books. It is the place where you experience them.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-gray-800">
@@ -360,7 +360,7 @@ function BooksSection() {
               style={{ backgroundColor: "#050d1a", borderLeft: b.borderLeft }}
             >
               <span className={`text-xs font-bold uppercase tracking-widest font-mono ${b.label}`}>
-                Boek
+                Book
               </span>
               <h3 className="text-white font-bold leading-snug">{b.title}</h3>
               <p className="text-gray-600 text-xs">{b.authors}</p>
@@ -384,8 +384,8 @@ const missions = [
     tag: "Flow",
     tagColor: "text-cyan-400 border-cyan-900",
     description:
-      "Breng de waardestroom van Nexus Corp in kaart. Waar zit de waste? Wat blokkeer de flow? Jij maakt de bottlenecks zichtbaar.",
-    meta: "Gebaseerd op The DevOps Handbook — Deel I",
+      "Map the value stream of Nexus Corp. Where is the waste? What is blocking the flow? You make the bottlenecks visible.",
+    meta: "Based on The DevOps Handbook - Part I",
   },
   {
     id: "M-02",
@@ -393,17 +393,17 @@ const missions = [
     tag: "Flow",
     tagColor: "text-cyan-400 border-cyan-900",
     description:
-      "Het team werkt aan zestien dingen tegelijk en niets komt af. Voer WIP-limieten in, overtuig je collega's en meet het verschil.",
-    meta: "Gebaseerd op Kanban & DORA onderzoek",
+      "The team is working on sixteen things at once and nothing gets done. Introduce WIP limits, convince your colleagues, and measure the difference.",
+    meta: "Based on Kanban & DORA research",
   },
   {
     id: "M-03",
-    title: "Pipeline Bouwen",
-    tag: "Technisch",
+    title: "Pipeline Building",
+    tag: "Technical",
     tagColor: "text-violet-400 border-violet-900",
     description:
-      "Nexus Corp deployt handmatig, één keer per maand. Bouw hun eerste deployment pipeline en breng deployment frequency omhoog.",
-    meta: "Gebaseerd op The DevOps Handbook — Deel II",
+      "Nexus Corp deploys manually, once a month. Build their first deployment pipeline and bring deployment frequency up.",
+    meta: "Based on The DevOps Handbook - Part II",
   },
 ];
 
@@ -412,16 +412,16 @@ function MissionsTeaser() {
     <section className="py-24 px-6 border-t border-gray-900" style={{ backgroundColor: "#0d0d0d" }}>
       <div className="max-w-5xl mx-auto">
         <p className="text-xs uppercase tracking-widest text-gray-600 mb-3 text-center font-mono">
-          Missies
+          Missions
         </p>
         <h2
           className="text-4xl text-white text-center mb-4 tracking-tight"
           style={{ ...H, fontWeight: 800 }}
         >
-          Een voorproefje van wat je te wachten staat.
+          A preview of what awaits you.
         </h2>
         <p className="text-gray-500 text-center max-w-xl mx-auto mb-14 text-sm">
-          Elke missie is een situatie, een probleem en een keuze. Niet meerkeuze. Echt werk.
+          Every mission is a situation, a problem, and a choice. Not multiple choice. Real work.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -441,7 +441,7 @@ function MissionsTeaser() {
               >
                 <span className="text-gray-300 text-sm font-mono border border-gray-700 px-4 py-2"
                   style={{ backgroundColor: "#111" }}>
-                  ▸ Beschikbaar na aanmelding
+                  ▸ Available after sign-up
                 </span>
               </div>
 
@@ -482,20 +482,20 @@ function FinalCTA() {
           className="text-5xl text-white leading-tight tracking-tight"
           style={{ ...H, fontWeight: 800 }}
         >
-          Klaar om te beginnen?
+          Ready to get started?
         </h2>
         <p className="text-gray-400 text-lg leading-relaxed max-w-md">
-          Start gratis met je Google account. Geen creditcard, geen installatie.
-          Gewoon inloggen en je eerste missie starten.
+          Start for free with your Google account. No credit card, no installation.
+          Just sign in and start your first mission.
         </p>
         <a
           href="/api/auth/signin"
           className="bg-cyan-500 hover:bg-cyan-400 text-black font-bold px-10 py-4 transition-colors text-base tracking-wide"
         >
-          Start gratis met Google →
+          Start for free with Google →
         </a>
         <p className="text-xs text-gray-700">
-          Door aan te melden ga je akkoord met onze gebruiksvoorwaarden.
+          By signing up you agree to our terms of use.
         </p>
       </div>
     </section>

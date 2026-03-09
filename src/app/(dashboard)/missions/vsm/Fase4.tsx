@@ -5,35 +5,35 @@ const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const steps = [
-  { name: "Idee / Ticket",         pt: "2 dagen", wt: "5 dagen",  wtDays: 5  },
-  { name: "Code Schrijven",        pt: "3 dagen", wt: "3 dagen",  wtDays: 3  },
-  { name: "Code Review",           pt: "4 uur",   wt: "1 dag",    wtDays: 1  },
-  { name: "QA Testing",            pt: "2 dagen", wt: "5 dagen",  wtDays: 5  },
-  { name: "Acceptatie (ACC)",      pt: "1 dag",   wt: "8 dagen",  wtDays: 8  },
-  { name: "Deploy naar Productie", pt: "4 uur",   wt: "12 dagen", wtDays: 12 },
+  { name: "Idea / Ticket",        pt: "2 days",  wt: "5 days",  wtDays: 5  },
+  { name: "Write Code",           pt: "3 days",  wt: "3 days",  wtDays: 3  },
+  { name: "Code Review",          pt: "4 hours", wt: "1 day",   wtDays: 1  },
+  { name: "QA Testing",           pt: "2 days",  wt: "5 days",  wtDays: 5  },
+  { name: "Acceptance (ACC)",     pt: "1 day",   wt: "8 days",  wtDays: 8  },
+  { name: "Deploy to Production", pt: "4 hours", wt: "12 days", wtDays: 12 },
 ];
 
 const insights = [
   {
-    label: "Grootste bottleneck",
+    label: "Biggest bottleneck",
     accent: "rgb(239,68,68)",
     accentBg: "rgba(239,68,68,0.06)",
     accentBorder: "rgba(239,68,68,0.25)",
-    body: "Deploy naar Productie heeft 12 dagen wachttijd. De oorzaak: handmatige deploys, ingepland op één vaste dag per maand.",
+    body: "Deploy to Production has 12 days of wait time. The cause: manual deploys, scheduled on one fixed day per month.",
   },
   {
-    label: "Verborgen waste",
+    label: "Hidden waste",
     accent: "rgb(251,146,60)",
     accentBg: "rgba(251,146,60,0.06)",
     accentBorder: "rgba(251,146,60,0.25)",
-    body: "80% van de lead time is wachttijd. Niet door gebrek aan capaciteit — maar door handoffs, silo's en gebrek aan automatisering.",
+    body: "80% of the lead time is wait time. Not due to lack of capacity - but due to handoffs, silos, and lack of automation.",
   },
   {
     label: "Root cause",
     accent: "rgb(167,139,250)",
     accentBg: "rgba(167,139,250,0.06)",
     accentBorder: "rgba(167,139,250,0.25)",
-    body: "Dev, QA en Ops werken sequentieel en onafhankelijk. Elke overdracht kost dagen. Dit is wat Team Topologies een 'stream-aligned team' probleem noemt.",
+    body: "Dev, QA, and Ops work sequentially and independently. Every handoff costs days. This is what Team Topologies calls a 'stream-aligned team' problem.",
   },
 ];
 
@@ -47,25 +47,25 @@ export function Fase4() {
         {/* ── Section 1: Mission Complete ──────────────────────────────────── */}
         <div className="flex flex-col gap-4">
           <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(6,182,212)" }}>
-            Missie Voltooid — M-01
+            Mission Complete - M-01
           </p>
           <h1
             className="text-5xl text-white tracking-tight leading-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Jouw VSM Analyse
+            Your VSM Analysis
           </h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">
-            Dit is wat jij hebt blootgelegd bij Nexus Corp.
+            This is what you uncovered at Nexus Corp.
           </p>
         </div>
 
-        {/* ── Section 2: Waardestroom flow ─────────────────────────────────── */}
+        {/* ── Section 2: Value stream flow ─────────────────────────────────── */}
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">01</span>
             <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">
-              De volledige waardestroom
+              The complete value stream
             </h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
@@ -135,28 +135,28 @@ export function Fase4() {
             style={{ backgroundColor: "#090909", borderColor: "rgb(31,41,55)" }}
           >
             <span className="text-xs font-mono text-gray-500">
-              Totale lead time:{" "}
-              <span className="text-white font-bold">~43 dagen</span>
+              Total lead time:{" "}
+              <span className="text-white font-bold">~43 days</span>
             </span>
-            <span className="text-xs font-mono text-gray-700">—</span>
+            <span className="text-xs font-mono text-gray-700">-</span>
             <span className="text-xs font-mono text-gray-500">
               Process Time:{" "}
-              <span className="font-bold" style={{ color: "rgb(34,197,94)" }}>~9 dagen (21%)</span>
+              <span className="font-bold" style={{ color: "rgb(34,197,94)" }}>~9 days (21%)</span>
             </span>
-            <span className="text-xs font-mono text-gray-700">—</span>
+            <span className="text-xs font-mono text-gray-700">-</span>
             <span className="text-xs font-mono text-gray-500">
               Wait Time:{" "}
-              <span className="font-bold" style={{ color: "rgb(239,68,68)" }}>~34 dagen (79%)</span>
+              <span className="font-bold" style={{ color: "rgb(239,68,68)" }}>~34 days (79%)</span>
             </span>
           </div>
         </section>
 
-        {/* ── Section 3: Bevindingen ────────────────────────────────────────── */}
+        {/* ── Section 3: Findings ───────────────────────────────────────────── */}
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">02</span>
             <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">
-              Jouw bevindingen
+              Your findings
             </h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
@@ -189,7 +189,7 @@ export function Fase4() {
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">03</span>
             <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">
-              Jouw impact op Nexus Corp
+              Your impact on Nexus Corp
             </h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
@@ -203,7 +203,7 @@ export function Fase4() {
               <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">
                 Deployment Frequency
               </span>
-              <span className="text-xs font-mono text-gray-700">DORA — DF</span>
+              <span className="text-xs font-mono text-gray-700">DORA - DF</span>
             </div>
 
             <div className="w-px h-10 bg-gray-800 hidden sm:block" />
@@ -212,13 +212,13 @@ export function Fase4() {
             <div className="flex items-center gap-5">
               <div className="flex flex-col gap-1 text-center">
                 <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">
-                  Voor
+                  Before
                 </span>
                 <span
                   className="text-2xl font-mono font-bold"
                   style={{ ...syne.style, color: "rgb(239,68,68)" }}
                 >
-                  1× per maand
+                  1× per month
                 </span>
               </div>
 
@@ -226,13 +226,13 @@ export function Fase4() {
 
               <div className="flex flex-col gap-1 text-center">
                 <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">
-                  Na
+                  After
                 </span>
                 <span
                   className="text-2xl font-mono font-bold"
                   style={{ ...syne.style, color: "rgb(6,182,212)" }}
                 >
-                  2× per maand
+                  2× per month
                 </span>
               </div>
             </div>
@@ -240,8 +240,8 @@ export function Fase4() {
             <div className="w-px h-10 bg-gray-800 hidden sm:block" />
 
             <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
-              Door de bottlenecks zichtbaar te maken heb je de eerste stap gezet.
-              Nexus Corp kan nu gericht verbeteren.
+              By making the bottlenecks visible, you&apos;ve taken the first step.
+              Nexus Corp can now improve in a targeted way.
             </p>
           </div>
         </section>
@@ -254,7 +254,7 @@ export function Fase4() {
               className="px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
               style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
             >
-              Terug naar dashboard →
+              Back to dashboard →
             </a>
 
             <span
@@ -264,14 +264,14 @@ export function Fase4() {
                 borderColor: "rgb(31,41,55)",
                 color: "rgb(55,65,81)",
               }}
-              title="Nog niet beschikbaar"
+              title="Not yet available"
             >
               <span>⊘</span>
-              Bekijk volgende missie: WIP Wars →
+              View next mission: WIP Wars →
             </span>
           </div>
           <p className="text-xs font-mono text-gray-800">
-            M-02 wordt ontgrendeld na voltooiing van M-01.
+            M-02 will be unlocked after completing M-01.
           </p>
         </section>
 

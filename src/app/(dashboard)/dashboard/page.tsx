@@ -11,29 +11,29 @@ const doraMetrics = [
   {
     label: "Deployment Frequency",
     code: "DF",
-    value: "1× per maand",
-    elite: "Meerdere keren per dag",
+    value: "1× per month",
+    elite: "Multiple times per day",
     perf: "LOW PERFORMER",
   },
   {
     label: "Lead Time for Changes",
     code: "LT",
-    value: "3–6 weken",
-    elite: "Minder dan een dag",
+    value: "3-6 weeks",
+    elite: "Less than a day",
     perf: "LOW PERFORMER",
   },
   {
     label: "Change Failure Rate",
     code: "CFR",
     value: "42%",
-    elite: "Onder de 15%",
+    elite: "Below 15%",
     perf: "LOW PERFORMER",
   },
   {
     label: "Mean Time to Restore",
     code: "MTTR",
-    value: "72 uur",
-    elite: "Minder dan een uur",
+    value: "72 hours",
+    elite: "Less than an hour",
     perf: "LOW PERFORMER",
   },
 ];
@@ -44,7 +44,7 @@ const missions = [
     title: "Value Stream Mapping",
     category: "FLOW",
     description:
-      "Breng de waardestroom van Nexus Corp in kaart. Maak de bottlenecks zichtbaar en bereken de echte flow efficiency.",
+      "Map the value stream of Nexus Corp. Make the bottlenecks visible and calculate the real flow efficiency.",
     status: "unlocked" as const,
     href: "/missions/vsm",
   },
@@ -53,16 +53,16 @@ const missions = [
     title: "WIP Wars",
     category: "FLOW",
     description:
-      "Het team werkt aan zestien dingen tegelijk en niets komt af. Voer WIP-limieten in en meet het verschil.",
+      "The team is working on sixteen things at once and nothing gets done. Introduce WIP limits and measure the difference.",
     status: "locked" as const,
     href: null,
   },
   {
     id: "M-03",
-    title: "Pipeline Bouwen",
+    title: "Pipeline Building",
     category: "TECHNICAL",
     description:
-      "Nexus Corp deployt handmatig, één keer per maand. Bouw hun eerste deployment pipeline.",
+      "Nexus Corp deploys manually, once a month. Build their first deployment pipeline.",
     status: "locked" as const,
     href: null,
   },
@@ -112,7 +112,7 @@ export default async function DashboardPage() {
             <span
               className="text-xs font-mono tracking-[0.25em] text-gray-400 uppercase"
             >
-              Nexus Corp — Command Center
+              Nexus Corp - Command Center
             </span>
           </div>
           <div className="flex items-center gap-3">
@@ -138,7 +138,7 @@ export default async function DashboardPage() {
             <h2
               className="text-xs font-mono tracking-[0.2em] text-gray-500 uppercase"
             >
-              DORA Metrics — Nexus Corp Baseline
+              DORA Metrics - Nexus Corp Baseline
             </h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
@@ -193,13 +193,13 @@ export default async function DashboardPage() {
             <h2
               className="text-xs font-mono tracking-[0.2em] text-gray-500 uppercase"
             >
-              Jouw Missies
+              Your Missions
             </h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
           <p className="text-sm text-gray-500">
-            Transformeer Nexus Corp van low performer naar elite.
+            Transform Nexus Corp from low performer to elite.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -267,11 +267,11 @@ export default async function DashboardPage() {
                         className="text-xs font-mono tracking-widest"
                         style={{ color: "rgb(6,182,212)" }}
                       >
-                        ▸ START MISSIE
+                        ▸ START MISSION
                       </span>
                     ) : (
                       <span className="text-xs font-mono text-gray-700 tracking-widest">
-                        ⊘ VERGRENDELD
+                        ⊘ LOCKED
                       </span>
                     )}
                   </div>
@@ -296,7 +296,7 @@ export default async function DashboardPage() {
         {/* ── Footer note ───────────────────────────────────────────────────── */}
         <footer className="border-t border-gray-900 pt-6">
           <p className="text-xs font-mono text-gray-700">
-            Jouw acties beïnvloeden de DORA metrics van Nexus Corp. Begin met missie 01.
+            Your actions affect the DORA metrics of Nexus Corp. Start with mission 01.
           </p>
         </footer>
 

@@ -25,24 +25,24 @@ const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const CORRECT_ORDER = [
-  "Idee / Ticket",
-  "Code Schrijven",
+  "Idea / Ticket",
+  "Write Code",
   "Code Review",
   "QA Testing",
-  "Acceptatie (ACC)",
-  "Deploy naar Productie",
+  "Acceptance (ACC)",
+  "Deploy to Production",
 ] as const;
 
 type Step = (typeof CORRECT_ORDER)[number];
 
-// In hours (1 dag = 8 uur)
+// In hours (1 day = 8 hours)
 const CORRECT_TIMES: { pt: number; wt: number }[] = [
-  { pt: 16, wt: 40 },  // Idee/Ticket: 2d, 5d
-  { pt: 24, wt: 24 },  // Code Schrijven: 3d, 3d
-  { pt: 4,  wt: 8  },  // Code Review: 4u, 1d
+  { pt: 16, wt: 40 },  // Idea/Ticket: 2d, 5d
+  { pt: 24, wt: 24 },  // Write Code: 3d, 3d
+  { pt: 4,  wt: 8  },  // Code Review: 4h, 1d
   { pt: 16, wt: 40 },  // QA Testing: 2d, 5d
-  { pt: 8,  wt: 64 },  // Acceptatie: 1d, 8d
-  { pt: 4,  wt: 96 },  // Deploy: 4u, 12d
+  { pt: 8,  wt: 64 },  // Acceptance: 1d, 8d
+  { pt: 4,  wt: 96 },  // Deploy: 4h, 12d
 ];
 
 function shuffle<T>(arr: T[]): T[] {
@@ -99,7 +99,7 @@ function SortableCard({
       <span
         {...listeners}
         className="text-gray-700 text-base font-mono cursor-grab active:cursor-grabbing select-none shrink-0"
-        aria-label="Sleep om te herordenen"
+        aria-label="Drag to reorder"
       >
         ⠿
       </span>
@@ -108,7 +108,7 @@ function SortableCard({
 
       {isWrong && (
         <span className="text-xs font-mono shrink-0" style={{ color: "rgb(239,68,68)" }}>
-          ✗ Verkeerd
+          ✗ Wrong
         </span>
       )}
     </div>
@@ -132,7 +132,7 @@ function DragCard({ id }: { id: Step }) {
   );
 }
 
-// ─── Part 1 — Sorteer de stappen ─────────────────────────────────────────────
+// ─── Part 1 - Sort the steps ──────────────────────────────────────────────────
 
 function Part1({ onComplete }: { onComplete: () => void }) {
   const [items, setItems] = useState<Step[]>(() => shuffle([...CORRECT_ORDER]));
@@ -178,10 +178,10 @@ function Part1({ onComplete }: { onComplete: () => void }) {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
         <h3 className="text-xl text-white" style={{ ...syne.style, fontWeight: 700 }}>
-          Stap 1 — Zet de stappen in de juiste volgorde
+          Step 1 - Sort the steps in the correct order
         </h3>
         <p className="text-gray-500 text-sm leading-relaxed">
-          Sleep de stappen van idee naar productie in de volgorde die jij denkt dat correct is.
+          Drag the steps from idea to production in the order you think is correct.
         </p>
       </div>
 
@@ -211,19 +211,19 @@ function Part1({ onComplete }: { onComplete: () => void }) {
             className="px-6 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
             style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style }}
           >
-            Controleer volgorde
+            Check order
           </button>
         )}
 
         {checked && !correct && wrongIds.size > 0 && (
           <p className="text-sm font-mono" style={{ color: "rgb(239,68,68)" }}>
-            {wrongIds.size} stap{wrongIds.size > 1 ? "pen" : ""} staan op de verkeerde plek.
+            {wrongIds.size} step{wrongIds.size !== 1 ? "s" : ""} in the wrong position.
           </p>
         )}
 
         {correct && (
           <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-            ✓ Correct! Volgorde klopt.
+            ✓ Correct! Order is right.
           </p>
         )}
       </div>
@@ -231,7 +231,7 @@ function Part1({ onComplete }: { onComplete: () => void }) {
   );
 }
 
-// ─── Part 2 — Vul de tijden in ───────────────────────────────────────────────
+// ─── Part 2 - Fill in the times ───────────────────────────────────────────────
 
 type Unit = "dagen" | "uren";
 type CellState = "idle" | "correct" | "wrong";
@@ -295,10 +295,10 @@ function Part2({ onComplete }: { onComplete: () => void }) {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
         <h3 className="text-xl text-white" style={{ ...syne.style, fontWeight: 700 }}>
-          Stap 2 — Vul de process time en wait time in per stap
+          Step 2 - Fill in the process time and wait time per step
         </h3>
         <p className="text-gray-500 text-sm leading-relaxed">
-          Gebruik de informatie uit de gesprekken. Alle cijfers heb je gehoord.
+          Use the information from the conversations. You&apos;ve heard all the numbers.
         </p>
       </div>
 
@@ -308,7 +308,7 @@ function Part2({ onComplete }: { onComplete: () => void }) {
           <thead>
             <tr style={{ backgroundColor: "#0d0d0d" }}>
               <th className="text-left px-4 py-3 border border-gray-800 text-gray-500 font-mono text-xs tracking-widest uppercase font-normal">
-                Stap
+                Step
               </th>
               <th className="px-4 py-3 border border-gray-800 text-gray-500 font-mono text-xs tracking-widest uppercase font-normal text-center" colSpan={2}>
                 Process Time
@@ -362,8 +362,8 @@ function Part2({ onComplete }: { onComplete: () => void }) {
                       className="px-2 py-1.5 text-sm font-mono text-gray-300 outline-none border"
                       style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)", color: v.pt === "correct" ? "rgb(34,197,94)" : "inherit" }}
                     >
-                      <option value="dagen">dagen</option>
-                      <option value="uren">uren</option>
+                      <option value="dagen">days</option>
+                      <option value="uren">hours</option>
                     </select>
                   </td>
 
@@ -391,8 +391,8 @@ function Part2({ onComplete }: { onComplete: () => void }) {
                       className="px-2 py-1.5 text-sm font-mono text-gray-300 outline-none border"
                       style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)", color: v.wt === "correct" ? "rgb(34,197,94)" : "inherit" }}
                     >
-                      <option value="dagen">dagen</option>
-                      <option value="uren">uren</option>
+                      <option value="dagen">days</option>
+                      <option value="uren">hours</option>
                     </select>
                   </td>
                 </tr>
@@ -410,13 +410,13 @@ function Part2({ onComplete }: { onComplete: () => void }) {
             className="px-6 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
             style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style }}
           >
-            Controleer tijden
+            Check times
           </button>
         )}
 
         {validation.some((v) => v.pt === "wrong" || v.wt === "wrong") && !allCorrect && (
           <p className="text-sm font-mono" style={{ color: "rgb(239,68,68)" }}>
-            Niet alle tijden kloppen. Rode velden zijn onjuist — probeer opnieuw.
+            Not all times are correct. Red fields are wrong - try again.
           </p>
         )}
       </div>
@@ -428,23 +428,23 @@ function Part2({ onComplete }: { onComplete: () => void }) {
           style={{ backgroundColor: "#060f06", borderColor: "rgba(34,197,94,0.3)", borderLeft: "3px solid rgb(34,197,94)" }}
         >
           <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-            ✓ Alle tijden correct!
+            ✓ All times correct!
           </p>
 
           <div className="flex gap-6">
             <div>
-              <p className="text-xs font-mono text-gray-600 uppercase tracking-widest mb-1">Totale Process Time</p>
-              <p className="text-2xl font-mono font-bold" style={{ ...syne.style, color: "rgb(34,197,94)" }}>~9 dagen</p>
+              <p className="text-xs font-mono text-gray-600 uppercase tracking-widest mb-1">Total Process Time</p>
+              <p className="text-2xl font-mono font-bold" style={{ ...syne.style, color: "rgb(34,197,94)" }}>~9 days</p>
             </div>
             <div>
-              <p className="text-xs font-mono text-gray-600 uppercase tracking-widest mb-1">Totale Wait Time</p>
-              <p className="text-2xl font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>~34 dagen</p>
+              <p className="text-xs font-mono text-gray-600 uppercase tracking-widest mb-1">Total Wait Time</p>
+              <p className="text-2xl font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>~34 days</p>
             </div>
           </div>
 
           <p className="text-gray-400 text-sm leading-relaxed">
-            Slechts <span className="text-white font-semibold">21%</span> van de totale lead time (~43 dagen)
-            is echte werktijd. De rest is wachten.
+            Only <span className="text-white font-semibold">21%</span> of the total lead time (~43 days)
+            is actual work time. The rest is waiting.
           </p>
 
           <a
@@ -452,7 +452,7 @@ function Part2({ onComplete }: { onComplete: () => void }) {
             className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
             style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
           >
-            Bekijk je resultaat →
+            View your results →
           </a>
         </div>
       )}
@@ -471,10 +471,10 @@ export function Fase3() {
 
         <div className="flex flex-col gap-2">
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Jouw VSM Analyse
+            Your VSM Analysis
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Gebruik wat je hebt gehoord en geleerd. Werk je door beide stappen heen.
+            Use what you&apos;ve heard and learned. Work through both steps.
           </p>
         </div>
 
@@ -498,7 +498,7 @@ export function Fase3() {
             </div>
           ))}
           <span className="ml-4 text-xs font-mono text-gray-600">
-            {part === 1 ? "Volgorde bepalen" : "Tijden invullen"}
+            {part === 1 ? "Determine order" : "Fill in times"}
           </span>
         </div>
 

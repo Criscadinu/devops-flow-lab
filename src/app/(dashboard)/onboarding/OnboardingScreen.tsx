@@ -13,19 +13,19 @@ const roles: { id: Role; icon: string; title: string; description: string }[] = 
     id: "engineer",
     icon: "👩‍💻",
     title: "Engineer",
-    description: "Je bouwt pipelines, schrijft code en wil de technische practices begrijpen",
+    description: "You build pipelines, write code, and want to understand the technical practices",
   },
   {
     id: "manager",
     icon: "📊",
     title: "Manager",
-    description: "Je wil begrijpen waarom flow belangrijk is en wat je team nodig heeft",
+    description: "You want to understand why flow matters and what your team needs",
   },
   {
     id: "coach",
     icon: "🎓",
     title: "Coach / Trainer",
-    description: "Je gebruikt het platform naast je trainingen",
+    description: "You use the platform alongside your training sessions",
   },
 ];
 
@@ -115,7 +115,7 @@ export function OnboardingScreen() {
 
           {/* Classification label */}
           <p className="fade-up delay-1 text-xs font-mono tracking-[0.3em] text-cyan-700 uppercase">
-            Nexus Corp — Classified Briefing
+            Nexus Corp - Classified Briefing
           </p>
 
           {/* Main heading */}
@@ -124,11 +124,11 @@ export function OnboardingScreen() {
               className="text-6xl sm:text-7xl text-white tracking-tighter leading-none"
               style={{ ...syne.style, fontWeight: 800 }}
             >
-              Je bent aangenomen.
+              You&apos;ve been hired.
             </h1>
             <p className="text-gray-500 text-lg leading-relaxed max-w-xl mx-auto">
-              Het systeem is kapot. De DORA metrics zijn rood. Vier teams werken
-              langs elkaar heen. Jij bent de nieuwe engineer die dit gaat fixen.
+              The system is broken. The DORA metrics are red. Four teams are
+              working in silos. You are the new engineer who will fix this.
             </p>
           </div>
 
@@ -136,7 +136,7 @@ export function OnboardingScreen() {
           <div className="fade-up delay-3 w-full flex items-center gap-4">
             <div className="flex-1 h-px bg-gray-900" />
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">
-              Kies je rol
+              Choose your role
             </span>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
@@ -182,11 +182,11 @@ export function OnboardingScreen() {
                   <div className="mt-auto pt-2">
                     {isSelected ? (
                       <span className="text-xs font-mono text-cyan-500 tracking-widest">
-                        ▸ Laden...
+                        ▸ Loading...
                       </span>
                     ) : (
                       <span className="text-xs font-mono text-gray-800 group-hover:text-cyan-700 transition-colors tracking-widest">
-                        ▸ Kies deze rol
+                        ▸ Choose this role
                       </span>
                     )}
                   </div>
@@ -196,7 +196,7 @@ export function OnboardingScreen() {
           </div>
 
           <p className="fade-up delay-5 text-xs text-gray-800 font-mono">
-            Je keuze bepaalt je startperspectief — je kunt later wisselen
+            Your choice determines your starting perspective - you can change it later
           </p>
         </div>
       </div>
