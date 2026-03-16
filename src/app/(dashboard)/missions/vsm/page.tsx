@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { Syne } from "next/font/google";
 import { Fase3 } from "./Fase3";
 import { Fase4 } from "./Fase4";
+import { completeMission } from "@/app/actions/progress";
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 
@@ -403,6 +404,8 @@ export default async function VSMPage({
 
   const { fase: faseParam } = await searchParams;
   const fase = ["1", "2", "3", "4"].includes(faseParam ?? "") ? Number(faseParam) : 1;
+
+  if (fase === 4) await completeMission("M-01");
 
   return (
     <main className="min-h-screen text-gray-100 flex flex-col" style={{ backgroundColor: "#000" }}>

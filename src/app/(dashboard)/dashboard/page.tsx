@@ -5,66 +5,72 @@ import { Syne } from "next/font/google";
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
+// ─── DORA baseline + per-mission impact ───────────────────────────────────────
 
-const doraMetrics = [
-  {
-    label: "Deployment Frequency",
-    code: "DF",
-    value: "1× per month",
-    elite: "Multiple times per day",
-    perf: "LOW PERFORMER",
-  },
-  {
-    label: "Lead Time for Changes",
-    code: "LT",
-    value: "3-6 weeks",
-    elite: "Less than a day",
-    perf: "LOW PERFORMER",
-  },
-  {
-    label: "Change Failure Rate",
-    code: "CFR",
-    value: "42%",
-    elite: "Below 15%",
-    perf: "LOW PERFORMER",
-  },
-  {
-    label: "Mean Time to Restore",
-    code: "MTTR",
-    value: "72 hours",
-    elite: "Less than an hour",
-    perf: "LOW PERFORMER",
-  },
-];
+type DoraState = {
+  df: { value: string; perf: string };
+  lt: { value: string; perf: string };
+  cfr: { value: string; perf: string };
+  mttr: { value: string; perf: string };
+};
 
-const missions = [
+const doraBaseline: DoraState = {
+  df:   { value: "1× per month",  perf: "LOW PERFORMER"    },
+  lt:   { value: "43 days",       perf: "LOW PERFORMER"    },
+  cfr:  { value: "42%",           perf: "LOW PERFORMER"    },
+  mttr: { value: "72 hours",      perf: "LOW PERFORMER"    },
+};
+
+const missionImpact: Record<string, Partial<DoraState>> = {
+  "M-01": {
+    df: { value: "2× per month", perf: "MEDIUM PERFORMER" },
+  },
+  "M-02": {
+    cfr: { value: "28%",     perf: "MEDIUM PERFORMER" },
+    lt:  { value: "36 days", perf: "MEDIUM PERFORMER" },
+  },
+};
+
+function computeDora(completedIds: Set<string>): DoraState {
+  let state = { ...doraBaseline };
+  for (const id of ["M-01", "M-02", "M-03"]) {
+    if (completedIds.has(id) && missionImpact[id]) {
+      state = { ...state, ...missionImpact[id] };
+    }
+  }
+  return state;
+}
+
+// ─── Static mission definitions ───────────────────────────────────────────────
+
+const missionDefs = [
   {
     id: "M-01",
     title: "Value Stream Mapping",
     category: "FLOW",
     description:
       "Map the value stream of Nexus Corp. Make the bottlenecks visible and calculate the real flow efficiency.",
-    status: "unlocked" as const,
     href: "/missions/vsm",
+    alwaysUnlocked: true,
   },
   {
     id: "M-02",
-    title: "WIP Wars",
-    category: "FLOW",
+    title: "On-Demand Environments",
+    category: "TECHNICAL",
     description:
-      "The team is working on sixteen things at once and nothing gets done. Introduce WIP limits and measure the difference.",
-    status: "locked" as const,
-    href: null,
+      "Every developer sets up their environment manually. No staging. No consistency. Fix it.",
+    href: "/missions/pipeline",
+    alwaysUnlocked: true,
   },
   {
     id: "M-03",
-    title: "Pipeline Building",
+    title: "Build the Pipeline",
     category: "TECHNICAL",
     description:
-      "Nexus Corp deploys manually, once a month. Build their first deployment pipeline.",
-    status: "locked" as const,
+      "Nexus Corp deploys manually from a zip file. Build their first CI pipeline and cut lead time in half.",
     href: null,
+    alwaysUnlocked: false,
+    unlockedBy: "M-02",
   },
 ];
 
@@ -85,12 +91,35 @@ export default async function DashboardPage() {
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
-    select: { role: true, onboardingCompleted: true, name: true },
+    select: { id: true, role: true, onboardingCompleted: true, name: true },
   });
 
   if (!user?.onboardingCompleted) {
     redirect("/onboarding");
   }
+
+  const progress = await prisma.userProgress.findMany({
+    where: { userId: user.id },
+    select: { moduleId: true },
+  });
+
+  const completedIds = new Set(progress.map((p) => p.moduleId));
+  const dora = computeDora(completedIds);
+
+  const doraMetrics = [
+    { label: "Deployment Frequency",  code: "DF",   ...dora.df,   elite: "Multiple times per day" },
+    { label: "Lead Time for Changes", code: "LT",   ...dora.lt,   elite: "Less than a day"        },
+    { label: "Change Failure Rate",   code: "CFR",  ...dora.cfr,  elite: "Below 15%"              },
+    { label: "Mean Time to Restore",  code: "MTTR", ...dora.mttr, elite: "Less than an hour"      },
+  ];
+
+  const missions = missionDefs.map((def) => {
+    const completed = completedIds.has(def.id);
+    const unlocked =
+      def.alwaysUnlocked ||
+      (def.unlockedBy ? completedIds.has(def.unlockedBy) : false);
+    return { ...def, completed, unlocked };
+  });
 
   const displayName = user.name ?? session.user.name ?? session.user.email;
   const roleLabel = user.role ? (roleLabels[user.role] ?? user.role) : null;
@@ -105,13 +134,8 @@ export default async function DashboardPage() {
         {/* ── Top bar ───────────────────────────────────────────────────────── */}
         <header className="flex items-center justify-between border-b border-gray-800 pb-6">
           <div className="flex items-center gap-4">
-            <div
-              className="w-2 h-6"
-              style={{ backgroundColor: "rgb(6,182,212)" }}
-            />
-            <span
-              className="text-xs font-mono tracking-[0.25em] text-gray-400 uppercase"
-            >
+            <div className="w-2 h-6" style={{ backgroundColor: "rgb(6,182,212)" }} />
+            <span className="text-xs font-mono tracking-[0.25em] text-gray-400 uppercase">
               Nexus Corp - Command Center
             </span>
           </div>
@@ -135,64 +159,58 @@ export default async function DashboardPage() {
         {/* ── DORA Metrics ──────────────────────────────────────────────────── */}
         <section className="flex flex-col gap-4">
           <div className="flex items-baseline gap-3">
-            <h2
-              className="text-xs font-mono tracking-[0.2em] text-gray-500 uppercase"
-            >
-              DORA Metrics - Nexus Corp Baseline
+            <h2 className="text-xs font-mono tracking-[0.2em] text-gray-500 uppercase">
+              DORA Metrics - Nexus Corp
             </h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 border border-gray-800">
-            {doraMetrics.map((m, i) => (
-              <div
-                key={m.code}
-                className="flex flex-col gap-3 p-5"
-                style={{
-                  borderRight:
-                    i < doraMetrics.length - 1
-                      ? "1px solid rgb(31,41,55)"
-                      : undefined,
-                  backgroundColor: "#080808",
-                }}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-gray-700">{m.code}</span>
-                  <span
-                    className="text-xs font-mono"
-                    style={{ color: "rgb(239,68,68)" }}
-                  >
-                    {m.perf}
-                  </span>
+            {doraMetrics.map((m, i) => {
+              const isMedium = m.perf === "MEDIUM PERFORMER";
+              const perfColor = isMedium ? "rgb(234,179,8)" : "rgb(239,68,68)";
+              const valueColor = isMedium ? "rgb(234,179,8)" : "rgb(239,68,68)";
+              return (
+                <div
+                  key={m.code}
+                  className="flex flex-col gap-3 p-5"
+                  style={{
+                    borderRight:
+                      i < doraMetrics.length - 1 ? "1px solid rgb(31,41,55)" : undefined,
+                    backgroundColor: "#080808",
+                  }}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-mono text-gray-700">{m.code}</span>
+                    <span className="text-xs font-mono" style={{ color: perfColor }}>
+                      {m.perf}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-600 mb-1">{m.label}</p>
+                    <p
+                      className="text-3xl font-mono font-bold leading-none"
+                      style={{ ...syne.style, color: valueColor }}
+                    >
+                      {m.value}
+                    </p>
+                  </div>
+                  <div className="border-t border-gray-900 pt-2">
+                    <p className="text-xs text-gray-700 font-mono uppercase tracking-widest mb-0.5">
+                      Elite
+                    </p>
+                    <p className="text-xs text-gray-500">{m.elite}</p>
+                  </div>
                 </div>
-
-                <div>
-                  <p className="text-xs text-gray-600 mb-1">{m.label}</p>
-                  <p
-                    className="text-3xl font-mono font-bold leading-none"
-                    style={{ ...syne.style, color: "rgb(239,68,68)" }}
-                  >
-                    {m.value}
-                  </p>
-                </div>
-
-                <div className="border-t border-gray-900 pt-2">
-                  <p className="text-xs text-gray-700 font-mono uppercase tracking-widest mb-0.5">
-                    Elite
-                  </p>
-                  <p className="text-xs text-gray-500">{m.elite}</p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
         {/* ── Missions ──────────────────────────────────────────────────────── */}
         <section className="flex flex-col gap-4">
           <div className="flex items-baseline gap-3">
-            <h2
-              className="text-xs font-mono tracking-[0.2em] text-gray-500 uppercase"
-            >
+            <h2 className="text-xs font-mono tracking-[0.2em] text-gray-500 uppercase">
               Your Missions
             </h2>
             <div className="flex-1 h-px bg-gray-900" />
@@ -204,20 +222,30 @@ export default async function DashboardPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {missions.map((m) => {
-              const isUnlocked = m.status === "unlocked";
+              const borderColor = m.completed
+                ? "rgb(6,182,212)"
+                : m.unlocked
+                ? "rgba(6,182,212,0.5)"
+                : "rgb(31,41,55)";
+              const borderLeft = m.completed
+                ? "3px solid rgb(6,182,212)"
+                : m.unlocked
+                ? "3px solid rgba(6,182,212,0.5)"
+                : "3px solid rgb(31,41,55)";
+              const bg = m.completed
+                ? "#060d0f"
+                : m.unlocked
+                ? "#090909"
+                : "#050505";
 
               const card = (
                 <div
                   className="flex flex-col gap-4 p-6 border h-full"
                   style={{
-                    backgroundColor: isUnlocked ? "#090909" : "#050505",
-                    borderColor: isUnlocked
-                      ? "rgb(6,182,212)"
-                      : "rgb(31,41,55)",
-                    borderLeft: isUnlocked
-                      ? "3px solid rgb(6,182,212)"
-                      : "3px solid rgb(31,41,55)",
-                    opacity: isUnlocked ? 1 : 0.5,
+                    backgroundColor: bg,
+                    borderColor,
+                    borderLeft,
+                    opacity: m.unlocked || m.completed ? 1 : 0.5,
                   }}
                 >
                   {/* Mission header */}
@@ -227,7 +255,7 @@ export default async function DashboardPage() {
                       <span
                         className="text-xs font-mono px-1.5 py-0.5 border"
                         style={
-                          isUnlocked
+                          m.unlocked || m.completed
                             ? {
                                 color: "rgb(6,182,212)",
                                 borderColor: "rgba(6,182,212,0.25)",
@@ -241,8 +269,16 @@ export default async function DashboardPage() {
                       >
                         {m.category}
                       </span>
-                      {!isUnlocked && (
+                      {!m.unlocked && !m.completed && (
                         <span className="text-gray-700 text-sm">⊘</span>
+                      )}
+                      {m.completed && (
+                        <span
+                          className="text-xs font-mono"
+                          style={{ color: "rgb(6,182,212)" }}
+                        >
+                          ✓
+                        </span>
                       )}
                     </div>
                   </div>
@@ -262,7 +298,14 @@ export default async function DashboardPage() {
 
                   {/* Status */}
                   <div className="border-t border-gray-900 pt-3">
-                    {isUnlocked ? (
+                    {m.completed ? (
+                      <span
+                        className="text-xs font-mono tracking-widest"
+                        style={{ color: "rgb(6,182,212)" }}
+                      >
+                        ✓ COMPLETED
+                      </span>
+                    ) : m.unlocked ? (
                       <span
                         className="text-xs font-mono tracking-widest"
                         style={{ color: "rgb(6,182,212)" }}
@@ -278,10 +321,10 @@ export default async function DashboardPage() {
                 </div>
               );
 
-              return isUnlocked ? (
+              return m.unlocked || m.completed ? (
                 <a
                   key={m.id}
-                  href={m.href!}
+                  href={m.href ?? "#"}
                   className="block hover:opacity-90 transition-opacity"
                 >
                   {card}

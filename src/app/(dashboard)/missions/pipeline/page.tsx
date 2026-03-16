@@ -2,6 +2,7 @@ import { redirect } from "next/navigation"
 import { auth } from "@/auth"
 import { Syne } from "next/font/google"
 import { Phase3 } from "./Phase3"
+import { completeMission } from "@/app/actions/progress"
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
@@ -16,7 +17,7 @@ function MissionHeader({ fase }: { fase: number }) {
           M-02
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
-          Build the Pipeline
+          On-Demand Environments
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
           Phase {fase} of 4
@@ -52,34 +53,18 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
 
 const panels = [
   {
-    initials: "SM",
-    name: "Sarah",
-    role: "Engineering Manager",
-    badge: "MANAGEMENT",
-    accent: "rgb(6,182,212)",
-    badgeBg: "rgba(6,182,212,0.08)",
-    badgeBorder: "rgba(6,182,212,0.3)",
+    initials: "KA",
+    name: "Kai",
+    role: "QA Engineer",
+    badge: "QA",
+    accent: "rgb(251,146,60)",
+    badgeBg: "rgba(251,146,60,0.08)",
+    badgeBorder: "rgba(251,146,60,0.3)",
     quote: (
       <>
-        &ldquo;Good work on the VSM. Now I need you to fix it. We deploy once a month and every
-        release breaks something. Last month we had <mark>3 incidents</mark> in{" "}
-        <mark>48 hours</mark> after a deploy.&rdquo;
-      </>
-    ),
-  },
-  {
-    initials: "LI",
-    name: "Lisa",
-    role: "Developer",
-    badge: "DEV",
-    accent: "rgb(34,197,94)",
-    badgeBg: "rgba(34,197,94,0.08)",
-    badgeBorder: "rgba(34,197,94,0.3)",
-    quote: (
-      <>
-        &ldquo;I have no idea what&apos;s in production. I push my code, it goes into a folder,
-        and Marco deploys it manually <mark>2-3 weeks later</mark>. By then I&apos;ve forgotten
-        what I changed.&rdquo;
+        &ldquo;I wait an average of <mark>5 days</mark> before I can start testing. The test
+        environment is either busy or broken. By the time I get access, the sprint is almost
+        over.&rdquo;
       </>
     ),
   },
@@ -93,25 +78,40 @@ const panels = [
     badgeBorder: "rgba(239,68,68,0.3)",
     quote: (
       <>
-        &ldquo;I get a zip file from Lisa and deploy it manually. No tests, no checks. Last time
-        the zip had <mark>3 different versions</mark> of the same file. It took me{" "}
-        <mark>6 hours</mark> to figure out what went wrong.&rdquo;
+        &ldquo;Deployment to ACC has to be scheduled. Average wait: <mark>8 days</mark>. And
+        prod? Manual deploy, locked to the last Friday of the month.{" "}
+        <mark>12 days</mark> average wait time.&rdquo;
       </>
     ),
   },
   {
-    initials: "KA",
-    name: "Kai",
-    role: "QA Engineer",
-    badge: "QA",
-    accent: "rgb(251,146,60)",
-    badgeBg: "rgba(251,146,60,0.08)",
-    badgeBorder: "rgba(251,146,60,0.3)",
+    initials: "LI",
+    name: "Lisa",
+    role: "Developer",
+    badge: "DEV",
+    accent: "rgb(34,197,94)",
+    badgeBg: "rgba(34,197,94,0.08)",
+    badgeBorder: "rgba(34,197,94,0.3)",
     quote: (
       <>
-        &ldquo;We have <mark>zero automated tests</mark>. Everything is manual. I test the same
-        flows every sprint by hand. When something breaks in production, we find out from
-        customers - not from us.&rdquo;
+        &ldquo;My local setup is different from test, which is different from prod. I fix a bug
+        locally and it breaks in ACC. Nobody knows why. We call it{" "}
+        <mark>works on my machine</mark>.&rdquo;
+      </>
+    ),
+  },
+  {
+    initials: "SM",
+    name: "Sarah",
+    role: "Engineering Manager",
+    badge: "MANAGEMENT",
+    accent: "rgb(6,182,212)",
+    badgeBg: "rgba(6,182,212,0.08)",
+    badgeBorder: "rgba(6,182,212,0.3)",
+    quote: (
+      <>
+        &ldquo;We have one shared test environment. When it breaks, everyone stops. Last month
+        it was down for <mark>3 days</mark> and nobody knew how to rebuild it.&rdquo;
       </>
     ),
   },
@@ -125,9 +125,8 @@ const panels = [
     badgeBorder: "rgba(167,139,250,0.3)",
     quote: (
       <>
-        &ldquo;We have <mark>47 open bugs</mark>. The team is afraid to touch old code because
-        nobody knows what will break. We stopped shipping new features{" "}
-        <mark>3 sprints ago</mark> because of stability issues.&rdquo;
+        &ldquo;We cannot test two features at the same time. There is only one ACC environment.
+        Features queue up. That alone adds <mark>2 weeks</mark> to every release.&rdquo;
       </>
     ),
   },
@@ -142,11 +141,11 @@ const panels = [
     isPlayer: true,
     quote: (
       <>
-        &ldquo;You see the pattern. No pipeline. No tests. No single source of truth. Every
-        deploy is a gamble.&rdquo;
+        &ldquo;The pipeline does not exist yet. But even if it did - where would it deploy to?
+        There is no stable, reproducible environment. That is the real problem.&rdquo;
       </>
     ),
-    outro: "Time to build the foundation.",
+    outro: "Fix the foundation first.",
   },
 ]
 
@@ -163,7 +162,7 @@ function Phase1() {
             Week two. Nexus Corp.
           </h2>
           <p className="text-gray-400 text-base leading-relaxed">
-            The VSM exposed the bottlenecks. Now you need to fix the root cause.
+            The VSM revealed the bottlenecks. Now you see the root cause.
           </p>
         </div>
 
@@ -230,7 +229,7 @@ function Phase1() {
         <CTA
           href="?fase=2"
           label="Understand the theory →"
-          sub="Phase 2 of 4 - What is a deployment pipeline?"
+          sub="Phase 2 of 4 - Why environments break everything"
         />
       </div>
 
@@ -248,36 +247,35 @@ function Phase1() {
 
 // ─── Phase 2 - The theory ─────────────────────────────────────────────────────
 
-const foundations = [
+const principles = [
   {
-    title: "Single source of truth",
-    body: "All code, config, and infrastructure lives in one version-controlled repository. If it's not in the repo, it doesn't exist.",
+    title: "Environment as code",
+    body: "Your environment is not a manual setup guide. It is a file in your repository. Anyone can spin up an identical environment with one command.",
     accent: "rgb(34,197,94)",
     bg: "#060f06",
     border: "rgba(34,197,94,0.25)",
   },
   {
-    title: "Automated testing",
-    body: "Every commit triggers automated tests. Bugs are caught in minutes, not weeks. The pipeline fails fast - before it reaches production.",
+    title: "On-demand creation",
+    body: "Environments should be created in minutes, not scheduled days in advance. Every developer gets their own. Every feature gets its own.",
     accent: "rgb(6,182,212)",
     bg: "#020d0f",
     border: "rgba(6,182,212,0.25)",
   },
   {
-    title: "Continuous Integration",
-    body: "Developers integrate their work frequently - at least once a day. Small changes, fast feedback, no integration hell.",
-    accent: "rgb(167,139,250)",
-    bg: "#0a0714",
-    border: "rgba(167,139,250,0.25)",
+    title: "Easier to rebuild than repair",
+    body: "When an environment breaks, you do not fix it. You delete it and create a new one. Immutable infrastructure eliminates configuration drift.",
+    accent: "rgb(239,68,68)",
+    bg: "#0f0606",
+    border: "rgba(239,68,68,0.25)",
   },
 ]
 
-const cicdQuestions = [
-  "Where does the code live? (single repo)",
-  "How do we know it works? (automated tests)",
-  "How does it get to production? (pipeline)",
-  "How fast can we get feedback? (build time)",
-  "What happens when it breaks? (fast rollback)",
+const envQuestions = [
+  "Can any developer create a local environment in under 5 minutes?",
+  "Is dev identical to test and prod?",
+  "Can you recreate prod from scratch in under an hour?",
+  "Is your environment defined in version control?",
 ]
 
 function Phase2() {
@@ -291,12 +289,12 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            What is a Deployment Pipeline?
+            Why environments break everything
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            A deployment pipeline is the automated process that takes every code change from version
-            control through build, test, and deployment. It is the foundation of fast flow. Without
-            it, every deploy is a manual, error-prone gamble.
+            When every developer has a different local setup, and test differs from production,
+            bugs hide between environments. The solution is environment parity - dev, test, and
+            prod behave identically because they are defined in code.
           </p>
         </section>
 
@@ -306,11 +304,11 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Three foundations of fast flow
+            Three principles
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {foundations.map((card) => (
+            {principles.map((card) => (
               <div
                 key={card.title}
                 className="flex flex-col gap-3 p-6 border"
@@ -338,11 +336,11 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The Five Questions of CI/CD
+            The four environment questions
           </h2>
 
           <ol className="flex flex-col border border-gray-800">
-            {cicdQuestions.map((q, i) => (
+            {envQuestions.map((q, i) => (
               <li
                 key={i}
                 className="flex items-start gap-5 px-6 py-4 border-b border-gray-800 last:border-b-0"
@@ -362,7 +360,7 @@ function Phase2() {
 
         <CTA
           href="?fase=3"
-          label="Fix the Nexus Corp pipeline →"
+          label="Fix the Nexus Corp environments →"
           sub="Phase 3 of 4 - Do it yourself"
         />
       </div>
@@ -373,15 +371,15 @@ function Phase2() {
 // ─── Phase 4 - Result ─────────────────────────────────────────────────────────
 
 const beforeAfter = [
-  { before: "Manual deploy from zip file",   after: "Automated pipeline on every push" },
-  { before: "Zero automated tests",          after: "Tests run on every commit" },
-  { before: "3 incidents per release",       after: "Bugs caught before production" },
-  { before: "6 hours to debug a deploy",     after: "Pipeline fails in minutes" },
+  { before: "Shared, fragile test environment",        after: "On-demand environments per developer" },
+  { before: "8-day wait for ACC deployment",           after: "Spin up a test environment in under 1 minute" },
+  { before: "Works on my machine",                     after: "Identical dev, test, and prod environments" },
+  { before: "Rebuild takes days of manual work",       after: "Delete and recreate in one command" },
 ]
 
 const doraImpact = [
-  { metric: "Deployment Frequency", code: "DF", before: "1x per month", after: "2x per month" },
-  { metric: "Lead Time for Changes", code: "LT", before: "43 days",     after: "21 days" },
+  { metric: "Change Failure Rate", code: "CFR", before: "42%",     after: "28%" },
+  { metric: "Lead Time for Changes", code: "LT", before: "43 days", after: "36 days" },
 ]
 
 function Phase4() {
@@ -401,7 +399,7 @@ function Phase4() {
             className="text-5xl text-white tracking-tight leading-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Pipeline Established.
+            Environments Established.
           </h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">
             This is what you built for Nexus Corp.
@@ -513,8 +511,8 @@ function Phase4() {
             }}
           >
             <p className="text-gray-400 text-sm leading-relaxed">
-              The pipeline is green. But every developer still needs to manually set up their local
-              environment. And there is no staging environment. Next mission: on-demand environments.
+              Environments are stable and reproducible. Now every commit needs to automatically
+              build, test, and deploy. Next mission: Build the Pipeline.
             </p>
           </div>
         </section>
@@ -539,7 +537,7 @@ function Phase4() {
               title="Not yet available"
             >
               <span>⊘</span>
-              Next mission: On-Demand Environments →
+              Next mission: Build the Pipeline →
             </span>
           </div>
         </section>
@@ -561,6 +559,10 @@ export default async function PipelinePage({
 
   const { fase: faseParam } = await searchParams
   const fase = ["1", "2", "3", "4"].includes(faseParam ?? "") ? Number(faseParam) : 1
+
+  if (fase === 4) {
+    await completeMission("M-02")
+  }
 
   return (
     <main className="min-h-screen text-gray-100 flex flex-col" style={{ backgroundColor: "#000" }}>
