@@ -27,6 +27,10 @@ const missionImpact: Record<string, Partial<DoraState>> = {
     cfr: { value: "28%",     perf: "MEDIUM PERFORMER" },
     lt:  { value: "36 days", perf: "MEDIUM PERFORMER" },
   },
+  "M-03": {
+    cfr: { value: "18%",     perf: "MEDIUM PERFORMER" },
+    lt:  { value: "28 days", perf: "MEDIUM PERFORMER" },
+  },
 };
 
 function computeDora(completedIds: Set<string>): DoraState {
@@ -65,7 +69,7 @@ const missionDefs = [
     title: "Build the Pipeline",
     category: "TECHNICAL",
     description: "Nexus Corp deploys manually from a zip file. Build their first CI pipeline and cut lead time in half.",
-    href: null,
+    href: "/missions/m03",
     alwaysUnlocked: false,
     unlockedBy: "M-02",
   },
@@ -93,7 +97,7 @@ const firstWayLog = [
   {
     id: "M-03",
     title: "Build the Pipeline",
-    learned: "Automate build, test, and deploy on every commit. No more manual deployments.",
+    learned: "You fixed 3 failing tests and wired GitHub Actions to run them on every commit. Nexus Corp now gets a pass or fail signal within minutes of every push.",
     nextUp: true,
   },
   {
