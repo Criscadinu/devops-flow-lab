@@ -31,11 +31,15 @@ const missionImpact: Record<string, Partial<DoraState>> = {
     cfr: { value: "18%",     perf: "MEDIUM PERFORMER" },
     lt:  { value: "28 days", perf: "MEDIUM PERFORMER" },
   },
+  "M-04": {
+    df: { value: "1× per week", perf: "MEDIUM PERFORMER" },
+    lt: { value: "14 days",     perf: "MEDIUM PERFORMER" },
+  },
 };
 
 function computeDora(completedIds: Set<string>): DoraState {
   let state = { ...doraBaseline };
-  for (const id of ["M-01", "M-02", "M-03"]) {
+  for (const id of ["M-01", "M-02", "M-03", "M-04"]) {
     if (completedIds.has(id) && missionImpact[id]) {
       state = { ...state, ...missionImpact[id] };
     }
@@ -73,6 +77,15 @@ const missionDefs = [
     alwaysUnlocked: false,
     unlockedBy: "M-02",
   },
+  {
+    id: "M-04",
+    title: "Continuous Deployment",
+    category: "TECHNICAL",
+    description: "The pipeline is green but nothing ships automatically. Wire automatic deployment to every green build.",
+    href: "/missions/m04",
+    alwaysUnlocked: false,
+    unlockedBy: "M-03",
+  },
 ];
 
 const roleLabels: Record<string, string> = {
@@ -98,12 +111,17 @@ const firstWayLog = [
     id: "M-03",
     title: "Build the Pipeline",
     learned: "You fixed 3 failing tests and wired GitHub Actions to run them on every commit. Nexus Corp now gets a pass or fail signal within minutes of every push.",
+  },
+  {
+    id: "M-04",
+    title: "Continuous Deployment",
+    learned: "You wired automatic deployment to every green build. Every commit that passes tests now ships to production without human intervention.",
     nextUp: true,
   },
   {
-    id: "M-04–M-05",
-    title: "Trunk-Based Dev + Infrastructure as Code",
-    learned: "Trunk-based development and Infrastructure as Code. Coming after M-03.",
+    id: "M-05",
+    title: "Monitoring and Observability",
+    learned: "Dashboards, alerts, and visibility into what is happening in production after every deploy. Coming after M-04.",
     locked: true,
   },
 ];
