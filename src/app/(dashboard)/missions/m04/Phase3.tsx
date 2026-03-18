@@ -466,8 +466,26 @@ GET /api/orders - should return  3 orders`}</pre>
             >{`// In src/index.js, add to the GET / route:
 deployedAt: new Date().toISOString()`}</pre>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Push to main. Go to the <strong className="text-white">Actions</strong> tab on
-              GitHub and watch the pipeline run. When it turns green, open your live URL - the{" "}
+              Then commit and push:
+            </p>
+            <pre
+              className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
+              style={{
+                backgroundColor: "#0d0d0d",
+                borderLeft: "3px solid rgb(31,41,55)",
+                color: "rgb(156,163,175)",
+              }}
+            >{`git add src/index.js
+git commit -m 'feat: add deployedAt field'
+git push`}</pre>
+            <MentorNote>
+              <p className="text-sm text-gray-300 leading-relaxed">
+                This triggers both GitHub Actions and your Render auto-deploy automatically.
+              </p>
+            </MentorNote>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Go to the <strong className="text-white">Actions</strong> tab on GitHub and watch the
+              pipeline run. When it turns green, open your live URL - the{" "}
               <code className="text-cyan-400 font-mono">deployedAt</code> field should be there.
             </p>
           </div>

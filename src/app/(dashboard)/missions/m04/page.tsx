@@ -579,7 +579,13 @@ export default async function M04Page({
   const { fase: faseParam } = await searchParams
   const fase = ["1", "2", "3", "4"].includes(faseParam ?? "") ? Number(faseParam) : 1
 
-  if (fase === 4) await completeMission("M-04")
+  if (fase === 4) {
+    try {
+      await completeMission("M-04")
+    } catch {
+      // Neon HTTP adapter does not support transactions; progress save is best-effort
+    }
+  }
 
   return (
     <main className="min-h-screen text-gray-100 flex flex-col" style={{ backgroundColor: "#000" }}>
