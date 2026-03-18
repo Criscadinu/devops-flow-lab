@@ -13,9 +13,11 @@ export async function completeMission(moduleId: string) {
   })
   if (!user) return
 
-  await prisma.userProgress.upsert({
-    where: { userId_moduleId: { userId: user.id, moduleId } },
-    create: { userId: user.id, moduleId },
-    update: {},
-  })
+  try {
+    await prisma.userProgress.create({
+      data: { userId: user.id, moduleId },
+    })
+  } catch {
+    // already exists, ignore
+  }
 }
