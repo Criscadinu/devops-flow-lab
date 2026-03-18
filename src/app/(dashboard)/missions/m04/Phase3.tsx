@@ -352,7 +352,8 @@ GET /api/orders - should return  3 orders`}</pre>
               <PlatformNote name="Render">
                 Go to your service dashboard. Click <strong>Settings</strong>. Under{" "}
                 <strong>Build &amp; Deploy</strong>, find <strong>Auto-Deploy</strong> and set it
-                to <strong>Yes</strong>. Render will now deploy every push to the connected branch.
+                to <strong>On Commit</strong>. This means Render deploys automatically on every
+                push to the connected branch.
               </PlatformNote>
               <PlatformNote name="Railway">
                 Open your project. Click <strong>Settings</strong>. Under{" "}
