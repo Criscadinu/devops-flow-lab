@@ -30,6 +30,12 @@ export default async function Navbar() {
           >
             Missions
           </a>
+          <a
+            href="/library"
+            className="text-gray-400 hover:text-white text-sm transition-colors"
+          >
+            Library
+          </a>
 
           {user ? (
             <div className="flex items-center gap-4">
