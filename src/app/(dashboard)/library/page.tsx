@@ -152,14 +152,11 @@ function LibraryCard({
 
   return (
     <div
-      className="group flex flex-col gap-4 p-6 transition-all duration-150"
+      className="group flex flex-col gap-4 p-6 transition-colors duration-150 border border-[#e5e5e5] hover:border-[#aaa]"
       style={{
         backgroundColor: cardBg,
-        border: "1px solid #e5e5e5",
         borderLeft: `3px solid ${accent}`,
       }}
-      onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = "#aaa"; (e.currentTarget as HTMLDivElement).style.borderLeftColor = accent }}
-      onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = "#e5e5e5"; (e.currentTarget as HTMLDivElement).style.borderLeftColor = accent }}
     >
       <span
         className="self-start text-xs font-mono px-2 py-0.5"
