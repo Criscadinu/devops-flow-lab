@@ -19,9 +19,10 @@ function getInitials(name?: string | null, email?: string | null): string {
 }
 
 const navLinks = [
-  { href: "/#hoe-het-werkt", label: "How it works", exact: false },
-  { href: "/#missies",        label: "Missions",     exact: false },
-  { href: "/library",         label: "Library",      exact: false },
+  { href: "/#hoe-het-werkt", label: "How it works", authOnly: false },
+  { href: "/#missies",        label: "Missions",     authOnly: false },
+  { href: "/library",         label: "Library",      authOnly: false },
+  { href: "/dashboard",       label: "Dashboard",    authOnly: true  },
 ]
 
 export default function Navbar({ user }: NavbarProps) {
@@ -62,7 +63,7 @@ export default function Navbar({ user }: NavbarProps) {
 
         {/* Nav links + user area */}
         <div className="flex items-center gap-7">
-          {navLinks.map((link) => {
+          {navLinks.filter((link) => !link.authOnly || !!user).map((link) => {
             const active = isActive(link.href)
             return (
               <a
