@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation"
 import { useState, useEffect, useRef } from "react"
+import { Info, Map, BookOpen, LayoutDashboard, LogOut, User } from "lucide-react"
 
 type NavbarProps = {
   user?: { name?: string | null; email?: string | null } | null
@@ -19,10 +20,10 @@ function getInitials(name?: string | null, email?: string | null): string {
 }
 
 const navLinks = [
-  { href: "/#hoe-het-werkt", label: "How it works", authOnly: false },
-  { href: "/#missies",        label: "Missions",     authOnly: false },
-  { href: "/library",         label: "Library",      authOnly: false },
-  { href: "/dashboard",       label: "Dashboard",    authOnly: true  },
+  { href: "/#hoe-het-werkt", label: "How it works", icon: Info,            authOnly: false },
+  { href: "/#missies",        label: "Missions",     icon: Map,             authOnly: false },
+  { href: "/library",         label: "Library",      icon: BookOpen,        authOnly: false },
+  { href: "/dashboard",       label: "Dashboard",    icon: LayoutDashboard, authOnly: true  },
 ]
 
 export default function Navbar({ user }: NavbarProps) {
@@ -65,13 +66,15 @@ export default function Navbar({ user }: NavbarProps) {
         <div className="flex items-center gap-7">
           {navLinks.filter((link) => !link.authOnly || !!user).map((link) => {
             const active = isActive(link.href)
+            const Icon = link.icon
             return (
               <a
                 key={link.href}
                 href={link.href}
-                className={`text-sm transition-colors ${active ? "text-cyan-400" : "text-gray-400 hover:text-white"}`}
+                className={`flex items-center gap-1.5 text-sm transition-colors ${active ? "text-cyan-400" : "text-gray-400 hover:text-white"}`}
               >
-                {link.label}
+                <Icon size={16} strokeWidth={1.75} className="shrink-0" />
+                <span className="hidden sm:inline">{link.label}</span>
               </a>
             )
           })}
@@ -103,21 +106,24 @@ export default function Navbar({ user }: NavbarProps) {
                   }}
                 >
                   {/* User info */}
-                  <div className="px-4 py-2.5 border-b border-gray-800">
+                  <div className="px-4 py-2.5 border-b border-gray-800 flex items-center gap-2">
+                    <User size={13} className="text-gray-600 shrink-0" />
                     <p className="text-xs font-mono text-gray-400 truncate">{user.name ?? user.email}</p>
                   </div>
                   <a
                     href="/dashboard"
-                    className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-900 transition-colors"
+                    className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-900 transition-colors"
                     onClick={() => setDropdownOpen(false)}
                   >
+                    <LayoutDashboard size={14} className="shrink-0" />
                     Dashboard
                   </a>
                   <a
                     href="/api/auth/signout"
-                    className="block px-4 py-2 text-sm text-gray-500 hover:text-gray-300 hover:bg-gray-900 transition-colors"
+                    className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-500 hover:text-gray-300 hover:bg-gray-900 transition-colors"
                     onClick={() => setDropdownOpen(false)}
                   >
+                    <LogOut size={14} className="shrink-0" />
                     Sign out
                   </a>
                 </div>
