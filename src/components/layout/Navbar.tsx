@@ -39,6 +39,12 @@ export default async function Navbar() {
 
           {user ? (
             <div className="flex items-center gap-4">
+              <a
+                href="/dashboard"
+                className="text-sm font-bold text-cyan-400 hover:text-cyan-300 transition-colors"
+              >
+                Dashboard
+              </a>
               <span className="text-sm text-gray-300">
                 {user.name ?? user.email}
               </span>

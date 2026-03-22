@@ -1,4 +1,5 @@
 import { Syne } from "next/font/google";
+import { auth } from "@/auth";
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 
@@ -7,7 +8,7 @@ const H = syne.style;
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
-function Hero() {
+function Hero({ authenticated }: { authenticated: boolean }) {
   return (
     <>
       <style>{`
@@ -69,10 +70,10 @@ function Hero() {
 
           <div className="flex flex-col sm:flex-row gap-4">
             <a
-              href="/api/auth/signin"
+              href={authenticated ? "/dashboard" : "/api/auth/signin"}
               className="bg-cyan-500 hover:bg-cyan-400 text-black font-bold px-8 py-4 transition-colors text-sm tracking-wide"
             >
-              Start for free →
+              {authenticated ? "Go to Dashboard →" : "Start for free →"}
             </a>
             <a
               href="#hoe-het-werkt"
@@ -471,7 +472,7 @@ function MissionsTeaser() {
 
 // ─── Final CTA ────────────────────────────────────────────────────────────────
 
-function FinalCTA() {
+function FinalCTA({ authenticated }: { authenticated: boolean }) {
   return (
     <section className="py-32 px-6 border-t border-gray-900" style={{ backgroundColor: "#000" }}>
       <div className="max-w-2xl mx-auto text-center flex flex-col items-center gap-8">
@@ -485,14 +486,15 @@ function FinalCTA() {
           Ready to get started?
         </h2>
         <p className="text-gray-400 text-lg leading-relaxed max-w-md">
-          Start for free with your Google account. No credit card, no installation.
-          Just sign in and start your first mission.
+          {authenticated
+            ? "You are signed in. Head to your dashboard to continue your missions."
+            : "Start for free with your Google account. No credit card, no installation. Just sign in and start your first mission."}
         </p>
         <a
-          href="/api/auth/signin"
+          href={authenticated ? "/dashboard" : "/api/auth/signin"}
           className="bg-cyan-500 hover:bg-cyan-400 text-black font-bold px-10 py-4 transition-colors text-base tracking-wide"
         >
-          Start for free with Google →
+          {authenticated ? "Go to Dashboard →" : "Start for free with Google →"}
         </a>
         <p className="text-xs text-gray-700">
           By signing up you agree to our terms of use.
@@ -504,16 +506,19 @@ function FinalCTA() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function HomePage() {
+export default async function HomePage() {
+  const session = await auth();
+  const authenticated = !!session?.user;
+
   return (
     <div className="text-gray-100" style={{ backgroundColor: "#000" }}>
-      <Hero />
+      <Hero authenticated={authenticated} />
       <AudienceSection />
       <HowItWorks />
       <DoraSection />
       <BooksSection />
       <MissionsTeaser />
-      <FinalCTA />
+      <FinalCTA authenticated={authenticated} />
     </div>
   );
 }
