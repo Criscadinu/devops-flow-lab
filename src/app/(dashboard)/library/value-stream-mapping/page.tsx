@@ -2,107 +2,124 @@ import { Syne } from "next/font/google"
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
-// ─── Shared components ────────────────────────────────────────────────────────
+const serif: React.CSSProperties = { fontFamily: "Georgia, 'Times New Roman', serif" }
 
-function SectionDivider({ number, label }: { number: string; label: string }) {
+// ─── Shared primitives ────────────────────────────────────────────────────────
+
+function SectionLabel({ num, title }: { num: string; title: string }) {
   return (
-    <div className="flex items-center gap-4">
-      <span className="text-xs font-mono text-gray-700 tracking-widest">{number}</span>
-      <h2
-        className="text-2xl text-white tracking-tight"
-        style={{ ...syne.style, fontWeight: 800 }}
-      >
-        {label}
-      </h2>
-      <div className="flex-1 h-px bg-gray-900" />
+    <div className="flex items-baseline gap-3 mb-6">
+      <span className="text-xs font-mono font-bold tracking-[0.2em] text-gray-400">{num}</span>
+      <h2 className="text-xl text-black tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>{title}</h2>
     </div>
   )
 }
 
-function Callout({
-  accent,
-  bg,
-  border,
-  children,
-}: {
-  accent: string
-  bg: string
-  border: string
-  children: React.ReactNode
-}) {
+function Callout({ children, accent = "#0891b2" }: { children: React.ReactNode; accent?: string }) {
   return (
-    <div
-      className="p-5 border"
-      style={{ backgroundColor: bg, borderColor: border, borderLeft: `3px solid ${accent}` }}
-    >
-      {children}
+    <div className="px-6 py-4 my-6" style={{ backgroundColor: `${accent}0d`, borderLeft: `3px solid ${accent}` }}>
+      <p className="text-sm leading-relaxed" style={{ ...serif, color: "#333" }}>{children}</p>
     </div>
   )
 }
 
-// ─── VSM Flow Diagram ─────────────────────────────────────────────────────────
-
-const vsmSteps = [
-  { label: "Idea",        pt: "0.5d", wt: "5d"  },
-  { label: "Spec",        pt: "1d",   wt: "3d"  },
-  { label: "Development", pt: "3d",   wt: "3d"  },
-  { label: "Review",      pt: "0.5d", wt: "2d"  },
-  { label: "QA",          pt: "2d",   wt: "5d"  },
-  { label: "Deploy",      pt: "1d",   wt: "8d"  },
-  { label: "Production",  pt: null,   wt: null   },
-]
-
-function VsmDiagram() {
+function RefCard({ title, body }: { title: string; body: string }) {
   return (
-    <div className="overflow-x-auto">
-      <div className="flex items-start gap-0 min-w-max py-2">
-        {vsmSteps.map((step, i) => (
-          <div key={step.label} className="flex items-start">
-            {/* Node */}
-            <div className="flex flex-col items-center gap-3">
-              <div
-                className="px-4 py-3 text-center border"
-                style={{
-                  backgroundColor: step.pt === null ? "rgba(6,182,212,0.08)" : "#0d0d0d",
-                  borderColor: step.pt === null ? "rgba(6,182,212,0.4)" : "rgb(31,41,55)",
-                  minWidth: "100px",
-                }}
-              >
-                <span
-                  className="text-xs font-mono font-bold"
-                  style={{ color: step.pt === null ? "rgb(6,182,212)" : "rgb(209,213,219)" }}
-                >
-                  {step.label}
-                </span>
-              </div>
-              {step.pt !== null && (
-                <div className="flex flex-col items-center gap-1">
-                  <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>
-                    PT {step.pt}
-                  </span>
-                  <span className="text-xs font-mono" style={{ color: "rgb(239,68,68)" }}>
-                    WT {step.wt}
-                  </span>
-                </div>
-              )}
-            </div>
-            {/* Arrow */}
-            {i < vsmSteps.length - 1 && (
-              <div className="flex items-center self-start mt-3.5">
-                <div className="w-6 h-px" style={{ backgroundColor: "rgb(55,65,81)" }} />
-                <span className="text-gray-600 text-xs">›</span>
-              </div>
-            )}
+    <div className="p-5 border border-[#e5e5e5]" style={{ backgroundColor: "#fafafa" }}>
+      <p className="text-xs font-mono font-bold text-[#0891b2] mb-1">{title}</p>
+      <p className="text-xs leading-relaxed" style={{ ...serif, color: "#555" }}>{body}</p>
+    </div>
+  )
+}
+
+// ─── VSM symbols legend ───────────────────────────────────────────────────────
+
+function VsmSymbols() {
+  return (
+    <div className="my-6 border border-[#e5e5e5] p-6" style={{ backgroundColor: "#f7f7f5" }}>
+      <p className="text-xs font-mono font-bold uppercase tracking-[0.15em] text-gray-400 mb-5">VSM Symbol Legend</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        {/* Process box */}
+        <div className="flex gap-3 items-start">
+          <div className="shrink-0 w-12 h-9 border-2 border-gray-500 flex items-center justify-center" style={{ backgroundColor: "#ffffff" }}>
+            <span className="text-[9px] font-mono text-gray-500">STEP</span>
           </div>
-        ))}
-      </div>
-      <div className="flex gap-4 mt-2">
-        <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>
-          PT = Process Time (active work)
-        </span>
-        <span className="text-xs font-mono" style={{ color: "rgb(239,68,68)" }}>
-          WT = Wait Time (idle)
-        </span>
+          <div>
+            <p className="text-xs font-mono font-bold text-gray-700">Process Box</p>
+            <p className="text-xs leading-snug mt-0.5" style={{ ...serif, color: "#666" }}>A step where work is actively done</p>
+          </div>
+        </div>
+
+        {/* Inventory triangle */}
+        <div className="flex gap-3 items-start">
+          <div className="shrink-0 w-12 h-9 flex items-center justify-center">
+            <div style={{ width: 0, height: 0, borderLeft: "18px solid transparent", borderRight: "18px solid transparent", borderBottom: "30px solid #f59e0b" }} />
+          </div>
+          <div>
+            <p className="text-xs font-mono font-bold text-gray-700">Inventory Triangle</p>
+            <p className="text-xs leading-snug mt-0.5" style={{ ...serif, color: "#666" }}>Work waiting between steps</p>
+          </div>
+        </div>
+
+        {/* Push arrow */}
+        <div className="flex gap-3 items-start">
+          <div className="shrink-0 w-12 h-9 flex items-center justify-center">
+            <div className="flex items-center">
+              <div className="w-7 h-0.5 bg-gray-600" />
+              <div style={{ width: 0, height: 0, borderTop: "5px solid transparent", borderBottom: "5px solid transparent", borderLeft: "8px solid #4b5563" }} />
+            </div>
+          </div>
+          <div>
+            <p className="text-xs font-mono font-bold text-gray-700">Push Arrow</p>
+            <p className="text-xs leading-snug mt-0.5" style={{ ...serif, color: "#666" }}>Work pushed to the next step</p>
+          </div>
+        </div>
+
+        {/* Timeline */}
+        <div className="flex gap-3 items-start">
+          <div className="shrink-0 w-12 h-9 flex items-center justify-center">
+            <svg width="44" height="20" viewBox="0 0 44 20">
+              <polyline points="0,5 8,5 8,15 16,15 16,5 24,5 24,15 32,15 32,5 44,5" fill="none" stroke="#0891b2" strokeWidth="1.5" />
+            </svg>
+          </div>
+          <div>
+            <p className="text-xs font-mono font-bold text-gray-700">Timeline</p>
+            <p className="text-xs leading-snug mt-0.5" style={{ ...serif, color: "#666" }}>Shows process time vs wait time</p>
+          </div>
+        </div>
+
+        {/* Information flow */}
+        <div className="flex gap-3 items-start">
+          <div className="shrink-0 w-12 h-9 flex items-center justify-center">
+            <div className="flex items-center">
+              <div className="w-7 h-0.5" style={{ backgroundImage: "repeating-linear-gradient(90deg, #7c3aed 0, #7c3aed 4px, transparent 4px, transparent 8px)" }} />
+              <div style={{ width: 0, height: 0, borderTop: "5px solid transparent", borderBottom: "5px solid transparent", borderLeft: "8px solid #7c3aed" }} />
+            </div>
+          </div>
+          <div>
+            <p className="text-xs font-mono font-bold text-gray-700">Information Flow</p>
+            <p className="text-xs leading-snug mt-0.5" style={{ ...serif, color: "#666" }}>How information moves between steps</p>
+          </div>
+        </div>
+
+        {/* Kaizen burst */}
+        <div className="flex gap-3 items-start">
+          <div className="shrink-0 w-12 h-9 flex items-center justify-center">
+            <div
+              className="w-8 h-8 flex items-center justify-center"
+              style={{
+                clipPath: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
+                backgroundColor: "#dc2626",
+              }}
+            />
+          </div>
+          <div>
+            <p className="text-xs font-mono font-bold text-gray-700">Kaizen Burst</p>
+            <p className="text-xs leading-snug mt-0.5" style={{ ...serif, color: "#666" }}>Improvement opportunity identified</p>
+          </div>
+        </div>
+
       </div>
     </div>
   )
@@ -111,349 +128,231 @@ function VsmDiagram() {
 // ─── Nexus Corp table ─────────────────────────────────────────────────────────
 
 const nexusRows = [
-  { step: "Idea to ticket",      pt: "2 days",   wt: "5 days",   wtNote: ""                          },
-  { step: "Development",         pt: "3 days",   wt: "3 days",   wtNote: "code review wait"           },
-  { step: "QA",                  pt: "2 days",   wt: "5 days",   wtNote: "environment wait"           },
-  { step: "ACC deployment",      pt: "1 day",    wt: "8 days",   wtNote: "scheduling wait"            },
-  { step: "Production deploy",   pt: "4 hours",  wt: "12 days",  wtNote: "monthly release"            },
+  { step: "Idea to ticket",    who: "Product Owner", process: "2 days",  wait: "5 days",  issues: "Specs too detailed, batch too large" },
+  { step: "Development",       who: "Developer",     process: "3 days",  wait: "3 days",  issues: "Waiting for code review" },
+  { step: "Code review",       who: "Senior Dev",    process: "4 hours", wait: "1 day",   issues: "No dedicated review time" },
+  { step: "QA testing",        who: "QA Engineer",   process: "2 days",  wait: "5 days",  issues: "One shared test environment" },
+  { step: "ACC deployment",    who: "Ops Engineer",  process: "1 day",   wait: "8 days",  issues: "Must be scheduled, manual process" },
+  { step: "Production deploy", who: "Ops Engineer",  process: "4 hours", wait: "12 days", issues: "Monthly release window only" },
+]
+
+function NexusTable() {
+  return (
+    <div className="overflow-x-auto my-6 border border-[#e5e5e5]">
+      <table className="w-full text-sm" style={{ borderCollapse: "collapse" }}>
+        <thead>
+          <tr style={{ backgroundColor: "#f5f5f3", borderBottom: "2px solid #e5e5e5" }}>
+            {["Step", "Who", "Process Time", "Wait Time", "Issues found"].map((h) => (
+              <th key={h} className="text-left px-4 py-3 text-xs font-mono font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {nexusRows.map((r, i) => (
+            <tr key={r.step} style={{ backgroundColor: i % 2 === 0 ? "#ffffff" : "#fafaf8", borderBottom: "1px solid #f0f0f0" }}>
+              <td className="px-4 py-3 text-xs font-mono font-semibold text-gray-700 whitespace-nowrap">{r.step}</td>
+              <td className="px-4 py-3 text-xs font-mono text-gray-500 whitespace-nowrap">{r.who}</td>
+              <td className="px-4 py-3 text-xs whitespace-nowrap" style={{ ...serif, color: "#0891b2" }}>{r.process}</td>
+              <td className="px-4 py-3 text-xs whitespace-nowrap" style={{ ...serif, color: "#dc2626" }}>{r.wait}</td>
+              <td className="px-4 py-3 text-xs" style={{ ...serif, color: "#555" }}>{r.issues}</td>
+            </tr>
+          ))}
+          <tr style={{ backgroundColor: "#f0fdfa", borderTop: "2px solid #0891b2" }}>
+            <td className="px-4 py-3 text-xs font-mono font-bold text-black">Total</td>
+            <td className="px-4 py-3" />
+            <td className="px-4 py-3 text-xs font-mono font-bold" style={{ color: "#0891b2" }}>7.5 days</td>
+            <td className="px-4 py-3 text-xs font-mono font-bold" style={{ color: "#dc2626" }}>34 days</td>
+            <td className="px-4 py-3 text-xs font-mono font-bold text-gray-700">Lead time: 41.5 days — Flow efficiency: 18%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+// ─── Data ─────────────────────────────────────────────────────────────────────
+
+const steps = [
+  { n: "1", title: "Define the product family",    body: "Choose one type of work to map. Do not try to map everything at once. Start with your most important product or feature flow." },
+  { n: "2", title: "Walk the value stream",         body: "Start from the customer and work backwards. Talk to every person who touches the work. Do not rely on what you think happens — observe what actually happens." },
+  { n: "3", title: "Draw the current state map",   body: "Document every step, queue, and information flow. Measure process time and wait time at each step. Calculate flow efficiency." },
+  { n: "4", title: "Identify waste and bottlenecks", body: "Where does work pile up? Where are the longest wait times? Where does work get reworked or rejected?" },
+  { n: "5", title: "Design the future state",      body: "What would the value stream look like if you removed the biggest waste? Draw the future state and define the improvement initiatives." },
+  { n: "6", title: "Create an implementation plan", body: "Prioritize the improvements. Assign owners. Set a timeline. The VSM is worthless without action." },
+]
+
+const warnings = [
+  { title: "Mapping the org chart, not the work",  body: "VSM maps the flow of work, not the organizational structure. Follow the work, not the departments." },
+  { title: "Only using post-its",                   body: "Post-it VSMs are great for workshops but need to be digitized. Measure actual times — do not guess." },
+  { title: "Mapping everything at once",            body: "Start narrow. One product family, one end-to-end flow. Scope creep kills VSM sessions." },
+  { title: "No future state",                       body: "A current state map with no improvement plan is just documentation. The value is in the gap between current and future state." },
 ]
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function VsmLibraryPage() {
+export default function ValueStreamMappingToolPage() {
   return (
-    <main className="min-h-screen text-gray-100" style={{ backgroundColor: "#000" }}>
-      <div className="max-w-3xl mx-auto px-6 py-16 flex flex-col gap-16">
+    <main className="min-h-screen" style={{ backgroundColor: "#fafaf8", color: "#0a0a0a", ...serif }}>
 
-        {/* Hero */}
-        <div className="flex flex-col gap-5">
-          {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-xs font-mono text-gray-600">
-            <a href="/library" className="hover:text-gray-400 transition-colors">Library</a>
-            <span>›</span>
-            <span style={{ color: "rgb(6,182,212)" }}>Value Stream Mapping</span>
-          </div>
+      {/* Breadcrumb */}
+      <div className="border-b border-[#e5e5e5] px-8 py-3" style={{ backgroundColor: "#ffffff" }}>
+        <div className="max-w-3xl mx-auto">
+          <p className="text-xs font-mono text-gray-400">
+            <a href="/library" className="hover:text-[#0891b2] transition-colors">Library</a>
+            <span className="mx-2">→</span>
+            <span className="text-gray-500">First Way: Flow</span>
+            <span className="mx-2">→</span>
+            <span className="text-gray-500">Tools &amp; Techniques</span>
+            <span className="mx-2">→</span>
+            <span className="text-gray-700">Value Stream Mapping</span>
+          </p>
+        </div>
+      </div>
 
-          <div className="flex flex-col gap-3">
-            <h1
-              className="text-4xl text-white tracking-tight leading-tight"
-              style={{ ...syne.style, fontWeight: 800 }}
-            >
-              Value Stream Mapping
-            </h1>
-            <p className="text-gray-400 text-base leading-relaxed">
-              How to make waste visible and measure the real flow of work
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {["FLOW", "M-01", "DevOps Handbook Chapter 2"].map((tag) => (
-              <span
-                key={tag}
-                className="text-xs font-mono px-2 py-0.5 tracking-widest"
-                style={{
-                  color: "rgb(6,182,212)",
-                  backgroundColor: "rgba(6,182,212,0.08)",
-                  border: "1px solid rgba(6,182,212,0.2)",
-                }}
-              >
+      {/* Hero */}
+      <div className="border-b border-[#e5e5e5] px-8 py-14" style={{ backgroundColor: "#ffffff" }}>
+        <div className="max-w-3xl mx-auto flex flex-col gap-5">
+          <div className="flex items-center gap-2 flex-wrap">
+            {["FT-01", "TOOL", "First Way: Flow"].map((tag) => (
+              <span key={tag} className="text-xs font-mono px-2 py-0.5" style={{ backgroundColor: "#f0fdfa", color: "#0891b2", border: "1px solid #ccfbf1" }}>
                 {tag}
               </span>
             ))}
           </div>
-        </div>
-
-        {/* Video */}
-        <div className="flex flex-col gap-3">
-          <p className="text-xs font-mono uppercase tracking-[0.2em]" style={{ color: "rgb(75,85,99)" }}>
-            Video Lesson
+          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
+            Value Stream Mapping
+          </h1>
+          <p className="text-base leading-relaxed" style={{ color: "#555" }}>
+            The technique for making your value stream visible, measuring flow efficiency, and identifying where to improve.
           </p>
-          <div
-            className="w-full border"
-            style={{
-              aspectRatio: "16/9",
-              backgroundColor: "#080808",
-              borderColor: "rgba(6,182,212,0.3)",
-              borderStyle: "dashed",
-            }}
-          >
-            <div className="w-full h-full flex items-center justify-center">
-              <p className="text-sm font-mono text-gray-600 text-center px-4">
-                Video coming soon -- check back later
-              </p>
-            </div>
-          </div>
-          <p className="text-xs font-mono text-gray-600">
-            In this video: what VSM is, how to run a mapping session, and how to read the results.
-          </p>
-        </div>
-
-        {/* Section 01 */}
-        <section className="flex flex-col gap-6">
-          <SectionDivider number="01" label="What is Value Stream Mapping?" />
-
-          <p className="text-gray-400 leading-relaxed">
-            Value Stream Mapping is a lean technique for visualising every step that work takes from
-            idea to production. It was developed in manufacturing but applies directly to software
-            delivery. A VSM session produces a diagram showing every handoff, queue, and delay in
-            your process -- making waste visible so you can eliminate it.
-          </p>
-
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>
-              A simple value stream
-            </p>
-            <div
-              className="p-5 border overflow-x-auto"
-              style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
-            >
-              <VsmDiagram />
-            </div>
-          </div>
-
-          <Callout accent="rgb(6,182,212)" bg="#020d0f" border="rgba(6,182,212,0.2)">
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white font-bold">Key insight:</span> In most software teams,
-              less than 10% of total lead time is actual work. The rest is waiting.
-            </p>
-          </Callout>
-        </section>
-
-        {/* Section 02 */}
-        <section className="flex flex-col gap-6">
-          <SectionDivider number="02" label="The two types of time" />
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div
-              className="flex flex-col gap-3 p-6 border"
-              style={{
-                backgroundColor: "#020d0f",
-                borderColor: "rgba(6,182,212,0.2)",
-                borderLeft: "3px solid rgb(6,182,212)",
-              }}
-            >
-              <span
-                className="text-xs font-mono font-bold uppercase tracking-widest"
-                style={{ color: "rgb(6,182,212)" }}
-              >
-                Process Time
+          <div className="flex items-center gap-2 pt-1 flex-wrap">
+            <span className="text-xs font-mono text-gray-400 mr-1">Sources:</span>
+            {["Lean Thinking", "DevOps Handbook", "Learning to See — Rother & Shook"].map((s) => (
+              <span key={s} className="text-xs font-mono px-2 py-0.5 text-gray-600" style={{ backgroundColor: "#f5f5f3", border: "1px solid #e5e5e5" }}>
+                {s}
               </span>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                The time work is actively being done. Writing code, reviewing a PR, running tests.
-                This is the time that delivers value.
-              </p>
-            </div>
-            <div
-              className="flex flex-col gap-3 p-6 border"
-              style={{
-                backgroundColor: "#0f0606",
-                borderColor: "rgba(239,68,68,0.2)",
-                borderLeft: "3px solid rgb(239,68,68)",
-              }}
-            >
-              <span
-                className="text-xs font-mono font-bold uppercase tracking-widest"
-                style={{ color: "rgb(239,68,68)" }}
-              >
-                Wait Time
-              </span>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                The time work sits idle. Waiting for review, waiting for a test environment, waiting
-                for deployment. This is waste.
-              </p>
-            </div>
-          </div>
-
-          <p className="text-gray-500 text-sm leading-relaxed">
-            VSM makes wait time visible. Once visible, it can be eliminated.
-          </p>
-        </section>
-
-        {/* Section 03 */}
-        <section className="flex flex-col gap-6">
-          <SectionDivider number="03" label="How to read the Nexus Corp VSM" />
-
-          <div className="border border-gray-800 overflow-hidden">
-            <div
-              className="grid border-b border-gray-800"
-              style={{ gridTemplateColumns: "1fr 130px 130px", backgroundColor: "#0d0d0d" }}
-            >
-              <div className="px-5 py-3">
-                <span className="text-xs font-mono uppercase tracking-widest text-gray-600">Step</span>
-              </div>
-              <div className="px-4 py-3 border-l border-gray-800">
-                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(34,197,94)" }}>
-                  Process Time
-                </span>
-              </div>
-              <div className="px-4 py-3 border-l border-gray-800">
-                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(239,68,68)" }}>
-                  Wait Time
-                </span>
-              </div>
-            </div>
-            {nexusRows.map((row, i) => (
-              <div
-                key={row.step}
-                className="grid border-b border-gray-800 last:border-b-0"
-                style={{
-                  gridTemplateColumns: "1fr 130px 130px",
-                  backgroundColor: i % 2 === 0 ? "#080808" : "#060606",
-                }}
-              >
-                <div className="px-5 py-4">
-                  <p className="text-sm text-gray-300">{row.step}</p>
-                </div>
-                <div className="px-4 py-4 border-l border-gray-800">
-                  <p className="text-sm font-mono" style={{ color: "rgb(34,197,94)" }}>{row.pt}</p>
-                </div>
-                <div className="px-4 py-4 border-l border-gray-800">
-                  <p className="text-sm font-mono" style={{ color: "rgb(239,68,68)" }}>{row.wt}</p>
-                  {row.wtNote && (
-                    <p className="text-xs font-mono text-gray-700 mt-0.5">{row.wtNote}</p>
-                  )}
-                </div>
-              </div>
-            ))}
-            {/* Totals row */}
-            <div
-              className="grid border-t-2"
-              style={{
-                gridTemplateColumns: "1fr 130px 130px",
-                backgroundColor: "#0a0a0a",
-                borderColor: "rgb(31,41,55)",
-              }}
-            >
-              <div className="px-5 py-4">
-                <p className="text-sm font-bold text-white font-mono">Total</p>
-              </div>
-              <div className="px-4 py-4 border-l border-gray-800">
-                <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>7.5 days</p>
-              </div>
-              <div className="px-4 py-4 border-l border-gray-800">
-                <p className="text-sm font-mono font-bold" style={{ color: "rgb(239,68,68)" }}>33 days</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <p className="text-sm text-gray-400 leading-relaxed">
-              <span className="text-white font-bold">Flow efficiency: 18.5%</span> -- Process time
-              7.5 days / Total lead time 40.5 days
-            </p>
-          </div>
-
-          <Callout accent="rgb(239,68,68)" bg="#0f0606" border="rgba(239,68,68,0.2)">
-            <p className="text-sm text-gray-300 leading-relaxed">
-              81.5% of the time, work is not moving. It is waiting.
-            </p>
-          </Callout>
-        </section>
-
-        {/* Section 04 */}
-        <section className="flex flex-col gap-6">
-          <SectionDivider number="04" label="The three improvement levers" />
-
-          <div className="flex flex-col gap-3">
-            {[
-              {
-                title: "Reduce batch size",
-                body: "Smaller releases mean shorter wait times at every stage. Deploy daily instead of monthly. Each release carries less change, less risk, and less coordination overhead.",
-                accent: "rgb(6,182,212)",
-                bg: "#020d0f",
-                border: "rgba(6,182,212,0.2)",
-              },
-              {
-                title: "Eliminate handoffs",
-                body: "Every handoff adds wait time. Automate or remove steps where work sits idle. A build that triggers automatically on commit eliminates the handoff to the ops team entirely.",
-                accent: "rgb(251,146,60)",
-                bg: "#0a0700",
-                border: "rgba(251,146,60,0.2)",
-              },
-              {
-                title: "Make flow visible",
-                body: "You cannot improve what you cannot see. VSM gives you the baseline to measure improvement. Run a mapping session before and after any process change to confirm the impact.",
-                accent: "rgb(34,197,94)",
-                bg: "#060f06",
-                border: "rgba(34,197,94,0.2)",
-              },
-            ].map((card) => (
-              <div
-                key={card.title}
-                className="flex flex-col gap-2 p-6 border"
-                style={{
-                  backgroundColor: card.bg,
-                  borderColor: card.border,
-                  borderLeft: `3px solid ${card.accent}`,
-                }}
-              >
-                <span
-                  className="text-xs font-mono font-bold uppercase tracking-widest"
-                  style={{ color: card.accent }}
-                >
-                  {card.title}
-                </span>
-                <p className="text-gray-400 text-sm leading-relaxed">{card.body}</p>
-              </div>
             ))}
           </div>
-        </section>
-
-        {/* Section 05 */}
-        <section className="flex flex-col gap-6">
-          <SectionDivider number="05" label="Further reading" />
-
-          <div className="flex flex-col gap-3">
-            {[
-              {
-                source: "DevOps Handbook",
-                detail: "Chapter 2 -- The First Way: The Principles of Flow. Pages 23-41.",
-              },
-              {
-                source: "The Unicorn Project",
-                detail: "The Five Ideals, First Ideal: Locality and Simplicity",
-              },
-              {
-                source: "DORA Research",
-                detail: "2023 State of DevOps Report -- Elite performers deploy 127x more frequently than low performers",
-              },
-            ].map((ref) => (
-              <div
-                key={ref.source}
-                className="flex flex-col gap-1 p-5 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
-              >
-                <span
-                  className="text-xs font-mono font-bold uppercase tracking-widest"
-                  style={{ color: "rgb(156,163,175)" }}
-                >
-                  {ref.source}
-                </span>
-                <p className="text-sm text-gray-500 leading-relaxed">{ref.detail}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Bottom navigation */}
-        <div className="flex items-center justify-between border-t border-gray-900 pt-8">
-          <a
-            href="/library"
-            className="text-sm font-mono transition-colors hover:text-gray-300"
-            style={{ color: "rgb(75,85,99)" }}
-          >
-            ← Back to library
-          </a>
-          <a
-            href="/library/on-demand-environments"
-            className="text-sm font-mono font-bold transition-opacity hover:opacity-70"
-            style={{ color: "rgb(6,182,212)" }}
-          >
-            Next: On-Demand Environments →
-          </a>
         </div>
-
       </div>
+
+      {/* Video placeholder */}
+      <div className="px-8 py-10 border-b border-[#e5e5e5]">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#0891b2] mb-3">Video Lesson</p>
+          <div className="w-full flex items-center justify-center" style={{ aspectRatio: "16/9", border: "2px dashed #67e8f9", backgroundColor: "#f0fdfa" }}>
+            <span className="text-sm font-mono text-gray-400">Video coming soon — check back later</span>
+          </div>
+          <p className="text-xs mt-3" style={{ ...serif, color: "#888" }}>
+            In this video: how to run a VSM session, what symbols to use, and how to read the results.
+          </p>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="px-8 py-12">
+        <div className="max-w-3xl mx-auto flex flex-col gap-14">
+
+          {/* Section 01 */}
+          <section>
+            <SectionLabel num="01" title="What is VSM?" />
+            <div className="flex flex-col gap-4">
+              <p className="text-sm leading-relaxed" style={{ color: "#333" }}>
+                Value Stream Mapping is a Lean technique for visualizing the complete flow of work from request to
+                delivery. It originated in Toyota's manufacturing system and was adapted for knowledge work by Karen
+                Martin and Mike Osterling in <em>Value Stream Mapping</em> (2014) and for software by the DevOps movement.
+              </p>
+              <p className="text-sm leading-relaxed" style={{ color: "#333" }}>
+                A VSM produces two maps: the <strong>current state</strong> (how work flows today) and the{" "}
+                <strong>future state</strong> (how it should flow after improvements). The gap between them is your
+                improvement roadmap.
+              </p>
+            </div>
+          </section>
+
+          {/* Section 02 */}
+          <section>
+            <SectionLabel num="02" title="The standard VSM symbols" />
+            <p className="text-sm leading-relaxed mb-4" style={{ color: "#333" }}>
+              VSM uses a shared visual language so anyone reading the map understands it immediately. These are the
+              core symbols used in software value stream maps.
+            </p>
+            <VsmSymbols />
+          </section>
+
+          {/* Section 03 */}
+          <section>
+            <SectionLabel num="03" title="How to run a VSM session" />
+            <p className="text-sm leading-relaxed mb-6" style={{ color: "#333" }}>
+              A VSM session is a structured workshop. It typically takes 4-8 hours for the current state map and
+              another session for the future state. Bring the people who actually do the work — not just managers.
+            </p>
+            <ol className="flex flex-col gap-5">
+              {steps.map((s) => (
+                <li key={s.n} className="flex gap-5">
+                  <span className="text-2xl font-mono font-bold shrink-0 leading-none" style={{ ...syne.style, color: "#e5e5e5" }}>{s.n}</span>
+                  <div>
+                    <p className="text-sm font-semibold text-black mb-1" style={{ ...syne.style }}>{s.title}</p>
+                    <p className="text-sm leading-relaxed" style={{ ...serif, color: "#555" }}>{s.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          {/* Section 04 */}
+          <section>
+            <SectionLabel num="04" title="The Nexus Corp VSM in detail" />
+            <p className="text-sm leading-relaxed mb-4" style={{ color: "#333" }}>
+              In Mission 01, you built a VSM for Nexus Corp. Here is the complete current state map with all measurements:
+            </p>
+            <NexusTable />
+            <Callout accent="#dc2626">
+              5 of 6 steps have more wait time than process time. The two biggest wastes are the monthly production
+              release window (12 days) and the ACC scheduling queue (8 days). Both are eliminated by continuous
+              deployment.
+            </Callout>
+          </section>
+
+          {/* Section 05 */}
+          <section>
+            <SectionLabel num="05" title="Common VSM mistakes" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {warnings.map((w) => (
+                <div key={w.title} className="p-6 border" style={{ backgroundColor: "#fffbeb", borderColor: "#fcd34d", borderLeft: "3px solid #b45309" }}>
+                  <p className="text-xs font-mono font-bold mb-2" style={{ color: "#b45309" }}>Warning</p>
+                  <p className="text-sm font-semibold text-black mb-1.5" style={{ ...syne.style }}>{w.title}</p>
+                  <p className="text-sm leading-relaxed" style={{ ...serif, color: "#555" }}>{w.body}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Section 06 */}
+          <section>
+            <SectionLabel num="06" title="Further reading" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <RefCard title="Learning to See — Rother & Shook" body="The original VSM workbook from Lean Enterprise Institute. Physical manufacturing focused but foundational for understanding the technique." />
+              <RefCard title="Value Stream Mapping — Karen Martin" body="The knowledge work adaptation. Directly applicable to software and service teams. The essential practical guide." />
+              <RefCard title="DevOps Handbook — Chapter 2" body="How VSM applies to software delivery and why the technology value stream is the central unit of improvement." />
+              <RefCard title="The Phoenix Project" body="Parts 1-2 show a fictional VSM in action at a struggling IT organization. The plant tour sequence is VSM in narrative form." />
+            </div>
+          </section>
+
+        </div>
+      </div>
+
+      {/* Bottom nav */}
+      <div className="border-t border-[#e5e5e5] px-8 py-8" style={{ backgroundColor: "#ffffff" }}>
+        <div className="max-w-3xl mx-auto flex items-center justify-between">
+          <a href="/library" className="text-sm font-mono font-bold text-gray-500 hover:text-black transition-colors">← Back to Library</a>
+          <div className="flex items-center gap-6">
+            <a href="/library/wip-limits" className="text-sm font-mono font-bold text-gray-400 hover:text-black transition-colors">← WIP Limits</a>
+            <a href="/library/deployment-pipeline" className="text-sm font-mono font-bold hover:underline" style={{ color: "#0891b2" }}>Deployment Pipeline →</a>
+          </div>
+        </div>
+      </div>
+
     </main>
   )
 }
