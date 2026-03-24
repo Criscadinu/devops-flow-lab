@@ -2,50 +2,9 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { Syne } from "next/font/google";
+import { computeDora } from "@/lib/dora";
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
-
-// ─── DORA baseline + per-mission impact ───────────────────────────────────────
-
-type DoraState = {
-  df:   { value: string; perf: string };
-  lt:   { value: string; perf: string };
-  cfr:  { value: string; perf: string };
-  mttr: { value: string; perf: string };
-};
-
-const doraBaseline: DoraState = {
-  df:   { value: "1× per month", perf: "LOW PERFORMER"  },
-  lt:   { value: "43 days",      perf: "LOW PERFORMER"  },
-  cfr:  { value: "42%",          perf: "LOW PERFORMER"  },
-  mttr: { value: "72 hours",     perf: "LOW PERFORMER"  },
-};
-
-const missionImpact: Record<string, Partial<DoraState>> = {
-  "M-01": { df:  { value: "2× per month", perf: "MEDIUM PERFORMER" } },
-  "M-02": {
-    cfr: { value: "28%",     perf: "MEDIUM PERFORMER" },
-    lt:  { value: "36 days", perf: "MEDIUM PERFORMER" },
-  },
-  "M-03": {
-    cfr: { value: "18%",     perf: "MEDIUM PERFORMER" },
-    lt:  { value: "28 days", perf: "MEDIUM PERFORMER" },
-  },
-  "M-04": {
-    df: { value: "1× per week", perf: "MEDIUM PERFORMER" },
-    lt: { value: "14 days",     perf: "MEDIUM PERFORMER" },
-  },
-};
-
-function computeDora(completedIds: Set<string>): DoraState {
-  let state = { ...doraBaseline };
-  for (const id of ["M-01", "M-02", "M-03", "M-04"]) {
-    if (completedIds.has(id) && missionImpact[id]) {
-      state = { ...state, ...missionImpact[id] };
-    }
-  }
-  return state;
-}
 
 // ─── Static mission definitions ───────────────────────────────────────────────
 
