@@ -5,10 +5,10 @@ const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const foundations = [
-  { id: "F-01", title: "The Three Ways",          description: "The philosophical foundation of DevOps. Flow, Feedback, and Continual Learning explained.",                              source: "DevOps Handbook" },
-  { id: "F-02", title: "DORA Metrics Explained",  description: "What the four key metrics measure, why they matter, and how elite teams perform.",                                       source: "DORA Research" },
-  { id: "F-03", title: "The Five Ideals",          description: "Gene Kim's five ideals from The Unicorn Project. The prerequisites for high performance.",                              source: "The Unicorn Project" },
-  { id: "F-04", title: "Team Topologies",          description: "How to structure teams for fast flow. Stream-aligned, platform, enabling, and complicated subsystem teams.",            source: "Team Topologies" },
+  { id: "F-01", title: "The Three Ways",          description: "The philosophical foundation of DevOps. Flow, Feedback, and Continual Learning explained.",                              source: "DevOps Handbook",     href: "/library/the-three-ways" },
+  { id: "F-02", title: "DORA Metrics Explained",  description: "What the four key metrics measure, why they matter, and how elite teams perform.",                                       source: "DORA Research",        href: "/library/dora-metrics" },
+  { id: "F-03", title: "The Five Ideals",          description: "Gene Kim's five ideals from The Unicorn Project. The prerequisites for high performance.",                              source: "The Unicorn Project",  href: "/library/five-ideals" },
+  { id: "F-04", title: "Team Topologies",          description: "How to structure teams for fast flow. Stream-aligned, platform, enabling, and complicated subsystem teams.",            source: "Team Topologies",      href: "/library/team-topologies" },
 ]
 
 const flowConcepts = [
@@ -30,19 +30,19 @@ const flowTools = [
 ]
 
 const secondWay = [
-  { id: "FB-01", title: "Telemetry and Observability", description: "See what is happening in production in real time.",                                           source: "DevOps Handbook" },
-  { id: "FB-02", title: "Monitoring and Alerting",     description: "Know before your users do. Build alerts that fire on symptoms, not causes.",                  source: "SRE + DevOps" },
-  { id: "FB-03", title: "Feature Flags",               description: "Decouple deploy from release. Ship to production without turning it on.",                    source: "Continuous Delivery" },
-  { id: "FB-04", title: "A/B Testing",                 description: "Let data decide. Run experiments in production safely.",                                     source: "Lean Startup" },
-  { id: "FB-05", title: "Incident Review",             description: "Blameless post-mortems and the improvement kata.",                                           source: "SRE + Toyota Kata" },
+  { id: "FB-01", title: "Telemetry and Observability", description: "See what is happening in production in real time. The three pillars: metrics, logs, traces.",    source: "DevOps Handbook",      href: "/library/telemetry-and-observability" },
+  { id: "FB-02", title: "Monitoring and Alerting",     description: "Know before your users do. Build alerts that fire on symptoms, not causes.",                      source: "SRE + DevOps",         href: "/library/monitoring-and-alerting" },
+  { id: "FB-03", title: "Feature Flags",               description: "Decouple deploy from release. Ship to production without turning it on.",                        source: "Continuous Delivery",  href: "/library/feature-flags" },
+  { id: "FB-04", title: "A/B Testing",                 description: "Let data decide. Form a hypothesis, run a controlled experiment, and read the result correctly.", source: "Lean Startup",         href: "/library/ab-testing" },
+  { id: "FB-05", title: "Incident Review",             description: "The feedback loop after failure. Turn production incidents into systemic improvements.",          source: "SRE + Toyota Kata",    href: "/library/incident-review" },
 ]
 
 const thirdWay = [
-  { id: "CL-01", title: "Psychological Safety",  description: "The foundation of learning teams. Why failure must be safe to admit.",    source: "Team Topologies" },
-  { id: "CL-02", title: "Chaos Engineering",     description: "Inject failure deliberately. Build systems that expect to fail.",         source: "Netflix + SRE" },
-  { id: "CL-03", title: "Game Days",             description: "Practice incidents before they happen. Fire drills for your pipeline.",   source: "SRE" },
-  { id: "CL-04", title: "The Improvement Kata",  description: "Toyota's four-step pattern for continuous improvement.",                  source: "Toyota Kata" },
-  { id: "CL-05", title: "Developer Experience",  description: "Cognitive load, platform teams, and the golden path.",                   source: "Team Topologies" },
+  { id: "CL-01", title: "Blameless Postmortems",  description: "How to turn production failures into organizational learning. Why blame stops learning.",    source: "DevOps Handbook",  href: "/library/blameless-postmortems" },
+  { id: "CL-02", title: "Chaos Engineering",       description: "Inject failure deliberately. Build systems that expect to fail. Netflix Chaos Monkey.",      source: "Netflix + SRE",    href: "/library/chaos-engineering" },
+  { id: "CL-03", title: "Psychological Safety",    description: "The foundation of learning teams. Google Project Aristotle and Westrum's culture model.",    source: "Amy Edmondson",    href: "/library/psychological-safety" },
+  { id: "CL-04", title: "Learning Culture",        description: "Senge's five disciplines, Toyota Kata, and how knowledge spreads across teams.",             source: "Toyota Kata",      href: "/library/learning-culture" },
+  { id: "CL-05", title: "DevOps Transformation",   description: "What transformation actually means, how it fails, and why it is never finished.",           source: "DORA Research",    href: "/library/devops-transformation" },
 ]
 
 // ─── Section config ────────────────────────────────────────────────────────────
@@ -253,7 +253,7 @@ export default function LibraryPage() {
       <div className="px-8 py-8 border-b" style={{ borderColor: "#e5e5e5" }}>
         <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {foundations.map((e) => (
-            <LibraryCard key={e.id} {...e} accent={f.accent} sourceBg={f.sourceBg} available={false} />
+            <LibraryCard key={e.id} {...e} accent={f.accent} sourceBg={f.sourceBg} available cardBg="#ffffff" />
           ))}
         </div>
       </div>
@@ -284,7 +284,7 @@ export default function LibraryPage() {
       <div className="px-8 py-8 border-b" style={{ borderColor: "#e5e5e5" }}>
         <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {secondWay.map((e) => (
-            <LibraryCard key={e.id} {...e} accent={feedback.accent} sourceBg={feedback.sourceBg} available={false} />
+            <LibraryCard key={e.id} {...e} accent={feedback.accent} sourceBg={feedback.sourceBg} available cardBg="#ffffff" />
           ))}
         </div>
       </div>
@@ -294,7 +294,7 @@ export default function LibraryPage() {
       <div className="px-8 py-8">
         <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {thirdWay.map((e) => (
-            <LibraryCard key={e.id} {...e} accent={learning.accent} sourceBg={learning.sourceBg} available={false} />
+            <LibraryCard key={e.id} {...e} accent={learning.accent} sourceBg={learning.sourceBg} available cardBg="#ffffff" />
           ))}
         </div>
       </div>
