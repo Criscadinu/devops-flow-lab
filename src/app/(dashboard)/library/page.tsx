@@ -26,7 +26,12 @@ const flowTools = [
   { id: "FT-03", title: "Environment Parity",        description: "Why dev, test, and prod must be identical. How containers solve the works on my machine problem.",   source: "12-Factor App",       href: "/library/environment-parity" },
   { id: "FT-04", title: "Trunk-Based Development",   description: "Committing directly to main. Why short-lived branches and frequent integration prevent merge hell.", source: "DORA Research",       href: "/library/trunk-based-development" },
   { id: "FT-05", title: "Continuous Integration",    description: "Every commit triggers an automated build and test run. The foundation of fast feedback.",             source: "Continuous Delivery", href: "/library/continuous-integration" },
-  { id: "FT-06", title: "Continuous Deployment",     description: "Every green build ships automatically. No humans in the deployment loop.",                           source: "DevOps Handbook",     href: "/library/continuous-deployment" },
+  { id: "FT-06", title: "Continuous Deployment",              description: "Every green build ships automatically. No humans in the deployment loop.",                                                                      source: "DevOps Handbook",        href: "/library/continuous-deployment" },
+  { id: "FT-07", title: "Test Automation",                    description: "Manual testing doesn't scale. How to build a suite that runs in minutes and catches regressions before production.",                    source: "DevOps Handbook",        href: "/library/test-automation" },
+  { id: "FT-08", title: "Non-Functional Requirements",        description: "Performance, security, and reliability built into the pipeline. NFR gates on every change.",                                           source: "Release It!",            href: "/library/non-functional-requirements" },
+  { id: "FT-09", title: "Database Change Management",         description: "Schema changes are the hardest part of CD. Evolutionary design, migrations, and zero-downtime patterns.",                             source: "Evolutionary DB Design", href: "/library/database-change-management" },
+  { id: "FT-10", title: "Infrastructure as Code",             description: "Servers defined in files, not manual clicks. The end of snowflake servers.",                                                           source: "Infrastructure as Code", href: "/library/infrastructure-as-code" },
+  { id: "FT-11", title: "Architecture for Low-Risk Releases", description: "Deployment risk is an architecture problem. Loosely coupled systems, strangler fig, blue-green, and canary releases.",                source: "DevOps Handbook",        href: "/library/architecture-low-risk-releases" },
 ]
 
 const secondWay = [
