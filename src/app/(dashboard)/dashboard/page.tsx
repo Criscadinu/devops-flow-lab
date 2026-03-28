@@ -45,6 +45,15 @@ const missionDefs = [
     alwaysUnlocked: false,
     unlockedBy: "M-03",
   },
+  {
+    id: "M-05",
+    title: "Test Automation",
+    category: "TECHNICAL",
+    description: "12 tests for 200 endpoints. A green pipeline with bad tests gives false confidence. Build a real test suite.",
+    href: "/missions/m05",
+    alwaysUnlocked: false,
+    unlockedBy: "M-04",
+  },
 ];
 
 const roleLabels: Record<string, string> = {
@@ -75,13 +84,12 @@ const firstWayLog = [
     id: "M-04",
     title: "Continuous Deployment",
     learned: "You wired automatic deployment to every green build. Every commit that passes tests now ships to production without human intervention.",
-    nextUp: true,
   },
   {
     id: "M-05",
-    title: "Monitoring and Observability",
-    learned: "Dashboards, alerts, and visibility into what is happening in production after every deploy. Coming after M-04.",
-    locked: true,
+    title: "Test Automation",
+    learned: "Build a real test suite: metrics endpoint tests, error handling, coverage reporting, and CI verification. False confidence eliminated.",
+    nextUp: true,
   },
 ];
 
