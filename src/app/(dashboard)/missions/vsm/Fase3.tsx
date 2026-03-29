@@ -562,6 +562,147 @@ function ContextPanel() {
   )
 }
 
+// ─── Reference panel ──────────────────────────────────────────────────────────
+
+function ReferencePanel() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div
+      className="border"
+      style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
+    >
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between px-5 py-4 transition-colors hover:bg-[#0d0d0d]"
+      >
+        <div className="flex items-center gap-3">
+          <span className="text-xs font-mono" style={{ color: "rgb(167,139,250)" }}>//</span>
+          <span className="text-sm font-mono font-bold text-white tracking-wide">
+            Quick reference — Process time vs Wait time
+          </span>
+        </div>
+        <span className="text-xs font-mono text-gray-600 shrink-0">
+          {open ? "Hide reference ↑" : "Show reference ↓"}
+        </span>
+      </button>
+
+      {open && (
+        <div className="border-t flex flex-col gap-0" style={{ borderColor: "rgb(31,41,55)" }}>
+
+          {/* PT */}
+          <div
+            className="flex gap-4 px-5 py-5"
+            style={{ borderBottom: "1px solid rgb(21,31,43)", borderLeft: "3px solid rgb(34,197,94)", backgroundColor: "#060606" }}
+          >
+            <div className="shrink-0 mt-0.5">
+              <span
+                className="text-xs font-mono font-bold px-1.5 py-0.5"
+                style={{ backgroundColor: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.3)", color: "rgb(34,197,94)" }}
+              >
+                PT
+              </span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(34,197,94)" }}>
+                Process Time
+              </span>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                The time work is <span className="text-white">actively being done</span>. Someone is working on it right now.
+              </p>
+              <p className="text-xs font-mono text-gray-600 mt-1">
+                Examples: writing code, reviewing a PR, running a test, deploying.
+              </p>
+            </div>
+          </div>
+
+          {/* WT */}
+          <div
+            className="flex gap-4 px-5 py-5"
+            style={{ borderBottom: "1px solid rgb(21,31,43)", borderLeft: "3px solid rgb(239,68,68)", backgroundColor: "#080808" }}
+          >
+            <div className="shrink-0 mt-0.5">
+              <span
+                className="text-xs font-mono font-bold px-1.5 py-0.5"
+                style={{ backgroundColor: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.3)", color: "rgb(239,68,68)" }}
+              >
+                WT
+              </span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(239,68,68)" }}>
+                Wait Time
+              </span>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                The time work <span className="text-white">sits idle</span>. Nobody is actively working on it.
+              </p>
+              <p className="text-xs font-mono text-gray-600 mt-1">
+                Examples: waiting for a developer to pick up a ticket, waiting for a code review, waiting for the test environment, waiting for the release window.
+              </p>
+            </div>
+          </div>
+
+          {/* Flow Efficiency */}
+          <div
+            className="flex gap-4 px-5 py-5"
+            style={{ borderBottom: "1px solid rgb(21,31,43)", borderLeft: "3px solid rgb(6,182,212)", backgroundColor: "#060606" }}
+          >
+            <div className="shrink-0 mt-0.5">
+              <span
+                className="text-xs font-mono font-bold px-1.5 py-0.5"
+                style={{ backgroundColor: "rgba(6,182,212,0.08)", border: "1px solid rgba(6,182,212,0.3)", color: "rgb(6,182,212)" }}
+              >
+                FE
+              </span>
+            </div>
+            <div className="flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+                Flow Efficiency
+              </span>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                The percentage of total lead time that is actual work.
+              </p>
+              <div
+                className="px-4 py-3 font-mono text-sm"
+                style={{ backgroundColor: "#0d0d0d", borderLeft: "3px solid rgb(31,41,55)", color: "rgb(156,163,175)" }}
+              >
+                PT / (PT + WT) × 100%
+              </div>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                Example: a step with 3 days of work and 7 days of waiting → 3/(3+7) × 100% = <span className="text-white font-mono">30%</span>
+              </p>
+            </div>
+          </div>
+
+          {/* Goal */}
+          <div
+            className="flex gap-4 px-5 py-5"
+            style={{ borderLeft: "3px solid rgb(234,179,8)", backgroundColor: "#080808" }}
+          >
+            <div className="shrink-0 mt-0.5">
+              <span
+                className="text-xs font-mono font-bold px-1.5 py-0.5"
+                style={{ backgroundColor: "rgba(234,179,8,0.08)", border: "1px solid rgba(234,179,8,0.3)", color: "rgb(234,179,8)" }}
+              >
+                →
+              </span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(234,179,8)" }}>
+                The goal
+              </span>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                Fill in the PT and WT for each step based on what the team told you. You will calculate the total lead time and flow efficiency at the end.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ─── Fase3 (main export) ──────────────────────────────────────────────────────
 
 export function Fase3() {
@@ -581,6 +722,7 @@ export function Fase3() {
         </div>
 
         <ContextPanel />
+        <ReferencePanel />
 
         {/* Step indicator */}
         <div className="flex items-center gap-0">
