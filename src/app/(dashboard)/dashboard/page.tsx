@@ -222,8 +222,10 @@ export default async function DashboardPage() {
 
           <div className="grid grid-cols-2 lg:grid-cols-4 border border-gray-800">
             {doraMetrics.map((m, i) => {
-              const isMedium   = m.perf === "MEDIUM PERFORMER";
-              const accentColor = isMedium ? "rgb(234,179,8)" : "rgb(239,68,68)";
+              const accentColor =
+                m.perf === "HIGH PERFORMER"   ? "rgb(249,115,22)" :
+                m.perf === "MEDIUM PERFORMER" ? "rgb(234,179,8)"  :
+                                                "rgb(239,68,68)";
               return (
                 <div
                   key={m.code}
