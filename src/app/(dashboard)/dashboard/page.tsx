@@ -54,6 +54,24 @@ const missionDefs = [
     alwaysUnlocked: false,
     unlockedBy: "M-04",
   },
+  {
+    id: "M-06",
+    title: "Infrastructure as Code",
+    category: "TECHNICAL",
+    description: "The server is a mystery only Marco understands. Define the entire environment in code so anyone can recreate it.",
+    href: "/missions/m06",
+    alwaysUnlocked: false,
+    unlockedBy: "M-05",
+  },
+  {
+    id: "M-07",
+    title: "Architecture for Low-Risk Releases",
+    category: "TECHNICAL",
+    description: "Every deploy still gambles all users on one bad release. Implement feature flags for dark launches and canary releases.",
+    href: "/missions/m07",
+    alwaysUnlocked: false,
+    unlockedBy: "M-06",
+  },
 ];
 
 const roleLabels: Record<string, string> = {
@@ -89,6 +107,16 @@ const firstWayLog = [
     id: "M-05",
     title: "Test Automation",
     learned: "Build a real test suite: metrics endpoint tests, error handling, coverage reporting, and CI verification. False confidence eliminated.",
+  },
+  {
+    id: "M-06",
+    title: "Infrastructure as Code",
+    learned: "Defined the full environment in code: .env.example, healthchecks, restart policies, and a Makefile. Any developer can now spin up the environment in one command.",
+  },
+  {
+    id: "M-07",
+    title: "Architecture for Low-Risk Releases",
+    learned: "Implemented feature flags for dark launches. Decoupled deployment from release. Any feature can now ship dark and be enabled with a flag flip.",
     nextUp: true,
   },
 ];
@@ -142,7 +170,7 @@ export default async function DashboardPage() {
   const currentStage = [...maturityStages].reverse().find((s) => maturityPct >= s.threshold)!;
 
   // ── First Way progress ──────────────────────────────────────────────────────
-  const FIRST_WAY_TOTAL    = 5;
+  const FIRST_WAY_TOTAL    = 7;
   const firstWayCompleted  = firstWayLog.filter((m) => completedIds.has(m.id)).length;
   const firstWayPct        = Math.round((firstWayCompleted / FIRST_WAY_TOTAL) * 100);
 
