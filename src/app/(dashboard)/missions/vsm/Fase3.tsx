@@ -459,6 +459,109 @@ function Part2({ onComplete }: { onComplete: () => void }) {
   );
 }
 
+// ─── Context panel ────────────────────────────────────────────────────────────
+
+const contextCards = [
+  {
+    initials: "SM",
+    name: "Sarah",
+    role: "Engineering Manager",
+    accent: "rgb(6,182,212)",
+    quote: "Features take an average of 6 weeks from idea to production.",
+  },
+  {
+    initials: "TO",
+    name: "Tom",
+    role: "Product Owner",
+    accent: "rgb(167,139,250)",
+    quote: "A ticket sits 5 days before a developer picks it up. Writing specs costs me 2 days per feature.",
+  },
+  {
+    initials: "LI",
+    name: "Lisa",
+    role: "Developer",
+    accent: "rgb(34,197,94)",
+    quote: "Writing code takes 3 days. I wait 3 days for code review. The review takes 4 hours. Then 1 day before QA picks it up.",
+  },
+  {
+    initials: "KA",
+    name: "Kai",
+    role: "QA Engineer",
+    accent: "rgb(251,146,60)",
+    quote: "Testing takes 2 days. We wait 5 days before we can start — the test environment is busy or not stable.",
+  },
+  {
+    initials: "MA",
+    name: "Marco",
+    role: "Ops Engineer",
+    accent: "rgb(239,68,68)",
+    quote: "Acceptance testing in ACC takes 1 day. Deployment to ACC: 8 days waiting — it has to be scheduled. Deploy to production is manual, takes 4 hours, locked to the last Friday — average 12 days wait time.",
+  },
+]
+
+function ContextPanel() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div
+      className="border"
+      style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
+    >
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between px-5 py-4 transition-colors hover:bg-[#0d0d0d]"
+      >
+        <div className="flex items-center gap-3">
+          <span className="text-xs font-mono" style={{ color: "rgb(6,182,212)" }}>//</span>
+          <span className="text-sm font-mono font-bold text-white tracking-wide">
+            Context — What the team told you
+          </span>
+        </div>
+        <span className="text-xs font-mono text-gray-600 shrink-0">
+          {open ? "Hide context ↑" : "Show context ↓"}
+        </span>
+      </button>
+
+      {open && (
+        <div
+          className="flex flex-col gap-0 border-t"
+          style={{ borderColor: "rgb(31,41,55)" }}
+        >
+          {contextCards.map((c, i) => (
+            <div
+              key={c.initials}
+              className="flex gap-4 px-5 py-4"
+              style={{
+                borderBottom: i < contextCards.length - 1 ? "1px solid rgb(21,31,43)" : undefined,
+                borderLeft: `3px solid ${c.accent}`,
+                backgroundColor: i % 2 === 0 ? "#080808" : "#060606",
+              }}
+            >
+              <div
+                className="w-8 h-8 flex items-center justify-center text-xs font-mono font-bold shrink-0 mt-0.5"
+                style={{
+                  backgroundColor: `${c.accent}18`,
+                  border: `1px solid ${c.accent}40`,
+                  color: c.accent,
+                }}
+              >
+                {c.initials}
+              </div>
+              <div className="flex flex-col gap-1">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-xs font-mono font-bold text-white">{c.name}</span>
+                  <span className="text-xs text-gray-600">{c.role}</span>
+                </div>
+                <p className="text-sm text-gray-400 leading-relaxed">&ldquo;{c.quote}&rdquo;</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ─── Fase3 (main export) ──────────────────────────────────────────────────────
 
 export function Fase3() {
@@ -476,6 +579,8 @@ export function Fase3() {
             Use what you&apos;ve heard and learned. Work through both steps.
           </p>
         </div>
+
+        <ContextPanel />
 
         {/* Step indicator */}
         <div className="flex items-center gap-0">
