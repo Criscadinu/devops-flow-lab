@@ -44,7 +44,7 @@ export const missionImpact: Record<string, Partial<DoraState>> = {
   "M-07": {
     cfr: { value: "4%",                   perf: "HIGH PERFORMER"   },
     lt:  { value: "5 days",               perf: "HIGH PERFORMER"   },
-    df:  { value: "Multiple / week",        perf: "HIGH PERFORMER"  },
+    df:  { value: "Multiple×/week",          perf: "HIGH PERFORMER"  },
   },
 }
 
