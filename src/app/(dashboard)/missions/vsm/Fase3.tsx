@@ -58,10 +58,6 @@ function toHours(value: number, unit: "dagen" | "uren"): number {
   return unit === "dagen" ? value * 8 : value;
 }
 
-function isCorrect(input: number, unit: "dagen" | "uren", correctHours: number): boolean {
-  const inputHours = toHours(input, unit);
-  return Math.abs(inputHours - correctHours) <= correctHours * 0.2;
-}
 
 // ─── Sortable card ────────────────────────────────────────────────────────────
 
@@ -233,7 +229,6 @@ function Part1({ onComplete }: { onComplete: () => void }) {
 // ─── Part 2 - Fill in the times ───────────────────────────────────────────────
 
 type Unit = "dagen" | "uren";
-type CellState = "idle" | "correct" | "wrong";
 
 interface Row {
   ptValue: string;
@@ -242,52 +237,92 @@ interface Row {
   wtUnit: Unit;
 }
 
-interface Validation {
-  pt: CellState;
-  wt: CellState;
+interface RowResult {
+  ptCorrect: boolean;
+  wtCorrect: boolean;
+}
+
+// Human-readable correct answers + source quote per cell
+const STEP_META = [
+  {
+    ptLabel: "2 days",  wtLabel: "5 days",
+    ptSource: "Tom: \"Writing specs costs me 2 days per feature.\"",
+    wtSource: "Tom: \"A ticket sits 5 days before a developer picks it up.\"",
+  },
+  {
+    ptLabel: "3 days",  wtLabel: "3 days",
+    ptSource: "Lisa: \"Writing code takes 3 days.\"",
+    wtSource: "Lisa: \"I wait 3 days for code review.\"",
+  },
+  {
+    ptLabel: "4 hours", wtLabel: "1 day",
+    ptSource: "Lisa: \"The review takes 4 hours.\"",
+    wtSource: "Lisa: \"Then 1 day before QA picks it up.\"",
+  },
+  {
+    ptLabel: "2 days",  wtLabel: "5 days",
+    ptSource: "Kai: \"Testing takes 2 days.\"",
+    wtSource: "Kai: \"We wait 5 days before we can start — the test environment is busy.\"",
+  },
+  {
+    ptLabel: "1 day",   wtLabel: "8 days",
+    ptSource: "Marco: \"Acceptance testing in ACC takes 1 day.\"",
+    wtSource: "Marco: \"Deployment to ACC: 8 days waiting — it has to be scheduled.\"",
+  },
+  {
+    ptLabel: "4 hours", wtLabel: "12 days",
+    ptSource: "Marco: \"Deploy to production is manual, takes 4 hours.\"",
+    wtSource: "Marco: \"Locked to the last Friday — average 12 days wait time.\"",
+  },
+] as const;
+
+function formatEntry(value: string, unit: Unit): string {
+  const n = parseFloat(value);
+  if (isNaN(n) || value === "") return "(empty)";
+  const label =
+    unit === "dagen"
+      ? n === 1 ? "day" : "days"
+      : n === 1 ? "hour" : "hours";
+  return `${n} ${label}`;
+}
+
+function isCorrect10(input: number, unit: Unit, correctHours: number): boolean {
+  const inputHours = toHours(input, unit);
+  return Math.abs(inputHours - correctHours) <= correctHours * 0.1;
 }
 
 function Part2({ onComplete }: { onComplete: () => void }) {
   const [rows, setRows] = useState<Row[]>(
     CORRECT_ORDER.map(() => ({ ptValue: "", ptUnit: "dagen", wtValue: "", wtUnit: "dagen" }))
   );
-  const [validation, setValidation] = useState<Validation[]>(
-    CORRECT_ORDER.map(() => ({ pt: "idle", wt: "idle" }))
+  const [submitted, setSubmitted] = useState(false);
+  const [results, setResults] = useState<RowResult[]>(
+    CORRECT_ORDER.map(() => ({ ptCorrect: false, wtCorrect: false }))
   );
-  const [allCorrect, setAllCorrect] = useState(false);
 
   function updateRow(i: number, patch: Partial<Row>) {
     setRows((prev) => prev.map((r, idx) => (idx === i ? { ...r, ...patch } : r)));
-    // Reset cell validation on edit
-    setValidation((prev) =>
-      prev.map((v, idx) => {
-        if (idx !== i) return v;
-        const next = { ...v };
-        if ("ptValue" in patch || "ptUnit" in patch) next.pt = "idle";
-        if ("wtValue" in patch || "wtUnit" in patch) next.wt = "idle";
-        return next;
+  }
+
+  function calculate() {
+    setResults(
+      rows.map((row, i) => {
+        const ptNum = parseFloat(row.ptValue);
+        const wtNum = parseFloat(row.wtValue);
+        return {
+          ptCorrect: !isNaN(ptNum) && isCorrect10(ptNum, row.ptUnit, CORRECT_TIMES[i].pt),
+          wtCorrect: !isNaN(wtNum) && isCorrect10(wtNum, row.wtUnit, CORRECT_TIMES[i].wt),
+        };
       })
     );
+    setSubmitted(true);
   }
 
-  function checkTimes() {
-    const next: Validation[] = rows.map((row, i) => {
-      const ptNum = parseFloat(row.ptValue);
-      const wtNum = parseFloat(row.wtValue);
-      return {
-        pt: !isNaN(ptNum) && isCorrect(ptNum, row.ptUnit, CORRECT_TIMES[i].pt) ? "correct" : "wrong",
-        wt: !isNaN(wtNum) && isCorrect(wtNum, row.wtUnit, CORRECT_TIMES[i].wt) ? "correct" : "wrong",
-      };
-    });
-    setValidation(next);
-    const done = next.every((v) => v.pt === "correct" && v.wt === "correct");
-    if (done) setAllCorrect(true);
-  }
-
-  function cellBg(state: CellState) {
-    if (state === "correct") return { backgroundColor: "#061206", borderColor: "rgba(34,197,94,0.5)" };
-    if (state === "wrong") return { backgroundColor: "#130606", borderColor: "rgba(239,68,68,0.5)" };
-    return { backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" };
+  function cellStyle(correct: boolean | null) {
+    if (correct === null) return { backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" };
+    return correct
+      ? { backgroundColor: "#061206", borderColor: "rgba(34,197,94,0.5)" }
+      : { backgroundColor: "#130606", borderColor: "rgba(239,68,68,0.5)" };
   }
 
   return (
@@ -320,7 +355,9 @@ function Part2({ onComplete }: { onComplete: () => void }) {
           <tbody>
             {CORRECT_ORDER.map((step, i) => {
               const row = rows[i];
-              const v = validation[i];
+              const r = results[i];
+              const ptStyle = cellStyle(submitted ? r.ptCorrect : null);
+              const wtStyle = cellStyle(submitted ? r.wtCorrect : null);
               return (
                 <tr
                   key={step}
@@ -343,12 +380,8 @@ function Part2({ onComplete }: { onComplete: () => void }) {
                       value={row.ptValue}
                       onChange={(e) => updateRow(i, { ptValue: e.target.value })}
                       placeholder="0"
-                      disabled={v.pt === "correct"}
                       className="w-20 px-2 py-1.5 text-sm font-mono text-white outline-none border"
-                      style={{
-                        ...cellBg(v.pt),
-                        ...(v.pt === "idle" ? { "":""} : {}),
-                      }}
+                      style={ptStyle}
                     />
                   </td>
 
@@ -357,9 +390,8 @@ function Part2({ onComplete }: { onComplete: () => void }) {
                     <select
                       value={row.ptUnit}
                       onChange={(e) => updateRow(i, { ptUnit: e.target.value as Unit })}
-                      disabled={v.pt === "correct"}
                       className="px-2 py-1.5 text-sm font-mono text-gray-300 outline-none border"
-                      style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)", color: v.pt === "correct" ? "rgb(34,197,94)" : "inherit" }}
+                      style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
                     >
                       <option value="dagen">days</option>
                       <option value="uren">hours</option>
@@ -375,9 +407,8 @@ function Part2({ onComplete }: { onComplete: () => void }) {
                       value={row.wtValue}
                       onChange={(e) => updateRow(i, { wtValue: e.target.value })}
                       placeholder="0"
-                      disabled={v.wt === "correct"}
                       className="w-20 px-2 py-1.5 text-sm font-mono text-white outline-none border"
-                      style={cellBg(v.wt)}
+                      style={wtStyle}
                     />
                   </td>
 
@@ -386,9 +417,8 @@ function Part2({ onComplete }: { onComplete: () => void }) {
                     <select
                       value={row.wtUnit}
                       onChange={(e) => updateRow(i, { wtUnit: e.target.value as Unit })}
-                      disabled={v.wt === "correct"}
                       className="px-2 py-1.5 text-sm font-mono text-gray-300 outline-none border"
-                      style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)", color: v.wt === "correct" ? "rgb(34,197,94)" : "inherit" }}
+                      style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
                     >
                       <option value="dagen">days</option>
                       <option value="uren">hours</option>
@@ -401,51 +431,193 @@ function Part2({ onComplete }: { onComplete: () => void }) {
         </table>
       </div>
 
-      {/* Validation feedback */}
-      <div className="flex flex-wrap items-center gap-4">
-        {!allCorrect && (
-          <button
-            onClick={checkTimes}
-            className="px-6 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-            style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style }}
-          >
-            Check times
-          </button>
-        )}
-
-        {validation.some((v) => v.pt === "wrong" || v.wt === "wrong") && !allCorrect && (
-          <p className="text-sm font-mono" style={{ color: "rgb(239,68,68)" }}>
-            Not all times are correct. Red fields are wrong - try again.
-          </p>
-        )}
+      {/* Calculate button - always shown */}
+      <div>
+        <button
+          onClick={calculate}
+          className="px-6 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
+          style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style }}
+        >
+          Calculate
+        </button>
       </div>
 
-      {/* Success */}
-      {allCorrect && (
-        <div
-          className="flex flex-col gap-5 border p-6"
-          style={{ backgroundColor: "#060f06", borderColor: "rgba(34,197,94,0.3)", borderLeft: "3px solid rgb(34,197,94)" }}
-        >
-          <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-            ✓ All times correct!
-          </p>
+      {/* ── Results section ─────────────────────────────────────────────────── */}
+      {submitted && (
+        <div className="flex flex-col gap-5">
 
-          <div className="flex gap-6">
-            <div>
-              <p className="text-xs font-mono text-gray-600 uppercase tracking-widest mb-1">Total Process Time</p>
-              <p className="text-2xl font-mono font-bold" style={{ ...syne.style, color: "rgb(34,197,94)" }}>~9 days</p>
+          {/* Per-row validation */}
+          <div className="flex flex-col gap-0 border border-gray-800">
+            <div
+              className="px-4 py-3 border-b border-gray-800"
+              style={{ backgroundColor: "#0d0d0d" }}
+            >
+              <span className="text-xs font-mono text-gray-500 uppercase tracking-widest">
+                Answer review
+              </span>
             </div>
-            <div>
-              <p className="text-xs font-mono text-gray-600 uppercase tracking-widest mb-1">Total Wait Time</p>
-              <p className="text-2xl font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>~34 days</p>
+
+            {CORRECT_ORDER.map((step, i) => {
+              const row = rows[i];
+              const r = results[i];
+              const meta = STEP_META[i];
+              const allOk = r.ptCorrect && r.wtCorrect;
+
+              return (
+                <div
+                  key={step}
+                  className="flex flex-col gap-3 px-4 py-4 border-b border-gray-800 last:border-b-0"
+                  style={{
+                    backgroundColor: allOk ? "#060f06" : i % 2 === 0 ? "#080808" : "#060606",
+                    borderLeft: `3px solid ${allOk ? "rgb(34,197,94)" : "rgb(239,68,68)"}`,
+                  }}
+                >
+                  {/* Step header */}
+                  <div className="flex items-center gap-3">
+                    <span
+                      className="text-xs font-mono font-bold shrink-0"
+                      style={{ color: allOk ? "rgb(34,197,94)" : "rgb(239,68,68)" }}
+                    >
+                      {allOk ? "✓" : "✗"}
+                    </span>
+                    <span className="text-sm font-mono font-bold text-white">{step}</span>
+                  </div>
+
+                  {/* PT result */}
+                  {r.ptCorrect ? (
+                    <div className="flex items-center gap-2 pl-5">
+                      <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓</span>
+                      <span className="text-xs font-mono text-gray-500">PT</span>
+                      <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>
+                        {meta.ptLabel}
+                      </span>
+                    </div>
+                  ) : (
+                    <div
+                      className="flex flex-col gap-1 pl-5 pr-3 py-2 border-l-2"
+                      style={{ borderColor: "rgba(239,68,68,0.4)" }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-mono" style={{ color: "rgb(239,68,68)" }}>✗</span>
+                        <span className="text-xs font-mono text-gray-500">PT</span>
+                        <span className="text-xs font-mono text-gray-400">
+                          Expected:{" "}
+                          <span className="text-white">{meta.ptLabel}</span>
+                          {" — "}You entered:{" "}
+                          <span style={{ color: "rgb(239,68,68)" }}>
+                            {formatEntry(row.ptValue, row.ptUnit)}
+                          </span>
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-600 font-mono pl-4">{meta.ptSource}</p>
+                    </div>
+                  )}
+
+                  {/* WT result */}
+                  {r.wtCorrect ? (
+                    <div className="flex items-center gap-2 pl-5">
+                      <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓</span>
+                      <span className="text-xs font-mono text-gray-500">WT</span>
+                      <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>
+                        {meta.wtLabel}
+                      </span>
+                    </div>
+                  ) : (
+                    <div
+                      className="flex flex-col gap-1 pl-5 pr-3 py-2 border-l-2"
+                      style={{ borderColor: "rgba(239,68,68,0.4)" }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-mono" style={{ color: "rgb(239,68,68)" }}>✗</span>
+                        <span className="text-xs font-mono text-gray-500">WT</span>
+                        <span className="text-xs font-mono text-gray-400">
+                          Expected:{" "}
+                          <span className="text-white">{meta.wtLabel}</span>
+                          {" — "}You entered:{" "}
+                          <span style={{ color: "rgb(239,68,68)" }}>
+                            {formatEntry(row.wtValue, row.wtUnit)}
+                          </span>
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-600 font-mono pl-4">{meta.wtSource}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Totals block - always shown after submit */}
+          <div
+            className="flex flex-col gap-5 border p-6"
+            style={{
+              backgroundColor: "#080808",
+              borderColor: "rgb(31,41,55)",
+              borderLeft: "3px solid rgb(6,182,212)",
+            }}
+          >
+            <p
+              className="text-xs font-mono font-bold uppercase tracking-widest"
+              style={{ color: "rgb(6,182,212)" }}
+            >
+              The correct numbers — Nexus Corp value stream
+            </p>
+
+            {/* Metric tiles */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="flex flex-col gap-1">
+                <p className="text-xs font-mono text-gray-600 uppercase tracking-widest">Total PT</p>
+                <p className="text-2xl font-mono font-bold" style={{ ...syne.style, color: "rgb(34,197,94)" }}>
+                  7.5 days
+                </p>
+              </div>
+              <div className="flex flex-col gap-1">
+                <p className="text-xs font-mono text-gray-600 uppercase tracking-widest">Total WT</p>
+                <p className="text-2xl font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>
+                  34 days
+                </p>
+              </div>
+              <div className="flex flex-col gap-1">
+                <p className="text-xs font-mono text-gray-600 uppercase tracking-widest">Lead Time</p>
+                <p className="text-2xl font-mono font-bold" style={{ ...syne.style, color: "rgb(6,182,212)" }}>
+                  41.5 days
+                </p>
+              </div>
+            </div>
+
+            {/* Flow efficiency highlight */}
+            <div
+              className="flex items-center gap-4 p-4 border"
+              style={{ backgroundColor: "#0a0a0a", borderColor: "rgb(31,41,55)" }}
+            >
+              <div className="flex flex-col gap-1">
+                <p className="text-xs font-mono text-gray-600 uppercase tracking-widest">Flow Efficiency</p>
+                <p className="text-4xl font-mono font-bold" style={{ ...syne.style, color: "rgb(6,182,212)" }}>
+                  18%
+                </p>
+              </div>
+              <p className="text-sm text-gray-500 leading-relaxed flex-1">
+                Only <span className="text-white font-semibold">18%</span> of the total lead time is
+                actual work. The other <span className="text-white font-semibold">82%</span> is pure waiting.
+              </p>
+            </div>
+
+            {/* Calculation breakdown */}
+            <div className="flex flex-col gap-2">
+              <p className="text-xs font-mono text-gray-600 uppercase tracking-widest">How it was calculated</p>
+              <div
+                className="p-4 font-mono text-xs leading-relaxed"
+                style={{ backgroundColor: "#0d0d0d", borderLeft: "3px solid rgb(31,41,55)", color: "rgb(156,163,175)" }}
+              >
+                <p>PT  = 2d + 3d + 4h + 2d + 1d + 4h  = 7.5 days</p>
+                <p>WT  = 5d + 3d + 1d + 5d + 8d + 12d = 34 days</p>
+                <p>LT  = PT + WT = 7.5 + 34            = 41.5 days</p>
+                <p>FE  = PT / LT × 100%                = 7.5 / 41.5 × 100% = 18%</p>
+              </div>
             </div>
           </div>
 
-          <p className="text-gray-400 text-sm leading-relaxed">
-            Only <span className="text-white font-semibold">21%</span> of the total lead time (~43 days)
-            is actual work time. The rest is waiting.
-          </p>
-
+          {/* Continue link */}
           <a
             href="?fase=4"
             className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
