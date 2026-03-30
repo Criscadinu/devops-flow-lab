@@ -304,6 +304,15 @@ function Part2({ onComplete }: { onComplete: () => void }) {
     setRows((prev) => prev.map((r, idx) => (idx === i ? { ...r, ...patch } : r)));
   }
 
+  const CORRECT_FILL: Row[] = [
+    { ptValue: "2", ptUnit: "dagen", wtValue: "5",  wtUnit: "dagen" },
+    { ptValue: "3", ptUnit: "dagen", wtValue: "3",  wtUnit: "dagen" },
+    { ptValue: "4", ptUnit: "uren",  wtValue: "1",  wtUnit: "dagen" },
+    { ptValue: "2", ptUnit: "dagen", wtValue: "5",  wtUnit: "dagen" },
+    { ptValue: "1", ptUnit: "dagen", wtValue: "8",  wtUnit: "dagen" },
+    { ptValue: "4", ptUnit: "uren",  wtValue: "12", wtUnit: "dagen" },
+  ];
+
   function calculate() {
     setResults(
       rows.map((row, i) => {
@@ -315,6 +324,12 @@ function Part2({ onComplete }: { onComplete: () => void }) {
         };
       })
     );
+    setSubmitted(true);
+  }
+
+  function fillCorrectAnswers() {
+    setRows(CORRECT_FILL);
+    setResults(CORRECT_ORDER.map(() => ({ ptCorrect: true, wtCorrect: true })));
     setSubmitted(true);
   }
 
@@ -546,6 +561,21 @@ function Part2({ onComplete }: { onComplete: () => void }) {
               );
             })}
           </div>
+
+          {/* Show correct answers button — only when not all correct */}
+          {!results.every((r) => r.ptCorrect && r.wtCorrect) && (
+            <button
+              onClick={fillCorrectAnswers}
+              className="self-start px-5 py-2.5 text-sm font-mono font-bold border transition-opacity hover:opacity-80"
+              style={{
+                backgroundColor: "#0a0a0a",
+                borderColor: "rgba(6,182,212,0.4)",
+                color: "rgb(6,182,212)",
+              }}
+            >
+              Show correct answers
+            </button>
+          )}
 
           {/* Totals block - always shown after submit */}
           <div
