@@ -255,35 +255,28 @@ export function Phase3() {
           }}
         >
           <div className="flex flex-col gap-1">
-            <SectionLabel>The repository</SectionLabel>
+            <SectionLabel>The Nexus Corp application</SectionLabel>
             <p className="text-gray-300 text-sm leading-relaxed">
-              <span className="text-white font-mono">nexus-corp-app</span> is a small Node.js
-              application - a fictional internal tool used by the Nexus Corp team. It has a
-              package.json, some routes, and a few config files. Nothing exotic. The kind of app
-              that exists in every company, usually maintained by one person who has since left.
+              This is the application that runs Nexus Corp&apos;s order management system. Every
+              parcel that gets tracked, every customer order that gets processed, every shipment
+              status update - it all goes through this app. When it is down, the business stops.
             </p>
           </div>
           <div className="flex flex-col gap-1">
-            <SectionLabel>Why we are containerizing it</SectionLabel>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Right now, running this app requires the right Node version, the right global packages,
-              and knowing which undocumented environment variable makes it not crash. It works on
-              Marco&apos;s machine. It doesn&apos;t work on Kai&apos;s. It used to work on Lisa&apos;s
-              before she upgraded macOS.
-            </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              A container wraps the app and everything it needs - runtime, dependencies, config - into
-              one portable unit. When you run it, you always get the same result. No more
-              &quot;works on my machine.&quot; No more setup docs that are three versions out of date.
+              Right now, this app lives on one server that Marco set up 2 years ago. Nobody else
+              knows how it is configured. There is no staging environment. Developers test on their
+              local machines - all with different setups. When Lisa deploys a fix, it sometimes works
+              in her environment but breaks on the server. The VSM showed you why: 13 days of pure
+              wait time, most of it caused by environment problems.
             </p>
           </div>
           <div className="flex flex-col gap-1">
-            <SectionLabel>What you will build</SectionLabel>
             <p className="text-gray-400 text-sm leading-relaxed">
-              A <span className="text-white font-mono">Dockerfile</span> that packages the app, and a{" "}
-              <span className="text-white font-mono">docker-compose.yml</span> that runs it in three
-              separate environments - dev, test, and prod - each with its own config, all from a
-              single command.
+              Before you can build a pipeline, you need somewhere reliable to deploy to. Before you
+              can automate deployments, every environment needs to behave identically. That is what
+              this mission fixes. You are not containerizing for fun - you are containerizing because
+              it is the prerequisite for everything that comes next.
             </p>
           </div>
         </div>
