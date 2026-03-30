@@ -257,22 +257,18 @@ export function Fase4() {
               Back to dashboard →
             </a>
 
-            <span
-              className="flex items-center gap-3 px-8 py-4 text-sm font-mono border cursor-not-allowed"
+            <a
+              href="/missions/pipeline"
+              className="flex items-center gap-3 px-8 py-4 text-sm font-mono border transition-opacity hover:opacity-80"
               style={{
                 backgroundColor: "#0a0a0a",
-                borderColor: "rgb(31,41,55)",
-                color: "rgb(55,65,81)",
+                borderColor: "rgba(6,182,212,0.3)",
+                color: "rgb(6,182,212)",
               }}
-              title="Not yet available"
             >
-              <span>⊘</span>
-              View next mission: WIP Wars →
-            </span>
+              View next mission: On-Demand Environments →
+            </a>
           </div>
-          <p className="text-xs font-mono text-gray-800">
-            M-02 will be unlocked after completing M-01.
-          </p>
         </section>
 
       </div>
