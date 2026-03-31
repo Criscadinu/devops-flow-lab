@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Syne } from "next/font/google"
 import { validateFork } from "@/app/actions/validateFork"
 
@@ -99,6 +99,342 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   )
 }
 
+// ─── Docker Explainer Animation ───────────────────────────────────────────────
+
+const MACHINES = [
+  { name: "Lisa's MacBook", nodeTag: "Node 20", ok: true,  status: "Works fine" },
+  { name: "Kai's Linux",    nodeTag: "Node 16", ok: false, status: "Error: Node 18+ required" },
+  { name: "Marco's Server", nodeTag: "Node 14", ok: false, status: "Crash: incompatible" },
+]
+
+const DOCKERFILE_STEPS = [
+  "FROM node:20-alpine",
+  "WORKDIR /app",
+  "COPY . .",
+  "RUN npm install",
+  "CMD node src/index.js",
+]
+
+const SCENE_TITLES = [
+  "Same code. Different machines. Chaos.",
+  "You write a Dockerfile. One recipe.",
+  "The container ships to every machine.",
+  "Result: identical everywhere.",
+]
+
+function MachineColumn({
+  name,
+  nodeTag,
+  ok,
+  status,
+  showContainer,
+  containerDelay,
+  sceneKey,
+}: {
+  name: string
+  nodeTag: string
+  ok: boolean
+  status: string
+  showContainer: boolean
+  containerDelay: string
+  sceneKey: string
+}) {
+  return (
+    <div
+      style={{
+        backgroundColor: "#080808",
+        border: `1px solid ${ok ? "rgba(34,197,94,0.2)" : "rgba(239,68,68,0.2)"}`,
+        padding: 14,
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
+      }}
+    >
+      <p style={{ color: "rgb(107,114,128)", fontFamily: "monospace", fontSize: 11 }}>{name}</p>
+      <span
+        style={{
+          alignSelf: "flex-start",
+          backgroundColor: ok ? "rgba(34,197,94,0.1)" : "rgba(239,68,68,0.1)",
+          border: `1px solid ${ok ? "rgba(34,197,94,0.3)" : "rgba(239,68,68,0.3)"}`,
+          color: ok ? "rgb(34,197,94)" : "rgb(239,68,68)",
+          fontFamily: "monospace",
+          fontSize: 10,
+          padding: "2px 7px",
+        }}
+      >
+        {nodeTag}
+      </span>
+
+      {showContainer && (
+        <div
+          key={sceneKey}
+          style={{
+            backgroundColor: "rgba(6,182,212,0.06)",
+            border: "1px solid rgba(6,182,212,0.25)",
+            padding: "8px 10px",
+            display: "flex",
+            flexDirection: "column",
+            gap: 5,
+            animation: `docker-build-in 0.4s ease both`,
+            animationDelay: containerDelay,
+          }}
+        >
+          <span style={{ color: "rgb(6,182,212)", fontFamily: "monospace", fontSize: 10 }}>Node 20 — locked in</span>
+          <span style={{ color: "rgb(6,182,212)", fontFamily: "monospace", fontSize: 10 }}>Your code — locked in</span>
+        </div>
+      )}
+
+      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+        <span
+          style={{
+            width: 6,
+            height: 6,
+            borderRadius: "50%",
+            backgroundColor: ok ? "rgb(34,197,94)" : "rgb(239,68,68)",
+            display: "inline-block",
+            animation: ok ? "docker-pulse 1.5s ease-in-out infinite" : "docker-shake 0.6s ease-in-out",
+          }}
+        />
+        <span
+          style={{
+            color: ok ? "rgb(34,197,94)" : "rgb(239,68,68)",
+            fontFamily: "monospace",
+            fontSize: 10,
+            animation: !ok ? "docker-shake 0.6s ease-in-out" : undefined,
+          }}
+        >
+          {status}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+function DockerExplainer() {
+  const [scene, setScene] = useState(0)
+  const [auto, setAuto] = useState(true)
+
+  useEffect(() => {
+    if (!auto || scene >= 3) return
+    const t = setTimeout(() => setScene((s) => s + 1), 3500)
+    return () => clearTimeout(t)
+  }, [scene, auto])
+
+  function goTo(i: number) {
+    setAuto(false)
+    setScene(i)
+  }
+
+  return (
+    <div
+      style={{
+        backgroundColor: "#050505",
+        border: "1px solid rgb(31,41,55)",
+        padding: 24,
+        display: "flex",
+        flexDirection: "column",
+        gap: 20,
+      }}
+    >
+      <style>{`
+        @keyframes docker-pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.25; }
+        }
+        @keyframes docker-shake {
+          0%, 100% { transform: translateX(0); }
+          20% { transform: translateX(-3px); }
+          40% { transform: translateX(3px); }
+          60% { transform: translateX(-3px); }
+          80% { transform: translateX(3px); }
+        }
+        @keyframes docker-build-in {
+          from { opacity: 0; transform: translateY(8px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+
+      {/* Header */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <p style={{ color: "rgb(75,85,99)", fontFamily: "monospace", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.15em", margin: 0 }}>
+          How Docker works
+        </p>
+        <p style={{ color: "white", fontWeight: 700, fontSize: 15, margin: 0 }}>
+          {SCENE_TITLES[scene]}
+        </p>
+      </div>
+
+      {/* Scenes */}
+      <div style={{ minHeight: 230 }}>
+
+        {/* Scene 1 — Broken machines */}
+        {scene === 0 && (
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+            {MACHINES.map((m) => (
+              <MachineColumn
+                key={m.name}
+                name={m.name}
+                nodeTag={m.nodeTag}
+                ok={m.ok}
+                status={m.status}
+                showContainer={false}
+                containerDelay="0s"
+                sceneKey="s0"
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Scene 2 — Dockerfile flow */}
+        {scene === 1 && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 0 }}>
+              {DOCKERFILE_STEPS.map((step, i) => (
+                <div key={step} style={{ display: "flex", alignItems: "center" }}>
+                  <div
+                    style={{
+                      backgroundColor: "#0d0d0d",
+                      border: "1px solid rgba(6,182,212,0.3)",
+                      padding: "6px 10px",
+                      fontFamily: "monospace",
+                      fontSize: 10,
+                      color: "rgb(6,182,212)",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {step}
+                  </div>
+                  {i < DOCKERFILE_STEPS.length - 1 && (
+                    <span style={{ color: "rgba(6,182,212,0.5)", fontFamily: "monospace", fontSize: 13, padding: "0 4px" }}>→</span>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <p style={{ color: "rgb(75,85,99)", fontFamily: "monospace", fontSize: 11, margin: 0 }}>
+                docker build -t nexus-corp .
+              </p>
+              <div
+                style={{
+                  backgroundColor: "rgba(34,197,94,0.06)",
+                  border: "1px solid rgba(34,197,94,0.25)",
+                  borderLeft: "3px solid rgb(34,197,94)",
+                  padding: "10px 14px",
+                }}
+              >
+                <p style={{ color: "rgb(34,197,94)", fontFamily: "monospace", fontSize: 12, fontWeight: 700, margin: 0 }}>
+                  IMAGE BUILT — nexus-corp:latest
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Scene 3 — Containers shipping */}
+        {scene === 2 && (
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+            {MACHINES.map((m, i) => (
+              <MachineColumn
+                key={m.name}
+                name={m.name}
+                nodeTag="Node 20"
+                ok={true}
+                status="Works fine"
+                showContainer={true}
+                containerDelay={`${i * 0.3}s`}
+                sceneKey={`s2-${i}`}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Scene 4 — Identical everywhere */}
+        {scene === 3 && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+              {MACHINES.map((m, i) => (
+                <MachineColumn
+                  key={m.name}
+                  name={m.name}
+                  nodeTag="Node 20"
+                  ok={true}
+                  status="Works fine"
+                  showContainer={true}
+                  containerDelay={`${i * 0.15}s`}
+                  sceneKey={`s3-${i}`}
+                />
+              ))}
+            </div>
+            <div
+              style={{
+                backgroundColor: "rgba(34,197,94,0.07)",
+                border: "1px solid rgba(34,197,94,0.3)",
+                borderLeft: "3px solid rgb(34,197,94)",
+                padding: "10px 14px",
+              }}
+            >
+              <p style={{ color: "rgb(34,197,94)", fontFamily: "monospace", fontSize: 12, fontWeight: 700, margin: 0 }}>
+                ✓ Works on my machine — eliminated.
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Navigation */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", gap: 7 }}>
+          {[0, 1, 2, 3].map((i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              aria-label={`Scene ${i + 1}`}
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                backgroundColor: i === scene ? "rgb(6,182,212)" : "rgb(55,65,81)",
+                border: "none",
+                cursor: "pointer",
+                padding: 0,
+                transition: "background-color 0.2s",
+              }}
+            />
+          ))}
+        </div>
+        {scene < 3 && (
+          <button
+            onClick={() => { setAuto(false); setScene((s) => s + 1) }}
+            style={{
+              backgroundColor: "transparent",
+              border: "1px solid rgb(55,65,81)",
+              color: "rgb(107,114,128)",
+              fontFamily: "monospace",
+              fontSize: 11,
+              padding: "4px 12px",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => {
+              const b = e.currentTarget
+              b.style.borderColor = "rgb(6,182,212)"
+              b.style.color = "rgb(6,182,212)"
+            }}
+            onMouseLeave={(e) => {
+              const b = e.currentTarget
+              b.style.borderColor = "rgb(55,65,81)"
+              b.style.color = "rgb(107,114,128)"
+            }}
+          >
+            Next →
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ─── Phase 3 ──────────────────────────────────────────────────────────────────
+
 export function Phase3() {
   const [prereq1Done, setPrereq1Done] = useState(false)
   const [prereq2Done, setPrereq2Done] = useState(false)
@@ -132,6 +468,9 @@ export function Phase3() {
             You have diagnosed the problem. Now you are going to fix it - for every developer, every environment, every time.
           </p>
         </div>
+
+        {/* Docker explainer */}
+        <DockerExplainer />
 
         {/* Prerequisites */}
         <div
