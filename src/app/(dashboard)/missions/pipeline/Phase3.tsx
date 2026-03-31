@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Syne } from "next/font/google"
+import { validateFork } from "@/app/actions/validateFork"
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
@@ -108,6 +109,9 @@ export function Phase3() {
   const [task4Done, setTask4Done] = useState(false)
 
   const [forkUrl, setForkUrl] = useState("")
+  const [forkChecking, setForkChecking] = useState(false)
+  const [forkError, setForkError] = useState<string | null>(null)
+  const [forkRepoName, setForkRepoName] = useState<string | null>(null)
 
   const prereqsDone = prereq1Done && prereq2Done
   const allDone = task1Done && task2Done && task3Done && task4Done
@@ -332,7 +336,7 @@ cd nexus-corp-app`}</pre>
           </div>
 
           {!task1Done && (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-3">
               <label className="text-xs font-mono text-gray-600 uppercase tracking-widest">
                 Paste your fork URL to continue
               </label>
@@ -340,21 +344,42 @@ cd nexus-corp-app`}</pre>
                 <input
                   type="url"
                   value={forkUrl}
-                  onChange={(e) => setForkUrl(e.target.value)}
+                  onChange={(e) => { setForkUrl(e.target.value); setForkError(null) }}
                   placeholder="https://github.com/your-username/nexus-corp-app"
                   className="flex-1 px-3 py-2 text-sm font-mono text-white outline-none border"
-                  style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+                  style={{ backgroundColor: "#0d0d0d", borderColor: forkError ? "rgba(239,68,68,0.5)" : "rgb(31,41,55)" }}
                 />
                 <button
-                  onClick={() => { if (forkUrl.includes("github.com")) setTask1Done(true) }}
-                  disabled={!forkUrl.includes("github.com")}
-                  className="px-5 py-2 text-sm font-bold transition-opacity hover:opacity-80 disabled:opacity-30"
+                  onClick={async () => {
+                    setForkError(null)
+                    setForkChecking(true)
+                    const result = await validateFork(forkUrl)
+                    setForkChecking(false)
+                    if (result.valid && result.repoName) {
+                      setForkRepoName(result.repoName)
+                      setTask1Done(true)
+                    } else {
+                      setForkError(result.error ?? "Validation failed.")
+                    }
+                  }}
+                  disabled={!forkUrl.trim() || forkChecking}
+                  className="px-5 py-2 text-sm font-bold transition-opacity hover:opacity-80 disabled:opacity-30 shrink-0"
                   style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style }}
                 >
-                  Confirm
+                  {forkChecking ? "Checking..." : "Confirm"}
                 </button>
               </div>
+              {forkError && (
+                <p className="text-xs font-mono" style={{ color: "rgb(239,68,68)" }}>
+                  ✗ {forkError}
+                </p>
+              )}
             </div>
+          )}
+          {task1Done && forkRepoName && (
+            <p className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>
+              ✓ Fork verified: {forkRepoName}
+            </p>
           )}
         </TaskCard>
 
