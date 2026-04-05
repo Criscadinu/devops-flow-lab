@@ -4,7 +4,7 @@ import { useState, useEffect, useTransition, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { resetAllMissions, completeUntilMission } from '@/app/actions/testControls'
 
-const ALLOWED = ['criscadinu', 'agilefanatics']
+const ALLOWED = ['cris.g.cadinu', 'agilefanatics']
 const SEQUENCE = 'devops'
 const CLICK_THRESHOLD = 5
 const CLICK_WINDOW_MS = 2000

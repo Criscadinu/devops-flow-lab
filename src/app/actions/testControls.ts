@@ -4,7 +4,7 @@ import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 
-const ALLOWED_DOMAINS = ['criscadinu', 'agilefanatics']
+const ALLOWED_DOMAINS = ['cris.g.cadinu', 'agilefanatics']
 const MISSION_ORDER = ['M-01', 'M-02', 'M-03', 'M-04', 'M-05', 'M-06', 'M-07']
 
 async function getAuthorizedUser() {
