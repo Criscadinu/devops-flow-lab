@@ -5,6 +5,7 @@ import { Syne } from "next/font/google";
 import { Fase3 } from "./Fase3";
 import { Fase4 } from "./Fase4";
 import { completeMission } from "@/app/actions/progress";
+import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
   title: "M-01 Value Stream Mapping - DevOps Flow Lab",
@@ -410,7 +411,19 @@ export default async function VSMPage({
   const { phase: phaseParam } = await searchParams;
   const phase = ["1", "2", "3", "4"].includes(phaseParam ?? "") ? Number(phaseParam) : 1;
 
-  if (phase === 4) await completeMission("M-01");
+  if (phase === 4) {
+    const gateUser = await prisma.user.findUnique({
+      where: { email: session.user.email! },
+      select: { id: true },
+    })
+    const alreadyCompleted = gateUser
+      ? await prisma.userProgress.findFirst({
+          where: { userId: gateUser.id, moduleId: "M-01" },
+        })
+      : null
+    if (!alreadyCompleted) redirect("?phase=3")
+    await completeMission("M-01");
+  }
 
   return (
     <main className="min-h-screen text-gray-100 flex flex-col" style={{ backgroundColor: "#000" }}>

@@ -4,6 +4,7 @@ import { auth } from "@/auth"
 import { Syne } from "next/font/google"
 import { Phase3 } from "./Phase3"
 import { completeMission } from "@/app/actions/progress"
+import { prisma } from "@/lib/prisma"
 
 export const metadata: Metadata = {
   title: "M-03 Build the Pipeline - DevOps Flow Lab",
@@ -560,7 +561,19 @@ export default async function M03Page({
   const { phase: phaseParam } = await searchParams
   const phase = ["1", "2", "3", "4"].includes(phaseParam ?? "") ? Number(phaseParam) : 1
 
-  if (phase === 4) await completeMission("M-03")
+  if (phase === 4) {
+    const gateUser = await prisma.user.findUnique({
+      where: { email: session.user.email! },
+      select: { id: true },
+    })
+    const alreadyCompleted = gateUser
+      ? await prisma.userProgress.findFirst({
+          where: { userId: gateUser.id, moduleId: "M-03" },
+        })
+      : null
+    if (!alreadyCompleted) redirect("?phase=3")
+    await completeMission("M-03")
+  }
 
   return (
     <main className="min-h-screen text-gray-100 flex flex-col" style={{ backgroundColor: "#000" }}>
