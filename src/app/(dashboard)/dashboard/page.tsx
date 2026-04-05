@@ -577,11 +577,7 @@ export default async function DashboardPage() {
 
       </div>
 
-      {/* Hidden test panel — dev + allowlisted emails only */}
-      {(process.env.NODE_ENV !== 'production' ||
-        ['criscadinu', 'agile-fanatics'].some((d) => session.user?.email?.includes(d))) && (
-        <TestPanel />
-      )}
+      <TestPanel email={session.user.email!} />
     </main>
   );
 }

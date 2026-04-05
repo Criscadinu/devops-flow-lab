@@ -4,6 +4,7 @@ import { useState, useEffect, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { resetAllMissions, completeUntilMission } from '@/app/actions/testControls'
 
+const ALLOWED = ['criscadinu', 'agilefanatics']
 const SEQUENCE = 'devops'
 
 const BUTTONS = [
@@ -13,7 +14,8 @@ const BUTTONS = [
   { label: 'Complete to M-07',   action: () => completeUntilMission('M-07')    },
 ]
 
-export function TestPanel() {
+export function TestPanel({ email }: { email: string }) {
+  if (!ALLOWED.some((d) => email.includes(d))) return null
   const [visible, setVisible]   = useState(false)
   const [seq, setSeq]           = useState('')
   const [pending, startTransition] = useTransition()

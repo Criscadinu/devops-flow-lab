@@ -4,16 +4,14 @@ import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 
-const ALLOWED_DOMAINS = ['criscadinu', 'agile-fanatics']
+const ALLOWED_DOMAINS = ['criscadinu', 'agilefanatics']
 const MISSION_ORDER = ['M-01', 'M-02', 'M-03', 'M-04', 'M-05', 'M-06', 'M-07']
 
 async function getAuthorizedUser() {
   const session = await auth()
   if (!session?.user?.email) return null
 
-  const isAllowed =
-    process.env.NODE_ENV !== 'production' ||
-    ALLOWED_DOMAINS.some((d) => session.user!.email!.includes(d))
+  const isAllowed = ALLOWED_DOMAINS.some((d) => session.user!.email!.includes(d))
   if (!isAllowed) return null
 
   return prisma.user.findUnique({
