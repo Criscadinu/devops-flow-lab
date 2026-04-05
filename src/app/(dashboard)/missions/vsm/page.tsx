@@ -1,9 +1,14 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { Syne } from "next/font/google";
 import { Fase3 } from "./Fase3";
 import { Fase4 } from "./Fase4";
 import { completeMission } from "@/app/actions/progress";
+
+export const metadata: Metadata = {
+  title: "M-01 Value Stream Mapping - DevOps Flow Lab",
+}
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 
@@ -248,7 +253,7 @@ function Phase1() {
         </div>
 
         <CTA
-          href="?fase=2"
+          href="?phase=2"
           label="Understand the theory →"
           sub="Phase 2 of 4 - What is a value stream?"
         />
@@ -371,7 +376,7 @@ function Phase2() {
         </section>
 
         <CTA
-          href="?fase=3"
+          href="?phase=3"
           label="Map the value stream →"
           sub="Phase 3 of 4 - Do it yourself"
         />
@@ -397,23 +402,23 @@ function Phase4() {
 export default async function VSMPage({
   searchParams,
 }: {
-  searchParams: Promise<{ fase?: string }>;
+  searchParams: Promise<{ phase?: string }>;
 }) {
   const session = await auth();
   if (!session?.user?.email) redirect("/api/auth/signin");
 
-  const { fase: faseParam } = await searchParams;
-  const fase = ["1", "2", "3", "4"].includes(faseParam ?? "") ? Number(faseParam) : 1;
+  const { phase: phaseParam } = await searchParams;
+  const phase = ["1", "2", "3", "4"].includes(phaseParam ?? "") ? Number(phaseParam) : 1;
 
-  if (fase === 4) await completeMission("M-01");
+  if (phase === 4) await completeMission("M-01");
 
   return (
     <main className="min-h-screen text-gray-100 flex flex-col" style={{ backgroundColor: "#000" }}>
-      <MissionHeader fase={fase} />
-      {fase === 1 && <Phase1 />}
-      {fase === 2 && <Phase2 />}
-      {fase === 3 && <Phase3 />}
-      {fase === 4 && <Phase4 />}
+      <MissionHeader fase={phase} />
+      {phase === 1 && <Phase1 />}
+      {phase === 2 && <Phase2 />}
+      {phase === 3 && <Phase3 />}
+      {phase === 4 && <Phase4 />}
     </main>
   );
 }

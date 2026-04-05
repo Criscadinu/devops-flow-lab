@@ -1,4 +1,9 @@
+import type { Metadata } from "next"
 import { Syne } from "next/font/google"
+
+export const metadata: Metadata = {
+  title: "Learning Library - DevOps Flow Lab",
+}
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 

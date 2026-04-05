@@ -1,8 +1,13 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { Syne } from "next/font/google";
 import { computeDora } from "@/lib/dora";
+
+export const metadata: Metadata = {
+  title: "Command Center - DevOps Flow Lab",
+}
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 

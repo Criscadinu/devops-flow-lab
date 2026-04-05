@@ -1,8 +1,13 @@
+import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { auth } from "@/auth"
 import { Syne } from "next/font/google"
 import { Phase3 } from "./Phase3"
 import { completeMission } from "@/app/actions/progress"
+
+export const metadata: Metadata = {
+  title: "M-07 Architecture for Low-Risk Releases - DevOps Flow Lab",
+}
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
@@ -222,7 +227,7 @@ function Phase1() {
         </div>
 
         <CTA
-          href="?fase=2"
+          href="?phase=2"
           label="Understand the theory →"
           sub="Phase 2 of 4 - Deploy vs release, and how to decouple them"
         />
@@ -421,7 +426,7 @@ function Phase2() {
         </section>
 
         <CTA
-          href="?fase=3"
+          href="?phase=3"
           label="Deploy dark for Nexus Corp →"
           sub="Phase 3 of 4 - Do it yourself"
         />
@@ -583,15 +588,15 @@ function Phase4() {
 export default async function M07Page({
   searchParams,
 }: {
-  searchParams: Promise<{ fase?: string }>
+  searchParams: Promise<{ phase?: string }>
 }) {
   const session = await auth()
   if (!session?.user?.email) redirect("/api/auth/signin")
 
-  const { fase: faseParam } = await searchParams
-  const fase = ["1", "2", "3", "4"].includes(faseParam ?? "") ? Number(faseParam) : 1
+  const { phase: phaseParam } = await searchParams
+  const phase = ["1", "2", "3", "4"].includes(phaseParam ?? "") ? Number(phaseParam) : 1
 
-  if (fase === 4) {
+  if (phase === 4) {
     try {
       await completeMission("M-07")
     } catch {
@@ -601,11 +606,11 @@ export default async function M07Page({
 
   return (
     <main className="min-h-screen text-gray-100 flex flex-col" style={{ backgroundColor: "#000" }}>
-      <MissionHeader fase={fase} />
-      {fase === 1 && <Phase1 />}
-      {fase === 2 && <Phase2 />}
-      {fase === 3 && <Phase3 />}
-      {fase === 4 && <Phase4 />}
+      <MissionHeader fase={phase} />
+      {phase === 1 && <Phase1 />}
+      {phase === 2 && <Phase2 />}
+      {phase === 3 && <Phase3 />}
+      {phase === 4 && <Phase4 />}
     </main>
   )
 }

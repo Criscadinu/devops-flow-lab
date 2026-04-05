@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import { Syne } from "next/font/google";
 import { auth } from "@/auth";
+
+export const metadata: Metadata = {
+  title: "DevOps Flow Lab - Learn DevOps by doing",
+}
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 
@@ -76,7 +81,7 @@ function Hero({ authenticated }: { authenticated: boolean }) {
               {authenticated ? "Go to Dashboard →" : "Start for free →"}
             </a>
             <a
-              href="#hoe-het-werkt"
+              href="#how-it-works"
               className="border border-gray-700 hover:border-gray-500 text-gray-300 hover:text-white font-medium px-8 py-4 transition-colors text-sm"
               style={{ backgroundColor: "rgba(255,255,255,0.03)" }}
             >
@@ -171,7 +176,7 @@ const steps = [
 
 function HowItWorks() {
   return (
-    <section id="hoe-het-werkt" className="py-24 px-6 border-t border-gray-900" style={{ backgroundColor: "#0d0d0d" }}>
+    <section id="how-it-works" className="py-24 px-6 border-t border-gray-900" style={{ backgroundColor: "#0d0d0d" }}>
       <div className="max-w-4xl mx-auto">
         <p className="text-xs uppercase tracking-widest text-gray-600 mb-3 text-center font-mono">
           How it works
@@ -390,27 +395,27 @@ const missions = [
   },
   {
     id: "M-02",
-    title: "WIP Wars",
-    tag: "Flow",
-    tagColor: "text-cyan-400 border-cyan-900",
-    description:
-      "The team is working on sixteen things at once and nothing gets done. Introduce WIP limits, convince your colleagues, and measure the difference.",
-    meta: "Based on Kanban & DORA research",
-  },
-  {
-    id: "M-03",
-    title: "Pipeline Building",
+    title: "On-Demand Environments",
     tag: "Technical",
     tagColor: "text-violet-400 border-violet-900",
     description:
-      "Nexus Corp deploys manually, once a month. Build their first deployment pipeline and bring deployment frequency up.",
+      "The app lives on one server nobody understands. Containerize it so every developer gets the same environment, and every deploy is predictable.",
+    meta: "Based on The DevOps Handbook - Part II",
+  },
+  {
+    id: "M-03",
+    title: "Build the Pipeline",
+    tag: "Technical",
+    tagColor: "text-violet-400 border-violet-900",
+    description:
+      "Nexus Corp deploys manually, once a month. Build their first automated deployment pipeline and bring deployment frequency up.",
     meta: "Based on The DevOps Handbook - Part II",
   },
 ];
 
 function MissionsTeaser() {
   return (
-    <section className="py-24 px-6 border-t border-gray-900" style={{ backgroundColor: "#0d0d0d" }}>
+    <section id="missions" className="py-24 px-6 border-t border-gray-900" style={{ backgroundColor: "#0d0d0d" }}>
       <div className="max-w-5xl mx-auto">
         <p className="text-xs uppercase tracking-widest text-gray-600 mb-3 text-center font-mono">
           Missions

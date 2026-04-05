@@ -20,10 +20,10 @@ function getInitials(name?: string | null, email?: string | null): string {
 }
 
 const navLinks = [
-  { href: "/#hoe-het-werkt", label: "How it works", icon: Info,            iconColor: "text-gray-400",        authOnly: false },
-  { href: "/#missies",        label: "Missions",     icon: Map,             iconColor: "text-cyan-500",        authOnly: false },
-  { href: "/library",         label: "Library",      icon: BookOpen,        iconColor: "text-amber-400",       authOnly: false },
-  { href: "/dashboard",       label: "Dashboard",    icon: LayoutDashboard, iconColor: "text-cyan-500",        authOnly: true  },
+  { href: "/#how-it-works", label: "How it works", icon: Info,            iconColor: "text-gray-400",  authOnly: false, missionsLink: false },
+  { href: "/#missions",     label: "Missions",     icon: Map,             iconColor: "text-cyan-500",  authOnly: false, missionsLink: true  },
+  { href: "/library",       label: "Library",      icon: BookOpen,        iconColor: "text-amber-400", authOnly: false, missionsLink: false },
+  { href: "/dashboard",     label: "Dashboard",    icon: LayoutDashboard, iconColor: "text-cyan-500",  authOnly: true,  missionsLink: false },
 ]
 
 export default function Navbar({ user }: NavbarProps) {
@@ -65,12 +65,13 @@ export default function Navbar({ user }: NavbarProps) {
         {/* Nav links + user area */}
         <div className="flex items-center gap-7">
           {navLinks.filter((link) => !link.authOnly || !!user).map((link) => {
-            const active = isActive(link.href)
+            const href = link.missionsLink && user ? "/dashboard" : link.href
+            const active = isActive(href)
             const Icon = link.icon
             return (
               <a
-                key={link.href}
-                href={link.href}
+                key={link.label}
+                href={href}
                 className={`flex items-center gap-1.5 text-sm transition-colors ${active ? "text-cyan-400" : "text-gray-400 hover:text-white"}`}
               >
                 <Icon size={16} strokeWidth={1.75} className={`shrink-0 ${link.iconColor}`} />
