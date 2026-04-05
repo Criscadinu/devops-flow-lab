@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { Syne } from "next/font/google";
+import { TestPanel } from "@/components/TestPanel";
 import { computeDora } from "@/lib/dora";
 
 export const metadata: Metadata = {
@@ -575,6 +576,12 @@ export default async function DashboardPage() {
         </footer>
 
       </div>
+
+      {/* Hidden test panel — dev + allowlisted emails only */}
+      {(process.env.NODE_ENV !== 'production' ||
+        ['criscadinu', 'agile-fanatics'].some((d) => session.user?.email?.includes(d))) && (
+        <TestPanel />
+      )}
     </main>
   );
 }
