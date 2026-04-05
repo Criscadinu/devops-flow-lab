@@ -1,4 +1,5 @@
 import { Syne } from "next/font/google"
+import { VideoNotice } from "../_components/VideoNotice"
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 const serif: React.CSSProperties = { fontFamily: "Georgia, 'Times New Roman', serif" }
 
@@ -90,15 +91,7 @@ export default function IncidentReviewPage() {
         </div>
       </div>
 
-      <div className="px-8 py-10 border-b border-[#e5e5e5]">
-        <div className="max-w-3xl mx-auto">
-          <p className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#7c3aed] mb-3">Video Lesson</p>
-          <div className="w-full flex items-center justify-center" style={{ aspectRatio: "16/9", border: "2px dashed #c4b5fd", backgroundColor: "#faf5ff" }}>
-            <span className="text-sm font-mono text-gray-400">Video coming soon — check back later</span>
-          </div>
-          <p className="text-xs mt-3" style={{ ...serif, color: "#888" }}>In this video: running a blameless incident review, the five whys technique, and how to write action items that actually get done.</p>
-        </div>
-      </div>
+      <VideoNotice />
 
       <div className="px-8 py-12">
         <div className="max-w-3xl mx-auto flex flex-col gap-14">
