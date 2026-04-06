@@ -96,6 +96,15 @@ const missionDefs = [
     alwaysUnlocked: false,
     unlockedBy: "M-08",
   },
+  {
+    id: "M-10",
+    title: "Fast Incident Response",
+    category: "FEEDBACK",
+    description: "Alerts fire but nobody knows what to do. Build the runbook and status endpoint that turn chaos into a repeatable process.",
+    href: "/missions/m10",
+    alwaysUnlocked: false,
+    unlockedBy: "M-09",
+  },
 ];
 
 const roleLabels: Record<string, string> = {
