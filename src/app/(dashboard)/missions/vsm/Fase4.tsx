@@ -258,7 +258,7 @@ export function Fase4() {
             </a>
 
             <a
-              href="/missions/pipeline"
+              href="/missions/environments"
               className="flex items-center gap-3 px-8 py-4 text-sm font-mono border transition-opacity hover:opacity-80"
               style={{
                 backgroundColor: "#0a0a0a",

@@ -29,7 +29,7 @@ const missionDefs = [
     title: "On-Demand Environments",
     category: "TECHNICAL",
     description: "Every developer sets up their environment manually. No staging. No consistency. Fix it.",
-    href: "/missions/pipeline",
+    href: "/missions/environments",
     alwaysUnlocked: true,
     unlockedBy: undefined as string | undefined,
   },
