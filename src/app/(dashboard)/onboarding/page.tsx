@@ -9,16 +9,10 @@ export default async function OnboardingPage() {
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
-    select: { id: true },
+    select: { onboardingCompleted: true },
   })
 
-  if (user) {
-    const hasProgress = await prisma.userProgress.findFirst({
-      where: { userId: user.id },
-      select: { id: true },
-    })
-    if (hasProgress) redirect("/dashboard")
-  }
+  if (user?.onboardingCompleted) redirect("/dashboard")
 
   return <OnboardingClient />
 }
