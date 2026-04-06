@@ -81,9 +81,9 @@ const missionDefs = [
 ];
 
 const roleLabels: Record<string, string> = {
-  engineer: "Engineer",
-  manager:  "Manager",
-  coach:    "Coach / Trainer",
+  ENGINEER: "Engineer",
+  MANAGER:  "Manager",
+  COACH:    "Coach / Trainer",
 };
 
 // ─── First Way mission log ─────────────────────────────────────────────────────
