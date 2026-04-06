@@ -78,6 +78,15 @@ const missionDefs = [
     alwaysUnlocked: false,
     unlockedBy: "M-06",
   },
+  {
+    id: "M-08",
+    title: "Create Telemetry",
+    category: "FEEDBACK",
+    description: "Nexus Corp is flying blind. No logs, no metrics, no alerts. Add the eyes your system needs.",
+    href: "/missions/m08",
+    alwaysUnlocked: false,
+    unlockedBy: "M-07",
+  },
 ];
 
 const roleLabels: Record<string, string> = {
