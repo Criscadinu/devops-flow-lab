@@ -87,6 +87,15 @@ const missionDefs = [
     alwaysUnlocked: false,
     unlockedBy: "M-07",
   },
+  {
+    id: "M-09",
+    title: "Monitor and Alert",
+    category: "FEEDBACK",
+    description: "Metrics exist but nobody is watching. Build automated alerting so the system tells you when something is wrong — before the customer does.",
+    href: "/missions/m09",
+    alwaysUnlocked: false,
+    unlockedBy: "M-08",
+  },
 ];
 
 const roleLabels: Record<string, string> = {
