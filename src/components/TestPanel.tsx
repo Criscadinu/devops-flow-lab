@@ -3,6 +3,7 @@
 import { useState, useEffect, useTransition, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { resetAllMissions, completeUntilMission } from '@/app/actions/testControls'
+import { resetOnboarding } from '@/app/actions/progress'
 
 const ALLOWED = ['cris.g.cadinu', 'agilefanatics']
 const SEQUENCE = 'devops'
@@ -11,6 +12,7 @@ const CLICK_WINDOW_MS = 2000
 
 const BUTTONS = [
   { label: 'Reset all',          action: () => resetAllMissions()              },
+  { label: 'Reset Onboarding',   action: () => resetOnboarding()               },
   { label: 'Complete M-01',      action: () => completeUntilMission('M-01')    },
   { label: 'Complete to M-03',   action: () => completeUntilMission('M-03')    },
   { label: 'Complete to M-07',   action: () => completeUntilMission('M-07')    },
