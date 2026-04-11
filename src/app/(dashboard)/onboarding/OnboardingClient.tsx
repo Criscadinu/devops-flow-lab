@@ -39,10 +39,12 @@ export function OnboardingClient() {
   const router = useRouter()
   const [selected, setSelected] = useState<Role | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   async function handleStart() {
     if (!selected || submitting) return
     setSubmitting(true)
+    setError(null)
 
     try {
       const res = await fetch("/api/onboarding", {
@@ -54,9 +56,11 @@ export function OnboardingClient() {
       if (res.ok) {
         router.push("/dashboard")
       } else {
+        setError("Something went wrong. Please try again.")
         setSubmitting(false)
       }
     } catch {
+      setError("Something went wrong. Please try again.")
       setSubmitting(false)
     }
   }
@@ -104,27 +108,37 @@ export function OnboardingClient() {
           <div className="fade-up delay-3 grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
             {ROLES.map(({ id, title, description, Icon }) => {
               const isSelected = selected === id
+              const isComingSoon = id === "COACH" || id === "MANAGER"
               return (
                 <button
                   key={id}
-                  onClick={() => setSelected(id)}
-                  disabled={submitting}
-                  className="flex flex-col items-start gap-5 p-6 text-left transition-all duration-150 border"
+                  onClick={() => { if (!isComingSoon && !submitting) setSelected(id) }}
+                  disabled={submitting || isComingSoon}
+                  className="relative flex flex-col items-start gap-5 p-6 text-left transition-all duration-150 border"
                   style={{
                     backgroundColor: isSelected ? "rgba(6,182,212,0.07)" : "rgba(255,255,255,0.02)",
                     borderColor: isSelected ? "rgb(6,182,212)" : "rgb(31,41,55)",
                     borderLeft: isSelected
                       ? "3px solid rgb(6,182,212)"
                       : "3px solid rgba(255,255,255,0.04)",
-                    cursor: submitting ? "not-allowed" : "pointer",
-                    opacity: submitting && !isSelected ? 0.4 : 1,
+                    cursor: isComingSoon || submitting ? "default" : "pointer",
+                    opacity: isComingSoon ? 0.5 : submitting && !isSelected ? 0.4 : 1,
                   }}
                 >
-                  <Icon
-                    size={22}
-                    style={{ color: isSelected ? "rgb(6,182,212)" : "rgb(75,85,99)" }}
-                    strokeWidth={1.5}
-                  />
+                  {isComingSoon ? (
+                    <span
+                      className="font-mono text-xs uppercase px-2 py-0.5"
+                      style={{ backgroundColor: "#111", color: "rgb(75,85,99)", borderRadius: 0 }}
+                    >
+                      COMING SOON
+                    </span>
+                  ) : (
+                    <Icon
+                      size={22}
+                      style={{ color: isSelected ? "rgb(6,182,212)" : "rgb(75,85,99)" }}
+                      strokeWidth={1.5}
+                    />
+                  )}
 
                   <div className="flex flex-col gap-1.5">
                     <span
@@ -138,21 +152,23 @@ export function OnboardingClient() {
                     </span>
                   </div>
 
-                  <div className="mt-auto pt-1">
-                    <span
-                      className="text-xs font-mono tracking-widest"
-                      style={{ color: isSelected ? "rgb(6,182,212)" : "rgb(55,65,81)" }}
-                    >
-                      {isSelected ? "▸ Selected" : "▸ Choose"}
-                    </span>
-                  </div>
+                  {!isComingSoon && (
+                    <div className="mt-auto pt-1">
+                      <span
+                        className="text-xs font-mono tracking-widest"
+                        style={{ color: isSelected ? "rgb(6,182,212)" : "rgb(55,65,81)" }}
+                      >
+                        {isSelected ? "▸ Selected" : "▸ Choose"}
+                      </span>
+                    </div>
+                  )}
                 </button>
               )
             })}
           </div>
 
           {/* CTA */}
-          <div className="fade-up delay-4 w-full">
+          <div className="fade-up delay-4 w-full flex flex-col gap-2">
             <button
               onClick={handleStart}
               disabled={!selected || submitting}
@@ -168,6 +184,11 @@ export function OnboardingClient() {
             >
               {submitting ? "Starting..." : "Start your mission"}
             </button>
+            {error && (
+              <p className="text-xs font-mono text-center" style={{ color: "rgb(239,68,68)" }}>
+                {error}
+              </p>
+            )}
           </div>
 
         </div>

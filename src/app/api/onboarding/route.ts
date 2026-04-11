@@ -23,9 +23,22 @@ export async function POST(req: NextRequest) {
       where: { email: session.user.email },
       data: { role, onboardingCompleted: true },
     })
-  } catch (err) {
-    console.error("[api/onboarding] DB error:", err)
-    return NextResponse.json({ error: "Database error" }, { status: 500 })
+  } catch {
+    // User record may not exist yet — create it
+    try {
+      await prisma.user.create({
+        data: {
+          email: session.user.email,
+          name: session.user.name ?? null,
+          image: session.user.image ?? null,
+          role,
+          onboardingCompleted: true,
+        },
+      })
+    } catch (err) {
+      console.error("[api/onboarding] DB error:", err)
+      return NextResponse.json({ error: "Database error" }, { status: 500 })
+    }
   }
 
   return NextResponse.json({ ok: true })
