@@ -55,15 +55,15 @@ export default function Navbar({ user }: NavbarProps) {
       <div className="max-w-5xl mx-auto flex items-center justify-between">
 
         {/* Logo */}
-        <a href="/" className="flex items-center gap-2.5">
+        <a href="/" className="flex items-center gap-2.5 shrink-0">
           <span className="w-0.5 h-5 shrink-0" style={{ backgroundColor: "rgb(6,182,212)" }} aria-hidden />
-          <span className="text-white font-bold text-lg tracking-tight">
+          <span className="text-white font-bold text-lg tracking-tight whitespace-nowrap">
             DevOps <span className="text-cyan-400">Flow Lab</span>
           </span>
         </a>
 
         {/* Nav links + user area */}
-        <div className="flex items-center gap-7">
+        <div className="flex items-center gap-5 md:gap-7">
           {navLinks.filter((link) => !link.authOnly || !!user).map((link) => {
             const href = link.missionsLink && user ? "/dashboard" : link.href
             const active = isActive(href)
@@ -75,7 +75,7 @@ export default function Navbar({ user }: NavbarProps) {
                 className={`flex items-center gap-1.5 text-sm transition-colors ${active ? "text-cyan-400" : "text-gray-400 hover:text-white"}`}
               >
                 <Icon size={16} strokeWidth={1.75} className={`shrink-0 ${link.iconColor}`} />
-                <span className="hidden sm:inline">{link.label}</span>
+                <span className="hidden md:inline">{link.label}</span>
               </a>
             )
           })}

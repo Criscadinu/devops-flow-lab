@@ -60,7 +60,7 @@ function Hero({ authenticated }: { authenticated: boolean }) {
           </div>
 
           <h1
-            className="text-6xl sm:text-7xl text-white leading-[1.05] tracking-tighter"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-[1.05] tracking-tighter px-4 sm:px-0"
             style={{ ...H, fontWeight: 800 }}
           >
             Reading about DevOps<br />
@@ -68,7 +68,7 @@ function Hero({ authenticated }: { authenticated: boolean }) {
             as feeling it.
           </h1>
 
-          <p className="text-lg text-gray-400 max-w-2xl leading-relaxed">
+          <p className="text-base sm:text-lg text-gray-400 max-w-2xl leading-relaxed">
             DevOps Flow Lab turns the theory from The DevOps Handbook, The Unicorn Project, and DORA research
             into real missions. You learn by doing - not by reading.
           </p>

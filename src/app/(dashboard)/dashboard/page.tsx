@@ -220,9 +220,9 @@ export default async function DashboardPage() {
       <div className="max-w-6xl mx-auto flex flex-col gap-10">
 
         {/* ── Top bar ───────────────────────────────────────────────────────── */}
-        <header className="flex items-center justify-between border-b border-gray-800 pb-6">
+        <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-gray-800 pb-6">
           <div className="flex items-center gap-4">
-            <div className="w-2 h-6" style={{ backgroundColor: "rgb(6,182,212)" }} />
+            <div className="w-2 h-6 shrink-0" style={{ backgroundColor: "rgb(6,182,212)" }} />
             <span className="text-xs font-mono tracking-[0.25em] text-gray-400 uppercase">
               Nexus Corp - Command Center
             </span>
@@ -274,7 +274,7 @@ export default async function DashboardPage() {
                   </div>
                   <div>
                     <p className="text-xs text-gray-600 mb-1">{m.label}</p>
-                    <p className="text-3xl font-mono font-bold leading-none" style={{ ...syne.style, color: accentColor }}>
+                    <p className="text-2xl sm:text-3xl font-mono font-bold leading-none overflow-hidden break-words" style={{ ...syne.style, color: accentColor }}>
                       {m.value}
                     </p>
                   </div>
