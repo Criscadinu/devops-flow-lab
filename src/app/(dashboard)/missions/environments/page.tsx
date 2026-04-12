@@ -57,110 +57,92 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
 
 // ─── Phase 1 - The situation ──────────────────────────────────────────────────
 
-const panels = [
+type DialogueMsg =
+  | { type: "left" | "right"; initials: string; name: string; badge: string; accent: string; text: string }
+  | { type: "beat"; text: string }
+  | { type: "player"; text: string; coda: string }
+
+const dialogue: DialogueMsg[] = [
   {
-    initials: "KA",
-    name: "Kai",
-    role: "QA Engineer",
-    badge: "QA",
-    accent: "rgb(251,146,60)",
-    badgeBg: "rgba(251,146,60,0.08)",
-    badgeBorder: "rgba(251,146,60,0.3)",
-    quote: (
-      <>
-        &ldquo;I wait an average of <mark>5 days</mark> before I can start testing. The test
-        environment is either busy or broken. By the time I get access, the sprint is almost
-        over.&rdquo;
-      </>
-    ),
-  },
-  {
-    initials: "MA",
-    name: "Marco",
-    role: "Ops Engineer",
-    badge: "OPS",
+    type: "left",
+    initials: "MA", name: "Marco", badge: "OPS",
     accent: "rgb(239,68,68)",
-    badgeBg: "rgba(239,68,68,0.08)",
-    badgeBorder: "rgba(239,68,68,0.3)",
-    quote: (
-      <>
-        &ldquo;Deployment to ACC has to be scheduled. Average wait: <mark>8 days</mark>. And
-        prod? Manual deploy, locked to the last Friday of the month.{" "}
-        <mark>12 days</mark> average wait time.&rdquo;
-      </>
-    ),
+    text: "The test environment is down again.",
   },
   {
-    initials: "LI",
-    name: "Lisa",
-    role: "Developer",
-    badge: "DEV",
+    type: "right",
+    initials: "KA", name: "Kai", badge: "QA",
+    accent: "rgb(251,146,60)",
+    text: "Again? I have been waiting three days to start testing. The sprint ends Friday.",
+  },
+  {
+    type: "left",
+    initials: "MA", name: "Marco", badge: "OPS",
+    accent: "rgb(239,68,68)",
+    text: "I know. Lisa had it last. I do not know what state she left it in.",
+  },
+  {
+    type: "left",
+    initials: "LI", name: "Lisa", badge: "DEV",
     accent: "rgb(34,197,94)",
-    badgeBg: "rgba(34,197,94,0.08)",
-    badgeBorder: "rgba(34,197,94,0.3)",
-    quote: (
-      <>
-        &ldquo;My local setup is different from test, which is different from prod. I fix a bug
-        locally and it breaks in ACC. Nobody knows why. We call it{" "}
-        <mark>works on my machine</mark>.&rdquo;
-      </>
-    ),
+    text: "It worked when I was done. Works on my machine, anyway.",
   },
   {
-    initials: "SM",
-    name: "Sarah",
-    role: "Engineering Manager",
-    badge: "MANAGEMENT",
-    accent: "rgb(6,182,212)",
-    badgeBg: "rgba(6,182,212,0.08)",
-    badgeBorder: "rgba(6,182,212,0.3)",
-    quote: (
-      <>
-        &ldquo;We have one shared test environment. When it breaks, everyone stops. Last month
-        it was down for <mark>3 days</mark> and nobody knew how to rebuild it.&rdquo;
-      </>
-    ),
+    type: "right",
+    initials: "KA", name: "Kai", badge: "QA",
+    accent: "rgb(251,146,60)",
+    text: "That is the problem. It works on your machine. It does not work on mine. It does not work in test. We have three different environments and none of them match.",
   },
   {
-    initials: "TO",
-    name: "Tom",
-    role: "Product Owner",
-    badge: "PRODUCT",
-    accent: "rgb(167,139,250)",
-    badgeBg: "rgba(167,139,250,0.08)",
-    badgeBorder: "rgba(167,139,250,0.3)",
-    quote: (
-      <>
-        &ldquo;We cannot test two features at the same time. There is only one ACC environment.
-        Features queue up. That alone adds <mark>2 weeks</mark> to every release.&rdquo;
-      </>
-    ),
+    type: "left",
+    initials: "MA", name: "Marco", badge: "OPS",
+    accent: "rgb(239,68,68)",
+    text: "And tomorrow we need to deploy to ACC. That has been scheduled for 8 days. If the test environment is not ready by tonight, the whole release slips again.",
   },
   {
-    initials: "YOU",
-    name: "You",
-    role: "New Engineer",
-    badge: "PLAYER",
-    accent: "rgb(6,182,212)",
-    badgeBg: "rgba(6,182,212,0.08)",
-    badgeBorder: "rgba(6,182,212,0.3)",
-    isPlayer: true,
-    quote: (
-      <>
-        &ldquo;The pipeline does not exist yet. But even if it did - where would it deploy to?
-        There is no stable, reproducible environment. That is the real problem.&rdquo;
-      </>
-    ),
-    outro: "Fix the foundation first.",
+    type: "left",
+    initials: "LI", name: "Lisa", badge: "DEV",
+    accent: "rgb(34,197,94)",
+    text: "Can we not just deploy from my laptop? Like last time?",
+  },
+  {
+    type: "left",
+    initials: "MA", name: "Marco", badge: "OPS",
+    accent: "rgb(239,68,68)",
+    text: "Last time we deployed from your laptop, we had a 4-hour outage because your Node version was different from prod.",
+  },
+  {
+    type: "beat",
+    text: "Nobody spoke for a moment. This was not the first time.",
+  },
+  {
+    type: "player",
+    text: "Three developers. Three different environments. One shared test server that nobody owns and nobody can rebuild. This is not a tooling problem. This is a process problem. And the fix is not a bigger server — it is making environments cheap, fast, and identical.",
+    coda: "Fix the environment. Fix the flow.",
   },
 ]
+
+function Avatar({ initials, accent }: { initials: string; accent: string }) {
+  return (
+    <div
+      className="w-9 h-9 flex items-center justify-center text-xs font-mono font-bold shrink-0"
+      style={{
+        backgroundColor: `color-mix(in srgb, ${accent} 10%, transparent)`,
+        border: `1px solid color-mix(in srgb, ${accent} 35%, transparent)`,
+        color: accent,
+      }}
+    >
+      {initials}
+    </div>
+  )
+}
 
 function Phase1() {
   return (
     <div className="flex-1 px-6 py-14">
-      <div className="max-w-5xl mx-auto flex flex-col gap-12">
+      <div className="max-w-3xl mx-auto flex flex-col gap-12">
 
-        <div className="flex flex-col gap-3 max-w-2xl">
+        <div className="flex flex-col gap-3">
           <h2
             className="text-4xl text-white tracking-tight leading-tight"
             style={{ ...syne.style, fontWeight: 800 }}
@@ -172,64 +154,93 @@ function Phase1() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {panels.map((p) => (
-            <div
-              key={p.initials}
-              className="flex flex-col gap-0 overflow-hidden"
-              style={{
-                backgroundColor: "#0a0a0a",
-                border: "1px solid #222",
-                borderLeft: `3px solid ${p.accent}`,
-              }}
-            >
-              {/* Panel header */}
-              <div
-                className="flex items-center justify-between px-4 py-3 border-b"
-                style={{ borderColor: "#1a1a1a", backgroundColor: "#0d0d0d" }}
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-9 h-9 flex items-center justify-center text-xs font-mono font-bold shrink-0"
-                    style={{
-                      backgroundColor: `${p.accent}18`,
-                      border: `1px solid ${p.accent}40`,
-                      color: p.accent,
-                    }}
-                  >
-                    {p.initials}
-                  </div>
-                  <div className="flex flex-col gap-0">
-                    <span className="text-white text-sm font-semibold leading-tight">{p.name}</span>
-                    <span className="text-gray-600 text-xs">{p.role}</span>
-                  </div>
-                </div>
-                <span
-                  className="text-xs font-mono px-2 py-0.5 tracking-widest"
+        <div className="flex flex-col gap-3">
+          {dialogue.map((line, i) => {
+            if (line.type === "beat") {
+              return (
+                <p key={i} className="text-center text-sm text-gray-600 italic py-4">
+                  {line.text}
+                </p>
+              )
+            }
+
+            if (line.type === "player") {
+              return (
+                <div
+                  key={i}
+                  className="flex flex-col gap-4 p-6 border"
                   style={{
-                    color: p.accent,
-                    backgroundColor: p.badgeBg,
-                    border: `1px solid ${p.badgeBorder}`,
+                    backgroundColor: "rgba(6,182,212,0.04)",
+                    borderColor: "rgba(6,182,212,0.3)",
+                    borderLeft: "3px solid rgb(6,182,212)",
                   }}
                 >
-                  {p.badge}
-                </span>
-              </div>
-
-              {/* Quote */}
-              <div className="px-5 py-4 flex flex-col gap-3">
-                <p className="text-gray-300 text-sm leading-relaxed">{p.quote}</p>
-                {"outro" in p && p.outro && (
-                  <p
-                    className="text-white font-bold text-sm border-t pt-3"
-                    style={{ borderColor: "#1a1a1a" }}
-                  >
-                    {p.outro}
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-9 h-9 flex items-center justify-center text-xs font-mono font-bold shrink-0"
+                      style={{
+                        backgroundColor: "rgba(6,182,212,0.1)",
+                        border: "1px solid rgba(6,182,212,0.35)",
+                        color: "rgb(6,182,212)",
+                      }}
+                    >
+                      YOU
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-white text-sm font-semibold">You</span>
+                      <span
+                        className="text-xs font-mono px-1.5 py-0.5 tracking-widest"
+                        style={{
+                          color: "rgb(6,182,212)",
+                          backgroundColor: "rgba(6,182,212,0.08)",
+                          border: "1px solid rgba(6,182,212,0.25)",
+                        }}
+                      >
+                        PLAYER
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-gray-300 text-sm leading-relaxed">{line.text}</p>
+                  <p className="text-white font-bold text-sm border-t pt-4" style={{ borderColor: "rgba(6,182,212,0.15)" }}>
+                    {line.coda}
                   </p>
-                )}
+                </div>
+              )
+            }
+
+            const isRight = line.type === "right"
+            return (
+              <div key={i} className={`flex gap-3 ${isRight ? "flex-row-reverse" : "flex-row"}`}>
+                <Avatar initials={line.initials} accent={line.accent} />
+                <div className="flex flex-col gap-1.5 max-w-[80%]">
+                  <div className={`flex items-center gap-2 ${isRight ? "flex-row-reverse" : ""}`}>
+                    <span className="text-white text-sm font-semibold">{line.name}</span>
+                    <span
+                      className="text-xs font-mono px-1.5 py-0.5 tracking-widest"
+                      style={{
+                        color: line.accent,
+                        backgroundColor: `color-mix(in srgb, ${line.accent} 8%, transparent)`,
+                        border: `1px solid color-mix(in srgb, ${line.accent} 25%, transparent)`,
+                      }}
+                    >
+                      {line.badge}
+                    </span>
+                  </div>
+                  <div
+                    className="px-4 py-3"
+                    style={{
+                      backgroundColor: "#0d0d0d",
+                      border: "1px solid rgb(31,41,55)",
+                      borderLeft: isRight ? undefined : `3px solid ${line.accent}`,
+                      borderRight: isRight ? `3px solid ${line.accent}` : undefined,
+                    }}
+                  >
+                    <p className="text-gray-300 text-sm leading-relaxed">{line.text}</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
 
         <CTA
@@ -238,15 +249,6 @@ function Phase1() {
           sub="Phase 2 of 4 - Why environments break everything"
         />
       </div>
-
-      <style>{`
-        mark {
-          background: none;
-          color: rgb(6,182,212);
-          font-family: monospace;
-          font-weight: 700;
-        }
-      `}</style>
     </div>
   )
 }
