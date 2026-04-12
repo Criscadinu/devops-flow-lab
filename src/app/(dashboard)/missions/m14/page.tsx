@@ -609,17 +609,16 @@ export default async function M14Page({
       where: { email: session.user.email! },
       select: { id: true },
     })
-    const alreadyCompleted = gateUser
-      ? await prisma.userProgress.findFirst({
-          where: { userId: gateUser.id, moduleId: "M-14" },
-        })
-      : null
-    if (!alreadyCompleted) redirect("?phase=3")
-    try {
-      await completeMission("M-14")
-    } catch {
-      // Neon HTTP adapter does not support transactions; progress save is best-effort
-    }
+    if (!gateUser) redirect("?phase=3")
+
+    // Complete the mission first (idempotent — safe to call multiple times)
+    await completeMission("M-14")
+
+    // Now verify it actually exists (guards against DB errors)
+    const completed = await prisma.userProgress.findFirst({
+      where: { userId: gateUser.id, moduleId: "M-14" },
+    })
+    if (!completed) redirect("?phase=3")
   }
 
   return (

@@ -571,13 +571,16 @@ export default async function PipelinePage({
       where: { email: session.user.email! },
       select: { id: true },
     })
-    const alreadyCompleted = gateUser
-      ? await prisma.userProgress.findFirst({
-          where: { userId: gateUser.id, moduleId: "M-02" },
-        })
-      : null
-    if (!alreadyCompleted) redirect("?phase=3")
+    if (!gateUser) redirect("?phase=3")
+
+    // Complete the mission first (idempotent — safe to call multiple times)
     await completeMission("M-02")
+
+    // Now verify it actually exists (guards against DB errors)
+    const completed = await prisma.userProgress.findFirst({
+      where: { userId: gateUser.id, moduleId: "M-02" },
+    })
+    if (!completed) redirect("?phase=3")
   }
 
   return (
