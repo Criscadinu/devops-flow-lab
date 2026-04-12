@@ -184,65 +184,71 @@ export function Fase4() {
           </div>
         </section>
 
-        {/* ── Section 4: DORA Impact ────────────────────────────────────────── */}
+        {/* ── Section 4: DORA Baseline ─────────────────────────────────────── */}
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">03</span>
             <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">
-              Your impact on Nexus Corp
+              Nexus Corp baseline
             </h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
           <div
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-6 border p-6"
-            style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
+            className="flex flex-col gap-4 p-6 border"
+            style={{
+              backgroundColor: "#080808",
+              borderColor: "rgba(239,68,68,0.2)",
+              borderLeft: "3px solid rgb(239,68,68)",
+            }}
           >
-            {/* Metric label */}
-            <div className="flex flex-col gap-1 shrink-0">
-              <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">
-                Deployment Frequency
-              </span>
-              <span className="text-xs font-mono text-gray-700">DORA - DF</span>
-            </div>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              This is where Nexus Corp stands today. You have made the invisible visible.
+              The next missions will fix it.
+            </p>
+          </div>
 
-            <div className="w-px h-10 bg-gray-800 hidden sm:block" />
-
-            {/* Before → After */}
-            <div className="flex items-center gap-5">
-              <div className="flex flex-col gap-1 text-center">
-                <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">
-                  Before
-                </span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { metric: "Deployment Frequency", code: "DF",   value: "1× per month", note: "manual deploys, one fixed day per month" },
+              { metric: "Lead Time for Changes", code: "LT",   value: "43 days",      note: "7.5 days of work hidden in 34 days of waiting" },
+              { metric: "Change Failure Rate",   code: "CFR",  value: "42%",          note: "no tests, no gates — anything can ship" },
+              { metric: "Mean Time to Restore",  code: "MTTR", value: "72 hours",     note: "no runbook, no monitoring, no process" },
+            ].map((d) => (
+              <div
+                key={d.code}
+                className="flex flex-col gap-4 border p-6"
+                style={{
+                  backgroundColor: "#080808",
+                  borderColor: "rgba(239,68,68,0.2)",
+                  borderLeft: "3px solid rgba(239,68,68,0.5)",
+                }}
+              >
+                <div className="flex flex-col gap-1">
+                  <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">{d.metric}</span>
+                  <span className="text-xs font-mono text-gray-700">DORA - {d.code}</span>
+                </div>
                 <span
                   className="text-2xl font-mono font-bold"
                   style={{ ...syne.style, color: "rgb(239,68,68)" }}
                 >
-                  1× per month
+                  {d.value}
                 </span>
+                <div className="flex items-center gap-2">
+                  <span
+                    className="text-xs font-mono font-bold px-1.5 py-0.5 uppercase tracking-widest"
+                    style={{
+                      color: "rgb(239,68,68)",
+                      backgroundColor: "rgba(239,68,68,0.08)",
+                      border: "1px solid rgba(239,68,68,0.25)",
+                    }}
+                  >
+                    BASELINE
+                  </span>
+                </div>
+                <p className="text-xs font-mono text-gray-600">{d.note}</p>
               </div>
-
-              <span className="text-xl font-mono text-gray-700">→</span>
-
-              <div className="flex flex-col gap-1 text-center">
-                <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">
-                  After
-                </span>
-                <span
-                  className="text-2xl font-mono font-bold"
-                  style={{ ...syne.style, color: "rgb(6,182,212)" }}
-                >
-                  2× per month
-                </span>
-              </div>
-            </div>
-
-            <div className="w-px h-10 bg-gray-800 hidden sm:block" />
-
-            <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
-              By making the bottlenecks visible, you&apos;ve taken the first step.
-              Nexus Corp can now improve in a targeted way.
-            </p>
+            ))}
           </div>
         </section>
 

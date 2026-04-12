@@ -18,9 +18,6 @@ export const doraBaseline: DoraState = {
 }
 
 export const missionImpact: Record<string, Partial<DoraState>> = {
-  "M-01": {
-    df: { value: "2× per month", perf: "MEDIUM PERFORMER" },
-  },
   "M-02": {
     cfr: { value: "28%",     perf: "MEDIUM PERFORMER" },
     lt:  { value: "36 days", perf: "MEDIUM PERFORMER" },
