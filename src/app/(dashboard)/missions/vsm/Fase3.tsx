@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   DndContext,
   DragEndEvent,
@@ -135,6 +135,14 @@ function Part1({ onComplete }: { onComplete: () => void }) {
   const [wrongIds, setWrongIds] = useState<Set<Step>>(new Set());
   const [checked, setChecked] = useState(false);
   const [correct, setCorrect] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, []);
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
 
@@ -180,24 +188,71 @@ function Part1({ onComplete }: { onComplete: () => void }) {
         </p>
       </div>
 
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext items={items} strategy={verticalListSortingStrategy}>
-          <div className="flex flex-col gap-2">
-            {items.map((step) => (
-              <SortableCard key={step} id={step} wrongIds={wrongIds} />
-            ))}
-          </div>
-        </SortableContext>
+      {isMobile ? (
+        <div className="flex flex-col gap-2">
+          {items.map((step, index) => (
+            <div
+              key={step}
+              className="flex items-center gap-3 px-4 py-3 border"
+              style={{
+                backgroundColor: wrongIds.has(step) ? "#130606" : "#0a0a0a",
+                borderColor: wrongIds.has(step) ? "rgba(239,68,68,0.5)" : "rgb(31,41,55)",
+                borderLeft: wrongIds.has(step) ? "3px solid rgb(239,68,68)" : "3px solid rgb(6,182,212)",
+              }}
+            >
+              <div className="flex flex-col gap-1 shrink-0">
+                <button
+                  onClick={() => {
+                    if (index === 0) return
+                    setItems(prev => arrayMove(prev, index, index - 1))
+                    if (wrongIds.size > 0) setWrongIds(new Set())
+                  }}
+                  disabled={index === 0}
+                  className="text-gray-600 hover:text-gray-300 disabled:opacity-20 font-mono text-xs px-1"
+                >
+                  ▲
+                </button>
+                <button
+                  onClick={() => {
+                    if (index === items.length - 1) return
+                    setItems(prev => arrayMove(prev, index, index + 1))
+                    if (wrongIds.size > 0) setWrongIds(new Set())
+                  }}
+                  disabled={index === items.length - 1}
+                  className="text-gray-600 hover:text-gray-300 disabled:opacity-20 font-mono text-xs px-1"
+                >
+                  ▼
+                </button>
+              </div>
+              <span className="text-gray-200 text-sm flex-1">{step}</span>
+              {wrongIds.has(step) && (
+                <span className="text-xs font-mono shrink-0" style={{ color: "rgb(239,68,68)" }}>
+                  ✗ Wrong
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext items={items} strategy={verticalListSortingStrategy}>
+            <div className="flex flex-col gap-2">
+              {items.map((step) => (
+                <SortableCard key={step} id={step} wrongIds={wrongIds} />
+              ))}
+            </div>
+          </SortableContext>
 
-        <DragOverlay>
-          {activeId ? <DragCard id={activeId} /> : null}
-        </DragOverlay>
-      </DndContext>
+          <DragOverlay>
+            {activeId ? <DragCard id={activeId} /> : null}
+          </DragOverlay>
+        </DndContext>
+      )}
 
       <div className="flex items-center gap-4">
         {!correct && (

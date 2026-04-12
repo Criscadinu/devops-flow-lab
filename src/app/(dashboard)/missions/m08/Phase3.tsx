@@ -1,9 +1,39 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Syne } from "next/font/google"
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
+
+function MobileWarning() {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
+  if (!isMobile) return null
+
+  return (
+    <div
+      className="flex flex-col gap-3 p-5 border mb-6"
+      style={{
+        backgroundColor: "#0a0700",
+        borderColor: "rgba(251,146,60,0.4)",
+        borderLeft: "3px solid rgb(251,146,60)",
+      }}
+    >
+      <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
+        Desktop required
+      </p>
+      <p className="text-sm text-gray-400 leading-relaxed">
+        This phase requires a terminal, a code editor, and GitHub. These tasks cannot be completed on a mobile device. Open this page on your laptop or desktop to continue.
+      </p>
+    </div>
+  )
+}
 
 function TaskCard({
   number,
@@ -121,6 +151,8 @@ export function Phase3() {
   return (
     <div className="flex-1 px-6 py-14">
       <div className="max-w-3xl mx-auto flex flex-col gap-8">
+
+        <MobileWarning />
 
         {/* Header */}
         <div className="flex flex-col gap-2">
