@@ -105,6 +105,15 @@ const missionDefs = [
     alwaysUnlocked: false,
     unlockedBy: "M-09",
   },
+  {
+    id: "M-11",
+    title: "Hypothesis-Driven Development",
+    category: "FEEDBACK",
+    description: "Three weeks of work. Shipped on a Friday. Nobody measured if it helped. Build the experiment engine that turns feature flags into data-driven decisions.",
+    href: "/missions/m11",
+    alwaysUnlocked: false,
+    unlockedBy: "M-10",
+  },
 ];
 
 const roleLabels: Record<string, string> = {
