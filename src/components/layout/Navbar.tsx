@@ -55,12 +55,24 @@ export default function Navbar({ user }: NavbarProps) {
       <div className="max-w-5xl mx-auto flex items-center justify-between">
 
         {/* Logo */}
-        <a href="/" className="flex items-center gap-2.5 shrink-0">
-          <span className="w-0.5 h-5 shrink-0" style={{ backgroundColor: "rgb(6,182,212)" }} aria-hidden />
-          <span className="text-white font-bold text-lg tracking-tight whitespace-nowrap">
-            DevOps <span className="text-cyan-400">Flow Lab</span>
+        <div className="flex items-center gap-2.5 shrink-0">
+          <a href="/" className="flex items-center gap-2.5">
+            <span className="w-0.5 h-5 shrink-0" style={{ backgroundColor: "rgb(6,182,212)" }} aria-hidden />
+            <span className="text-white font-bold text-lg tracking-tight whitespace-nowrap">
+              DevOps <span className="text-cyan-400">Flow Lab</span>
+            </span>
+          </a>
+          <span
+            className="font-mono text-[10px] uppercase tracking-widest px-1.5 py-0.5"
+            style={{
+              color: "rgb(6,182,212)",
+              backgroundColor: "rgba(6,182,212,0.1)",
+              border: "1px solid rgba(6,182,212,0.3)",
+            }}
+          >
+            BETA
           </span>
-        </a>
+        </div>
 
         {/* Nav links + user area */}
         <div className="flex items-center gap-5 md:gap-7">
