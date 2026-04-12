@@ -132,6 +132,15 @@ const missionDefs = [
     alwaysUnlocked: false,
     unlockedBy: "M-12",
   },
+  {
+    id: "M-14",
+    title: "Learning Culture",
+    category: "LEARNING",
+    description: "Lisa fixed a bug in 3 hours. Marco spent 2 days on the same bug two months earlier. Nobody wrote it down. Build the practices that turn individual learning into team knowledge.",
+    href: "/missions/m14",
+    alwaysUnlocked: false,
+    unlockedBy: "M-13",
+  },
 ];
 
 const roleLabels: Record<string, string> = {
@@ -216,7 +225,7 @@ export default async function DashboardPage() {
   });
 
   // ── Maturity bar ────────────────────────────────────────────────────────────
-  const TOTAL_MISSIONS = 13;
+  const TOTAL_MISSIONS = 14;
   const completedCount = completedIds.size;
   const maturityPct    = Math.round((completedCount / TOTAL_MISSIONS) * 100);
 
@@ -232,7 +241,7 @@ export default async function DashboardPage() {
   // ── Way progress ────────────────────────────────────────────────────────────
   const firstWayIds      = ['M-01','M-02','M-03','M-05','M-04','M-06','M-07'];
   const secondWayIds     = ['M-08','M-09','M-10','M-11','M-12'];
-  const thirdWayIds      = ['M-13'];
+  const thirdWayIds      = ['M-13', 'M-14'];
   const completedFirstWay  = firstWayIds.filter(id => completedIds.has(id)).length;
   const completedSecondWay = secondWayIds.filter(id => completedIds.has(id)).length;
   const completedThirdWay  = thirdWayIds.filter(id => completedIds.has(id)).length;
