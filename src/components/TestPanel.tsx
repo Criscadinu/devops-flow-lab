@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useTransition, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { resetAllMissions, completeFirstWay, completeSecondWay } from '@/app/actions/testControls'
+import { resetAllMissions, completeFirstWay, completeSecondWay, completeThirdWay } from '@/app/actions/testControls'
 import { resetOnboarding } from '@/app/actions/progress'
 
 const ALLOWED = ['cris.g.cadinu', 'agilefanatics']
@@ -15,7 +15,7 @@ const BUTTONS = [
   { label: 'Reset Onboarding',     action: () => resetOnboarding()    },
   { label: 'Complete First Way',   action: () => completeFirstWay()   },
   { label: 'Complete Second Way',  action: () => completeSecondWay()  },
-  { label: 'Complete all',         action: () => completeSecondWay()  },
+  { label: 'Complete all',         action: () => completeThirdWay()   },
 ]
 
 export function TestPanel({ email }: { email: string }) {

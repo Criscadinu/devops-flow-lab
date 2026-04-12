@@ -5,10 +5,11 @@ import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 
 const ALLOWED_DOMAINS = ['cris.g.cadinu', 'agilefanatics']
-const MISSION_ORDER = ['M-01', 'M-02', 'M-03', 'M-05', 'M-04', 'M-06', 'M-07', 'M-08', 'M-09', 'M-10', 'M-11', 'M-12']
+const MISSION_ORDER = ['M-01', 'M-02', 'M-03', 'M-05', 'M-04', 'M-06', 'M-07', 'M-08', 'M-09', 'M-10', 'M-11', 'M-12', 'M-13']
 
 const FIRST_WAY  = ['M-01', 'M-02', 'M-03', 'M-05', 'M-04', 'M-06', 'M-07']
 const SECOND_WAY = [...FIRST_WAY, 'M-08', 'M-09', 'M-10', 'M-11', 'M-12']
+const THIRD_WAY  = [...SECOND_WAY, 'M-13']
 
 async function getAuthorizedUser() {
   const session = await auth()
@@ -58,4 +59,8 @@ export async function completeFirstWay() {
 
 export async function completeSecondWay() {
   await completeMissions(SECOND_WAY)
+}
+
+export async function completeThirdWay() {
+  await completeMissions(THIRD_WAY)
 }

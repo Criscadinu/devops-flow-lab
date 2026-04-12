@@ -123,6 +123,15 @@ const missionDefs = [
     alwaysUnlocked: false,
     unlockedBy: "M-11",
   },
+  {
+    id: "M-13",
+    title: "Blameless Postmortems",
+    category: "LEARNING",
+    description: "The health endpoint outage was fixed but nobody wrote down what happened. Build the postmortem process that turns every incident into a permanent improvement.",
+    href: "/missions/m13",
+    alwaysUnlocked: false,
+    unlockedBy: "M-12",
+  },
 ];
 
 const roleLabels: Record<string, string> = {
@@ -207,7 +216,7 @@ export default async function DashboardPage() {
   });
 
   // ── Maturity bar ────────────────────────────────────────────────────────────
-  const TOTAL_MISSIONS = 12;
+  const TOTAL_MISSIONS = 13;
   const completedCount = completedIds.size;
   const maturityPct    = Math.round((completedCount / TOTAL_MISSIONS) * 100);
 
@@ -223,9 +232,12 @@ export default async function DashboardPage() {
   // ── Way progress ────────────────────────────────────────────────────────────
   const firstWayIds      = ['M-01','M-02','M-03','M-05','M-04','M-06','M-07'];
   const secondWayIds     = ['M-08','M-09','M-10','M-11','M-12'];
+  const thirdWayIds      = ['M-13'];
   const completedFirstWay  = firstWayIds.filter(id => completedIds.has(id)).length;
   const completedSecondWay = secondWayIds.filter(id => completedIds.has(id)).length;
+  const completedThirdWay  = thirdWayIds.filter(id => completedIds.has(id)).length;
   const firstWayComplete   = completedFirstWay === firstWayIds.length;
+  const secondWayComplete  = completedSecondWay === secondWayIds.length;
 
   const FIRST_WAY_TOTAL    = 7;
   const firstWayCompleted  = firstWayLog.filter((m) => completedIds.has(m.id)).length;
@@ -443,6 +455,7 @@ export default async function DashboardPage() {
 
             const firstWayMissions  = missions.filter(m => firstWayIds.includes(m.id));
             const secondWayMissions = missions.filter(m => secondWayIds.includes(m.id));
+            const thirdWayMissions  = missions.filter(m => thirdWayIds.includes(m.id));
 
             return (
               <>
@@ -508,26 +521,37 @@ export default async function DashboardPage() {
                 {/* ── Third Way: Learning ──────────────────────────── */}
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-4">
-                    <div className="w-0.5 h-5 shrink-0" style={{ backgroundColor: "rgb(31,41,55)" }} />
+                    <div className="w-0.5 h-5 shrink-0" style={{ backgroundColor: secondWayComplete ? "rgb(6,182,212)" : "rgb(31,41,55)" }} />
                     <span className="text-xs font-mono tracking-widest uppercase text-gray-500">
                       Third Way: Learning
                     </span>
                     <div className="flex-1 h-px bg-gray-900" />
-                    <span className="text-xs font-mono text-gray-700">coming soon</span>
+                    <span className="text-xs font-mono text-gray-600">
+                      {completedThirdWay}/{thirdWayIds.length} complete
+                    </span>
                   </div>
-                  <div className="w-full h-0.5 bg-gray-900" />
-                  <div
-                    className="flex flex-col gap-3 p-6 border mt-2"
-                    style={{ backgroundColor: "#050505", borderColor: "rgb(31,41,55)" }}
-                  >
-                    <p className="text-xs font-mono uppercase tracking-widest text-gray-700">
-                      Third Way: Learning — Coming Soon
-                    </p>
-                    <p className="text-gray-700 text-sm">
-                      Blameless postmortems, learning culture, and continuous improvement.
-                      Unlocks after completing Second Way.
-                    </p>
+                  <div className="w-full h-0.5 bg-gray-900">
+                    <div
+                      className="h-full"
+                      style={{ width: `${Math.round((completedThirdWay / thirdWayIds.length) * 100)}%`, backgroundColor: "rgb(6,182,212)" }}
+                    />
                   </div>
+                  {secondWayComplete ? (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                      {thirdWayMissions.map(m => <MissionCard key={m.id} m={m} />)}
+                    </div>
+                  ) : (
+                    <div className="mt-2">
+                      <div className="relative opacity-40 pointer-events-none">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          {thirdWayMissions.map(m => <MissionCard key={m.id} m={m} />)}
+                        </div>
+                      </div>
+                      <p className="text-xs font-mono text-gray-700 mt-3">
+                        ⊘ COMPLETE SECOND WAY TO UNLOCK
+                      </p>
+                    </div>
+                  )}
                 </div>
               </>
             );
