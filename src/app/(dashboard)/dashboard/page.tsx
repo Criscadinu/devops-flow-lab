@@ -220,7 +220,13 @@ export default async function DashboardPage() {
   ];
   const currentStage = [...maturityStages].reverse().find((s) => maturityPct >= s.threshold)!;
 
-  // ── First Way progress ──────────────────────────────────────────────────────
+  // ── Way progress ────────────────────────────────────────────────────────────
+  const firstWayIds      = ['M-01','M-02','M-03','M-05','M-04','M-06','M-07'];
+  const secondWayIds     = ['M-08','M-09','M-10','M-11','M-12'];
+  const completedFirstWay  = firstWayIds.filter(id => completedIds.has(id)).length;
+  const completedSecondWay = secondWayIds.filter(id => completedIds.has(id)).length;
+  const firstWayComplete   = completedFirstWay === firstWayIds.length;
+
   const FIRST_WAY_TOTAL    = 7;
   const firstWayCompleted  = firstWayLog.filter((m) => completedIds.has(m.id)).length;
   const firstWayPct        = Math.round((firstWayCompleted / FIRST_WAY_TOTAL) * 100);
@@ -383,22 +389,14 @@ export default async function DashboardPage() {
         </section>
 
         {/* ── Missions ──────────────────────────────────────────────────────── */}
-        <section className="flex flex-col gap-4">
-          <div className="flex items-baseline gap-3">
-            <h2 className="text-xs font-mono tracking-[0.2em] text-gray-500 uppercase">
-              Your Missions
-            </h2>
-            <div className="flex-1 h-px bg-gray-900" />
-          </div>
+        <section className="flex flex-col gap-12">
 
-          <p className="text-sm text-gray-500">Transform Nexus Corp from low performer to elite.</p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {missions.map((m) => {
+          {/* Helper: render a mission card */}
+          {(() => {
+            function MissionCard({ m }: { m: typeof missions[number] }) {
               const borderColor = m.completed ? "rgb(6,182,212)" : m.unlocked ? "rgba(6,182,212,0.5)" : "rgb(31,41,55)";
               const borderLeft  = m.completed ? "3px solid rgb(6,182,212)" : m.unlocked ? "3px solid rgba(6,182,212,0.5)" : "3px solid rgb(31,41,55)";
               const bg          = m.completed ? "#060d0f" : m.unlocked ? "#090909" : "#050505";
-
               const card = (
                 <div
                   className="flex flex-col gap-4 p-6 border h-full"
@@ -421,13 +419,10 @@ export default async function DashboardPage() {
                       {m.completed && <span className="text-xs font-mono" style={{ color: "rgb(6,182,212)" }}>✓</span>}
                     </div>
                   </div>
-
                   <h3 className="text-lg text-white leading-snug" style={{ ...syne.style, fontWeight: 700 }}>
                     {m.title}
                   </h3>
-
                   <p className="text-sm text-gray-500 leading-relaxed flex-1">{m.description}</p>
-
                   <div className="border-t border-gray-900 pt-3">
                     {m.completed ? (
                       <span className="text-xs font-mono tracking-widest" style={{ color: "rgb(6,182,212)" }}>✓ COMPLETED</span>
@@ -439,14 +434,104 @@ export default async function DashboardPage() {
                   </div>
                 </div>
               );
-
               return m.unlocked || m.completed ? (
                 <a key={m.id} href={m.href ?? "#"} className="block hover:opacity-90 transition-opacity">{card}</a>
               ) : (
                 <div key={m.id}>{card}</div>
               );
-            })}
-          </div>
+            }
+
+            const firstWayMissions  = missions.filter(m => firstWayIds.includes(m.id));
+            const secondWayMissions = missions.filter(m => secondWayIds.includes(m.id));
+
+            return (
+              <>
+                {/* ── First Way: Flow ──────────────────────────────── */}
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-0.5 h-5 shrink-0" style={{ backgroundColor: "rgb(6,182,212)" }} />
+                    <span className="text-xs font-mono tracking-widest uppercase text-gray-500">
+                      First Way: Flow
+                    </span>
+                    <div className="flex-1 h-px bg-gray-900" />
+                    <span className="text-xs font-mono text-gray-600">
+                      {completedFirstWay}/{firstWayIds.length} complete
+                    </span>
+                  </div>
+                  <div className="w-full h-0.5 bg-gray-900">
+                    <div
+                      className="h-full"
+                      style={{ width: `${Math.round((completedFirstWay / firstWayIds.length) * 100)}%`, backgroundColor: "rgb(6,182,212)" }}
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                    {firstWayMissions.map(m => <MissionCard key={m.id} m={m} />)}
+                  </div>
+                </div>
+
+                {/* ── Second Way: Feedback ─────────────────────────── */}
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-0.5 h-5 shrink-0" style={{ backgroundColor: firstWayComplete ? "rgb(6,182,212)" : "rgb(31,41,55)" }} />
+                    <span className="text-xs font-mono tracking-widest uppercase text-gray-500">
+                      Second Way: Feedback
+                    </span>
+                    <div className="flex-1 h-px bg-gray-900" />
+                    <span className="text-xs font-mono text-gray-600">
+                      {completedSecondWay}/{secondWayIds.length} complete
+                    </span>
+                  </div>
+                  <div className="w-full h-0.5 bg-gray-900">
+                    <div
+                      className="h-full"
+                      style={{ width: `${Math.round((completedSecondWay / secondWayIds.length) * 100)}%`, backgroundColor: "rgb(6,182,212)" }}
+                    />
+                  </div>
+                  {firstWayComplete ? (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                      {secondWayMissions.map(m => <MissionCard key={m.id} m={m} />)}
+                    </div>
+                  ) : (
+                    <div className="mt-2">
+                      <div className="relative opacity-40 pointer-events-none">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          {secondWayMissions.map(m => <MissionCard key={m.id} m={m} />)}
+                        </div>
+                      </div>
+                      <p className="text-xs font-mono text-gray-700 mt-3">
+                        ⊘ COMPLETE FIRST WAY TO UNLOCK
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* ── Third Way: Learning ──────────────────────────── */}
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-0.5 h-5 shrink-0" style={{ backgroundColor: "rgb(31,41,55)" }} />
+                    <span className="text-xs font-mono tracking-widest uppercase text-gray-500">
+                      Third Way: Learning
+                    </span>
+                    <div className="flex-1 h-px bg-gray-900" />
+                    <span className="text-xs font-mono text-gray-700">coming soon</span>
+                  </div>
+                  <div className="w-full h-0.5 bg-gray-900" />
+                  <div
+                    className="flex flex-col gap-3 p-6 border mt-2"
+                    style={{ backgroundColor: "#050505", borderColor: "rgb(31,41,55)" }}
+                  >
+                    <p className="text-xs font-mono uppercase tracking-widest text-gray-700">
+                      Third Way: Learning — Coming Soon
+                    </p>
+                    <p className="text-gray-700 text-sm">
+                      Blameless postmortems, learning culture, and continuous improvement.
+                      Unlocks after completing Second Way.
+                    </p>
+                  </div>
+                </div>
+              </>
+            );
+          })()}
         </section>
 
         {/* ── First Way: Flow ───────────────────────────────────────────────── */}
