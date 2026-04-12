@@ -2,6 +2,7 @@
 
 import { signIn } from "next-auth/react";
 import { Syne } from "next/font/google";
+import { Github } from "lucide-react";
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 
@@ -54,19 +55,34 @@ export default function SignInPage() {
           </p>
         </div>
 
-        {/* Google sign-in button */}
-        <button
-          onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-          className="w-full flex items-center gap-4 px-5 py-4 text-sm font-medium text-white transition-opacity hover:opacity-80"
-          style={{
-            backgroundColor: "#111",
-            border: "1px solid rgb(31,41,55)",
-            borderLeft: "3px solid rgb(6,182,212)",
-          }}
-        >
-          <GoogleIcon />
-          <span className="flex-1 text-left">Sign in with Google</span>
-        </button>
+        {/* Sign-in buttons */}
+        <div className="w-full flex flex-col gap-3">
+          <button
+            onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+            className="w-full flex items-center gap-4 px-5 py-4 text-sm font-medium text-white transition-opacity hover:opacity-80"
+            style={{
+              backgroundColor: "#111",
+              border: "1px solid rgb(31,41,55)",
+              borderLeft: "3px solid rgb(6,182,212)",
+            }}
+          >
+            <GoogleIcon />
+            <span className="flex-1 text-left">Continue with Google</span>
+          </button>
+
+          <button
+            onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
+            className="w-full flex items-center gap-4 px-5 py-4 text-sm font-medium text-white transition-opacity hover:opacity-80"
+            style={{
+              backgroundColor: "#111",
+              border: "1px solid rgb(31,41,55)",
+              borderLeft: "3px solid rgb(75,85,99)",
+            }}
+          >
+            <Github size={18} strokeWidth={1.75} className="text-gray-400 shrink-0" />
+            <span className="flex-1 text-left">Continue with GitHub</span>
+          </button>
+        </div>
 
         {/* Fine print */}
         <p className="text-xs text-gray-800">
