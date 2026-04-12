@@ -5,7 +5,10 @@ import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 
 const ALLOWED_DOMAINS = ['cris.g.cadinu', 'agilefanatics']
-const MISSION_ORDER = ['M-01', 'M-02', 'M-03', 'M-04', 'M-05', 'M-06', 'M-07', 'M-08', 'M-09', 'M-10', 'M-11', 'M-12']
+const MISSION_ORDER = ['M-01', 'M-02', 'M-03', 'M-05', 'M-04', 'M-06', 'M-07', 'M-08', 'M-09', 'M-10', 'M-11', 'M-12']
+
+const FIRST_WAY  = ['M-01', 'M-02', 'M-03', 'M-05', 'M-04', 'M-06', 'M-07']
+const SECOND_WAY = [...FIRST_WAY, 'M-08', 'M-09', 'M-10', 'M-11', 'M-12']
 
 async function getAuthorizedUser() {
   const session = await auth()
@@ -20,6 +23,21 @@ async function getAuthorizedUser() {
   })
 }
 
+async function completeMissions(missions: string[]) {
+  const user = await getAuthorizedUser()
+  if (!user) return
+
+  for (const moduleId of missions) {
+    try {
+      await prisma.userProgress.create({ data: { userId: user.id, moduleId } })
+    } catch {
+      // already exists — ignore
+    }
+  }
+
+  revalidatePath('/dashboard')
+}
+
 export async function resetAllMissions() {
   const user = await getAuthorizedUser()
   if (!user) return
@@ -29,19 +47,15 @@ export async function resetAllMissions() {
 }
 
 export async function completeUntilMission(missionId: string) {
-  const user = await getAuthorizedUser()
-  if (!user) return
-
   const idx = MISSION_ORDER.indexOf(missionId)
   if (idx === -1) return
+  await completeMissions(MISSION_ORDER.slice(0, idx + 1))
+}
 
-  for (const moduleId of MISSION_ORDER.slice(0, idx + 1)) {
-    try {
-      await prisma.userProgress.create({ data: { userId: user.id, moduleId } })
-    } catch {
-      // already exists — ignore
-    }
-  }
+export async function completeFirstWay() {
+  await completeMissions(FIRST_WAY)
+}
 
-  revalidatePath('/dashboard')
+export async function completeSecondWay() {
+  await completeMissions(SECOND_WAY)
 }
