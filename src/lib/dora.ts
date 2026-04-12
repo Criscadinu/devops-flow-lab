@@ -58,12 +58,15 @@ export const missionImpact: Record<string, Partial<DoraState>> = {
   "M-11": {
     cfr: { value: "2%", perf: "HIGH PERFORMER" },
   },
+  "M-12": {
+    cfr: { value: "1%", perf: "HIGH PERFORMER" },
+  },
 }
 
-/** Apply mission impacts in canonical order (M-01 → M-11) to produce current DORA state. */
+/** Apply mission impacts in canonical order (M-01 → M-12) to produce current DORA state. */
 export function computeDora(completedIds: Set<string>): DoraState {
   let state = { ...doraBaseline }
-  for (const id of ["M-01", "M-02", "M-03", "M-04", "M-05", "M-06", "M-07", "M-08", "M-09", "M-10", "M-11"]) {
+  for (const id of ["M-01", "M-02", "M-03", "M-04", "M-05", "M-06", "M-07", "M-08", "M-09", "M-10", "M-11", "M-12"]) {
     if (completedIds.has(id) && missionImpact[id]) {
       state = { ...state, ...missionImpact[id] }
     }

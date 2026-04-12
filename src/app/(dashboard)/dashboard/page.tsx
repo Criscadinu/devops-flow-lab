@@ -114,6 +114,15 @@ const missionDefs = [
     alwaysUnlocked: false,
     unlockedBy: "M-10",
   },
+  {
+    id: "M-12",
+    title: "Review and Coordinate Changes",
+    category: "FEEDBACK",
+    description: "Lisa pushed directly to main and broke the health endpoint. Enable branch protection and build the review process that prevents 3am rollbacks.",
+    href: "/missions/m12",
+    alwaysUnlocked: false,
+    unlockedBy: "M-11",
+  },
 ];
 
 const roleLabels: Record<string, string> = {
