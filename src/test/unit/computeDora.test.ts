@@ -7,27 +7,22 @@ describe('computeDora', () => {
     expect(result).toEqual(doraBaseline)
   })
 
-  it('applies M-01 impact: DF improves to 2x per month', () => {
+  it('M-01 has no DORA impact — VSM is analysis only', () => {
     const result = computeDora(new Set(['M-01']))
-    expect(result.df.value).toBe('2× per month')
-    expect(result.df.perf).toBe('MEDIUM PERFORMER')
-    // Other metrics unchanged
-    expect(result.lt).toEqual(doraBaseline.lt)
-    expect(result.cfr).toEqual(doraBaseline.cfr)
-    expect(result.mttr).toEqual(doraBaseline.mttr)
+    expect(result).toEqual(doraBaseline)
   })
 
-  it('applies M-01 + M-02: DF, CFR, and LT all update', () => {
+  it('applies M-01 + M-02: only CFR and LT update (DF stays at baseline)', () => {
     const result = computeDora(new Set(['M-01', 'M-02']))
-    expect(result.df.value).toBe('2× per month')
+    expect(result.df).toEqual(doraBaseline.df)
     expect(result.cfr.value).toBe('28%')
     expect(result.lt.value).toBe('36 days')
     expect(result.mttr).toEqual(doraBaseline.mttr)
   })
 
-  it('applies M-01 + M-02 + M-03: CFR and LT update again', () => {
+  it('applies M-01 + M-02 + M-03: CFR and LT update again (DF still at baseline)', () => {
     const result = computeDora(new Set(['M-01', 'M-02', 'M-03']))
-    expect(result.df.value).toBe('2× per month')
+    expect(result.df).toEqual(doraBaseline.df)
     expect(result.cfr.value).toBe('18%')
     expect(result.lt.value).toBe('28 days')
     expect(result.mttr).toEqual(doraBaseline.mttr)
@@ -60,8 +55,8 @@ describe('computeDora', () => {
   it('missions are always applied in canonical order M-01→M-04 regardless of Set insertion order', () => {
     // M-04 inserted before M-03 in the Set — result should still reflect M-04 overriding M-03's LT
     const result = computeDora(new Set(['M-04', 'M-03', 'M-02', 'M-01']))
-    expect(result.lt.value).toBe('14 days')   // M-04 wins (applied last)
-    expect(result.df.value).toBe('1× per week') // M-04 overrides M-01
+    expect(result.lt.value).toBe('14 days')     // M-04 wins (applied last)
+    expect(result.df.value).toBe('1× per week') // M-04 is first to set DF
   })
 
   it('applies M-05: CFR improves', () => {
