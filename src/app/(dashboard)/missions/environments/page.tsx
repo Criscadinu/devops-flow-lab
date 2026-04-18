@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { auth } from "@/auth"
 import { Syne } from "next/font/google"
 import { Phase3 } from "./Phase3"
+import { MissionFAQ } from "@/components/MissionFAQ"
 import { completeMission } from "@/app/actions/progress"
 import { prisma } from "@/lib/prisma"
 
@@ -341,10 +342,41 @@ function Phase2() {
           label="Fix the Nexus Corp environments →"
           sub="Phase 3 of 4 - Do it yourself"
         />
+
+        <MissionFAQ items={m02Faq} />
       </div>
     </div>
   )
 }
+
+// ─── Phase 2 FAQ data ─────────────────────────────────────────────────────────
+
+const m02Faq = [
+  {
+    question: "Why Docker and not just running the app locally?",
+    answer: "Running locally works until it does not. The moment two developers have different Node versions, or one has a global package the other does not, you have an environment inconsistency. Docker makes the environment part of the code — anyone who clones the repo gets the exact same setup.",
+  },
+  {
+    question: "Why three environments and not one?",
+    answer: "Dev, test, and prod serve different goals. Dev is optimized for speed of feedback — verbose errors, hot reload, noisy logging. Test is predictable — it matches prod closely so CI results are trustworthy. Prod is hardened — minimal logging, no debug output. Mixing them causes subtle bugs that only appear in one environment.",
+  },
+  {
+    question: "What if my team does not know Docker?",
+    answer: "That is exactly the point of this mission. If the environment requires tribal knowledge to set up, it is a bottleneck. Docker Compose reduces the setup to one command. The learning curve is real but it is a one-time cost — the consistency benefit compounds forever.",
+  },
+  {
+    question: "Is this not overkill for a small app?",
+    answer: "The smaller the app, the easier it is to set this up correctly. Retrofitting environment consistency onto a large, legacy codebase is painful. The Nexus Corp app is small — which makes it the perfect time to build the habit.",
+  },
+  {
+    question: "How do I keep secrets out of docker-compose.yml?",
+    answer: "Use a .env file for local secrets and add it to .gitignore. Reference variables in docker-compose.yml with ${VARIABLE_NAME} syntax. For production, inject secrets through your deployment platform's environment variable system — never commit secrets to version control.",
+  },
+  {
+    question: "What if the container does not start?",
+    answer: "Run docker compose logs to see what went wrong. Common causes: port already in use (another process on 3000), missing environment variable, or a syntax error in docker-compose.yml. The error message is usually specific enough to find the fix quickly.",
+  },
+]
 
 // ─── Phase 4 - Result ─────────────────────────────────────────────────────────
 
