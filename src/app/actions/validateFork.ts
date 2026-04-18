@@ -5,7 +5,7 @@ export async function validateFork(url: string): Promise<{ valid: boolean; error
     const match = url.match(/github\.com\/([^\/]+)\/([^\/\s]+)/)
     if (!match) return { valid: false, error: 'Not a valid GitHub URL.' }
     const [, owner, repo] = match
-    if (owner.toLowerCase() === 'criscadinu' || owner.toLowerCase() === 'binabrains') {
+    if (owner.toLowerCase() === 'criscadinu') {
       return { valid: false, error: 'This is the original repository. Fork it first and paste your own fork URL.' }
     }
     const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
