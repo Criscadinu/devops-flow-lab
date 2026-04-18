@@ -443,6 +443,7 @@ export function Phase3() {
   const [task2Done, setTask2Done] = useState(false)
   const [task3Done, setTask3Done] = useState(false)
   const [task4Done, setTask4Done] = useState(false)
+  const [showSolution3, setShowSolution3] = useState(false)
 
   const [forkUrl, setForkUrl] = useState("")
   const [forkChecking, setForkChecking] = useState(false)
@@ -895,15 +896,88 @@ EXPOSE 3000
 
   # TODO: add the prod service
   # PORT 3002, NODE_ENV=production, APP_VERSION=1.0.0`}</pre>
+
+            {/* Show completed file toggle */}
+            <button
+              onClick={() => setShowSolution3((v) => !v)}
+              className="self-start text-xs font-mono uppercase tracking-widest px-3 py-1.5 transition-colors"
+              style={{
+                color: showSolution3 ? "rgb(6,182,212)" : "rgb(75,85,99)",
+                border: "1px solid",
+                borderColor: showSolution3 ? "rgba(6,182,212,0.3)" : "rgb(31,41,55)",
+                backgroundColor: "transparent",
+              }}
+            >
+              {showSolution3 ? "▲ Hide completed file" : "▼ Show completed file"}
+            </button>
+
+            {showSolution3 && (
+              <pre
+                className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
+                style={{
+                  backgroundColor: "#020d0f",
+                  borderLeft: "3px solid rgba(6,182,212,0.4)",
+                  color: "rgb(156,163,175)",
+                }}
+              >{`services:
+  dev:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - APP_VERSION=1.0.0-dev
+      - PORT=3000
+
+  test:
+    build: .
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=test
+      - APP_VERSION=1.0.0-test
+      - PORT=3000
+
+  prod:
+    build: .
+    ports:
+      - "3002:3000"
+    environment:
+      - NODE_ENV=production
+      - APP_VERSION=1.0.0
+      - PORT=3000`}</pre>
+            )}
           </div>
 
+          {/* Common mistake warning */}
+          <div
+            className="flex flex-col gap-2 p-4 border"
+            style={{
+              backgroundColor: "#0f0606",
+              borderColor: "rgba(239,68,68,0.3)",
+              borderLeft: "3px solid rgb(239,68,68)",
+            }}
+          >
+            <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(239,68,68)" }}>
+              Common Mistake
+            </span>
+            <p className="text-sm text-gray-300 leading-relaxed">
+              Do not put all environment variables under one service. Each service — dev, test,
+              prod — needs its own block with its own environment section. If you define{" "}
+              <span className="font-mono text-white">NODE_ENV</span> three times under the same
+              service, Docker uses only the last value.
+            </p>
+          </div>
+
+          {/* PORT inside vs outside note */}
           <MentorNote>
             <p className="text-sm text-gray-400 leading-relaxed">
-              The <span className="text-white font-mono">ports</span> mapping is{" "}
-              <span className="text-white font-mono">host:container</span>. The container always
-              listens on 3000 internally (because that&apos;s what EXPOSE and PORT say). The left
-              side is what port you access from your browser. By using 3000, 3001, and 3002 on the
-              host, all three services can run at the same time without colliding.
+              The container always listens on port 3000 internally. The left side of the{" "}
+              <span className="text-white font-mono">ports</span> mapping (
+              <span className="text-white font-mono">3000:</span>,{" "}
+              <span className="text-white font-mono">3001:</span>,{" "}
+              <span className="text-white font-mono">3002:</span>) is what your browser uses on
+              the host. This lets all three services run simultaneously without port collisions.
             </p>
           </MentorNote>
 
