@@ -57,82 +57,135 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
 
 // ─── Phase 1 - The situation ──────────────────────────────────────────────────
 
-type DialogueMsg =
-  | { type: "left" | "right"; initials: string; name: string; badge: string; accent: string; text: string }
+type SceneLine =
+  | { type: "char"; name: string; role: string; accent: string; text: string }
   | { type: "beat"; text: string }
   | { type: "player"; text: string; coda: string }
 
-const dialogue: DialogueMsg[] = [
+const scene: SceneLine[] = [
   {
-    type: "left",
-    initials: "MA", name: "Marco", badge: "OPS",
-    accent: "rgb(239,68,68)",
-    text: "The test environment is down again.",
+    type: "char", name: "Marco", role: "OPS", accent: "rgb(239,68,68)",
+    text: "Hey, does anyone know what state the test environment is in? I need to deploy something.",
   },
   {
-    type: "right",
-    initials: "KA", name: "Kai", badge: "QA",
-    accent: "rgb(251,146,60)",
-    text: "Again? I have been waiting three days to start testing. The sprint ends Friday.",
+    type: "char", name: "Kai", role: "QA", accent: "rgb(251,146,60)",
+    text: "Which one? The shared one is mine right now. I have been waiting since Monday to run my tests.",
   },
   {
-    type: "left",
-    initials: "MA", name: "Marco", badge: "OPS",
-    accent: "rgb(239,68,68)",
-    text: "I know. Lisa had it last. I do not know what state she left it in.",
+    type: "char", name: "Marco", role: "OPS", accent: "rgb(239,68,68)",
+    text: "Monday? It is Wednesday.",
   },
   {
-    type: "left",
-    initials: "LI", name: "Lisa", badge: "DEV",
-    accent: "rgb(34,197,94)",
-    text: "It worked when I was done. Works on my machine, anyway.",
+    type: "char", name: "Kai", role: "QA", accent: "rgb(251,146,60)",
+    text: "Yes. Two days. And before me it was Lisa. And before Lisa it was you.",
   },
   {
-    type: "right",
-    initials: "KA", name: "Kai", badge: "QA",
-    accent: "rgb(251,146,60)",
-    text: "That is the problem. It works on your machine. It does not work on mine. It does not work in test. We have three different environments and none of them match.",
+    type: "char", name: "Lisa", role: "DEV", accent: "rgb(34,197,94)",
+    text: "I left it in a working state. Mostly.",
   },
   {
-    type: "left",
-    initials: "MA", name: "Marco", badge: "OPS",
-    accent: "rgb(239,68,68)",
-    text: "And tomorrow we need to deploy to ACC. That has been scheduled for 8 days. If the test environment is not ready by tonight, the whole release slips again.",
+    type: "char", name: "Kai", role: "QA", accent: "rgb(251,146,60)",
+    text: "Mostly.",
   },
   {
-    type: "left",
-    initials: "LI", name: "Lisa", badge: "DEV",
-    accent: "rgb(34,197,94)",
-    text: "Can we not just deploy from my laptop? Like last time?",
+    type: "char", name: "Lisa", role: "DEV", accent: "rgb(34,197,94)",
+    text: "There was a config issue. I fixed it locally. I think I forgot to apply it to the server.",
   },
   {
-    type: "left",
-    initials: "MA", name: "Marco", badge: "OPS",
-    accent: "rgb(239,68,68)",
-    text: "Last time we deployed from your laptop, we had a 4-hour outage because your Node version was different from prod.",
+    type: "char", name: "Marco", role: "OPS", accent: "rgb(239,68,68)",
+    text: "So the environment has your local fix, but not actually.",
+  },
+  {
+    type: "char", name: "Lisa", role: "DEV", accent: "rgb(34,197,94)",
+    text: "Correct.",
+  },
+  {
+    type: "char", name: "Marco", role: "OPS", accent: "rgb(239,68,68)",
+    text: "And nobody documented this.",
+  },
+  {
+    type: "char", name: "Lisa", role: "DEV", accent: "rgb(34,197,94)",
+    text: "There is a Slack message from Tuesday.",
+  },
+  {
+    type: "char", name: "Kai", role: "QA", accent: "rgb(251,146,60)",
+    text: "I missed that Slack message. I spent half a day figuring out why my tests were failing on a config issue that was already fixed on someone\u2019s laptop.",
   },
   {
     type: "beat",
-    text: "Nobody spoke for a moment. This was not the first time.",
+    text: "Nobody said anything for a moment.",
+  },
+  {
+    type: "char", name: "Marco", role: "OPS", accent: "rgb(239,68,68)",
+    text: "I am going to rebuild the environment from scratch. Does anyone know how?",
+  },
+  {
+    type: "beat",
+    text: "Nobody did.",
   },
   {
     type: "player",
-    text: "Three developers. Three different environments. One shared test server that nobody owns and nobody can rebuild. This is not a tooling problem. This is a process problem. And the fix is not a bigger server — it is making environments cheap, fast, and identical.",
-    coda: "Fix the environment. Fix the flow.",
+    text: "This is the problem. Not one bad day. A system where every environment is different, nobody owns it, and the only documentation is a Slack message from Tuesday that someone missed. The fix is not better communication. It is making environments cheap enough that everyone has their own.",
+    coda: "One environment for everyone is one bottleneck for everyone.",
   },
 ]
 
-function Avatar({ initials, accent }: { initials: string; accent: string }) {
+function DialogueLine({ line, index }: { line: SceneLine; index: number }) {
+  if (line.type === "beat") {
+    return (
+      <p className="text-center text-sm text-gray-600 italic py-5">
+        {line.text}
+      </p>
+    )
+  }
+
+  if (line.type === "player") {
+    return (
+      <div
+        className="flex flex-col gap-4 px-6 py-5 mt-2"
+        style={{
+          backgroundColor: "rgba(6,182,212,0.03)",
+          borderLeft: "3px solid rgb(6,182,212)",
+          borderTop: "1px solid rgba(6,182,212,0.2)",
+          borderBottom: "1px solid rgba(6,182,212,0.2)",
+          borderRight: "1px solid rgba(6,182,212,0.1)",
+        }}
+      >
+        <span
+          className="text-xs font-mono tracking-widest uppercase"
+          style={{ color: "rgb(6,182,212)" }}
+        >
+          You &middot; New Engineer
+        </span>
+        <p className="text-gray-200 text-base leading-relaxed">{line.text}</p>
+        <p
+          className="text-white font-bold text-sm border-t pt-4"
+          style={{ borderColor: "rgba(6,182,212,0.15)" }}
+        >
+          {line.coda}
+        </p>
+      </div>
+    )
+  }
+
+  const bg = index % 2 === 0 ? "#080808" : "#060606"
   return (
     <div
-      className="w-9 h-9 flex items-center justify-center text-xs font-mono font-bold shrink-0"
+      className="flex flex-col gap-2 px-6 py-4"
       style={{
-        backgroundColor: `color-mix(in srgb, ${accent} 10%, transparent)`,
-        border: `1px solid color-mix(in srgb, ${accent} 35%, transparent)`,
-        color: accent,
+        backgroundColor: bg,
+        borderLeft: `3px solid ${line.accent}`,
       }}
     >
-      {initials}
+      <span
+        className="text-xs font-mono tracking-widest uppercase"
+        style={{ color: line.accent, opacity: 0.8 }}
+      >
+        {line.name} &middot; {line.role}
+      </span>
+      <p className="text-gray-300 text-base leading-relaxed">
+        &ldquo;{line.text}&rdquo;
+      </p>
     </div>
   )
 }
@@ -154,93 +207,10 @@ function Phase1() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-3">
-          {dialogue.map((line, i) => {
-            if (line.type === "beat") {
-              return (
-                <p key={i} className="text-center text-sm text-gray-600 italic py-4">
-                  {line.text}
-                </p>
-              )
-            }
-
-            if (line.type === "player") {
-              return (
-                <div
-                  key={i}
-                  className="flex flex-col gap-4 p-6 border"
-                  style={{
-                    backgroundColor: "rgba(6,182,212,0.04)",
-                    borderColor: "rgba(6,182,212,0.3)",
-                    borderLeft: "3px solid rgb(6,182,212)",
-                  }}
-                >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="w-9 h-9 flex items-center justify-center text-xs font-mono font-bold shrink-0"
-                      style={{
-                        backgroundColor: "rgba(6,182,212,0.1)",
-                        border: "1px solid rgba(6,182,212,0.35)",
-                        color: "rgb(6,182,212)",
-                      }}
-                    >
-                      YOU
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-white text-sm font-semibold">You</span>
-                      <span
-                        className="text-xs font-mono px-1.5 py-0.5 tracking-widest"
-                        style={{
-                          color: "rgb(6,182,212)",
-                          backgroundColor: "rgba(6,182,212,0.08)",
-                          border: "1px solid rgba(6,182,212,0.25)",
-                        }}
-                      >
-                        PLAYER
-                      </span>
-                    </div>
-                  </div>
-                  <p className="text-gray-300 text-sm leading-relaxed">{line.text}</p>
-                  <p className="text-white font-bold text-sm border-t pt-4" style={{ borderColor: "rgba(6,182,212,0.15)" }}>
-                    {line.coda}
-                  </p>
-                </div>
-              )
-            }
-
-            const isRight = line.type === "right"
-            return (
-              <div key={i} className={`flex gap-3 ${isRight ? "flex-row-reverse" : "flex-row"}`}>
-                <Avatar initials={line.initials} accent={line.accent} />
-                <div className="flex flex-col gap-1.5 max-w-[80%]">
-                  <div className={`flex items-center gap-2 ${isRight ? "flex-row-reverse" : ""}`}>
-                    <span className="text-white text-sm font-semibold">{line.name}</span>
-                    <span
-                      className="text-xs font-mono px-1.5 py-0.5 tracking-widest"
-                      style={{
-                        color: line.accent,
-                        backgroundColor: `color-mix(in srgb, ${line.accent} 8%, transparent)`,
-                        border: `1px solid color-mix(in srgb, ${line.accent} 25%, transparent)`,
-                      }}
-                    >
-                      {line.badge}
-                    </span>
-                  </div>
-                  <div
-                    className="px-4 py-3"
-                    style={{
-                      backgroundColor: "#0d0d0d",
-                      border: "1px solid rgb(31,41,55)",
-                      borderLeft: isRight ? undefined : `3px solid ${line.accent}`,
-                      borderRight: isRight ? `3px solid ${line.accent}` : undefined,
-                    }}
-                  >
-                    <p className="text-gray-300 text-sm leading-relaxed">{line.text}</p>
-                  </div>
-                </div>
-              </div>
-            )
-          })}
+        <div className="flex flex-col border border-gray-900">
+          {scene.map((line, i) => (
+            <DialogueLine key={i} line={line} index={i} />
+          ))}
         </div>
 
         <CTA
