@@ -378,14 +378,246 @@ const m02Faq = [
   },
 ]
 
-// ─── Phase 4 - Result ─────────────────────────────────────────────────────────
+// ─── Phase 4 - SVG Diagrams ───────────────────────────────────────────────────
 
-const beforeAfter = [
-  { before: "Shared, fragile test environment",        after: "On-demand environments per developer" },
-  { before: "8-day wait for ACC deployment",           after: "Spin up a test environment in under 1 minute" },
-  { before: "Works on my machine",                     after: "Identical dev, test, and prod environments" },
-  { before: "Rebuild takes days of manual work",       after: "Delete and recreate in one command" },
-]
+function BeforeDiagram() {
+  // Swimlane constants
+  const timelineX = 120   // timeline start
+  const dayW      = 80    // px per day
+  const serverX   = 620   // shared server left edge
+
+  const lanes = [
+    { name: "KAI",   accent: "rgb(251,146,60)",  cy: 80,  by: 45,  bh: 70 },
+    { name: "LISA",  accent: "rgb(34,197,94)",   cy: 170, by: 135, bh: 70 },
+    { name: "MARCO", accent: "rgb(239,68,68)",   cy: 260, by: 225, bh: 70 },
+  ]
+
+  type Block = { x: number; w: number; waiting: boolean; label: string }
+  const blocks: Block[][] = [
+    // Kai: WAITING 3d, WORKING 1d, WAITING 2d
+    [
+      { x: timelineX,           w: dayW * 3, waiting: true,  label: "WAITING · 3d" },
+      { x: timelineX + dayW*3,  w: dayW * 1, waiting: false, label: "WORKING · 1d" },
+      { x: timelineX + dayW*4,  w: dayW * 2, waiting: true,  label: "WAITING · 2d" },
+    ],
+    // Lisa: WORKING 2d, WAITING 3d, WORKING 1d
+    [
+      { x: timelineX,           w: dayW * 2, waiting: false, label: "WORKING · 2d" },
+      { x: timelineX + dayW*2,  w: dayW * 3, waiting: true,  label: "WAITING · 3d" },
+      { x: timelineX + dayW*5,  w: dayW * 1, waiting: false, label: "WORKING · 1d" },
+    ],
+    // Marco: WAITING 5d, WORKING 1d
+    [
+      { x: timelineX,           w: dayW * 5, waiting: true,  label: "WAITING · 5d" },
+      { x: timelineX + dayW*5,  w: dayW * 1, waiting: false, label: "WORKING · 1d" },
+    ],
+  ]
+
+  const arrowTargets = [120, 155, 190] // y entry points into server box
+
+  return (
+    <svg viewBox="0 0 800 320" width="100%" style={{ display: "block", border: "1px solid rgb(31,41,55)" }}>
+      {/* Background */}
+      <rect width="800" height="320" fill="#080808" />
+
+      {/* Lane bands */}
+      <rect x="0" y="35"  width="800" height="90" fill="rgba(239,68,68,0.03)" />
+      <rect x="0" y="125" width="800" height="90" fill="rgba(34,197,94,0.02)" />
+      <rect x="0" y="215" width="800" height="90" fill="rgba(239,68,68,0.03)" />
+
+      {/* Lane dividers */}
+      {[35, 125, 215, 305].map(y => (
+        <line key={y} x1="0" y1={y} x2="800" y2={y} stroke="rgb(31,41,55)" strokeWidth="1" />
+      ))}
+
+      {/* BEFORE label */}
+      <text x="16" y="22" fontFamily="monospace" fontSize="10" fill="rgb(239,68,68)" style={{ letterSpacing: "3px" }}>
+        BEFORE
+      </text>
+
+      {/* Developer circles + names */}
+      {lanes.map((lane) => (
+        <g key={lane.name}>
+          <circle cx="55" cy={lane.cy} r="20" fill={`${lane.accent}18`} stroke={lane.accent} strokeWidth="1.5" />
+          <text x="55" y={lane.cy + 4} textAnchor="middle" fontFamily="monospace" fontSize="9" fontWeight="700" fill={lane.accent}>
+            {lane.name}
+          </text>
+        </g>
+      ))}
+
+      {/* Timeline blocks */}
+      {blocks.map((laneBlocks, li) =>
+        laneBlocks.map((b, bi) => {
+          const midX = b.x + b.w / 2
+          const midY = lanes[li].by + lanes[li].bh / 2
+          return (
+            <g key={`${li}-${bi}`}>
+              <rect
+                x={b.x} y={lanes[li].by} width={b.w} height={lanes[li].bh}
+                fill={b.waiting ? "rgba(239,68,68,0.12)" : "rgba(255,255,255,0.03)"}
+                stroke={b.waiting ? "rgba(239,68,68,0.4)" : "rgba(255,255,255,0.08)"}
+                strokeWidth="1"
+              />
+              <text x={midX} y={midY + 4} textAnchor="middle" fontFamily="monospace" fontSize="9" fill={b.waiting ? "rgb(239,68,68)" : "rgb(107,114,128)"} style={{ letterSpacing: "1px" }}>
+                {b.label}
+              </text>
+            </g>
+          )
+        })
+      )}
+
+      {/* Arrows → shared server (overlapping, chaotic) */}
+      {lanes.map((lane, li) => (
+        <path
+          key={lane.name}
+          d={`M${timelineX - 30},${lane.cy} C${(serverX + timelineX) / 2},${lane.cy} ${(serverX + timelineX) / 2},${arrowTargets[li]} ${serverX},${arrowTargets[li]}`}
+          fill="none"
+          stroke={lane.accent}
+          strokeWidth="1.5"
+          strokeOpacity="0.6"
+          strokeDasharray="4 3"
+          markerEnd={`url(#arr-${li})`}
+        />
+      ))}
+
+      {/* Arrow markers */}
+      <defs>
+        {lanes.map((lane, li) => (
+          <marker key={li} id={`arr-${li}`} markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill={lane.accent} fillOpacity="0.7" />
+          </marker>
+        ))}
+      </defs>
+
+      {/* Shared server box */}
+      <rect x={serverX} y="50" width="160" height="210" fill="rgba(239,68,68,0.05)" stroke="rgba(239,68,68,0.4)" strokeWidth="1" />
+      <text x="700" y="90"  textAnchor="middle" fontFamily="monospace" fontSize="16" fill="rgb(239,68,68)">⚠</text>
+      <text x="700" y="115" textAnchor="middle" fontFamily="monospace" fontSize="9"  fill="rgb(239,68,68)" style={{ letterSpacing: "1px" }}>ONE SHARED SERVER</text>
+      <text x="700" y="138" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="rgb(107,114,128)">State unknown.</text>
+      <text x="700" y="158" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="rgb(107,114,128)">Rebuild: days.</text>
+
+      {/* Footer total */}
+      <text x="16" y="315" fontFamily="monospace" fontSize="10" fill="rgba(239,68,68,0.7)" style={{ letterSpacing: "0.5px" }}>
+        13 days of pure wait time per feature
+      </text>
+
+      {/* Outer border */}
+      <rect width="800" height="320" fill="none" stroke="rgb(31,41,55)" strokeWidth="1" />
+    </svg>
+  )
+}
+
+function AfterDiagram() {
+  const rows = [
+    {
+      name: "KAI",  accent: "rgb(251,146,60)",  cy: 65,
+      container: "test",        env: "NODE_ENV=test",        port: "3001",
+    },
+    {
+      name: "LISA", accent: "rgb(34,197,94)",   cy: 145,
+      container: "dev",         env: "NODE_ENV=development", port: "3000",
+    },
+    {
+      name: "MARCO", accent: "rgb(239,68,68)", cy: 225,
+      container: "prod",        env: "NODE_ENV=production",  port: "3002",
+    },
+  ]
+
+  const boxX = 130
+  const boxW = 510
+  const boxH = 60
+  // Internal column dividers (relative to boxX)
+  const col1 = 140  // container name width
+  const col2 = 300  // env width
+  const col3 = 410  // port width
+
+  return (
+    <svg viewBox="0 0 800 280" width="100%" style={{ display: "block", border: "1px solid rgb(31,41,55)" }}>
+      <rect width="800" height="280" fill="#080808" />
+
+      {/* AFTER label */}
+      <text x="16" y="20" fontFamily="monospace" fontSize="10" fill="rgb(34,197,94)" style={{ letterSpacing: "3px" }}>
+        AFTER
+      </text>
+
+      {/* Row lane separators */}
+      {[30, 110, 190, 270].map(y => (
+        <line key={y} x1="0" y1={y} x2="800" y2={y} stroke="rgb(31,41,55)" strokeWidth="1" />
+      ))}
+
+      {rows.map((row) => {
+        const boxY = row.cy - boxH / 2
+        const midY = row.cy
+        return (
+          <g key={row.name}>
+            {/* Dev circle */}
+            <circle cx="55" cy={row.cy} r="20" fill={`${row.accent}18`} stroke={row.accent} strokeWidth="1.5" />
+            <text x="55" y={row.cy + 4} textAnchor="middle" fontFamily="monospace" fontSize="9" fontWeight="700" fill={row.accent}>
+              {row.name}
+            </text>
+
+            {/* Arrow */}
+            <line x1="76" y1={row.cy} x2={boxX - 6} y2={row.cy} stroke={row.accent} strokeWidth="1.5" strokeOpacity="0.7" markerEnd={`url(#aarr-${row.name})`} />
+
+            {/* Container box */}
+            <rect x={boxX} y={boxY} width={boxW} height={boxH} fill={`${row.accent}08`} stroke={`${row.accent}60`} strokeWidth="1" />
+
+            {/* Internal dividers */}
+            {[col1, col2, col3].map(cx => (
+              <line key={cx} x1={boxX + cx} y1={boxY} x2={boxX + cx} y2={boxY + boxH} stroke={`${row.accent}25`} strokeWidth="1" />
+            ))}
+
+            {/* Col 1: container name */}
+            <text x={boxX + col1/2} y={midY - 8} textAnchor="middle" fontFamily="monospace" fontSize="8" fill="rgb(75,85,99)" style={{ letterSpacing: "1px" }}>CONTAINER</text>
+            <text x={boxX + col1/2} y={midY + 8} textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="700" fill={row.accent}>{row.container}</text>
+
+            {/* Col 2: env */}
+            <text x={boxX + col1 + (col2-col1)/2} y={midY - 8} textAnchor="middle" fontFamily="monospace" fontSize="8" fill="rgb(75,85,99)" style={{ letterSpacing: "1px" }}>ENV</text>
+            <text x={boxX + col1 + (col2-col1)/2} y={midY + 8} textAnchor="middle" fontFamily="monospace" fontSize="10" fill="rgb(156,163,175)">{row.env}</text>
+
+            {/* Col 3: port */}
+            <text x={boxX + col2 + (col3-col2)/2} y={midY - 8} textAnchor="middle" fontFamily="monospace" fontSize="8" fill="rgb(75,85,99)" style={{ letterSpacing: "1px" }}>PORT</text>
+            <text x={boxX + col2 + (col3-col2)/2} y={midY + 8} textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="700" fill="rgb(6,182,212)">{row.port}</text>
+
+            {/* Col 4: status */}
+            <text x={boxX + col3 + (boxW-col3)/2} y={midY - 8} textAnchor="middle" fontFamily="monospace" fontSize="8" fill="rgb(75,85,99)" style={{ letterSpacing: "1px" }}>STATUS</text>
+            <text x={boxX + col3 + (boxW-col3)/2} y={midY + 8} textAnchor="middle" fontFamily="monospace" fontSize="10" fontWeight="700" fill="rgb(34,197,94)">✓ RUNNING</text>
+          </g>
+        )
+      })}
+
+      {/* Arrow markers */}
+      <defs>
+        {rows.map((row) => (
+          <marker key={row.name} id={`aarr-${row.name}`} markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill={row.accent} fillOpacity="0.7" />
+          </marker>
+        ))}
+      </defs>
+
+      {/* Right-side bracket */}
+      <line x1="652" y1="43"  x2="660" y2="43"  stroke="rgb(34,197,94)" strokeWidth="1" strokeOpacity="0.6" />
+      <line x1="660" y1="43"  x2="660" y2="237" stroke="rgb(34,197,94)" strokeWidth="1" strokeOpacity="0.6" />
+      <line x1="652" y1="237" x2="660" y2="237" stroke="rgb(34,197,94)" strokeWidth="1" strokeOpacity="0.6" />
+      <text
+        x="670" y="145" textAnchor="middle" fontFamily="monospace" fontSize="9" fill="rgb(34,197,94)"
+        transform="rotate(-90, 670, 145)" style={{ letterSpacing: "1px" }}
+      >
+        All running simultaneously
+      </text>
+
+      {/* Bottom note */}
+      <text x="400" y="272" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="rgba(34,197,94,0.7)" style={{ letterSpacing: "0.5px" }}>
+        docker compose up — 30 seconds. Identical every time.
+      </text>
+
+      {/* Outer border */}
+      <rect width="800" height="280" fill="none" stroke="rgb(31,41,55)" strokeWidth="1" />
+    </svg>
+  )
+}
+
+// ─── Phase 4 - Result ─────────────────────────────────────────────────────────
 
 const doraImpact = [
   { metric: "Change Failure Rate", code: "CFR", before: "42%",     after: "28%" },
@@ -426,37 +658,13 @@ function Phase4() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <div className="border border-gray-800">
-            <div
-              className="grid grid-cols-2 border-b border-gray-800"
-              style={{ backgroundColor: "#0d0d0d" }}
-            >
-              <div className="px-5 py-3 border-r border-gray-800">
-                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(239,68,68)" }}>
-                  Before
-                </span>
-              </div>
-              <div className="px-5 py-3">
-                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(34,197,94)" }}>
-                  After
-                </span>
-              </div>
-            </div>
-            {beforeAfter.map((row, i) => (
-              <div
-                key={i}
-                className="grid grid-cols-2 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
-              >
-                <div className="px-5 py-4 border-r border-gray-800">
-                  <p className="text-sm text-gray-500">{row.before}</p>
-                </div>
-                <div className="px-5 py-4">
-                  <p className="text-sm text-gray-300">{row.after}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <BeforeDiagram />
+
+          <p className="text-sm text-gray-500 italic text-center py-4">
+            The shared server was not a resource problem. It was an architecture problem.
+          </p>
+
+          <AfterDiagram />
         </section>
 
         {/* DORA impact */}
