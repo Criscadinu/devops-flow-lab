@@ -378,242 +378,39 @@ const m02Faq = [
   },
 ]
 
-// ─── Phase 4 - SVG Diagrams ───────────────────────────────────────────────────
+// ─── Phase 4 - Benefit cards ──────────────────────────────────────────────────
 
-function BeforeDiagram() {
-  // Swimlane constants
-  const timelineX = 120   // timeline start
-  const dayW      = 80    // px per day
-  const serverX   = 620   // shared server left edge
-
-  const lanes = [
-    { name: "KAI",   accent: "rgb(251,146,60)",  cy: 80,  by: 45,  bh: 70 },
-    { name: "LISA",  accent: "rgb(34,197,94)",   cy: 170, by: 135, bh: 70 },
-    { name: "MARCO", accent: "rgb(239,68,68)",   cy: 260, by: 225, bh: 70 },
-  ]
-
-  type Block = { x: number; w: number; waiting: boolean; label: string }
-  const blocks: Block[][] = [
-    // Kai: WAITING 3d, WORKING 1d, WAITING 2d
-    [
-      { x: timelineX,           w: dayW * 3, waiting: true,  label: "WAITING · 3d" },
-      { x: timelineX + dayW*3,  w: dayW * 1, waiting: false, label: "WORKING · 1d" },
-      { x: timelineX + dayW*4,  w: dayW * 2, waiting: true,  label: "WAITING · 2d" },
-    ],
-    // Lisa: WORKING 2d, WAITING 3d, WORKING 1d
-    [
-      { x: timelineX,           w: dayW * 2, waiting: false, label: "WORKING · 2d" },
-      { x: timelineX + dayW*2,  w: dayW * 3, waiting: true,  label: "WAITING · 3d" },
-      { x: timelineX + dayW*5,  w: dayW * 1, waiting: false, label: "WORKING · 1d" },
-    ],
-    // Marco: WAITING 5d, WORKING 1d
-    [
-      { x: timelineX,           w: dayW * 5, waiting: true,  label: "WAITING · 5d" },
-      { x: timelineX + dayW*5,  w: dayW * 1, waiting: false, label: "WORKING · 1d" },
-    ],
-  ]
-
-  const arrowTargets = [120, 155, 190] // y entry points into server box
-
+function BenefitCard({
+  number, title, explanation, metric, children,
+}: {
+  number: string
+  title: string
+  explanation: string
+  metric: { before: string; after: string }
+  children: React.ReactNode
+}) {
   return (
-    <svg viewBox="0 0 800 320" width="100%" style={{ display: "block", border: "1px solid rgb(31,41,55)" }}>
-      {/* Background */}
-      <rect width="800" height="320" fill="#080808" />
-
-      {/* Lane bands */}
-      <rect x="0" y="35"  width="800" height="90" fill="rgba(239,68,68,0.03)" />
-      <rect x="0" y="125" width="800" height="90" fill="rgba(34,197,94,0.02)" />
-      <rect x="0" y="215" width="800" height="90" fill="rgba(239,68,68,0.03)" />
-
-      {/* Lane dividers */}
-      {[35, 125, 215, 305].map(y => (
-        <line key={y} x1="0" y1={y} x2="800" y2={y} stroke="rgb(31,41,55)" strokeWidth="1" />
-      ))}
-
-      {/* BEFORE label */}
-      <text x="16" y="22" fontFamily="monospace" fontSize="10" fill="rgb(239,68,68)" style={{ letterSpacing: "3px" }}>
-        BEFORE
-      </text>
-
-      {/* Developer circles + names */}
-      {lanes.map((lane) => (
-        <g key={lane.name}>
-          <circle cx="55" cy={lane.cy} r="20" fill={`${lane.accent}18`} stroke={lane.accent} strokeWidth="1.5" />
-          <text x="55" y={lane.cy + 4} textAnchor="middle" fontFamily="monospace" fontSize="9" fontWeight="700" fill={lane.accent}>
-            {lane.name}
-          </text>
-        </g>
-      ))}
-
-      {/* Timeline blocks */}
-      {blocks.map((laneBlocks, li) =>
-        laneBlocks.map((b, bi) => {
-          const midX = b.x + b.w / 2
-          const midY = lanes[li].by + lanes[li].bh / 2
-          return (
-            <g key={`${li}-${bi}`}>
-              <rect
-                x={b.x} y={lanes[li].by} width={b.w} height={lanes[li].bh}
-                fill={b.waiting ? "rgba(239,68,68,0.12)" : "rgba(255,255,255,0.03)"}
-                stroke={b.waiting ? "rgba(239,68,68,0.4)" : "rgba(255,255,255,0.08)"}
-                strokeWidth="1"
-              />
-              <text x={midX} y={midY + 4} textAnchor="middle" fontFamily="monospace" fontSize="9" fill={b.waiting ? "rgb(239,68,68)" : "rgb(107,114,128)"} style={{ letterSpacing: "1px" }}>
-                {b.label}
-              </text>
-            </g>
-          )
-        })
-      )}
-
-      {/* Arrows → shared server (overlapping, chaotic) */}
-      {lanes.map((lane, li) => (
-        <path
-          key={lane.name}
-          d={`M${timelineX - 30},${lane.cy} C${(serverX + timelineX) / 2},${lane.cy} ${(serverX + timelineX) / 2},${arrowTargets[li]} ${serverX},${arrowTargets[li]}`}
-          fill="none"
-          stroke={lane.accent}
-          strokeWidth="1.5"
-          strokeOpacity="0.6"
-          strokeDasharray="4 3"
-          markerEnd={`url(#arr-${li})`}
-        />
-      ))}
-
-      {/* Arrow markers */}
-      <defs>
-        {lanes.map((lane, li) => (
-          <marker key={li} id={`arr-${li}`} markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-            <path d="M0,0 L6,3 L0,6 Z" fill={lane.accent} fillOpacity="0.7" />
-          </marker>
-        ))}
-      </defs>
-
-      {/* Shared server box */}
-      <rect x={serverX} y="50" width="160" height="210" fill="rgba(239,68,68,0.05)" stroke="rgba(239,68,68,0.4)" strokeWidth="1" />
-      <text x="700" y="90"  textAnchor="middle" fontFamily="monospace" fontSize="16" fill="rgb(239,68,68)">⚠</text>
-      <text x="700" y="115" textAnchor="middle" fontFamily="monospace" fontSize="9"  fill="rgb(239,68,68)" style={{ letterSpacing: "1px" }}>ONE SHARED SERVER</text>
-      <text x="700" y="138" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="rgb(107,114,128)">State unknown.</text>
-      <text x="700" y="158" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="rgb(107,114,128)">Rebuild: days.</text>
-
-      {/* Footer total */}
-      <text x="16" y="315" fontFamily="monospace" fontSize="10" fill="rgba(239,68,68,0.7)" style={{ letterSpacing: "0.5px" }}>
-        13 days of pure wait time per feature
-      </text>
-
-      {/* Outer border */}
-      <rect width="800" height="320" fill="none" stroke="rgb(31,41,55)" strokeWidth="1" />
-    </svg>
-  )
-}
-
-function AfterDiagram() {
-  const rows = [
-    {
-      name: "KAI",  accent: "rgb(251,146,60)",  cy: 65,
-      container: "test",        env: "NODE_ENV=test",        port: "3001",
-    },
-    {
-      name: "LISA", accent: "rgb(34,197,94)",   cy: 145,
-      container: "dev",         env: "NODE_ENV=development", port: "3000",
-    },
-    {
-      name: "MARCO", accent: "rgb(239,68,68)", cy: 225,
-      container: "prod",        env: "NODE_ENV=production",  port: "3002",
-    },
-  ]
-
-  const boxX = 130
-  const boxW = 510
-  const boxH = 60
-  // Internal column dividers (relative to boxX)
-  const col1 = 140  // container name width
-  const col2 = 300  // env width
-  const col3 = 410  // port width
-
-  return (
-    <svg viewBox="0 0 800 280" width="100%" style={{ display: "block", border: "1px solid rgb(31,41,55)" }}>
-      <rect width="800" height="280" fill="#080808" />
-
-      {/* AFTER label */}
-      <text x="16" y="20" fontFamily="monospace" fontSize="10" fill="rgb(34,197,94)" style={{ letterSpacing: "3px" }}>
-        AFTER
-      </text>
-
-      {/* Row lane separators */}
-      {[30, 110, 190, 270].map(y => (
-        <line key={y} x1="0" y1={y} x2="800" y2={y} stroke="rgb(31,41,55)" strokeWidth="1" />
-      ))}
-
-      {rows.map((row) => {
-        const boxY = row.cy - boxH / 2
-        const midY = row.cy
-        return (
-          <g key={row.name}>
-            {/* Dev circle */}
-            <circle cx="55" cy={row.cy} r="20" fill={`${row.accent}18`} stroke={row.accent} strokeWidth="1.5" />
-            <text x="55" y={row.cy + 4} textAnchor="middle" fontFamily="monospace" fontSize="9" fontWeight="700" fill={row.accent}>
-              {row.name}
-            </text>
-
-            {/* Arrow */}
-            <line x1="76" y1={row.cy} x2={boxX - 6} y2={row.cy} stroke={row.accent} strokeWidth="1.5" strokeOpacity="0.7" markerEnd={`url(#aarr-${row.name})`} />
-
-            {/* Container box */}
-            <rect x={boxX} y={boxY} width={boxW} height={boxH} fill={`${row.accent}08`} stroke={`${row.accent}60`} strokeWidth="1" />
-
-            {/* Internal dividers */}
-            {[col1, col2, col3].map(cx => (
-              <line key={cx} x1={boxX + cx} y1={boxY} x2={boxX + cx} y2={boxY + boxH} stroke={`${row.accent}25`} strokeWidth="1" />
-            ))}
-
-            {/* Col 1: container name */}
-            <text x={boxX + col1/2} y={midY - 8} textAnchor="middle" fontFamily="monospace" fontSize="8" fill="rgb(75,85,99)" style={{ letterSpacing: "1px" }}>CONTAINER</text>
-            <text x={boxX + col1/2} y={midY + 8} textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="700" fill={row.accent}>{row.container}</text>
-
-            {/* Col 2: env */}
-            <text x={boxX + col1 + (col2-col1)/2} y={midY - 8} textAnchor="middle" fontFamily="monospace" fontSize="8" fill="rgb(75,85,99)" style={{ letterSpacing: "1px" }}>ENV</text>
-            <text x={boxX + col1 + (col2-col1)/2} y={midY + 8} textAnchor="middle" fontFamily="monospace" fontSize="10" fill="rgb(156,163,175)">{row.env}</text>
-
-            {/* Col 3: port */}
-            <text x={boxX + col2 + (col3-col2)/2} y={midY - 8} textAnchor="middle" fontFamily="monospace" fontSize="8" fill="rgb(75,85,99)" style={{ letterSpacing: "1px" }}>PORT</text>
-            <text x={boxX + col2 + (col3-col2)/2} y={midY + 8} textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="700" fill="rgb(6,182,212)">{row.port}</text>
-
-            {/* Col 4: status */}
-            <text x={boxX + col3 + (boxW-col3)/2} y={midY - 8} textAnchor="middle" fontFamily="monospace" fontSize="8" fill="rgb(75,85,99)" style={{ letterSpacing: "1px" }}>STATUS</text>
-            <text x={boxX + col3 + (boxW-col3)/2} y={midY + 8} textAnchor="middle" fontFamily="monospace" fontSize="10" fontWeight="700" fill="rgb(34,197,94)">✓ RUNNING</text>
-          </g>
-        )
-      })}
-
-      {/* Arrow markers */}
-      <defs>
-        {rows.map((row) => (
-          <marker key={row.name} id={`aarr-${row.name}`} markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-            <path d="M0,0 L6,3 L0,6 Z" fill={row.accent} fillOpacity="0.7" />
-          </marker>
-        ))}
-      </defs>
-
-      {/* Right-side bracket */}
-      <line x1="652" y1="43"  x2="660" y2="43"  stroke="rgb(34,197,94)" strokeWidth="1" strokeOpacity="0.6" />
-      <line x1="660" y1="43"  x2="660" y2="237" stroke="rgb(34,197,94)" strokeWidth="1" strokeOpacity="0.6" />
-      <line x1="652" y1="237" x2="660" y2="237" stroke="rgb(34,197,94)" strokeWidth="1" strokeOpacity="0.6" />
-      <text
-        x="670" y="145" textAnchor="middle" fontFamily="monospace" fontSize="9" fill="rgb(34,197,94)"
-        transform="rotate(-90, 670, 145)" style={{ letterSpacing: "1px" }}
-      >
-        All running simultaneously
-      </text>
-
-      {/* Bottom note */}
-      <text x="400" y="272" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="rgba(34,197,94,0.7)" style={{ letterSpacing: "0.5px" }}>
-        docker compose up — 30 seconds. Identical every time.
-      </text>
-
-      {/* Outer border */}
-      <rect width="800" height="280" fill="none" stroke="rgb(31,41,55)" strokeWidth="1" />
-    </svg>
+    <div
+      className="flex flex-col gap-4"
+      style={{
+        backgroundColor: "#080808",
+        border: "1px solid rgb(31,41,55)",
+        borderLeft: "3px solid rgb(6,182,212)",
+        padding: "24px",
+      }}
+    >
+      <span className="text-xs font-mono text-gray-700">{number}</span>
+      <h3 className="text-white text-base leading-snug" style={{ ...syne.style, fontWeight: 700 }}>
+        {title}
+      </h3>
+      <p className="text-gray-400 text-sm leading-relaxed">{explanation}</p>
+      <div style={{ border: "1px solid rgb(31,41,55)" }}>{children}</div>
+      <p className="text-xs font-mono">
+        <span style={{ color: "rgb(239,68,68)" }}>{metric.before}</span>
+        <span className="text-gray-700"> → </span>
+        <span style={{ color: "rgb(34,197,94)" }}>{metric.after}</span>
+      </p>
+    </div>
   )
 }
 
@@ -658,13 +455,137 @@ function Phase4() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <BeforeDiagram />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-          <p className="text-sm text-gray-500 italic text-center py-4">
-            The shared server was not a resource problem. It was an architecture problem.
+            {/* Card 1: Parallel work */}
+            <BenefitCard
+              number="01"
+              title="Three features at the same time"
+              explanation="No more queueing. Each developer tests in their own isolated environment."
+              metric={{ before: "1 feature at a time", after: "3 features in parallel" }}
+            >
+              <svg viewBox="0 0 320 100" width="100%" style={{ display: "block" }}>
+                <rect width="320" height="100" fill="#080808" />
+                <line x1="0" y1="50" x2="320" y2="50" stroke="rgb(31,41,55)" strokeWidth="1" />
+                {/* BEFORE */}
+                <text x="8" y="13" fontFamily="monospace" fontSize="8" fill="rgb(239,68,68)" style={{ letterSpacing: "2px" }}>BEFORE</text>
+                {[{x:30,l:"A"},{x:115,l:"B"},{x:200,l:"C"}].map(({x,l},i)=>(
+                  <g key={l}>
+                    <rect x={x} y="17" width="70" height="22" fill="rgba(239,68,68,0.1)" stroke="rgba(239,68,68,0.35)" strokeWidth="1"/>
+                    <text x={x+35} y="32" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="rgb(239,68,68)">{l}</text>
+                    {i<2&&<line x1={x+70} y1="28" x2={x+85} y2="28" stroke="rgba(239,68,68,0.5)" strokeWidth="1.5" markerEnd="url(#a1)"/>}
+                  </g>
+                ))}
+                <text x="285" y="32" textAnchor="middle" fontFamily="monospace" fontSize="8" fill="rgb(75,85,99)">SERIAL</text>
+                <defs><marker id="a1" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="rgba(239,68,68,0.5)"/></marker></defs>
+                {/* AFTER */}
+                <text x="8" y="62" fontFamily="monospace" fontSize="8" fill="rgb(34,197,94)" style={{ letterSpacing: "2px" }}>AFTER</text>
+                {[{y:55,l:"A"},{y:68,l:"B"},{y:81,l:"C"}].map(({y,l})=>(
+                  <g key={l}>
+                    <rect x="30" y={y} width="55" height="10" fill="rgba(34,197,94,0.1)" stroke="rgba(34,197,94,0.35)" strokeWidth="1"/>
+                    <text x="57" y={y+8} textAnchor="middle" fontFamily="monospace" fontSize="8" fill="rgb(34,197,94)">{l}</text>
+                    <line x1="85" y1={y+5} x2="260" y2={y+5} stroke="rgba(34,197,94,0.4)" strokeWidth="1.5"/>
+                    <polygon points={`260,${y+2} 266,${y+5} 260,${y+8}`} fill="rgba(34,197,94,0.5)"/>
+                  </g>
+                ))}
+                <text x="285" y="74" textAnchor="middle" fontFamily="monospace" fontSize="8" fill="rgb(75,85,99)">PARALLEL</text>
+              </svg>
+            </BenefitCard>
+
+            {/* Card 2: Reset in seconds */}
+            <BenefitCard
+              number="02"
+              title="Broken environment? Rebuild in 30 seconds"
+              explanation="When something breaks, delete the container and recreate. No manual investigation needed."
+              metric={{ before: "Days of manual work", after: "30 seconds, one command" }}
+            >
+              <svg viewBox="0 0 320 100" width="100%" style={{ display: "block" }}>
+                <rect width="320" height="100" fill="#080808" />
+                <line x1="0" y1="50" x2="320" y2="50" stroke="rgb(31,41,55)" strokeWidth="1" />
+                {/* BEFORE */}
+                <text x="8" y="13" fontFamily="monospace" fontSize="8" fill="rgb(239,68,68)" style={{ letterSpacing: "2px" }}>BEFORE</text>
+                <rect x="20" y="17" width="280" height="22" fill="rgba(239,68,68,0.1)" stroke="rgba(239,68,68,0.35)" strokeWidth="1"/>
+                <text x="160" y="26" textAnchor="middle" fontFamily="monospace" fontSize="8" fill="rgb(239,68,68)">manual investigation · tribal knowledge</text>
+                <text x="160" y="36" textAnchor="middle" fontFamily="monospace" fontSize="8" fill="rgba(239,68,68,0.7)">trial and error · DAYS</text>
+                {/* AFTER */}
+                <text x="8" y="62" fontFamily="monospace" fontSize="8" fill="rgb(34,197,94)" style={{ letterSpacing: "2px" }}>AFTER</text>
+                <circle cx="30" cy="75" r="5" fill="rgba(34,197,94,0.15)" stroke="rgb(34,197,94)" strokeWidth="1"/>
+                <line x1="35" y1="75" x2="155" y2="75" stroke="rgba(34,197,94,0.6)" strokeWidth="1.5"/>
+                <polygon points="155,72 161,75 155,78" fill="rgba(34,197,94,0.6)"/>
+                <text x="165" y="71" fontFamily="monospace" fontSize="8" fill="rgb(34,197,94)">docker compose up</text>
+                <text x="165" y="83" fontFamily="monospace" fontSize="9" fontWeight="700" fill="rgb(34,197,94)">30 seconds.</text>
+              </svg>
+            </BenefitCard>
+
+            {/* Card 3: Identical to prod */}
+            <BenefitCard
+              number="03"
+              title="What you build is what runs"
+              explanation="Dev, test, and prod use the exact same image. No more surprises at deploy time."
+              metric={{ before: "Works on my machine", after: "Identical everywhere" }}
+            >
+              <svg viewBox="0 0 320 100" width="100%" style={{ display: "block" }}>
+                <rect width="320" height="100" fill="#080808" />
+                <line x1="0" y1="50" x2="320" y2="50" stroke="rgb(31,41,55)" strokeWidth="1" />
+                {/* BEFORE — 3 different colored boxes */}
+                <text x="8" y="13" fontFamily="monospace" fontSize="8" fill="rgb(239,68,68)" style={{ letterSpacing: "2px" }}>BEFORE</text>
+                <rect x="15" y="16" width="60" height="26" fill="rgba(59,130,246,0.12)" stroke="rgba(59,130,246,0.45)" strokeWidth="1"/>
+                <text x="45" y="33" textAnchor="middle" fontFamily="monospace" fontSize="9" fill="rgb(96,165,250)">DEV</text>
+                <text x="85" y="33" textAnchor="middle" fontFamily="monospace" fontSize="13" fill="rgb(239,68,68)">≠</text>
+                <rect x="100" y="16" width="60" height="26" fill="rgba(251,146,60,0.12)" stroke="rgba(251,146,60,0.45)" strokeWidth="1"/>
+                <text x="130" y="33" textAnchor="middle" fontFamily="monospace" fontSize="9" fill="rgb(251,146,60)">TEST</text>
+                <text x="170" y="33" textAnchor="middle" fontFamily="monospace" fontSize="13" fill="rgb(239,68,68)">≠</text>
+                <rect x="185" y="16" width="60" height="26" fill="rgba(239,68,68,0.12)" stroke="rgba(239,68,68,0.45)" strokeWidth="1"/>
+                <text x="215" y="33" textAnchor="middle" fontFamily="monospace" fontSize="9" fill="rgb(239,68,68)">PROD</text>
+                {/* AFTER — 3 identical boxes */}
+                <text x="8" y="62" fontFamily="monospace" fontSize="8" fill="rgb(34,197,94)" style={{ letterSpacing: "2px" }}>AFTER</text>
+                {[{x:15,l:"DEV"},{x:100,l:"TEST"},{x:185,l:"PROD"}].map(({x,l})=>(
+                  <g key={l}>
+                    <rect x={x} y="66" width="60" height="26" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.3)" strokeWidth="1"/>
+                    <text x={x+30} y="83" textAnchor="middle" fontFamily="monospace" fontSize="9" fill="rgb(107,114,128)">{l}</text>
+                  </g>
+                ))}
+                <text x="85" y="83" textAnchor="middle" fontFamily="monospace" fontSize="13" fill="rgb(34,197,94)">=</text>
+                <text x="170" y="83" textAnchor="middle" fontFamily="monospace" fontSize="13" fill="rgb(34,197,94)">=</text>
+                <text x="262" y="83" textAnchor="middle" fontFamily="monospace" fontSize="13" fill="rgb(34,197,94)">✓</text>
+              </svg>
+            </BenefitCard>
+
+            {/* Card 4: Onboarding */}
+            <BenefitCard
+              number="04"
+              title="Clone, run, contribute"
+              explanation="A new engineer is productive in 5 minutes instead of waiting days for someone to set up their environment."
+              metric={{ before: "2-3 days of setup", after: "5 minutes" }}
+            >
+              <svg viewBox="0 0 320 100" width="100%" style={{ display: "block" }}>
+                <rect width="320" height="100" fill="#080808" />
+                <line x1="0" y1="50" x2="320" y2="50" stroke="rgb(31,41,55)" strokeWidth="1" />
+                {/* BEFORE */}
+                <text x="8" y="13" fontFamily="monospace" fontSize="8" fill="rgb(239,68,68)" style={{ letterSpacing: "2px" }}>BEFORE</text>
+                <circle cx="30" cy="28" r="11" fill="rgba(107,114,128,0.1)" stroke="rgba(107,114,128,0.4)" strokeWidth="1"/>
+                <text x="30" y="32" textAnchor="middle" fontFamily="monospace" fontSize="11" fill="rgb(239,68,68)">?</text>
+                <line x1="42" y1="28" x2="270" y2="28" stroke="rgba(239,68,68,0.4)" strokeWidth="1.5" strokeDasharray="4 3"/>
+                <polygon points="270,25 276,28 270,31" fill="rgba(239,68,68,0.5)"/>
+                <text x="156" y="20" textAnchor="middle" fontFamily="monospace" fontSize="8" fill="rgba(239,68,68,0.7)">2-3 days of asking colleagues</text>
+                <text x="156" y="42" textAnchor="middle" fontFamily="monospace" fontSize="8" fill="rgb(75,85,99)">setup · config · tribal knowledge</text>
+                {/* AFTER */}
+                <text x="8" y="62" fontFamily="monospace" fontSize="8" fill="rgb(34,197,94)" style={{ letterSpacing: "2px" }}>AFTER</text>
+                <circle cx="30" cy="78" r="11" fill="rgba(34,197,94,0.08)" stroke="rgba(34,197,94,0.4)" strokeWidth="1"/>
+                <text x="30" y="82" textAnchor="middle" fontFamily="monospace" fontSize="11" fill="rgb(34,197,94)">✓</text>
+                <line x1="42" y1="78" x2="155" y2="78" stroke="rgba(34,197,94,0.5)" strokeWidth="1.5"/>
+                <polygon points="155,75 161,78 155,81" fill="rgba(34,197,94,0.6)"/>
+                <text x="168" y="73" fontFamily="monospace" fontSize="8" fill="rgb(34,197,94)">git clone</text>
+                <text x="168" y="83" fontFamily="monospace" fontSize="8" fill="rgb(34,197,94)">docker compose up</text>
+                <text x="168" y="94" fontFamily="monospace" fontSize="8" fill="rgba(34,197,94,0.6)">5 minutes.</text>
+              </svg>
+            </BenefitCard>
+
+          </div>
+
+          <p className="text-sm text-gray-500 italic text-center py-6">
+            None of these benefits existed before you containerized the environments.
           </p>
-
-          <AfterDiagram />
         </section>
 
         {/* DORA impact */}
