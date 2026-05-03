@@ -57,107 +57,133 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
 
 // ─── Phase 1 - The situation ──────────────────────────────────────────────────
 
-const panels = [
+type SceneLine =
+  | { type: "char"; name: string; role: string; accent: string; text: string }
+  | { type: "beat"; text: string }
+  | { type: "player"; text: string; coda: string }
+
+const scene: SceneLine[] = [
   {
-    initials: "SM",
-    name: "Sarah",
-    role: "Engineering Manager",
-    badge: "MANAGEMENT",
-    accent: "rgb(6,182,212)",
-    badgeBg: "rgba(6,182,212,0.08)",
-    badgeBorder: "rgba(6,182,212,0.3)",
-    quote: (
-      <>
-        &ldquo;The Docker setup is great. But we still deploy once a month. And we still find bugs
-        in production. Automated tests would catch them first.&rdquo;
-      </>
-    ),
+    type: "char", name: "Lisa", role: "DEV", accent: "rgb(34,197,94)",
+    text: "I pushed that fix on Friday. Is it live yet?",
   },
   {
-    initials: "LI",
-    name: "Lisa",
-    role: "Developer",
-    badge: "DEV",
-    accent: "rgb(34,197,94)",
-    badgeBg: "rgba(34,197,94,0.08)",
-    badgeBorder: "rgba(34,197,94,0.3)",
-    quote: (
-      <>
-        &ldquo;I pushed a fix yesterday. I have no idea if it works until Marco deploys it - in{" "}
-        <mark>3 weeks</mark>. By then I have forgotten what I changed.&rdquo;
-      </>
-    ),
+    type: "char", name: "Marco", role: "OPS", accent: "rgb(239,68,68)",
+    text: "No. I deploy on Tuesdays. So tomorrow.",
   },
   {
-    initials: "MA",
-    name: "Marco",
-    role: "Ops Engineer",
-    badge: "OPS",
-    accent: "rgb(239,68,68)",
-    badgeBg: "rgba(239,68,68,0.08)",
-    badgeBorder: "rgba(239,68,68,0.3)",
-    quote: (
-      <>
-        &ldquo;I still deploy manually. I get a folder of files, run a script, and hope nothing
-        breaks. Last month it broke. Took me <mark>6 hours</mark> to find the bug.&rdquo;
-      </>
-    ),
+    type: "char", name: "Lisa", role: "DEV", accent: "rgb(34,197,94)",
+    text: "Tomorrow? It is one line. The customer is waiting since Wednesday.",
   },
   {
-    initials: "KA",
-    name: "Kai",
-    role: "QA Engineer",
-    badge: "QA",
-    accent: "rgb(251,146,60)",
-    badgeBg: "rgba(251,146,60,0.08)",
-    badgeBorder: "rgba(251,146,60,0.3)",
-    quote: (
-      <>
-        &ldquo;We have <mark>3 failing tests</mark> in the repo right now. Nobody runs them.
-        Nobody fixed them. We do not even know what they test.&rdquo;
-      </>
-    ),
+    type: "char", name: "Marco", role: "OPS", accent: "rgb(239,68,68)",
+    text: "I know. But the deploy script needs me to babysit it. Last month I missed a step and we had a 6-hour outage.",
   },
   {
-    initials: "TO",
-    name: "Tom",
-    role: "Product Owner",
-    badge: "PRODUCT",
-    accent: "rgb(167,139,250)",
-    badgeBg: "rgba(167,139,250,0.08)",
-    badgeBorder: "rgba(167,139,250,0.3)",
-    quote: (
-      <>
-        &ldquo;A customer reported a bug last week that was already in the codebase for{" "}
-        <mark>2 months</mark>. If we had automated tests, we would have caught it on day one.&rdquo;
-      </>
-    ),
+    type: "char", name: "Kai", role: "QA", accent: "rgb(251,146,60)",
+    text: "Speaking of which. I ran the tests this morning. Three of them are failing.",
   },
   {
-    initials: "YOU",
-    name: "You",
-    role: "New Engineer",
-    badge: "PLAYER",
-    accent: "rgb(6,182,212)",
-    badgeBg: "rgba(6,182,212,0.08)",
-    badgeBorder: "rgba(6,182,212,0.3)",
-    isPlayer: true,
-    quote: (
-      <>
-        &ldquo;The environments are there. The code is there. What is missing is the wire that
-        connects them - a pipeline that runs on every commit.&rdquo;
-      </>
-    ),
-    outro: "Time to build the pipeline.",
+    type: "char", name: "Lisa", role: "DEV", accent: "rgb(34,197,94)",
+    text: "Failing how?",
+  },
+  {
+    type: "char", name: "Kai", role: "QA", accent: "rgb(251,146,60)",
+    text: "I do not know. They have been failing for at least two weeks. Nobody runs the test suite.",
+  },
+  {
+    type: "beat",
+    text: "Lisa pulled up the repo on her laptop.",
+  },
+  {
+    type: "char", name: "Lisa", role: "DEV", accent: "rgb(34,197,94)",
+    text: "Tests for the pricing module. Written six months ago. Now they are failing.",
+  },
+  {
+    type: "char", name: "Marco", role: "OPS", accent: "rgb(239,68,68)",
+    text: "Was that intentional?",
+  },
+  {
+    type: "char", name: "Lisa", role: "DEV", accent: "rgb(34,197,94)",
+    text: "No. We probably broke them and never noticed.",
+  },
+  {
+    type: "char", name: "Kai", role: "QA", accent: "rgb(251,146,60)",
+    text: "That is the part that bothers me. We have tests. They are in the repo. They just do not run unless someone manually decides to run them. Which nobody does.",
+  },
+  {
+    type: "char", name: "Marco", role: "OPS", accent: "rgb(239,68,68)",
+    text: "And on my side, I deploy manually. I run the same script every Tuesday. And I still make mistakes.",
+  },
+  {
+    type: "beat",
+    text: "Lisa closed her laptop.",
+  },
+  {
+    type: "char", name: "Lisa", role: "DEV", accent: "rgb(34,197,94)",
+    text: "So we have environments that work. We have tests. We have a deploy script. And every step requires a human to remember to do it. That is not a process — that is hope.",
+  },
+  {
+    type: "player",
+    text: "A pipeline is the wire that connects everything. Push code, run tests, build the artifact, deploy. No one decides to run it. It runs because there was a commit. Every time. Without exception.",
+    coda: "Hope is not a strategy. Automate the path to production.",
   },
 ]
+
+function DialogueLine({ line, index }: { line: SceneLine; index: number }) {
+  if (line.type === "beat") {
+    return (
+      <p className="text-center text-sm text-gray-600 italic py-5">
+        {line.text}
+      </p>
+    )
+  }
+
+  if (line.type === "player") {
+    return (
+      <div
+        className="flex flex-col gap-4 px-6 py-5 mt-2"
+        style={{
+          backgroundColor: "rgba(6,182,212,0.03)",
+          borderLeft: "3px solid rgb(6,182,212)",
+          borderTop: "1px solid rgba(6,182,212,0.2)",
+          borderBottom: "1px solid rgba(6,182,212,0.2)",
+          borderRight: "1px solid rgba(6,182,212,0.1)",
+        }}
+      >
+        <span className="text-xs font-mono tracking-widest uppercase" style={{ color: "rgb(6,182,212)" }}>
+          You &middot; New Engineer
+        </span>
+        <p className="text-gray-200 text-base leading-relaxed">{line.text}</p>
+        <p className="text-white font-bold text-sm border-t pt-4" style={{ borderColor: "rgba(6,182,212,0.15)" }}>
+          {line.coda}
+        </p>
+      </div>
+    )
+  }
+
+  const bg = index % 2 === 0 ? "#080808" : "#060606"
+  return (
+    <div
+      className="flex flex-col gap-2 px-6 py-4"
+      style={{ backgroundColor: bg, borderLeft: `3px solid ${line.accent}` }}
+    >
+      <span className="text-xs font-mono tracking-widest uppercase" style={{ color: line.accent, opacity: 0.8 }}>
+        {line.name} &middot; {line.role}
+      </span>
+      <p className="text-gray-300 text-base leading-relaxed">
+        &ldquo;{line.text}&rdquo;
+      </p>
+    </div>
+  )
+}
 
 function Phase1() {
   return (
     <div className="flex-1 px-6 py-14">
-      <div className="max-w-5xl mx-auto flex flex-col gap-12">
+      <div className="max-w-3xl mx-auto flex flex-col gap-12">
 
-        <div className="flex flex-col gap-3 max-w-2xl">
+        <div className="flex flex-col gap-3">
           <h2
             className="text-4xl text-white tracking-tight leading-tight"
             style={{ ...syne.style, fontWeight: 800 }}
@@ -169,61 +195,9 @@ function Phase1() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {panels.map((p) => (
-            <div
-              key={p.initials}
-              className="flex flex-col gap-0 overflow-hidden"
-              style={{
-                backgroundColor: "#0a0a0a",
-                border: "1px solid #222",
-                borderLeft: `3px solid ${p.accent}`,
-              }}
-            >
-              <div
-                className="flex items-center justify-between px-4 py-3 border-b"
-                style={{ borderColor: "#1a1a1a", backgroundColor: "#0d0d0d" }}
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-9 h-9 flex items-center justify-center text-xs font-mono font-bold shrink-0"
-                    style={{
-                      backgroundColor: `${p.accent}18`,
-                      border: `1px solid ${p.accent}40`,
-                      color: p.accent,
-                    }}
-                  >
-                    {p.initials}
-                  </div>
-                  <div className="flex flex-col gap-0">
-                    <span className="text-white text-sm font-semibold leading-tight">{p.name}</span>
-                    <span className="text-gray-600 text-xs">{p.role}</span>
-                  </div>
-                </div>
-                <span
-                  className="text-xs font-mono px-2 py-0.5 tracking-widest"
-                  style={{
-                    color: p.accent,
-                    backgroundColor: p.badgeBg,
-                    border: `1px solid ${p.badgeBorder}`,
-                  }}
-                >
-                  {p.badge}
-                </span>
-              </div>
-
-              <div className="px-5 py-4 flex flex-col gap-3">
-                <p className="text-gray-300 text-sm leading-relaxed">{p.quote}</p>
-                {"outro" in p && p.outro && (
-                  <p
-                    className="text-white font-bold text-sm border-t pt-3"
-                    style={{ borderColor: "#1a1a1a" }}
-                  >
-                    {p.outro}
-                  </p>
-                )}
-              </div>
-            </div>
+        <div className="flex flex-col border border-gray-900">
+          {scene.map((line, i) => (
+            <DialogueLine key={i} line={line} index={i} />
           ))}
         </div>
 
@@ -233,15 +207,6 @@ function Phase1() {
           sub="Phase 2 of 4 - What is Continuous Integration?"
         />
       </div>
-
-      <style>{`
-        mark {
-          background: none;
-          color: rgb(6,182,212);
-          font-family: monospace;
-          font-weight: 700;
-        }
-      `}</style>
     </div>
   )
 }
