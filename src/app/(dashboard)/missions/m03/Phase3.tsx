@@ -442,6 +442,26 @@ git push`}</pre>
 
         {/* Task 4 */}
         <TaskCard number="04" title="See the pipeline run green" done={task4Done} locked={!task3Done}>
+          <div
+            className="flex flex-col gap-2 p-5 border"
+            style={{
+              backgroundColor: "#0a0700",
+              borderColor: "rgba(251,146,60,0.4)",
+              borderLeft: "3px solid rgb(251,146,60)",
+            }}
+          >
+            <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
+              First time on your fork?
+            </span>
+            <p className="text-sm text-gray-300 leading-relaxed">
+              GitHub disables Actions on forked repositories by default. If you see
+              &ldquo;Workflows aren&apos;t being run on this forked repository&rdquo;, go to the{" "}
+              <span className="text-white">Actions</span> tab on your fork and click{" "}
+              &ldquo;I understand my workflows, go ahead and enable them&rdquo;. You only need to
+              do this once per fork.
+            </p>
+          </div>
+
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
               <span className="text-white">This is the moment.</span> Every future commit to this
