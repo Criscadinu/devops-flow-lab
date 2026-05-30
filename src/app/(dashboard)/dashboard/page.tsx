@@ -67,7 +67,7 @@ const missionDefs = [
     description: "The server is a mystery only Marco understands. Define the entire environment in code so anyone can recreate it.",
     href: "/missions/m06",
     alwaysUnlocked: false,
-    unlockedBy: "M-04",
+    unlockedBy: "M-02",
   },
   {
     id: "M-07",
@@ -171,7 +171,7 @@ const mainMissionDefs: MainMissionDef[] = [
     title: 'Create the foundations of our deployment pipeline',
     description: 'Build the technical foundation that makes everything else possible — environments, version control, and infrastructure that rebuilds in minutes.',
     bookReference: 'The DevOps Handbook — Chapter 9',
-    submissionIds: ['M-02', 'M-NEW-01', 'M-06'],
+    submissionIds: ['M-02', 'M-NEW-01'],
   },
   {
     id: 'AUTOMATED_TESTING',
@@ -195,7 +195,7 @@ const mainMissionDefs: MainMissionDef[] = [
     title: 'Automate and enable low-risk releases',
     description: 'Make releases boring. Automate the deploy. Practice release patterns that make rollback unnecessary.',
     bookReference: 'The DevOps Handbook — Chapter 12',
-    submissionIds: ['M-04', 'M-NEW-05', 'M-NEW-06', 'M-07'],
+    submissionIds: ['M-04', 'M-06', 'M-NEW-05', 'M-NEW-06', 'M-07'],
   },
   {
     id: 'TELEMETRY',
