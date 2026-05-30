@@ -34,6 +34,15 @@ const missionDefs = [
     unlockedBy: undefined as string | undefined,
   },
   {
+    id: "M-16",
+    title: "Single Repository of Truth",
+    category: "FLOW",
+    description: "The config is from last Tuesday. The tests are on Kai's laptop. The runbook is in Google Drive. Nothing is in the same place. Fix it.",
+    href: "/missions/m16",
+    alwaysUnlocked: false,
+    unlockedBy: "M-02",
+  },
+  {
     id: "M-03",
     title: "Build the Pipeline",
     category: "FLOW",
@@ -303,7 +312,7 @@ export default async function DashboardPage() {
   });
 
   // ── Maturity bar ─────────────────────────────────────────────────────────
-  const TOTAL_MISSIONS = 15;
+  const TOTAL_MISSIONS = 16;
   const completedCount = completedIds.size;
   const maturityPct    = Math.round((completedCount / TOTAL_MISSIONS) * 100);
 
