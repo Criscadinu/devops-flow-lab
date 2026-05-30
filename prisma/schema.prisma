@@ -14,18 +14,28 @@ enum Role {
   MANAGER
 }
 
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  image     String?
-  createdAt             DateTime @default(now())
-  role                  Role     @default(ENGINEER)
-  onboardingCompleted   Boolean  @default(false)
+enum MainMissionId {
+  FOUNDATIONS
+  AUTOMATED_TESTING
+  CONTINUOUS_INTEGRATION
+  LOW_RISK_RELEASES
+  TELEMETRY
+  FEEDBACK
+  LEARNING_THIRD_WAY
+}
 
-  accounts     Account[]
-  sessions     Session[]
-  progress     UserProgress[]
+model User {
+  id                  String   @id @default(cuid())
+  email               String   @unique
+  name                String?
+  image               String?
+  createdAt           DateTime @default(now())
+  role                Role     @default(ENGINEER)
+  onboardingCompleted Boolean  @default(false)
+
+  accounts Account[]
+  sessions Session[]
+  progress UserProgress[]
 }
 
 model Account {
