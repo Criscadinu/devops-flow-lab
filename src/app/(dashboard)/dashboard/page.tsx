@@ -317,11 +317,10 @@ export default async function DashboardPage() {
   const currentStage = [...maturityStages].reverse().find((s) => maturityPct >= s.threshold)!;
 
   // ── Main mission progress ─────────────────────────────────────────────────
-  const existingMissionIds = new Set(missionDefs.map((m) => m.id));
-
+  // Only count submissions that exist today (not M-NEW-* placeholders) toward completion.
   const mainMissionProgress: Record<string, { existingIds: string[]; completedCount: number; isComplete: boolean }> = {};
   for (const mm of mainMissionDefs) {
-    const existingIds    = mm.submissionIds.filter((id) => existingMissionIds.has(id));
+    const existingIds    = mm.submissionIds.filter((id) => !id.startsWith('M-NEW-'));
     const completedCount = existingIds.filter((id) => completedIds.has(id)).length;
     const isComplete     = existingIds.length === 0 || completedCount === existingIds.length;
     mainMissionProgress[mm.id] = { existingIds, completedCount, isComplete };
