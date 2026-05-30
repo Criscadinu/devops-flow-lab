@@ -171,7 +171,7 @@ const mainMissionDefs: MainMissionDef[] = [
     title: 'Create the foundations of our deployment pipeline',
     description: 'Build the technical foundation that makes everything else possible — environments, version control, and infrastructure that rebuilds in minutes.',
     bookReference: 'The DevOps Handbook — Chapter 9',
-    submissionIds: ['M-02', 'M-NEW-01'],
+    submissionIds: ['M-02', 'M-16'],
   },
   {
     id: 'AUTOMATED_TESTING',
@@ -179,7 +179,7 @@ const mainMissionDefs: MainMissionDef[] = [
     title: 'Enable fast and reliable automated testing',
     description: 'Automated tests are the safety net. Without them, every change is a gamble.',
     bookReference: 'The DevOps Handbook — Chapter 10',
-    submissionIds: ['M-03', 'M-05', 'M-NEW-02'],
+    submissionIds: ['M-03', 'M-05', 'M-17'],
   },
   {
     id: 'CONTINUOUS_INTEGRATION',
@@ -187,7 +187,7 @@ const mainMissionDefs: MainMissionDef[] = [
     title: 'Enable and practice continuous integration',
     description: 'Integrate small changes frequently. Stop hoarding work on long-lived branches.',
     bookReference: 'The DevOps Handbook — Chapter 11',
-    submissionIds: ['M-NEW-03', 'M-NEW-04'],
+    submissionIds: ['M-18', 'M-19'],
   },
   {
     id: 'LOW_RISK_RELEASES',
@@ -195,7 +195,7 @@ const mainMissionDefs: MainMissionDef[] = [
     title: 'Automate and enable low-risk releases',
     description: 'Make releases boring. Automate the deploy. Practice release patterns that make rollback unnecessary.',
     bookReference: 'The DevOps Handbook — Chapter 12',
-    submissionIds: ['M-04', 'M-06', 'M-NEW-05', 'M-NEW-06', 'M-07'],
+    submissionIds: ['M-04', 'M-06', 'M-20', 'M-21', 'M-07'],
   },
   {
     id: 'TELEMETRY',
@@ -317,10 +317,11 @@ export default async function DashboardPage() {
   const currentStage = [...maturityStages].reverse().find((s) => maturityPct >= s.threshold)!;
 
   // ── Main mission progress ─────────────────────────────────────────────────
-  // Only count submissions that exist today (not M-NEW-* placeholders) toward completion.
+  // Only count submissions that have a real mission page (in missionDefs) toward completion.
+  const builtMissionIds = new Set(missionDefs.map((m) => m.id));
   const mainMissionProgress: Record<string, { existingIds: string[]; completedCount: number; isComplete: boolean }> = {};
   for (const mm of mainMissionDefs) {
-    const existingIds    = mm.submissionIds.filter((id) => !id.startsWith('M-NEW-'));
+    const existingIds    = mm.submissionIds.filter((id) => builtMissionIds.has(id));
     const completedCount = existingIds.filter((id) => completedIds.has(id)).length;
     const isComplete     = existingIds.length === 0 || completedCount === existingIds.length;
     mainMissionProgress[mm.id] = { existingIds, completedCount, isComplete };
