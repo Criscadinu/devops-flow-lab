@@ -7,7 +7,7 @@ import { completeMission } from "@/app/actions/progress"
 import { prisma } from "@/lib/prisma"
 
 export const metadata: Metadata = {
-  title: "M-09 Monitor and Alert - DevOps Flow Lab",
+  title: "M-09 Continuous Deployment - DevOps Flow Lab",
 }
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
@@ -23,7 +23,7 @@ function MissionHeader({ fase }: { fase: number }) {
           M-09
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
-          Monitor and Alert
+          Continuous Deployment
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
           Phase {fase} of 4
@@ -59,17 +59,17 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
 
 const panels = [
   {
-    initials: "MA",
-    name: "Marco",
-    role: "Ops Engineer",
-    badge: "OPS",
-    accent: "rgb(239,68,68)",
-    badgeBg: "rgba(239,68,68,0.08)",
-    badgeBorder: "rgba(239,68,68,0.3)",
+    initials: "SM",
+    name: "Sarah",
+    role: "Engineering Manager",
+    badge: "MANAGEMENT",
+    accent: "rgb(6,182,212)",
+    badgeBg: "rgba(6,182,212,0.08)",
+    badgeBorder: "rgba(6,182,212,0.3)",
     quote: (
       <>
-        &ldquo;We have metrics now. I check them manually every morning. Last Tuesday I forgot.
-        That was the day the error rate hit <mark>23%</mark>. A customer called us.&rdquo;
+        &ldquo;The tests pass automatically now. But Marco still deploys manually. Every deploy is
+        still a meeting, a checklist, and a prayer. We need to close the loop.&rdquo;
       </>
     ),
   },
@@ -83,8 +83,39 @@ const panels = [
     badgeBorder: "rgba(34,197,94,0.3)",
     quote: (
       <>
-        &ldquo;I pushed a fix at 4pm. By 9pm I had no idea if it was still holding. Nobody told me.
-        I checked the logs manually at <mark>11pm</mark> before I could sleep.&rdquo;
+        &ldquo;I merged a fix 3 days ago. It passed all tests. It is still not in production.
+        Marco has not had time to deploy it. Customers are still hitting the bug.&rdquo;
+      </>
+    ),
+  },
+  {
+    initials: "MA",
+    name: "Marco",
+    role: "Ops Engineer",
+    badge: "OPS",
+    accent: "rgb(239,68,68)",
+    badgeBg: "rgba(239,68,68,0.08)",
+    badgeBorder: "rgba(239,68,68,0.3)",
+    quote: (
+      <>
+        &ldquo;I am the bottleneck and I know it. Every deploy goes through me. I have{" "}
+        <mark>12 pending deploys</mark> this week. I cannot keep up. And every manual deploy is
+        a risk.&rdquo;
+      </>
+    ),
+  },
+  {
+    initials: "KA",
+    name: "Kai",
+    role: "QA Engineer",
+    badge: "QA",
+    accent: "rgb(251,146,60)",
+    badgeBg: "rgba(251,146,60,0.08)",
+    badgeBorder: "rgba(251,146,60,0.3)",
+    quote: (
+      <>
+        &ldquo;We fixed the tests. The pipeline is green. But we are still finding bugs in
+        production that were caught by the pipeline weeks ago. The fix just never shipped.&rdquo;
       </>
     ),
   },
@@ -98,8 +129,8 @@ const panels = [
     badgeBorder: "rgba(167,139,250,0.3)",
     quote: (
       <>
-        &ldquo;Support tickets spiked <mark>three times</mark> this month. Each time we found out
-        from customers. Each time we said &lsquo;we need better monitoring&rsquo;. Nothing changed.&rdquo;
+        &ldquo;Time to market is still <mark>3 weeks</mark> minimum. Even with a green pipeline.
+        The code is done, tested, and sitting there. We just cannot get it out the door.&rdquo;
       </>
     ),
   },
@@ -114,11 +145,11 @@ const panels = [
     isPlayer: true,
     quote: (
       <>
-        &ldquo;Telemetry without alerting is a dashboard nobody watches. We need the system to
-        tell us when something is wrong — before the customer does.&rdquo;
+        &ldquo;The last mile. Code goes in, tests pass, and then it stops. The pipeline needs one
+        more step - automatically deploy every green build.&rdquo;
       </>
     ),
-    outro: "Make the system speak.",
+    outro: "Close the loop.",
   },
 ]
 
@@ -132,10 +163,10 @@ function Phase1() {
             className="text-4xl text-white tracking-tight leading-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Week nine. Nexus Corp.
+            Week four. Nexus Corp.
           </h2>
           <p className="text-gray-400 text-base leading-relaxed">
-            The logs are flowing. The metrics are there. But nobody is watching. Problems are still reported by customers, not by systems.
+            The pipeline is green. But nothing ships automatically.
           </p>
         </div>
 
@@ -197,7 +228,7 @@ function Phase1() {
         <CTA
           href="?phase=2"
           label="Understand the theory →"
-          sub="Phase 2 of 4 - From telemetry to alerting"
+          sub="Phase 2 of 4 - What is Continuous Deployment?"
         />
       </div>
 
@@ -215,60 +246,62 @@ function Phase1() {
 
 // ─── Phase 2 - The theory ─────────────────────────────────────────────────────
 
-const alertExample = `{
-  "status": "WARNING",
-  "checks": {
-    "error_rate": { "value": "3.2%", "threshold": "1%", "status": "WARNING" },
-    "uptime":     { "value": 3600,   "threshold": 60,   "status": "OK"      }
-  },
-  "timestamp": "2024-01-15T09:14:22Z"
-}`
-
-const alertProperties = [
+const ciVsCd = [
   {
-    num: "01",
-    title: "Actionable",
-    body: "Every alert should have a clear response. If you do not know what to do when it fires, it should not be an alert. Alerts are not notifications — they are calls to action.",
+    title: "Continuous Integration",
+    body: "Every commit is automatically built and tested. You know within minutes if your code works. But it still needs a human to deploy.",
+    accent: "rgb(75,85,99)",
+    bg: "#080808",
+    border: "rgba(75,85,99,0.3)",
+  },
+  {
+    title: "Continuous Deployment",
+    body: "Every green build is automatically deployed. No human in the loop. Code goes from commit to production without anyone pressing a button.",
     accent: "rgb(6,182,212)",
-  },
-  {
-    num: "02",
-    title: "Threshold-based",
-    body: "Not 'something changed' but 'error rate exceeded 5% for 2 minutes'. Vague alerts cause alarm fatigue. Precise thresholds cause precise responses.",
-    accent: "rgb(34,197,94)",
-  },
-  {
-    num: "03",
-    title: "Configurable",
-    body: "Thresholds should be environment variables, not hardcoded values. Production and staging have different traffic patterns. Tune per environment without touching code.",
-    accent: "rgb(251,146,60)",
+    bg: "#020d0f",
+    border: "rgba(6,182,212,0.25)",
   },
 ]
 
-const alertLevels = [
+const cdPrereqs = [
   {
-    level: "OK",
-    color: "rgb(34,197,94)",
-    bg: "rgba(34,197,94,0.08)",
-    border: "rgba(34,197,94,0.3)",
-    def: "All checks pass. System operating within normal parameters.",
-    action: "No action required.",
+    title: "Automated tests",
+    body: "If you do not have tests, CD is dangerous. Every commit goes to production - you need the pipeline to catch bugs before users do.",
+    accent: "rgb(34,197,94)",
+    bg: "#060f06",
+    border: "rgba(34,197,94,0.25)",
   },
   {
-    level: "WARNING",
-    color: "rgb(234,179,8)",
-    bg: "rgba(234,179,8,0.08)",
-    border: "rgba(234,179,8,0.3)",
-    def: "Degraded performance. One or more metrics approaching critical threshold.",
-    action: "Investigate soon. Not user-impacting yet.",
+    title: "Fast pipeline",
+    body: "If your pipeline takes 30 minutes, every deploy blocks the next one. CD pipelines should complete in under 10 minutes.",
+    accent: "rgb(6,182,212)",
+    bg: "#020d0f",
+    border: "rgba(6,182,212,0.25)",
   },
   {
-    level: "CRITICAL",
-    color: "rgb(239,68,68)",
-    bg: "rgba(239,68,68,0.08)",
-    border: "rgba(239,68,68,0.3)",
-    def: "Service impact. One or more checks in critical state.",
-    action: "Act now. Users are being affected.",
+    title: "Easy rollback",
+    body: "When something goes wrong - and it will - you need to be able to revert in seconds. CD without rollback is reckless.",
+    accent: "rgb(251,146,60)",
+    bg: "#0a0700",
+    border: "rgba(251,146,60,0.25)",
+  },
+]
+
+const platforms = [
+  {
+    name: "Render",
+    desc: "Simple GitHub integration. Free tier. Deploys on every push. Zero config for Node.js apps.",
+    url: "render.com",
+  },
+  {
+    name: "Railway",
+    desc: "Modern platform. Clean UI. Free trial. Excellent for small apps.",
+    url: "railway.app",
+  },
+  {
+    name: "Fly.io",
+    desc: "More powerful. Free tier. Global edge deployment.",
+    url: "fly.io",
   },
 ]
 
@@ -283,45 +316,13 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The gap between data and action
+            What is Continuous Deployment?
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            Having metrics is not enough. MTTR improved from <span className="text-white font-mono font-bold">72 hours</span> to{" "}
-            <span className="text-white font-mono font-bold">4 hours</span> in M-08 because you can
-            now find problems faster. But you still find them too late — after customers notice.
+            Continuous Deployment means every commit that passes the automated tests is automatically
+            deployed to production. No manual steps. No deployment meetings. No Marco. The pipeline
+            does it all. The goal: reduce the time from commit to customer to minutes.
           </p>
-          <p className="text-gray-400 leading-relaxed">
-            The missing piece is automated alerting: the system tells you when something crosses a
-            threshold. Detection goes from hours to seconds.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
-              {
-                label: "Bad alert",
-                example: '"Something is wrong"',
-                note: "No threshold. No context. No action. Causes panic, not response.",
-                accent: "rgb(239,68,68)",
-              },
-              {
-                label: "Good alert",
-                example: '"Error rate 7.3% — threshold 5% — check /api/orders logs"',
-                note: "Specific value. Known threshold. Clear first action.",
-                accent: "rgb(34,197,94)",
-              },
-            ].map((item) => (
-              <div
-                key={item.label}
-                className="flex flex-col gap-3 p-5 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${item.accent}` }}
-              >
-                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: item.accent }}>
-                  {item.label}
-                </span>
-                <p className="text-sm font-mono text-white">{item.example}</p>
-                <p className="text-xs text-gray-500 leading-relaxed">{item.note}</p>
-              </div>
-            ))}
-          </div>
         </section>
 
         <section className="flex flex-col gap-5">
@@ -330,20 +331,26 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            What makes a good alert
+            CD vs CI - what is the difference?
           </h2>
-          <div className="flex flex-col gap-3">
-            {alertProperties.map((p) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {ciVsCd.map((card) => (
               <div
-                key={p.num}
-                className="flex gap-4 p-5 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${p.accent}` }}
+                key={card.title}
+                className="flex flex-col gap-3 p-6 border"
+                style={{
+                  backgroundColor: card.bg,
+                  borderColor: card.border,
+                  borderLeft: `3px solid ${card.accent}`,
+                }}
               >
-                <span className="text-xs font-mono font-bold shrink-0 mt-0.5" style={{ color: p.accent }}>{p.num}</span>
-                <div className="flex flex-col gap-1">
-                  <span className="text-xs font-mono font-bold uppercase tracking-widest text-white">{p.title}</span>
-                  <p className="text-sm text-gray-400 leading-relaxed">{p.body}</p>
-                </div>
+                <span
+                  className="text-xs font-mono font-bold uppercase tracking-widest"
+                  style={{ color: card.accent }}
+                >
+                  {card.title}
+                </span>
+                <p className="text-gray-400 text-sm leading-relaxed">{card.body}</p>
               </div>
             ))}
           </div>
@@ -355,33 +362,28 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Alert levels
+            Three prerequisites for CD
           </h2>
-          <div className="flex flex-col gap-3">
-            {alertLevels.map((l) => (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {cdPrereqs.map((card) => (
               <div
-                key={l.level}
-                className="flex flex-col gap-2 p-5 border"
-                style={{ backgroundColor: l.bg, borderColor: l.border, borderLeft: `3px solid ${l.color}` }}
+                key={card.title}
+                className="flex flex-col gap-3 p-6 border"
+                style={{
+                  backgroundColor: card.bg,
+                  borderColor: card.border,
+                  borderLeft: `3px solid ${card.accent}`,
+                }}
               >
-                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: l.color }}>
-                  {l.level}
+                <span
+                  className="text-xs font-mono font-bold uppercase tracking-widest"
+                  style={{ color: card.accent }}
+                >
+                  {card.title}
                 </span>
-                <p className="text-sm text-gray-300 leading-relaxed">{l.def}</p>
-                <p className="text-xs font-mono text-gray-500">{l.action}</p>
+                <p className="text-gray-400 text-sm leading-relaxed">{card.body}</p>
               </div>
             ))}
-          </div>
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>
-              What /api/alerts will return
-            </p>
-            <pre
-              className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
-              style={{ backgroundColor: "#0d0d0d", borderLeft: "3px solid rgb(31,41,55)", color: "rgb(156,163,175)" }}
-            >
-              {alertExample}
-            </pre>
           </div>
         </section>
 
@@ -391,36 +393,34 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The DORA connection
+            Choose your deployment platform
           </h2>
-          <p className="text-gray-400 leading-relaxed">
-            MTTR measures recovery time. Recovery starts at <em className="text-white not-italic font-semibold">detection</em>.
-            Manual detection — someone checks a dashboard — adds minutes to hours of delay.
-            Automated alerting means detection is instant.
-          </p>
-          <div className="flex flex-col gap-0 border border-gray-800">
-            {[
-              { label: "Current MTTR",      value: "4 hours", color: "rgb(239,68,68)",  note: "Metrics exist but require manual checking. Someone has to notice." },
-              { label: "Target after M-09", value: "1 hour",  color: "rgb(6,182,212)", note: "Automated alerts fire when thresholds are crossed. Detection is now instant." },
-            ].map((row, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {platforms.map((p) => (
               <div
-                key={row.label}
-                className="flex items-start gap-5 px-5 py-4 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+                key={p.name}
+                className="flex flex-col gap-3 p-5 border"
+                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
               >
-                <span className="text-2xl font-mono font-bold shrink-0" style={{ ...syne.style, color: row.color }}>{row.value}</span>
-                <div className="flex flex-col gap-1">
-                  <span className="text-xs font-mono uppercase tracking-widest text-gray-600">{row.label}</span>
-                  <span className="text-sm text-gray-500">{row.note}</span>
-                </div>
+                <span
+                  className="text-sm font-bold uppercase tracking-widest"
+                  style={{ ...syne.style, color: "rgb(6,182,212)" }}
+                >
+                  {p.name}
+                </span>
+                <p className="text-gray-400 text-sm leading-relaxed flex-1">{p.desc}</p>
+                <span className="text-xs font-mono text-gray-700">{p.url}</span>
               </div>
             ))}
           </div>
+          <p className="text-xs font-mono text-gray-600">
+            All three support automatic deployment from GitHub. Pick one and stick with it.
+          </p>
         </section>
 
         <CTA
           href="?phase=3"
-          label="Add alerting to Nexus Corp →"
+          label="Set up CD for Nexus Corp →"
           sub="Phase 3 of 4 - Do it yourself"
         />
       </div>
@@ -431,45 +431,15 @@ function Phase2() {
 // ─── Phase 4 - Result ─────────────────────────────────────────────────────────
 
 const beforeAfter = [
-  { before: "Error rate hit 23% — detected by a customer call",       after: "Error rate threshold fires an alert within seconds"          },
-  { before: "Manual dashboard checks every morning (sometimes skipped)", after: "/api/alerts is polled automatically by any monitoring tool" },
-  { before: "Developer checks logs at 11pm to verify a fix held",     after: "Alert silence after a fix confirms recovery automatically"    },
-  { before: "Support ticket spike = first sign of an incident",       after: "CRITICAL alert fires before the first support ticket"        },
+  { before: "Manual deploy by Marco every release",     after: "Automatic deploy on every green commit"  },
+  { before: "12 pending deploys stuck in queue",         after: "Every commit ships within minutes"        },
+  { before: "Deploy meetings and checklists",            after: "No humans in the deployment loop"         },
+  { before: "Bugs fixed but not shipped for weeks",      after: "Fix merged, tested, and live in minutes"  },
 ]
 
 const doraImpact = [
-  {
-    metric: "Mean Time to Restore",
-    code: "MTTR",
-    before: "4 hours",
-    after: "1 hour",
-    note: "automated detection collapses the time between incident start and human awareness",
-    highlight: true,
-  },
-  {
-    metric: "Deployment Frequency",
-    code: "DF",
-    before: "Multiple×/week",
-    after: "Multiple×/week",
-    note: "unchanged",
-    highlight: false,
-  },
-  {
-    metric: "Lead Time for Changes",
-    code: "LT",
-    before: "5 days",
-    after: "5 days",
-    note: "unchanged",
-    highlight: false,
-  },
-  {
-    metric: "Change Failure Rate",
-    code: "CFR",
-    before: "4%",
-    after: "4%",
-    note: "unchanged — alerting detects failures faster, does not prevent them",
-    highlight: false,
-  },
+  { metric: "Deployment Frequency",  code: "DF", before: "2x per month", after: "1x per week",  note: "automated deploy unblocks frequency" },
+  { metric: "Lead Time for Changes", code: "LT", before: "28 days",      after: "14 days",       note: "commit to production in minutes"     },
 ]
 
 function Phase4() {
@@ -482,7 +452,7 @@ function Phase4() {
             Mission Complete - M-09
           </p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Nexus Corp Stops Flying Blind
+            Shipping Automatically.
           </h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">
             This is what you built for Nexus Corp.
@@ -529,51 +499,29 @@ function Phase4() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {doraImpact.map((d) => (
               <div
                 key={d.code}
                 className="flex flex-col gap-4 border p-6"
-                style={{
-                  backgroundColor: d.highlight ? "#020d0f" : "#080808",
-                  borderColor: d.highlight ? "rgba(6,182,212,0.3)" : "rgb(31,41,55)",
-                  borderLeft: d.highlight ? "3px solid rgb(6,182,212)" : "3px solid rgb(31,41,55)",
-                }}
+                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
               >
                 <div className="flex flex-col gap-1">
                   <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">{d.metric}</span>
                   <span className="text-xs font-mono text-gray-700">DORA - {d.code}</span>
                 </div>
-                <div className="flex items-center gap-3 flex-wrap">
-                  <span
-                    className="text-lg font-mono font-bold"
-                    style={{ ...syne.style, color: d.highlight ? "rgb(239,68,68)" : "rgb(75,85,99)" }}
-                  >
+                <div className="flex items-center gap-4">
+                  <span className="text-xl font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>
                     {d.before}
                   </span>
                   <span className="font-mono text-gray-700">→</span>
-                  <span
-                    className="text-lg font-mono font-bold"
-                    style={{ ...syne.style, color: d.highlight ? "rgb(6,182,212)" : "rgb(75,85,99)" }}
-                  >
+                  <span className="text-xl font-mono font-bold" style={{ ...syne.style, color: "rgb(6,182,212)" }}>
                     {d.after}
                   </span>
                 </div>
                 <p className="text-xs font-mono text-gray-600">{d.note}</p>
               </div>
             ))}
-          </div>
-
-          <div
-            className="p-5 border"
-            style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: "3px solid rgb(75,85,99)" }}
-          >
-            <p className="text-sm text-gray-500 leading-relaxed">
-              The reduction from 4 hours to 1 hour comes entirely from detection time. Before:
-              someone notices something is wrong, checks the logs, confirms the problem. Now: the
-              system detects the threshold breach and fires an alert. The time between incident
-              start and human awareness collapses from hours to seconds.
-            </p>
           </div>
         </section>
 
@@ -588,16 +536,13 @@ function Phase4() {
             className="flex flex-col gap-3 p-6 border"
             style={{
               backgroundColor: "#080808",
-              borderColor: "rgba(6,182,212,0.2)",
-              borderLeft: "3px solid rgb(6,182,212)",
+              borderColor: "rgb(31,41,55)",
+              borderLeft: "3px solid rgb(31,41,55)",
             }}
           >
-            <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-              Second Way: Feedback — In Progress
-            </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Next: Fast Incident Response — alerts fire, but does your team know what to do?
-              Build the runbook and the process that turns alerts into resolved incidents.
+              Code ships automatically. But how do you know it is working in production? You need
+              visibility into what is happening after deploy. Next mission: Monitoring and Observability.
             </p>
           </div>
         </section>
@@ -611,14 +556,14 @@ function Phase4() {
             >
               Back to dashboard →
             </a>
-            <div
+            <span
               className="flex items-center gap-3 px-8 py-4 text-sm font-mono border cursor-not-allowed"
               style={{ backgroundColor: "#0a0a0a", borderColor: "rgb(31,41,55)", color: "rgb(55,65,81)" }}
               title="Not yet available"
             >
               <span>⊘</span>
-              Continue to M-10 →
-            </div>
+              Next mission: Monitoring and Observability →
+            </span>
           </div>
         </section>
 
@@ -629,7 +574,7 @@ function Phase4() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default async function M09Page({
+export default async function M04Page({
   searchParams,
 }: {
   searchParams: Promise<{ phase?: string }>

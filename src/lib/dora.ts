@@ -22,11 +22,11 @@ export const missionImpact: Record<string, Partial<DoraState>> = {
     cfr: { value: "28%",     perf: "MEDIUM PERFORMER" },
     lt:  { value: "36 days", perf: "MEDIUM PERFORMER" },
   },
-  "M-03": {
+  "M-04": {
     cfr: { value: "18%",     perf: "MEDIUM PERFORMER" },
     lt:  { value: "28 days", perf: "MEDIUM PERFORMER" },
   },
-  "M-04": {
+  "M-09": {
     df: { value: "1× per week", perf: "MEDIUM PERFORMER" },
     lt: { value: "14 days",     perf: "MEDIUM PERFORMER" },
   },
@@ -34,36 +34,36 @@ export const missionImpact: Record<string, Partial<DoraState>> = {
     cfr: { value: "10%",     perf: "MEDIUM PERFORMER" },
     lt:  { value: "10 days", perf: "MEDIUM PERFORMER" },
   },
-  "M-06": {
+  "M-10": {
     cfr: { value: "7%",     perf: "MEDIUM PERFORMER" },
     lt:  { value: "7 days", perf: "MEDIUM PERFORMER" },
   },
-  "M-07": {
+  "M-11": {
     cfr: { value: "4%",                   perf: "HIGH PERFORMER"   },
     lt:  { value: "5 days",               perf: "HIGH PERFORMER"   },
     df:  { value: "Multiple×/week",          perf: "HIGH PERFORMER"  },
   },
-  "M-08": {
+  "M-14": {
     mttr: { value: "4 hours", perf: "HIGH PERFORMER" },
   },
-  "M-09": {
+  "M-15": {
     mttr: { value: "1 hour", perf: "HIGH PERFORMER" },
   },
-  "M-10": {
+  "M-16": {
     mttr: { value: "30 minutes", perf: "HIGH PERFORMER" },
   },
-  "M-11": {
+  "M-17": {
     cfr: { value: "2%", perf: "HIGH PERFORMER" },
   },
-  "M-12": {
+  "M-18": {
     cfr: { value: "1%", perf: "HIGH PERFORMER" },
   },
 }
 
-/** Apply mission impacts in canonical order (M-01 → M-12) to produce current DORA state. */
+/** Apply mission impacts in canonical order to produce current DORA state. */
 export function computeDora(completedIds: Set<string>): DoraState {
   let state = { ...doraBaseline }
-  for (const id of ["M-01", "M-02", "M-03", "M-04", "M-05", "M-06", "M-07", "M-08", "M-09", "M-10", "M-11", "M-12"]) {
+  for (const id of ["M-01", "M-02", "M-04", "M-05", "M-09", "M-10", "M-11", "M-14", "M-15", "M-16", "M-17", "M-18"]) {
     if (completedIds.has(id) && missionImpact[id]) {
       state = { ...state, ...missionImpact[id] }
     }

@@ -160,10 +160,10 @@ export function Phase3() {
             className="text-3xl text-white tracking-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Your Mission - Build the Repository of Truth
+            Your Mission - Build the Process
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Audit what lives outside the repo, add .env.example, structure the docs/ folder, verify .gitignore, and push everything to Git.
+            Add a /api/status endpoint and a version-controlled runbook to the Nexus Corp app.
           </p>
         </div>
 
@@ -181,7 +181,7 @@ export function Phase3() {
               Before you start
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              This mission builds on your M-02 work. Your repo should already have Docker and a working environment setup.
+              This mission builds on your M-15 work. Both items should already be ready.
             </p>
           </div>
 
@@ -189,48 +189,62 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                nexus-corp-app forked and cloned from M-02
+                Fork from M-15 with alerting in place
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Your fork has Docker environments configured. The repo already exists — now we make it the single source of truth.
+              Your nexus-corp-app fork has /api/alerts with configurable thresholds, telemetry tests, and a green pipeline.
+            </p>
+
+            <div style={{ borderTop: "1px solid rgb(31,41,55)" }} />
+
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
+              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
+                startTime variable exists in src/index.js
+              </p>
+              <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
+            </div>
+            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+              The status endpoint shares the same startTime reference as /health and /api/alerts.
             </p>
           </div>
         </div>
 
         {/* Task 1 */}
-        <TaskCard number="01" title="Audit what is outside the repo" done={task1Done} locked={false}>
+        <TaskCard number="01" title="Add a /api/status endpoint" done={task1Done} locked={false}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">You cannot fix what you cannot see.</span>{" "}
-              Before adding anything to the repo, list everything that is not there.
-              This audit makes the problem concrete — and gives you a checklist to work through.
+              <span className="text-white">The status endpoint is your public incident communication channel.</span>{" "}
+              It reads from an environment variable so you can change the status without a code
+              deploy. Set INCIDENT_STATUS=degraded and every stakeholder who polls this endpoint
+              knows immediately — no Slack message required.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Create REPO-AUDIT.md at the repo root</SectionLabel>
-            <CodeBlock>{`# Repository Audit
+            <SectionLabel>Add to src/index.js</SectionLabel>
+            <CodeBlock>{`app.get('/api/status', (req, res) => {
+  const status = process.env.INCIDENT_STATUS || 'operational'
+  const validStatuses = ['operational', 'degraded', 'outage']
+  const currentStatus = validStatuses.includes(status) ? status : 'operational'
 
-## What is in the repo
-- [ ] Application code (src/)
-- [ ] Test suite
-- [ ] package.json and lockfile
-- [ ] Dockerfile
-- [ ] docker-compose.yml
-- [ ] GitHub Actions workflow (.github/workflows/)
+  res.json({
+    status: currentStatus,
+    message: {
+      operational: 'All systems operational.',
+      degraded: 'Degraded performance. Engineers are investigating.',
+      outage: 'Service outage. Incident in progress.',
+    }[currentStatus],
+    timestamp: new Date().toISOString(),
+  })
+})`}</CodeBlock>
+          </div>
 
-## What is NOT in the repo (yet)
-- [ ] Environment configuration (which .env values does the app need?)
-- [ ] Runbook / operational documentation
-- [ ] Architecture decisions (ADRs)
-- [ ] Database schema or migration scripts
-
-## What should never be in the repo
-- Secrets (API keys, passwords, tokens)
-- .env files with real values
-- node_modules/`}</CodeBlock>
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Add to docker-compose.yml prod environment</SectionLabel>
+            <CodeBlock>{`- INCIDENT_STATUS=operational`}</CodeBlock>
           </div>
 
           {!task1Done && (
@@ -241,35 +255,60 @@ export function Phase3() {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                REPO-AUDIT.md is created and committed
+                GET /api/status returns status, message, and timestamp
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 2 */}
-        <TaskCard number="02" title="Add a .env.example file" done={task2Done} locked={!task1Done}>
+        <TaskCard number="02" title="Create the incident runbook" done={task2Done} locked={!task1Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Secrets never go in the repo. But the shape of the config must.</span>{" "}
-              A .env.example file documents every environment variable the app needs, with placeholder values.
-              Any developer who clones the repo knows exactly what to configure — without anyone having to explain it.
+              <span className="text-white">A runbook written before an incident is worth ten postmortems written after.</span>{" "}
+              It forces you to think through failure modes when you are calm. At 3am during an
+              outage, you follow the steps — you do not invent them.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Create .env.example at the repo root</SectionLabel>
-            <CodeBlock>{`# Application
-NODE_ENV=development
-PORT=3000
-APP_VERSION=1.0.0-dev
+            <SectionLabel>Create docs/runbook.md in the nexus-corp-app repo</SectionLabel>
+            <CodeBlock>{`# Nexus Corp Incident Runbook
 
-# Feature flags
-ENABLE_PAGINATION=false
-ENABLE_ANALYTICS=false
+## Incident Response Process
+1. **Detect** — alert fires via /api/alerts
+2. **Assess** — check /api/status and /health for blast radius
+3. **Communicate** — post in #incidents: "Investigating [alert name] since [time]"
+4. **Triage** — identify likely cause using the playbooks below
+5. **Fix** — apply fix or rollback
+6. **Verify** — confirm /api/alerts returns OK
+7. **Close** — update /api/status to operational, post resolution in #incidents
+8. **Review** — schedule blameless postmortem within 48 hours
 
-# Add any other env vars your app needs here
-# Never put real values in this file`}</CodeBlock>
+## Escalation
+- First responder: on-call engineer
+- Escalate after 15 min if unresolved: Engineering Manager (Sarah)
+- Escalate after 30 min if unresolved: All hands
+
+## Playbooks
+
+### High Error Rate (error_rate > 5%)
+1. GET /api/alerts — confirm CRITICAL
+2. GET /health — check memory usage
+3. Check recent deploys — roll back if deploy was in last 2 hours
+4. Check /api/orders — is the orders endpoint responding?
+5. Escalate if unresolved in 15 minutes
+
+### Service Down (uptime < 60s)
+1. Check container status: docker ps
+2. Check logs: docker logs nexus-corp-app
+3. Restart if crashed: docker compose restart prod
+4. Escalate if not recovered in 10 minutes
+
+### High Memory Usage (used_mb > 80% of total_mb)
+1. GET /health — confirm memory values
+2. Restart app to clear memory: docker compose restart prod
+3. Investigate memory leak in next sprint`}</CodeBlock>
           </div>
 
           {!task2Done && (
@@ -280,32 +319,38 @@ ENABLE_ANALYTICS=false
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                .env.example is committed to the repo
+                docs/runbook.md is created and covers detect, triage, fix, verify, close, review
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 3 */}
-        <TaskCard number="03" title="Add a docs/ folder structure" done={task3Done} locked={!task2Done}>
+        <TaskCard number="03" title="Write tests for the status endpoint" done={task3Done} locked={!task2Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Documentation that lives in Google Drive is tribal knowledge.</span>{" "}
-              Documentation in the repo is versioned, reviewable, and always in sync with the code it describes.
-              Create the structure now — even with placeholder files. An empty folder with a README beats a full doc that nobody can find.
+              <span className="text-white">The status endpoint will be polled by stakeholders and monitoring tools.</span>{" "}
+              It needs to be reliable. A test ensures the endpoint responds correctly for all three
+              valid status values.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Create the docs/ folder structure</SectionLabel>
-            <CodeBlock>{`docs/
-  README.md       # "Operational documentation for the Nexus Corp app."
-  architecture.md # "# Architecture\n\nTBD — describe the system here."
-  adr/            # Architecture Decision Records (from M-14 if complete)
-  til/            # Today I Learned entries (from M-14 if complete)`}</CodeBlock>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              If you already have docs/ from M-10 or M-14, just add the README.md and architecture.md stubs. Commit the full structure.
-            </p>
+            <SectionLabel>Add to src/index.test.js</SectionLabel>
+            <CodeBlock>{`describe('Incident Status', () => {
+  it('GET /api/status returns status, message, and timestamp', async () => {
+    const res = await request(app).get('/api/status')
+    expect(res.status).toBe(200)
+    expect(res.body).toHaveProperty('status')
+    expect(res.body).toHaveProperty('message')
+    expect(res.body).toHaveProperty('timestamp')
+  })
+
+  it('status is one of operational, degraded, or outage', async () => {
+    const res = await request(app).get('/api/status')
+    expect(['operational', 'degraded', 'outage']).toContain(res.body.status)
+  })
+})`}</CodeBlock>
           </div>
 
           {!task3Done && (
@@ -316,33 +361,40 @@ ENABLE_ANALYTICS=false
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                docs/ structure is in place and committed
+                npm test passes with the new status endpoint tests
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 4 */}
-        <TaskCard number="04" title="Verify .gitignore is correct" done={task4Done} locked={!task3Done}>
+        <TaskCard number="04" title="Document escalation paths in the runbook" done={task4Done} locked={!task3Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A .gitignore that is too aggressive keeps important files out. One that is too permissive lets secrets in.</span>{" "}
-              Verify yours covers the essentials — node_modules, .env files, build output, and logs.
-              This is the gate between &ldquo;config in the repo&rdquo; and &ldquo;secrets in the repo.&rdquo;
+              <span className="text-white">An incident process without escalation paths is incomplete.</span>{" "}
+              The runbook should answer: what do I do if I cannot fix this in 15 minutes? Without
+              this, engineers keep trying to fix things alone past the point where escalation would
+              have helped.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Verify .gitignore contains at minimum</SectionLabel>
-            <CodeBlock>{`node_modules/
-.env
-.env.local
-.env.*.local
-dist/
-*.log`}</CodeBlock>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              Add any missing entries. Note: .env.example is NOT in .gitignore — it should be committed. Only .env (with real values) is ignored.
-            </p>
+            <SectionLabel>Verify docs/runbook.md includes all four of these</SectionLabel>
+            <div className="flex flex-col gap-2">
+              {[
+                "Named escalation contacts (Engineering Manager: Sarah)",
+                "Time-boxed escalation triggers (15 min, 30 min)",
+                "A communication channel (#incidents)",
+                "A postmortem commitment (within 48 hours)",
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-3 py-2 border-b last:border-b-0" style={{ borderColor: "rgb(31,41,55)" }}>
+                  <span className="text-xs font-mono font-bold shrink-0 mt-0.5" style={{ color: "rgb(6,182,212)" }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-sm text-gray-400">{item}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
           {!task4Done && (
@@ -353,25 +405,27 @@ dist/
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                .gitignore is verified and committed
+                Runbook includes escalation contacts, time triggers, communication channel, and postmortem commitment
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 5 */}
-        <TaskCard number="05" title="Commit everything and push" done={task5Done} locked={!task4Done}>
+        <TaskCard number="05" title="Commit and push — verify CI is green" done={task5Done} locked={!task4Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">The repo audit, .env.example, and docs structure are now the system&apos;s source of truth for operational knowledge.</span>{" "}
-              Every future engineer who joins Nexus Corp will find this — not a Slack message from six months ago.
+              <span className="text-white">The runbook and status endpoint are now part of the codebase.</span>{" "}
+              Every engineer who clones this repo gets the incident process. It is not in
+              someone&apos;s head or a forgotten Confluence page — it is version-controlled alongside
+              the code it describes.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Commit and push all changes</SectionLabel>
-            <CodeBlock>{`git add REPO-AUDIT.md .env.example docs/ .gitignore
-git commit -m 'feat: single repository of truth — audit, env example, docs structure'
+            <SectionLabel>Commit and push</SectionLabel>
+            <CodeBlock>{`git add src/index.js src/index.test.js docker-compose.yml docs/runbook.md
+git commit -m 'feat: add /api/status endpoint and incident runbook'
 git push`}</CodeBlock>
           </div>
 
@@ -397,7 +451,7 @@ git push`}</CodeBlock>
                   className="w-4 h-4 accent-cyan-400 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                  Pipeline is green
+                  Pipeline is green — status endpoint and runbook are live
                 </span>
               </label>
             </div>
@@ -415,7 +469,7 @@ git push`}</CodeBlock>
             }}
           >
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-              ✓ The repo is now the system. Everything is in one place.
+              ✓ Incident process established. The next outage will be a drill, not a disaster.
             </p>
             <a
               href="?phase=4"

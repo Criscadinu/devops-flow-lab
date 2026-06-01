@@ -160,10 +160,10 @@ export function Phase3() {
             className="text-3xl text-white tracking-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Your Mission - Build the Learning Culture
+            Your Mission - Add Eyes to Production
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Write a TIL, create an ADR, document your learning practices, expose them through an API, and commit it all to version control.
+            Wire structured logging, a real health endpoint, and live request counters into the Nexus Corp app.
           </p>
         </div>
 
@@ -181,7 +181,7 @@ export function Phase3() {
               Before you start
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              This mission builds on your M-13 work. Both items should already be ready.
+              This mission builds on your M-11 work. Both items should already be ready.
             </p>
           </div>
 
@@ -189,12 +189,12 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Postmortem process in place from M-13
+                Fork from M-11 with green pipeline
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Your nexus-corp-app fork has a postmortem template, a completed postmortem, and /api/postmortems live.
+              Your nexus-corp-app fork has feature flags, passing tests, and GitHub Actions running on every push.
             </p>
 
             <div style={{ borderTop: "1px solid rgb(31,41,55)" }} />
@@ -202,61 +202,40 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                docs/ folder already exists with postmortems and runbook
+                Node.js and npm installed
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              The docs/ folder structure from M-10 and M-13 is already in place. You will add til/ and adr/ subdirectories.
+              Verify with <code className="text-cyan-400 font-mono">node --version</code> and <code className="text-cyan-400 font-mono">npm --version</code>.
             </p>
           </div>
         </div>
 
         {/* Task 1 */}
-        <TaskCard number="01" title="Write your first TIL" done={task1Done} locked={false}>
+        <TaskCard number="01" title="Add structured logging with pino" done={task1Done} locked={false}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A TIL does not need to be profound. It needs to be written.</span>{" "}
-              The discipline of writing down what you learned — even something small — is what separates
-              teams that compound knowledge from teams that repeat mistakes.
+              <span className="text-white">console.log is not logging.</span>{" "}
+              It has no structure, no levels, no timestamps. pino is the standard structured logger
+              for Node.js. Every request gets a JSON log line automatically.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Create docs/til/2024-01-race-condition-orders.md</SectionLabel>
-            <CodeBlock>{`# TIL: Race Condition in Orders Service
+            <SectionLabel>Install pino</SectionLabel>
+            <CodeBlock>{`npm install pino pino-http`}</CodeBlock>
+          </div>
 
-**Date:** 2024-01-22
-**Author:** Lisa
-**Time to fix:** 3 hours
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Add to src/index.js</SectionLabel>
+            <CodeBlock>{`const pino = require('pino')
+const pinoHttp = require('pino-http')
 
-## What happened
-The /api/orders endpoint occasionally returned duplicate entries when two
-requests arrived within the same millisecond. The issue only appeared under load.
+const logger = pino({ level: process.env.LOG_LEVEL || 'info' })
 
-## Root cause
-The endpoint read from the orders array and wrote to it in two separate
-operations. Between the read and the write, a second request could read
-the same stale state.
-
-## Fix
-Wrap the read-modify-write operation in a mutex or use an atomic operation.
-In this case, filter the array in a single pass:
-
-\`\`\`javascript
-// Before (race condition)
-const existing = orders.find(o => o.id === newOrder.id)
-if (!existing) orders.push(newOrder)
-
-// After (atomic)
-if (!orders.some(o => o.id === newOrder.id)) {
-  orders.push(newOrder)
-}
-\`\`\`
-
-## Remember next time
-Any read-modify-write on shared state is a potential race condition.
-If the operation is not atomic, it is not safe under concurrent load.`}</CodeBlock>
+// Add after app is created, before routes:
+app.use(pinoHttp({ logger }))`}</CodeBlock>
           </div>
 
           {!task1Done && (
@@ -267,53 +246,40 @@ If the operation is not atomic, it is not safe under concurrent load.`}</CodeBlo
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                docs/til/2024-01-race-condition-orders.md is created
+                Every request now produces a structured JSON log line
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 2 */}
-        <TaskCard number="02" title="Write an ADR for a past decision" done={task2Done} locked={!task1Done}>
+        <TaskCard number="02" title="Upgrade the /health endpoint" done={task2Done} locked={!task1Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">An ADR captures the why behind a technical decision.</span>{" "}
-              Without it, future engineers see the what but not the why — and they will reverse good decisions
-              because they do not understand the tradeoffs that were already considered.
+              <span className="text-white">A health check that only says &ldquo;ok&rdquo; is useless.</span>{" "}
+              A real health check tells you uptime, memory pressure, and version. Load balancers
+              and monitoring tools use this to decide if your app is healthy.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Create docs/adr/001-use-environment-variables-for-feature-flags.md</SectionLabel>
-            <CodeBlock>{`# ADR 001: Use Environment Variables for Feature Flags
+            <SectionLabel>Replace the /health route in src/index.js</SectionLabel>
+            <CodeBlock>{`const startTime = Date.now()
 
-**Date:** 2024-01-22
-**Status:** Accepted
-**Author:** [Your name]
-
-## Context
-We need a way to deploy features dark and enable them without a code deploy.
-We considered three options: environment variables, a feature flag service
-(LaunchDarkly, Unleash), and a database-backed flag system.
-
-## Decision
-We will use environment variables for feature flags.
-
-## Reasons
-- Zero dependencies — no external service to configure, pay for, or go down
-- Already in use for configuration — the pattern is familiar to the team
-- Sufficient for current scale — we deploy from Docker Compose, env vars
-  are trivial to change
-- Changing a flag requires a restart, not a deploy — acceptable for our
-  current deploy frequency
-
-## Tradeoffs
-- Cannot change flags without a service restart
-- No flag history or audit trail
-- Does not scale to per-user targeting
-
-## Revisit when
-Traffic exceeds 10,000 daily active users or when per-user targeting is needed.`}</CodeBlock>
+app.get('/health', (req, res) => {
+  const uptime = Math.floor((Date.now() - startTime) / 1000)
+  const mem = process.memoryUsage()
+  res.json({
+    status: 'ok',
+    version: process.env.APP_VERSION || '1.0.0',
+    uptime_seconds: uptime,
+    memory: {
+      used_mb: Math.round(mem.heapUsed / 1024 / 1024),
+      total_mb: Math.round(mem.heapTotal / 1024 / 1024),
+    },
+    timestamp: new Date().toISOString(),
+  })
+})`}</CodeBlock>
           </div>
 
           {!task2Done && (
@@ -324,38 +290,56 @@ Traffic exceeds 10,000 daily active users or when per-user targeting is needed.`
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                docs/adr/001-use-environment-variables-for-feature-flags.md is created
+                GET /health returns uptime, memory, version and timestamp
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 3 */}
-        <TaskCard number="03" title="Add a learning practices section to the runbook" done={task3Done} locked={!task2Done}>
+        <TaskCard number="03" title="Add request counters" done={task3Done} locked={!task2Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A learning culture needs a home.</span>{" "}
-              Adding a weekly learning practice to the runbook makes it a process, not a suggestion.
-              The runbook is where the team&apos;s agreements live — if it is not there, it is optional.
+              <span className="text-white">Logs tell you what happened. Metrics tell you how often.</span>{" "}
+              A request counter lets you answer: how many errors in the last hour? What is my
+              error rate? Is traffic normal?
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add this section to the end of RUNBOOK.md</SectionLabel>
-            <CodeBlock>{`## Learning Practices
+            <SectionLabel>Add counters above the routes in src/index.js</SectionLabel>
+            <CodeBlock>{`let requestCount = 0
+let errorCount = 0
 
-### Weekly TIL
-Every Friday, each engineer posts one thing they learned this week to the team channel.
-Format: What was the problem? What was the fix? What should we remember?
-File it in docs/til/ if it is worth preserving.
+// Add this middleware after pinoHttp:
+app.use((req, res, next) => {
+  requestCount++
+  res.on('finish', () => {
+    if (res.statusCode >= 500) errorCount++
+  })
+  next()
+})`}</CodeBlock>
+          </div>
 
-### Pre-mortem
-Before shipping a major feature, the team spends 15 minutes asking: what could go wrong?
-Write the answers down. Use them to inform the rollout plan.
-
-### ADR
-When a significant technical decision is made, write an ADR in docs/adr/.
-Future engineers should never have to guess why something was built the way it was.`}</CodeBlock>
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Update /api/metrics to include live counters</SectionLabel>
+            <CodeBlock>{`app.get('/api/metrics', (req, res) => {
+  const uptime = Math.floor((Date.now() - startTime) / 1000)
+  res.json({
+    // DORA baseline
+    deploymentFrequency: '1x per month',
+    leadTime: '43 days',
+    changeFailureRate: '42%',
+    mttr: '72 hours',
+    // Live app metrics
+    uptime_seconds: uptime,
+    requests_total: requestCount,
+    errors_total: errorCount,
+    error_rate: requestCount > 0
+      ? ((errorCount / requestCount) * 100).toFixed(2) + '%'
+      : '0%',
+  })
+})`}</CodeBlock>
           </div>
 
           {!task3Done && (
@@ -366,50 +350,40 @@ Future engineers should never have to guess why something was built the way it w
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Learning practices section added to RUNBOOK.md
+                GET /api/metrics returns live request and error counts
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 4 */}
-        <TaskCard number="04" title="Add a /api/learning endpoint" done={task4Done} locked={!task3Done}>
+        <TaskCard number="04" title="Write tests for the new endpoints" done={task4Done} locked={!task3Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Making the team&apos;s learning artifacts discoverable via API means they can be surfaced in dashboards and tooling.</span>{" "}
-              It also signals that learning is a first-class engineering output — not something that happens
-              in a Slack thread and disappears.
+              <span className="text-white">Telemetry that breaks silently is worse than no telemetry.</span>{" "}
+              Add tests so the CI pipeline catches regressions in your observability layer.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to src/index.js</SectionLabel>
-            <CodeBlock>{`const learningArtifacts = [
-  {
-    type: 'til',
-    title: 'Race Condition in Orders Service',
-    author: 'Lisa',
-    date: '2024-01-22',
-    path: 'docs/til/2024-01-race-condition-orders.md',
-  },
-  {
-    type: 'adr',
-    title: 'ADR 001: Use Environment Variables for Feature Flags',
-    author: 'Team',
-    date: '2024-01-22',
-    path: 'docs/adr/001-use-environment-variables-for-feature-flags.md',
-  },
-]
+            <SectionLabel>Add to src/index.test.js</SectionLabel>
+            <CodeBlock>{`describe('Telemetry', () => {
+  it('GET /health returns uptime and memory', async () => {
+    const res = await request(app).get('/health')
+    expect(res.status).toBe(200)
+    expect(res.body).toHaveProperty('uptime_seconds')
+    expect(res.body).toHaveProperty('memory')
+    expect(res.body).toHaveProperty('timestamp')
+  })
 
-app.get('/api/learning', (req, res) => {
-  res.json({
-    total: learningArtifacts.length,
-    artifacts: learningArtifacts,
+  it('GET /api/metrics returns request counters', async () => {
+    const res = await request(app).get('/api/metrics')
+    expect(res.status).toBe(200)
+    expect(res.body).toHaveProperty('requests_total')
+    expect(res.body).toHaveProperty('errors_total')
+    expect(res.body).toHaveProperty('error_rate')
   })
 })`}</CodeBlock>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              Commit and push via PR. After merge, verify: <span className="font-mono text-gray-500">curl https://your-app.onrender.com/api/learning</span>
-            </p>
           </div>
 
           {!task4Done && (
@@ -420,7 +394,7 @@ app.get('/api/learning', (req, res) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                GET /api/learning returns learning artifacts
+                npm test passes with the new telemetry tests
               </span>
             </label>
           )}
@@ -430,16 +404,16 @@ app.get('/api/learning', (req, res) => {
         <TaskCard number="05" title="Commit and push — verify CI is green" done={task5Done} locked={!task4Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Learning artifacts in version control are learning artifacts that cannot be lost.</span>{" "}
-              Every engineer who joins the team in the future starts with the accumulated knowledge
-              of everyone who came before them.
+              <span className="text-white">Telemetry only works in production. Ship it.</span>{" "}
+              From now on every deploy gives you visibility. Marco will sleep better.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Push all changes through a PR to main</SectionLabel>
-            <CodeBlock>{`git add docs/ src/index.js
-git commit -m 'feat: add TIL, ADR, learning practices, and /api/learning endpoint'
+            <SectionLabel>Commit and push</SectionLabel>
+            <CodeBlock>{`npm install
+git add src/index.js src/index.test.js package.json package-lock.json
+git commit -m 'feat: add structured logging, health check, and request metrics'
 git push`}</CodeBlock>
           </div>
 
@@ -465,7 +439,7 @@ git push`}</CodeBlock>
                   className="w-4 h-4 accent-cyan-400 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                  Pipeline is green — learning culture is version controlled
+                  Pipeline is green — telemetry is live
                 </span>
               </label>
             </div>
@@ -483,7 +457,7 @@ git push`}</CodeBlock>
             }}
           >
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-              ✓ Learning culture established. Individual discoveries are now team knowledge.
+              ✓ Telemetry is live. Nexus Corp can now see what is happening in production.
             </p>
             <a
               href="?phase=4"

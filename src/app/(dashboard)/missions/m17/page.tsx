@@ -7,7 +7,7 @@ import { completeMission } from "@/app/actions/progress"
 import { prisma } from "@/lib/prisma"
 
 export const metadata: Metadata = {
-  title: "M-06 Infrastructure as Code - DevOps Flow Lab",
+  title: "M-17 Hypothesis-Driven Development - DevOps Flow Lab",
 }
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
@@ -20,10 +20,10 @@ function MissionHeader({ fase }: { fase: number }) {
     <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "#080808" }}>
       <div className="max-w-5xl mx-auto flex items-center justify-between">
         <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-          M-06
+          M-17
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
-          Infrastructure as Code
+          Hypothesis-Driven Development
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
           Phase {fase} of 4
@@ -59,17 +59,18 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
 
 const panels = [
   {
-    initials: "SM",
-    name: "Sarah",
-    role: "Engineering Manager",
-    badge: "MANAGEMENT",
-    accent: "rgb(6,182,212)",
-    badgeBg: "rgba(6,182,212,0.08)",
-    badgeBorder: "rgba(6,182,212,0.3)",
+    initials: "TO",
+    name: "Tom",
+    role: "Product Owner",
+    badge: "PRODUCT",
+    accent: "rgb(167,139,250)",
+    badgeBg: "rgba(167,139,250,0.08)",
+    badgeBorder: "rgba(167,139,250,0.3)",
     quote: (
       <>
-        &ldquo;Marco set up the production server 2 years ago. Nobody else knows how it is
-        configured. If it goes down, we are stuck until Marco is available.&rdquo;
+        &ldquo;We built the pagination feature because a customer asked for it. We shipped it. I
+        have no idea if anyone uses it. I have no idea if it made things{" "}
+        <mark>better or worse</mark>.&rdquo;
       </>
     ),
   },
@@ -83,9 +84,8 @@ const panels = [
     badgeBorder: "rgba(34,197,94,0.3)",
     quote: (
       <>
-        &ldquo;I tried to reproduce the prod environment locally last month. Spent{" "}
-        <mark>3 days</mark> on it. Still not identical. There is something on the server nobody
-        documented.&rdquo;
+        &ldquo;I spent two weeks on that feature. When I asked how we would know if it worked, Tom
+        said &lsquo;we will feel it&rsquo;. <mark>That is not an answer</mark>.&rdquo;
       </>
     ),
   },
@@ -99,39 +99,8 @@ const panels = [
     badgeBorder: "rgba(239,68,68,0.3)",
     quote: (
       <>
-        &ldquo;I have <mark>14 manual steps</mark> to set up a new server. I know them by heart.
-        But if I get hit by a bus, nobody can recreate it. It is all in my head.&rdquo;
-      </>
-    ),
-  },
-  {
-    initials: "KA",
-    name: "Kai",
-    role: "QA Engineer",
-    badge: "QA",
-    accent: "rgb(251,146,60)",
-    badgeBg: "rgba(251,146,60,0.08)",
-    badgeBorder: "rgba(251,146,60,0.3)",
-    quote: (
-      <>
-        &ldquo;The test environment drifted from prod again. We found{" "}
-        <mark>3 config differences</mark> last week that caused a bug. Nobody knows when they
-        changed.&rdquo;
-      </>
-    ),
-  },
-  {
-    initials: "TO",
-    name: "Tom",
-    role: "Product Owner",
-    badge: "PRODUCT",
-    accent: "rgb(167,139,250)",
-    badgeBg: "rgba(167,139,250,0.08)",
-    badgeBorder: "rgba(167,139,250,0.3)",
-    quote: (
-      <>
-        &ldquo;We cannot scale. Adding a second server means Marco spending a week configuring it
-        manually. We are stuck at one server.&rdquo;
+        &ldquo;Error rate went up 0.3% after the pagination deploy. Nobody connected the dots.
+        We have the data. We just <mark>never look at it</mark> as feedback on what we shipped.&rdquo;
       </>
     ),
   },
@@ -146,11 +115,11 @@ const panels = [
     isPlayer: true,
     quote: (
       <>
-        &ldquo;The infrastructure is a snowflake. Unique, hand-crafted, irreplaceable. That is the
-        problem. Infrastructure should be boring, repeatable, and defined in code.&rdquo;
+        &ldquo;Feature flags let us deploy dark. Telemetry lets us measure. Put them together and
+        you have an experiment engine. <mark>Ship, measure, decide</mark> — with data.&rdquo;
       </>
     ),
-    outro: "Make the infrastructure boring.",
+    outro: "Hope is not a strategy. Measure everything.",
   },
 ]
 
@@ -164,10 +133,10 @@ function Phase1() {
             className="text-4xl text-white tracking-tight leading-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Week six. Nexus Corp.
+            Week eleven. Nexus Corp.
           </h2>
           <p className="text-gray-400 text-base leading-relaxed">
-            The app deploys automatically. But the server it deploys to is a mystery.
+            Tom shipped a new orders feature last month. Three weeks of work. Deployed on a Friday. Nobody measured if it helped. It probably did not.
           </p>
         </div>
 
@@ -229,7 +198,7 @@ function Phase1() {
         <CTA
           href="?phase=2"
           label="Understand the theory →"
-          sub="Phase 2 of 4 - What is Infrastructure as Code?"
+          sub="Phase 2 of 4 - From assumption to evidence"
         />
       </div>
 
@@ -247,46 +216,12 @@ function Phase1() {
 
 // ─── Phase 2 - The theory ─────────────────────────────────────────────────────
 
-const infraCards = [
-  {
-    title: "Mutable infrastructure",
-    body: "Servers are patched and configured in place over time. Each change leaves a trace. After months, no two servers are identical. You cannot reproduce the state from scratch. This is called drift.",
-    accent: "rgb(239,68,68)",
-    bg: "#0a0202",
-    border: "rgba(239,68,68,0.25)",
-  },
-  {
-    title: "Immutable infrastructure",
-    body: "Servers are never patched. When a change is needed, a new server image is built from code and the old one is replaced. Every server is identical because every server was built from the same definition.",
-    accent: "rgb(34,197,94)",
-    bg: "#020a02",
-    border: "rgba(34,197,94,0.25)",
-  },
-]
-
-const principles = [
-  {
-    name: "Idempotency",
-    body: "Running the same IaC script twice produces the same result as running it once. You can apply configuration repeatedly without breaking anything.",
-    accent: "rgb(6,182,212)",
-  },
-  {
-    name: "Consistency",
-    body: "Every environment — dev, test, staging, prod — is provisioned from the same code. If it works in staging, it works in prod. Environment drift becomes impossible.",
-    accent: "rgb(167,139,250)",
-  },
-  {
-    name: "Traceability",
-    body: "Every infrastructure change is a commit. You can see who changed what, when, and why. Rolling back infrastructure is the same as reverting a commit.",
-    accent: "rgb(251,146,60)",
-  },
-]
-
-const tools = [
-  { name: "Terraform",       type: "Provisioning",    use: "Create and manage cloud resources (servers, databases, networks). Declarative HCL syntax.",     lang: "HCL"  },
-  { name: "Ansible",         type: "Configuration",   use: "Install and configure software on servers. Runs over SSH, no agent required.",                    lang: "YAML" },
-  { name: "Docker",          type: "Container",        use: "Package your app and its dependencies into a portable image. Runs identically everywhere.",       lang: "Dockerfile" },
-  { name: "Docker Compose",  type: "Orchestration",   use: "Define and run multi-container applications locally. The IaC for your development environment.",  lang: "YAML" },
+const experimentLifecycle = [
+  { step: "State hypothesis",           note: "We believe X will result in Y. We will know when Z." },
+  { step: "Implement behind flag",      note: "Default: off. Control group sees current behavior."   },
+  { step: "Enable for subset",          note: "Treatment group gets the change. Measure both."       },
+  { step: "Compare control vs treatment", note: "Use telemetry from M-14 to read the signal."       },
+  { step: "Ship or kill",               note: "Never leave flags permanent — decide with data."      },
 ]
 
 function Phase2() {
@@ -300,18 +235,12 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            What is Infrastructure as Code?
+            The problem with opinion-driven development
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            Infrastructure as Code means your servers, networks, and environments are defined in files
-            — the same way your application is. Those files are version controlled, reviewed in pull
-            requests, and applied by automated tools. The result: infrastructure is reproducible,
-            consistent, and auditable.
-          </p>
-          <p className="text-gray-400 leading-relaxed">
-            The key shift: instead of a human executing commands on a server, a tool reads a
-            definition and makes the server match it. The definition is the source of truth — not the
-            server itself.
+            Most features are built on assumptions. &ldquo;Users want this.&rdquo; &ldquo;This will improve
+            conversion.&rdquo; These are hypotheses — but they are never stated as hypotheses, never tested,
+            and never validated. The result: teams build things that do not matter and cannot tell the difference.
           </p>
         </section>
 
@@ -321,21 +250,39 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Mutable vs immutable infrastructure
+            What is a hypothesis
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {infraCards.map((card) => (
+          <p className="text-gray-400 leading-relaxed">
+            A good hypothesis has three parts:
+          </p>
+          <div className="flex flex-col gap-0 border border-gray-800">
+            {[
+              { n: "1", text: "We believe that [change]" },
+              { n: "2", text: "Will result in [outcome]" },
+              { n: "3", text: "We will know this is true when [measurable signal]" },
+            ].map((row, i) => (
               <div
-                key={card.title}
-                className="flex flex-col gap-3 p-6 border"
-                style={{ backgroundColor: card.bg, borderColor: card.border, borderLeft: `3px solid ${card.accent}` }}
+                key={row.n}
+                className="flex gap-4 px-5 py-4 border-b border-gray-800 last:border-b-0"
+                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
               >
-                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: card.accent }}>
-                  {card.title}
+                <span className="text-xs font-mono font-bold shrink-0 w-4" style={{ color: "rgb(6,182,212)" }}>
+                  {row.n}
                 </span>
-                <p className="text-gray-400 text-sm leading-relaxed">{card.body}</p>
+                <p className="text-sm text-gray-300 font-mono">{row.text}</p>
               </div>
             ))}
+          </div>
+          <div className="flex flex-col gap-2">
+            <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>
+              Example
+            </p>
+            <pre
+              className="text-xs font-mono leading-relaxed p-4 overflow-x-auto whitespace-pre-wrap"
+              style={{ backgroundColor: "#0d0d0d", borderLeft: "3px solid rgb(31,41,55)", color: "rgb(156,163,175)" }}
+            >
+              {`We believe that adding pagination to /api/orders\nwill result in faster response times.\nWe will know this is true when p95 response time\ndrops below 100ms for requests with more than 50 orders.`}
+            </pre>
           </div>
         </section>
 
@@ -345,23 +292,28 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The three IaC principles
+            Feature flags as experiment infrastructure
           </h2>
-          <div className="flex flex-col gap-3">
-            {principles.map((p, i) => (
+          <p className="text-gray-400 leading-relaxed">
+            M-11 gave us feature flags for dark launches. Now we use them for A/B experiments.
+            Flag off = control group. Flag on = treatment group. Measure both. Decide with data.
+          </p>
+          <div className="flex flex-col gap-0 border border-gray-800">
+            {experimentLifecycle.map((row, i) => (
               <div
-                key={p.name}
-                className="flex gap-5 p-5 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
+                key={row.step}
+                className="flex gap-4 px-5 py-4 border-b border-gray-800 last:border-b-0"
+                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
               >
-                <div className="shrink-0 flex flex-col items-center gap-1 pt-0.5">
-                  <span className="text-xs font-mono text-gray-700">{String(i + 1).padStart(2, "0")}</span>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: p.accent }}>
-                    {p.name}
-                  </span>
-                  <p className="text-gray-400 text-sm leading-relaxed">{p.body}</p>
+                <span
+                  className="text-xs font-mono font-bold shrink-0 w-5"
+                  style={{ color: "rgb(6,182,212)" }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div className="flex flex-col gap-1 flex-1">
+                  <span className="text-sm text-white font-mono">{row.step}</span>
+                  <span className="text-xs text-gray-500">{row.note}</span>
                 </div>
               </div>
             ))}
@@ -374,28 +326,28 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            IaC tools overview
+            The DORA connection
           </h2>
-          <div className="border border-gray-800">
-            <div
-              className="grid grid-cols-12 border-b border-gray-800 px-5 py-3"
-              style={{ backgroundColor: "#0d0d0d" }}
-            >
-              <span className="col-span-3 text-xs font-mono text-gray-600 uppercase tracking-widest">Tool</span>
-              <span className="col-span-2 text-xs font-mono text-gray-600 uppercase tracking-widest">Type</span>
-              <span className="col-span-5 text-xs font-mono text-gray-600 uppercase tracking-widest">Use</span>
-              <span className="col-span-2 text-xs font-mono text-gray-600 uppercase tracking-widest">Language</span>
-            </div>
-            {tools.map((t, i) => (
+          <p className="text-gray-400 leading-relaxed">
+            CFR drops when you ship smaller, validated changes instead of large, assumed-correct
+            features. Failures are caught during the experiment phase, not after full rollout.
+            Target: CFR from 4% to 2%.
+          </p>
+          <div className="flex flex-col gap-0 border border-gray-800">
+            {[
+              { label: "Current CFR",      value: "4%",  color: "rgb(239,68,68)",  note: "Features shipped on assumptions — validated by customer complaints after full rollout." },
+              { label: "Target after M-17", value: "2%", color: "rgb(6,182,212)", note: "Features validated by data before full rollout — failures caught in experiment phase." },
+            ].map((row, i) => (
               <div
-                key={t.name}
-                className="grid grid-cols-12 px-5 py-4 border-b border-gray-800 last:border-b-0"
+                key={row.label}
+                className="flex items-start gap-5 px-5 py-4 border-b border-gray-800 last:border-b-0"
                 style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
               >
-                <span className="col-span-3 text-sm font-mono font-bold text-white">{t.name}</span>
-                <span className="col-span-2 text-xs font-mono" style={{ color: "rgb(6,182,212)" }}>{t.type}</span>
-                <span className="col-span-5 text-xs text-gray-400 leading-relaxed">{t.use}</span>
-                <span className="col-span-2 text-xs font-mono text-gray-600">{t.lang}</span>
+                <span className="text-2xl font-mono font-bold shrink-0" style={{ ...syne.style, color: row.color }}>{row.value}</span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-xs font-mono uppercase tracking-widest text-gray-600">{row.label}</span>
+                  <span className="text-sm text-gray-500">{row.note}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -403,7 +355,7 @@ function Phase2() {
 
         <CTA
           href="?phase=3"
-          label="Define the Nexus Corp infrastructure →"
+          label="Build the experiment engine →"
           sub="Phase 3 of 4 - Do it yourself"
         />
       </div>
@@ -413,16 +365,39 @@ function Phase2() {
 
 // ─── Phase 4 - Result ─────────────────────────────────────────────────────────
 
-const beforeAfter = [
-  { before: "Mystery server nobody can recreate",       after: "Environment fully defined in version control"   },
-  { before: "14 manual steps to provision a server",   after: "One command to spin up any environment"         },
-  { before: "Configuration drift between environments", after: "Identical environments guaranteed by code"      },
-  { before: "Marco is the bus factor",                  after: "Any developer can provision the infrastructure" },
-]
-
 const doraImpact = [
-  { metric: "Change Failure Rate",   code: "CFR", before: "10%",     after: "7%",      note: "reproducible environments eliminate config-related failures" },
-  { metric: "Lead Time for Changes", code: "LT",  before: "10 days", after: "7 days",  note: "no more waiting for manual environment setup"               },
+  {
+    metric: "Change Failure Rate",
+    code: "CFR",
+    before: "4%",
+    after: "2%",
+    note: "failures caught during experiment phase, not after full rollout",
+    highlight: true,
+  },
+  {
+    metric: "Deployment Frequency",
+    code: "DF",
+    before: "Multiple×/week",
+    after: "Multiple×/week",
+    note: "unchanged",
+    highlight: false,
+  },
+  {
+    metric: "Lead Time for Changes",
+    code: "LT",
+    before: "5 days",
+    after: "5 days",
+    note: "unchanged",
+    highlight: false,
+  },
+  {
+    metric: "Mean Time to Restore",
+    code: "MTTR",
+    before: "30 min",
+    after: "30 min",
+    note: "unchanged",
+    highlight: false,
+  },
 ]
 
 function Phase4() {
@@ -432,46 +407,48 @@ function Phase4() {
 
         <div className="flex flex-col gap-4">
           <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(6,182,212)" }}>
-            Mission Complete - M-06
+            Mission Complete - M-17
           </p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Infrastructure is Code Now.
+            Nexus Corp Ships With Evidence
           </h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">
-            This is what you built for Nexus Corp.
+            Features validated before full rollout. The change failure rate drops because failures are now caught
+            during the experiment phase, not after the full rollout.
           </p>
         </div>
 
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">01</span>
-            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">What changed</h2>
+            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">CFR impact</h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <div className="border border-gray-800">
-            <div className="grid grid-cols-2 border-b border-gray-800" style={{ backgroundColor: "#0d0d0d" }}>
-              <div className="px-5 py-3 border-r border-gray-800">
-                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(239,68,68)" }}>Before</span>
+          <div
+            className="flex flex-col gap-5 p-6 border"
+            style={{
+              backgroundColor: "#020d0f",
+              borderColor: "rgba(6,182,212,0.3)",
+              borderLeft: "3px solid rgb(6,182,212)",
+            }}
+          >
+            <div className="flex items-center gap-6 flex-wrap">
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-mono uppercase tracking-widest text-gray-600">Before</span>
+                <span className="text-4xl font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>4%</span>
+                <span className="text-xs text-gray-600">features shipped on assumptions, validated by customer complaints</span>
               </div>
-              <div className="px-5 py-3">
-                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(34,197,94)" }}>After</span>
+              <span className="text-2xl font-mono text-gray-700">→</span>
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-mono uppercase tracking-widest text-gray-600">After</span>
+                <span className="text-4xl font-mono font-bold" style={{ ...syne.style, color: "rgb(6,182,212)" }}>2%</span>
+                <span className="text-xs text-gray-600">features validated by data before full rollout</span>
               </div>
             </div>
-            {beforeAfter.map((row, i) => (
-              <div
-                key={i}
-                className="grid grid-cols-2 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
-              >
-                <div className="px-5 py-4 border-r border-gray-800">
-                  <p className="text-sm text-gray-500">{row.before}</p>
-                </div>
-                <div className="px-5 py-4">
-                  <p className="text-sm text-gray-300">{row.after}</p>
-                </div>
-              </div>
-            ))}
+            <p className="text-sm text-gray-500 leading-relaxed border-t border-gray-800 pt-4">
+              The change failure rate drops because failures are now caught during the experiment phase, not after full rollout.
+            </p>
           </div>
         </section>
 
@@ -482,23 +459,33 @@ function Phase4() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {doraImpact.map((d) => (
               <div
                 key={d.code}
                 className="flex flex-col gap-4 border p-6"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
+                style={{
+                  backgroundColor: d.highlight ? "#020d0f" : "#080808",
+                  borderColor: d.highlight ? "rgba(6,182,212,0.3)" : "rgb(31,41,55)",
+                  borderLeft: d.highlight ? "3px solid rgb(6,182,212)" : "3px solid rgb(31,41,55)",
+                }}
               >
                 <div className="flex flex-col gap-1">
                   <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">{d.metric}</span>
                   <span className="text-xs font-mono text-gray-700">DORA - {d.code}</span>
                 </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-xl font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <span
+                    className="text-lg font-mono font-bold"
+                    style={{ ...syne.style, color: d.highlight ? "rgb(239,68,68)" : "rgb(75,85,99)" }}
+                  >
                     {d.before}
                   </span>
                   <span className="font-mono text-gray-700">→</span>
-                  <span className="text-xl font-mono font-bold" style={{ ...syne.style, color: "rgb(6,182,212)" }}>
+                  <span
+                    className="text-lg font-mono font-bold"
+                    style={{ ...syne.style, color: d.highlight ? "rgb(6,182,212)" : "rgb(75,85,99)" }}
+                  >
                     {d.after}
                   </span>
                 </div>
@@ -519,13 +506,15 @@ function Phase4() {
             className="flex flex-col gap-3 p-6 border"
             style={{
               backgroundColor: "#080808",
-              borderColor: "rgb(31,41,55)",
-              borderLeft: "3px solid rgb(31,41,55)",
+              borderColor: "rgba(6,182,212,0.2)",
+              borderLeft: "3px solid rgb(6,182,212)",
             }}
           >
+            <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+              Second Way: Feedback — In Progress
+            </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Infrastructure is code. But deploys are still risky — one bad release affects all users.
-              Next mission: Architecture for Low-Risk Releases.
+              Next: Review and Coordinate Changes — make code review a quality gate, not a bottleneck.
             </p>
           </div>
         </section>
@@ -539,14 +528,14 @@ function Phase4() {
             >
               Back to dashboard →
             </a>
-            <span
+            <div
               className="flex items-center gap-3 px-8 py-4 text-sm font-mono border cursor-not-allowed"
               style={{ backgroundColor: "#0a0a0a", borderColor: "rgb(31,41,55)", color: "rgb(55,65,81)" }}
               title="Not yet available"
             >
               <span>⊘</span>
-              Next mission: Architecture for Low-Risk Releases →
-            </span>
+              Continue to M-18 →
+            </div>
           </div>
         </section>
 
@@ -557,7 +546,7 @@ function Phase4() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default async function M06Page({
+export default async function M11Page({
   searchParams,
 }: {
   searchParams: Promise<{ phase?: string }>
@@ -576,11 +565,11 @@ export default async function M06Page({
     if (!gateUser) redirect("?phase=3")
 
     // Complete the mission first (idempotent — safe to call multiple times)
-    await completeMission("M-06")
+    await completeMission("M-17")
 
     // Now verify it actually exists (guards against DB errors)
     const completed = await prisma.userProgress.findFirst({
-      where: { userId: gateUser.id, moduleId: "M-06" },
+      where: { userId: gateUser.id, moduleId: "M-17" },
     })
     if (!completed) redirect("?phase=3")
   }

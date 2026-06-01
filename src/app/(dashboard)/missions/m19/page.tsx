@@ -7,7 +7,7 @@ import { completeMission } from "@/app/actions/progress"
 import { prisma } from "@/lib/prisma"
 
 export const metadata: Metadata = {
-  title: "M-13 Blameless Postmortems - DevOps Flow Lab",
+  title: "M-19 Blameless Postmortems - DevOps Flow Lab",
 }
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
@@ -20,7 +20,7 @@ function MissionHeader({ fase }: { fase: number }) {
     <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "#080808" }}>
       <div className="max-w-5xl mx-auto flex items-center justify-between">
         <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-          M-13
+          M-19
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
           Blameless Postmortems
@@ -415,7 +415,7 @@ function Phase4() {
 
         <div className="flex flex-col gap-4">
           <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(6,182,212)" }}>
-            Mission Complete - M-13
+            Mission Complete - M-19
           </p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
             Nexus Corp Has a Learning Culture
@@ -573,11 +573,11 @@ export default async function M13Page({
     if (!gateUser) redirect("?phase=3")
 
     // Complete the mission first (idempotent — safe to call multiple times)
-    await completeMission("M-13")
+    await completeMission("M-19")
 
     // Now verify it actually exists (guards against DB errors)
     const completed = await prisma.userProgress.findFirst({
-      where: { userId: gateUser.id, moduleId: "M-13" },
+      where: { userId: gateUser.id, moduleId: "M-19" },
     })
     if (!completed) redirect("?phase=3")
   }

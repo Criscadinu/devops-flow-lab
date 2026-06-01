@@ -1,9 +1,39 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Syne } from "next/font/google"
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
+
+function MobileWarning() {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
+  if (!isMobile) return null
+
+  return (
+    <div
+      className="flex flex-col gap-3 p-5 border mb-6"
+      style={{
+        backgroundColor: "#0a0700",
+        borderColor: "rgba(251,146,60,0.4)",
+        borderLeft: "3px solid rgb(251,146,60)",
+      }}
+    >
+      <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
+        Desktop required
+      </p>
+      <p className="text-sm text-gray-400 leading-relaxed">
+        This phase requires a terminal, a code editor, and GitHub. These tasks cannot be completed on a mobile device. Open this page on your laptop or desktop to continue.
+      </p>
+    </div>
+  )
+}
 
 function TaskCard({
   number,
@@ -114,6 +144,7 @@ export function Phase3() {
   const [task3Done, setTask3Done] = useState(false)
   const [task4Done, setTask4Done] = useState(false)
   const [task5Done, setTask5Done] = useState(false)
+  const [prUrl, setPrUrl] = useState("")
   const [actionsUrl, setActionsUrl] = useState("")
 
   const allDone = task1Done && task2Done && task3Done && task4Done && task5Done
@@ -122,16 +153,18 @@ export function Phase3() {
     <div className="flex-1 px-6 py-14">
       <div className="max-w-3xl mx-auto flex flex-col gap-8">
 
+        <MobileWarning />
+
         {/* Header */}
         <div className="flex flex-col gap-2">
           <h2
             className="text-3xl text-white tracking-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Your Mission - Deploy Dark, Release Gradually
+            Your Mission - Build the Review Process
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Implement a feature flag in the Nexus Corp app so you can ship without risk.
+            Enable branch protection, create a PR template and contributing guide, then open and merge a real PR.
           </p>
         </div>
 
@@ -149,7 +182,7 @@ export function Phase3() {
               Before you start
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              This mission builds on your M-06 work. Both items should already be ready.
+              This mission builds on your M-17 work. Both items should already be ready.
             </p>
           </div>
 
@@ -157,12 +190,12 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Fork from M-06 with green pipeline
+                Fork from M-17 with experiment engine in place
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Your nexus-corp-app fork has a passing test suite, IaC files committed, and GitHub Actions running on every push.
+              Your nexus-corp-app fork has the pagination experiment, /api/metrics with experiments object, and a green pipeline.
             </p>
 
             <div style={{ borderTop: "1px solid rgb(31,41,55)" }} />
@@ -170,43 +203,46 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Node.js and Docker installed
+                GitHub repository is public and accessible
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Verify with <code className="text-cyan-400 font-mono">node --version</code> and <code className="text-cyan-400 font-mono">docker --version</code>.
+              Branch protection requires a GitHub repository. Your fork from the previous missions is already set up.
             </p>
           </div>
         </div>
 
         {/* Task 1 */}
-        <TaskCard number="01" title="Add a feature flag system to the app" done={task1Done} locked={false}>
+        <TaskCard number="01" title="Enable branch protection on main" done={task1Done} locked={false}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Feature flags are the simplest way to decouple deployment from release.</span>{" "}
-              You ship the code dark — deployed but not active. Then you enable it for specific
-              users or percentages without a new deploy.
+              <span className="text-white">Branch protection is not bureaucracy — it is a technical enforcement of process.</span>{" "}
+              Without it, any engineer can push directly to main at any time. With it, the process
+              is enforced by the platform, not by trust. The rule is not &ldquo;please don&apos;t push
+              to main&rdquo; — it is &ldquo;you cannot push to main.&rdquo;
             </p>
           </MentorNote>
 
-          <div className="flex flex-col gap-2">
-            <SectionLabel>Add to src/index.js</SectionLabel>
-            <CodeBlock>{`// Feature flags - controlled by environment variables
-const FEATURES = {
-  newMetricsDashboard: process.env.FEATURE_NEW_METRICS === 'true',
-  verboseLogging: process.env.FEATURE_VERBOSE_LOGGING === 'true',
-}
-
-// Update GET / response to include features
-app.get('/', (req, res) => {
-  res.json({
-    company: 'Nexus Corp',
-    status: 'running',
-    version: process.env.APP_VERSION || '1.0.0',
-    features: FEATURES,  // shows which features are active
-  })
-})`}</CodeBlock>
+          <div className="flex flex-col gap-3">
+            <SectionLabel>On GitHub: Settings → Branches → Add rule</SectionLabel>
+            <div className="flex flex-col gap-2">
+              {[
+                { label: "Branch name pattern", value: "main" },
+                { label: "Require a pull request before merging", value: "✓ enabled" },
+                { label: "Require status checks to pass", value: "✓ enabled (select: test)" },
+                { label: "Do not allow bypassing the above settings", value: "✓ enabled" },
+              ].map((row, i) => (
+                <div
+                  key={i}
+                  className="flex items-start gap-4 px-4 py-3 border-b last:border-b-0"
+                  style={{ borderColor: "rgb(31,41,55)", backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+                >
+                  <span className="text-xs font-mono text-gray-600 shrink-0 w-48">{row.label}</span>
+                  <span className="text-xs font-mono" style={{ color: "rgb(6,182,212)" }}>{row.value}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
           {!task1Done && (
@@ -217,33 +253,42 @@ app.get('/', (req, res) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Feature flags are in the code and visible in GET / response
+                Branch protection is enabled on main — direct pushes are blocked
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 2 */}
-        <TaskCard number="02" title="Test the feature flag locally" done={task2Done} locked={!task1Done}>
+        <TaskCard number="02" title="Create a pull request template" done={task2Done} locked={!task1Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Before shipping, verify the flag actually works.</span>{" "}
-              Enable it locally and confirm the behavior changes. A flag that does not work is worse
-              than no flag — it gives false confidence.
+              <span className="text-white">A PR template ensures every pull request answers the same questions: what changed, why, and how to test it.</span>{" "}
+              Without a template, reviews are inconsistent. With one, every reviewer knows exactly
+              what context to expect.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Enable the flag and check the response</SectionLabel>
-            <CodeBlock>{`FEATURE_NEW_METRICS=true docker-compose up dev`}</CodeBlock>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Then call{" "}
-              <code className="text-cyan-400 font-mono">GET /</code> — the{" "}
-              <code className="text-cyan-400 font-mono">features.newMetricsDashboard</code> field
-              should be <code className="text-cyan-400 font-mono">true</code>. Set it back to{" "}
-              <code className="text-cyan-400 font-mono">false</code> and verify it returns{" "}
-              <code className="text-cyan-400 font-mono">false</code>.
-            </p>
+            <SectionLabel>Create .github/pull_request_template.md in the nexus-corp-app repo</SectionLabel>
+            <CodeBlock>{`## What changed
+<!-- Brief description of what this PR does -->
+
+## Why
+<!-- The problem this solves or the feature this adds -->
+
+## How to test
+<!-- Steps to verify this works correctly -->
+1.
+2.
+
+## Checklist
+- [ ] Tests pass locally (\`npm test\`)
+- [ ] No console errors
+- [ ] DORA impact considered (does this affect any metrics?)
+
+## Related
+<!-- Link to issue, hypothesis, or postmortem if applicable -->`}</CodeBlock>
           </div>
 
           {!task2Done && (
@@ -254,26 +299,50 @@ app.get('/', (req, res) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                I have verified the flag enables and disables correctly
+                .github/pull_request_template.md is created and committed to the repo
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 3 */}
-        <TaskCard number="03" title="Add the feature flag to docker-compose.yml" done={task3Done} locked={!task2Done}>
+        <TaskCard number="03" title="Create a CONTRIBUTING.md" done={task3Done} locked={!task2Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Environment-controlled flags mean you can enable a feature in production without a new deploy.</span>{" "}
-              Just change an environment variable and restart. The code was already there — dark.
+              <span className="text-white">A CONTRIBUTING.md makes the process explicit and discoverable.</span>{" "}
+              Every new engineer who clones the repo immediately understands how the team works.
+              Process in a document is better than process in someone&apos;s head.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to the prod service in docker-compose.yml</SectionLabel>
-            <CodeBlock>{`  prod:
-    environment:
-      - FEATURE_NEW_METRICS=false  # disabled by default, enable when ready`}</CodeBlock>
+            <SectionLabel>Create CONTRIBUTING.md in the nexus-corp-app repo</SectionLabel>
+            <CodeBlock>{`# Contributing to Nexus Corp App
+
+## Branch strategy
+- Never push directly to \`main\`
+- Create a feature branch: \`git checkout -b feat/your-feature-name\`
+- Open a pull request when ready
+
+## Pull request process
+1. Fill in the PR template completely
+2. Ensure \`npm test\` passes locally
+3. Request review from at least one team member
+4. Address all review comments before merging
+5. Squash merge to keep history clean
+
+## Commit message format
+Use conventional commits:
+- \`feat:\` — new feature
+- \`fix:\` — bug fix
+- \`chore:\` — maintenance, no production change
+- \`docs:\` — documentation only
+
+## Code review guidelines
+- Review within 24 hours of request
+- Comment on logic, not style
+- Approve only when you would ship this yourself
+- Ask questions before blocking`}</CodeBlock>
           </div>
 
           {!task3Done && (
@@ -284,68 +353,85 @@ app.get('/', (req, res) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Feature flags are defined in docker-compose.yml
+                CONTRIBUTING.md is created and committed to the repo
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 4 */}
-        <TaskCard number="04" title="Write a test for the feature flag" done={task4Done} locked={!task3Done}>
+        <TaskCard number="04" title="Open a real pull request" done={task4Done} locked={!task3Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Feature flags that are not tested become permanent.</span>{" "}
-              A test ensures the flag behaves correctly and reminds you the flag exists. The test
-              is also the reminder to clean it up once the feature is fully rolled out.
+              <span className="text-white">The process only exists if you use it.</span>{" "}
+              Open a real PR on your fork — even a small improvement. Fill in the template.
+              Let the CI run. This is the first time the full process runs end to end:
+              branch → PR → review → CI → merge.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to src/index.test.js</SectionLabel>
-            <CodeBlock>{`describe('Feature flags', () => {
-  it('should return features object in GET /', async () => {
-    const res = await request(app).get('/')
-    expect(res.body).toHaveProperty('features')
-    expect(typeof res.body.features).toBe('object')
-  })
-})`}</CodeBlock>
+            <SectionLabel>Create a branch and open a PR</SectionLabel>
+            <CodeBlock>{`git checkout -b feat/add-contributing-docs
+git add .github/pull_request_template.md CONTRIBUTING.md
+git commit -m 'docs: add PR template and contributing guidelines'
+git push origin feat/add-contributing-docs`}</CodeBlock>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              Then open a PR from this branch to main on GitHub. The PR template will auto-populate. Fill it in.
+            </p>
           </div>
 
           {!task4Done && (
-            <label className="flex items-center gap-3 cursor-pointer group">
-              <input
-                type="checkbox"
-                onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
-              />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Feature flag test passes in npm test
-              </span>
-            </label>
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2">
+                <SectionLabel>Paste your PR URL</SectionLabel>
+                <input
+                  type="url"
+                  value={prUrl}
+                  onChange={(e) => setPrUrl(e.target.value)}
+                  placeholder="https://github.com/your-username/nexus-corp-app/pull/..."
+                  className="w-full px-3 py-2 text-sm font-mono text-white outline-none border"
+                  style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+                />
+              </div>
+              <label className="flex items-center gap-3 cursor-pointer group">
+                <input
+                  type="checkbox"
+                  onChange={(e) => {
+                    if (e.target.checked && prUrl.includes("github.com")) setTask4Done(true)
+                  }}
+                  className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                />
+                <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                  Pull request is open and CI is running on the branch
+                </span>
+              </label>
+            </div>
           )}
         </TaskCard>
 
         {/* Task 5 */}
-        <TaskCard number="05" title="Ship it dark and verify in CI" done={task5Done} locked={!task4Done}>
+        <TaskCard number="05" title="Merge the PR and verify" done={task5Done} locked={!task4Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">This is the pattern: deploy the code with the flag disabled.</span>{" "}
-              The feature exists in production but no user sees it. When ready, flip the flag. No
-              redeploy needed. No risk window. No all-hands-on-deck deploy.
+              <span className="text-white">Merging through a PR — even for a simple docs change — completes the loop.</span>{" "}
+              The branch protection rules enforce the process. CI must pass. You must have an approval
+              (you can approve your own PR as the repo owner for this exercise). This is the process
+              that prevents 3am rollbacks.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Commit and push with the flag disabled by default</SectionLabel>
-            <CodeBlock>{`git add src/index.js src/index.test.js docker-compose.yml
-git commit -m 'feat: add feature flags for dark launches'
-git push`}</CodeBlock>
+            <SectionLabel>Merge the PR on GitHub, then verify locally</SectionLabel>
+            <CodeBlock>{`git checkout main
+git pull
+git log --oneline -3`}</CodeBlock>
           </div>
 
           {!task5Done && (
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-2">
-                <SectionLabel>Paste your green Actions run URL</SectionLabel>
+                <SectionLabel>Paste your green Actions run URL for the merged PR</SectionLabel>
                 <input
                   type="url"
                   value={actionsUrl}
@@ -364,7 +450,7 @@ git push`}</CodeBlock>
                   className="w-4 h-4 accent-cyan-400 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                  Feature flag code deployed dark — pipeline is green
+                  PR is merged, CI is green, main is protected
                 </span>
               </label>
             </div>
@@ -382,7 +468,7 @@ git push`}</CodeBlock>
             }}
           >
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-              ✓ Dark launch capability established. You can now deploy without releasing.
+              ✓ Review process established. No code reaches main without a passing pipeline and a human review.
             </p>
             <a
               href="?phase=4"

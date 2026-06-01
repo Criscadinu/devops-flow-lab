@@ -7,7 +7,7 @@ import { completeMission } from "@/app/actions/progress"
 import { prisma } from "@/lib/prisma"
 
 export const metadata: Metadata = {
-  title: "M-15 Chaos Engineering - DevOps Flow Lab",
+  title: "M-15 Monitor and Alert - DevOps Flow Lab",
 }
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
@@ -23,7 +23,7 @@ function MissionHeader({ fase }: { fase: number }) {
           M-15
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
-          Chaos Engineering
+          Monitor and Alert
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
           Phase {fase} of 4
@@ -68,9 +68,8 @@ const panels = [
     badgeBorder: "rgba(239,68,68,0.3)",
     quote: (
       <>
-        &ldquo;The orders service depends on an internal user lookup service. When that service slowed down,
-        orders started timing out. We had <mark>no timeout configured</mark>. We did not know the
-        dependency existed until it broke.&rdquo;
+        &ldquo;We have metrics now. I check them manually every morning. Last Tuesday I forgot.
+        That was the day the error rate hit <mark>23%</mark>. A customer called us.&rdquo;
       </>
     ),
   },
@@ -84,24 +83,23 @@ const panels = [
     badgeBorder: "rgba(34,197,94,0.3)",
     quote: (
       <>
-        &ldquo;We assume our system is resilient. We have never tested that assumption. The only time
-        we discover failure modes is when they happen <mark>in production, at 3am, to real users</mark>.&rdquo;
+        &ldquo;I pushed a fix at 4pm. By 9pm I had no idea if it was still holding. Nobody told me.
+        I checked the logs manually at <mark>11pm</mark> before I could sleep.&rdquo;
       </>
     ),
   },
   {
-    initials: "KA",
-    name: "Kai",
-    role: "QA Engineer",
-    badge: "QA",
-    accent: "rgb(251,146,60)",
-    badgeBg: "rgba(251,146,60,0.08)",
-    badgeBorder: "rgba(251,146,60,0.3)",
+    initials: "TO",
+    name: "Tom",
+    role: "Product Owner",
+    badge: "PRODUCT",
+    accent: "rgb(167,139,250)",
+    badgeBg: "rgba(167,139,250,0.08)",
+    badgeBorder: "rgba(167,139,250,0.3)",
     quote: (
       <>
-        &ldquo;Our test suite checks the happy path. It does not check what happens when a dependency
-        is slow, or unavailable, or returns garbage. We are testing <mark>the system we built, not
-        the system that runs in production</mark>.&rdquo;
+        &ldquo;Support tickets spiked <mark>three times</mark> this month. Each time we found out
+        from customers. Each time we said &lsquo;we need better monitoring&rsquo;. Nothing changed.&rdquo;
       </>
     ),
   },
@@ -116,11 +114,11 @@ const panels = [
     isPlayer: true,
     quote: (
       <>
-        &ldquo;Chaos engineering is the discipline of breaking things deliberately — in a controlled
-        way — to find weaknesses before they find you. <mark>If it is going to fail, fail it on your terms.</mark>&rdquo;
+        &ldquo;Telemetry without alerting is a dashboard nobody watches. We need the system to
+        tell us when something is wrong — before the customer does.&rdquo;
       </>
     ),
-    outro: "Break it before it breaks you.",
+    outro: "Make the system speak.",
   },
 ]
 
@@ -134,10 +132,10 @@ function Phase1() {
             className="text-4xl text-white tracking-tight leading-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Week fifteen. Nexus Corp.
+            Week nine. Nexus Corp.
           </h2>
           <p className="text-gray-400 text-base leading-relaxed">
-            Last month the orders service went down because a dependency nobody knew about failed silently. The system had never been tested under failure conditions. Nobody knew it would break that way.
+            The logs are flowing. The metrics are there. But nobody is watching. Problems are still reported by customers, not by systems.
           </p>
         </div>
 
@@ -199,7 +197,7 @@ function Phase1() {
         <CTA
           href="?phase=2"
           label="Understand the theory →"
-          sub="Phase 2 of 4 - Deliberately breaking things"
+          sub="Phase 2 of 4 - From telemetry to alerting"
         />
       </div>
 
@@ -217,13 +215,61 @@ function Phase1() {
 
 // ─── Phase 2 - The theory ─────────────────────────────────────────────────────
 
-const experimentSteps = [
-  { step: "Define steady state",  note: "What does normal look like? (error rate < 1%, p95 latency < 200ms)"         },
-  { step: "State hypothesis",     note: "We believe the system will maintain steady state when X fails."               },
-  { step: "Inject failure",       note: "Slow down a dependency, kill a process, exhaust a resource."                  },
-  { step: "Measure",              note: "Did the system maintain steady state?"                                         },
-  { step: "Fix the weakness",     note: "Add timeouts, retries, circuit breakers, fallbacks."                          },
-  { step: "Document",             note: "Add the failure mode to the runbook."                                          },
+const alertExample = `{
+  "status": "WARNING",
+  "checks": {
+    "error_rate": { "value": "3.2%", "threshold": "1%", "status": "WARNING" },
+    "uptime":     { "value": 3600,   "threshold": 60,   "status": "OK"      }
+  },
+  "timestamp": "2024-01-15T09:14:22Z"
+}`
+
+const alertProperties = [
+  {
+    num: "01",
+    title: "Actionable",
+    body: "Every alert should have a clear response. If you do not know what to do when it fires, it should not be an alert. Alerts are not notifications — they are calls to action.",
+    accent: "rgb(6,182,212)",
+  },
+  {
+    num: "02",
+    title: "Threshold-based",
+    body: "Not 'something changed' but 'error rate exceeded 5% for 2 minutes'. Vague alerts cause alarm fatigue. Precise thresholds cause precise responses.",
+    accent: "rgb(34,197,94)",
+  },
+  {
+    num: "03",
+    title: "Configurable",
+    body: "Thresholds should be environment variables, not hardcoded values. Production and staging have different traffic patterns. Tune per environment without touching code.",
+    accent: "rgb(251,146,60)",
+  },
+]
+
+const alertLevels = [
+  {
+    level: "OK",
+    color: "rgb(34,197,94)",
+    bg: "rgba(34,197,94,0.08)",
+    border: "rgba(34,197,94,0.3)",
+    def: "All checks pass. System operating within normal parameters.",
+    action: "No action required.",
+  },
+  {
+    level: "WARNING",
+    color: "rgb(234,179,8)",
+    bg: "rgba(234,179,8,0.08)",
+    border: "rgba(234,179,8,0.3)",
+    def: "Degraded performance. One or more metrics approaching critical threshold.",
+    action: "Investigate soon. Not user-impacting yet.",
+  },
+  {
+    level: "CRITICAL",
+    color: "rgb(239,68,68)",
+    bg: "rgba(239,68,68,0.08)",
+    border: "rgba(239,68,68,0.3)",
+    def: "Service impact. One or more checks in critical state.",
+    action: "Act now. Users are being affected.",
+  },
 ]
 
 function Phase2() {
@@ -237,51 +283,42 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            What is chaos engineering
+            The gap between data and action
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            Chaos engineering is the practice of intentionally injecting failures into a system to test
-            its resilience. Netflix invented the discipline with Chaos Monkey — a tool that randomly
-            terminated production servers to force engineers to build systems that could survive the
-            loss of any individual component. The insight: systems that have never failed under
-            controlled conditions will fail under uncontrolled ones.
+            Having metrics is not enough. MTTR improved from <span className="text-white font-mono font-bold">72 hours</span> to{" "}
+            <span className="text-white font-mono font-bold">4 hours</span> in M-14 because you can
+            now find problems faster. But you still find them too late — after customers notice.
+          </p>
+          <p className="text-gray-400 leading-relaxed">
+            The missing piece is automated alerting: the system tells you when something crosses a
+            threshold. Detection goes from hours to seconds.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               {
-                label: "Without chaos engineering",
-                items: [
-                  "Failure modes discovered in production at 3am",
-                  "Hidden dependencies revealed by outages",
-                  "No timeouts — one slow service hangs everything",
-                  "Recovery is improvised under pressure",
-                ],
+                label: "Bad alert",
+                example: '"Something is wrong"',
+                note: "No threshold. No context. No action. Causes panic, not response.",
                 accent: "rgb(239,68,68)",
               },
               {
-                label: "With chaos engineering",
-                items: [
-                  "Failure modes discovered in controlled experiments",
-                  "Dependencies mapped and tested before they matter",
-                  "Timeouts configured — failure is bounded",
-                  "Recovery is practiced and documented",
-                ],
+                label: "Good alert",
+                example: '"Error rate 7.3% — threshold 5% — check /api/orders logs"',
+                note: "Specific value. Known threshold. Clear first action.",
                 accent: "rgb(34,197,94)",
               },
-            ].map((col) => (
+            ].map((item) => (
               <div
-                key={col.label}
+                key={item.label}
                 className="flex flex-col gap-3 p-5 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${col.accent}` }}
+                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${item.accent}` }}
               >
-                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: col.accent }}>
-                  {col.label}
+                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: item.accent }}>
+                  {item.label}
                 </span>
-                <div className="flex flex-col gap-2">
-                  {col.items.map((item, i) => (
-                    <p key={i} className="text-xs text-gray-400 leading-relaxed">{item}</p>
-                  ))}
-                </div>
+                <p className="text-sm font-mono text-white">{item.example}</p>
+                <p className="text-xs text-gray-500 leading-relaxed">{item.note}</p>
               </div>
             ))}
           </div>
@@ -293,26 +330,19 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The chaos experiment lifecycle
+            What makes a good alert
           </h2>
-          <p className="text-gray-400 leading-relaxed">
-            A chaos experiment follows the same structure as a hypothesis from M-11. Every experiment
-            starts with a clear definition of normal and ends with a documented fix — not just an
-            observation.
-          </p>
-          <div className="flex flex-col gap-0 border border-gray-800">
-            {experimentSteps.map((row, i) => (
+          <div className="flex flex-col gap-3">
+            {alertProperties.map((p) => (
               <div
-                key={row.step}
-                className="flex gap-4 px-5 py-4 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+                key={p.num}
+                className="flex gap-4 p-5 border"
+                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${p.accent}` }}
               >
-                <span className="text-xs font-mono font-bold shrink-0 w-5" style={{ color: "rgb(6,182,212)" }}>
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div className="flex flex-col gap-1 flex-1">
-                  <span className="text-sm text-white font-mono">{row.step}</span>
-                  <span className="text-xs text-gray-500">{row.note}</span>
+                <span className="text-xs font-mono font-bold shrink-0 mt-0.5" style={{ color: p.accent }}>{p.num}</span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-xs font-mono font-bold uppercase tracking-widest text-white">{p.title}</span>
+                  <p className="text-sm text-gray-400 leading-relaxed">{p.body}</p>
                 </div>
               </div>
             ))}
@@ -325,44 +355,33 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Start small: the three beginner experiments
+            Alert levels
           </h2>
-          <p className="text-gray-400 leading-relaxed">
-            You do not need Chaos Monkey to start. Three experiments every team should run — each
-            reveals a different class of failure mode.
-          </p>
-          <div className="flex flex-col gap-4">
-            {[
-              {
-                number: "01",
-                title: "Kill the process",
-                body: "Stop the app mid-request. Does it restart? How long does it take? Do requests queue or drop? Tests your restart policy and recovery time.",
-              },
-              {
-                number: "02",
-                title: "Slow the dependency",
-                body: "Add artificial latency to an upstream service. Does your app timeout gracefully or hang forever? Tests your timeout configuration.",
-              },
-              {
-                number: "03",
-                title: "Exhaust the resource",
-                body: "Fill the disk, spike memory, max out connections. What fails first? Does the app crash or degrade gracefully? Tests your resource limits and fallback behavior.",
-              },
-            ].map((item) => (
+          <div className="flex flex-col gap-3">
+            {alertLevels.map((l) => (
               <div
-                key={item.number}
-                className="flex gap-4 p-5 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: "3px solid rgba(6,182,212,0.4)" }}
+                key={l.level}
+                className="flex flex-col gap-2 p-5 border"
+                style={{ backgroundColor: l.bg, borderColor: l.border, borderLeft: `3px solid ${l.color}` }}
               >
-                <span className="text-xs font-mono font-bold shrink-0 mt-0.5" style={{ color: "rgb(6,182,212)" }}>
-                  {item.number}
+                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: l.color }}>
+                  {l.level}
                 </span>
-                <div className="flex flex-col gap-1">
-                  <span className="text-sm text-white font-mono font-bold">{item.title}</span>
-                  <p className="text-sm text-gray-500 leading-relaxed">{item.body}</p>
-                </div>
+                <p className="text-sm text-gray-300 leading-relaxed">{l.def}</p>
+                <p className="text-xs font-mono text-gray-500">{l.action}</p>
               </div>
             ))}
+          </div>
+          <div className="flex flex-col gap-2">
+            <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>
+              What /api/alerts will return
+            </p>
+            <pre
+              className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
+              style={{ backgroundColor: "#0d0d0d", borderLeft: "3px solid rgb(31,41,55)", color: "rgb(156,163,175)" }}
+            >
+              {alertExample}
+            </pre>
           </div>
         </section>
 
@@ -375,31 +394,25 @@ function Phase2() {
             The DORA connection
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            Chaos engineering directly validates CFR and MTTR. Teams that practice chaos engineering
-            find failure modes before users do — confirming the change failure rate holds under
-            adversarial conditions. And because they have already seen and fixed the failure, recovery
-            is faster when it does happen for real.
+            MTTR measures recovery time. Recovery starts at <em className="text-white not-italic font-semibold">detection</em>.
+            Manual detection — someone checks a dashboard — adds minutes to hours of delay.
+            Automated alerting means detection is instant.
           </p>
           <div className="flex flex-col gap-0 border border-gray-800">
             {[
-              {
-                label: "CFR target: 1%",
-                note: "Validate that failure rate stays below 1% even when dependencies misbehave. If it does not — fix it now.",
-                color: "rgb(6,182,212)",
-              },
-              {
-                label: "MTTR target: 30 min",
-                note: "Validate that the documented recovery path gets you back in 30 minutes. If it does not — update the runbook.",
-                color: "rgb(6,182,212)",
-              },
+              { label: "Current MTTR",      value: "4 hours", color: "rgb(239,68,68)",  note: "Metrics exist but require manual checking. Someone has to notice." },
+              { label: "Target after M-15", value: "1 hour",  color: "rgb(6,182,212)", note: "Automated alerts fire when thresholds are crossed. Detection is now instant." },
             ].map((row, i) => (
               <div
                 key={row.label}
                 className="flex items-start gap-5 px-5 py-4 border-b border-gray-800 last:border-b-0"
                 style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
               >
-                <span className="text-sm font-mono font-bold shrink-0" style={{ ...syne.style, color: row.color }}>{row.label}</span>
-                <span className="text-sm text-gray-500">{row.note}</span>
+                <span className="text-2xl font-mono font-bold shrink-0" style={{ ...syne.style, color: row.color }}>{row.value}</span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-xs font-mono uppercase tracking-widest text-gray-600">{row.label}</span>
+                  <span className="text-sm text-gray-500">{row.note}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -407,7 +420,7 @@ function Phase2() {
 
         <CTA
           href="?phase=3"
-          label="Break things deliberately →"
+          label="Add alerting to Nexus Corp →"
           sub="Phase 3 of 4 - Do it yourself"
         />
       </div>
@@ -417,37 +430,44 @@ function Phase2() {
 
 // ─── Phase 4 - Result ─────────────────────────────────────────────────────────
 
-const doraValidated = [
-  {
-    metric: "Change Failure Rate",
-    code: "CFR",
-    value: "1%",
-    status: "VALIDATED",
-    note: "confirmed resilient under dependency failure and process crash",
-    highlight: true,
-  },
+const beforeAfter = [
+  { before: "Error rate hit 23% — detected by a customer call",       after: "Error rate threshold fires an alert within seconds"          },
+  { before: "Manual dashboard checks every morning (sometimes skipped)", after: "/api/alerts is polled automatically by any monitoring tool" },
+  { before: "Developer checks logs at 11pm to verify a fix held",     after: "Alert silence after a fix confirms recovery automatically"    },
+  { before: "Support ticket spike = first sign of an incident",       after: "CRITICAL alert fires before the first support ticket"        },
+]
+
+const doraImpact = [
   {
     metric: "Mean Time to Restore",
     code: "MTTR",
-    value: "30 min",
-    status: "VALIDATED",
-    note: "recovery paths documented and tested — not improvised under pressure",
+    before: "4 hours",
+    after: "1 hour",
+    note: "automated detection collapses the time between incident start and human awareness",
     highlight: true,
   },
   {
     metric: "Deployment Frequency",
     code: "DF",
-    value: "Multiple×/week",
-    status: "PROTECTED",
-    note: "timeout middleware prevents slow dependencies from blocking deploys",
+    before: "Multiple×/week",
+    after: "Multiple×/week",
+    note: "unchanged",
     highlight: false,
   },
   {
     metric: "Lead Time for Changes",
     code: "LT",
-    value: "5 days",
-    status: "PROTECTED",
-    note: "chaos experiments run in isolation — no impact on development flow",
+    before: "5 days",
+    after: "5 days",
+    note: "unchanged",
+    highlight: false,
+  },
+  {
+    metric: "Change Failure Rate",
+    code: "CFR",
+    before: "4%",
+    after: "4%",
+    note: "unchanged — alerting detects failures faster, does not prevent them",
     highlight: false,
   },
 ]
@@ -462,60 +482,41 @@ function Phase4() {
             Mission Complete - M-15
           </p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Nexus Corp Breaks Things On Purpose
+            Nexus Corp Stops Flying Blind
           </h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">
-            Chaos engineering does not improve your metrics — it validates them. You already achieved
-            CFR 1% and MTTR 30 minutes. Now you know those numbers hold when dependencies fail,
-            processes crash, and resources are exhausted. That is the difference between metrics
-            you measured and metrics you trust.
+            This is what you built for Nexus Corp.
           </p>
         </div>
 
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">01</span>
-            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">Your DORA metrics — validated and protected</h2>
+            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">What changed</h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {doraValidated.map((d) => (
+          <div className="border border-gray-800">
+            <div className="grid grid-cols-2 border-b border-gray-800" style={{ backgroundColor: "#0d0d0d" }}>
+              <div className="px-5 py-3 border-r border-gray-800">
+                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(239,68,68)" }}>Before</span>
+              </div>
+              <div className="px-5 py-3">
+                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(34,197,94)" }}>After</span>
+              </div>
+            </div>
+            {beforeAfter.map((row, i) => (
               <div
-                key={d.code}
-                className="flex flex-col gap-4 border p-6"
-                style={{
-                  backgroundColor: d.highlight ? "#020d0f" : "#060f06",
-                  borderColor: d.highlight ? "rgba(6,182,212,0.3)" : "rgba(34,197,94,0.25)",
-                  borderLeft: d.highlight ? "3px solid rgb(6,182,212)" : "3px solid rgba(34,197,94,0.6)",
-                }}
+                key={i}
+                className="grid grid-cols-2 border-b border-gray-800 last:border-b-0"
+                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
               >
-                <div className="flex flex-col gap-1">
-                  <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">{d.metric}</span>
-                  <span className="text-xs font-mono text-gray-700">DORA - {d.code}</span>
+                <div className="px-5 py-4 border-r border-gray-800">
+                  <p className="text-sm text-gray-500">{row.before}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono shrink-0" style={{ color: d.highlight ? "rgb(6,182,212)" : "rgb(34,197,94)" }}>✓</span>
-                  <span
-                    className="text-lg font-mono font-bold"
-                    style={{ ...syne.style, color: d.highlight ? "rgb(6,182,212)" : "rgb(34,197,94)" }}
-                  >
-                    {d.value}
-                  </span>
+                <div className="px-5 py-4">
+                  <p className="text-sm text-gray-300">{row.after}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span
-                    className="text-xs font-mono font-bold px-1.5 py-0.5 uppercase tracking-widest"
-                    style={{
-                      color: d.highlight ? "rgb(6,182,212)" : "rgb(34,197,94)",
-                      backgroundColor: d.highlight ? "rgba(6,182,212,0.08)" : "rgba(34,197,94,0.08)",
-                      border: d.highlight ? "1px solid rgba(6,182,212,0.3)" : "1px solid rgba(34,197,94,0.3)",
-                    }}
-                  >
-                    {d.status}
-                  </span>
-                </div>
-                <p className="text-xs font-mono text-gray-600">{d.note}</p>
               </div>
             ))}
           </div>
@@ -524,46 +525,67 @@ function Phase4() {
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">02</span>
-            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">What you built</h2>
+            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">Your impact on Nexus Corp</h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <div
-            className="flex flex-col gap-5 p-6 border"
-            style={{
-              backgroundColor: "#080808",
-              borderColor: "rgba(6,182,212,0.2)",
-              borderLeft: "3px solid rgb(6,182,212)",
-            }}
-          >
-            <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-              Resilience is now tested, not assumed
-            </p>
-            <div className="flex flex-col gap-3">
-              {[
-                "Process kill experiment: restart policy confirmed, recovery time measured",
-                "/api/chaos/slow endpoint: slow dependency simulation in version control",
-                "Request timeout middleware: REQUEST_TIMEOUT_MS wired to environment variable",
-                "Known failure modes: process crash, slow dependency, resource exhaustion documented in runbook",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(34,197,94)" }}>✓</span>
-                  <p className="text-sm text-gray-400">{item}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {doraImpact.map((d) => (
+              <div
+                key={d.code}
+                className="flex flex-col gap-4 border p-6"
+                style={{
+                  backgroundColor: d.highlight ? "#020d0f" : "#080808",
+                  borderColor: d.highlight ? "rgba(6,182,212,0.3)" : "rgb(31,41,55)",
+                  borderLeft: d.highlight ? "3px solid rgb(6,182,212)" : "3px solid rgb(31,41,55)",
+                }}
+              >
+                <div className="flex flex-col gap-1">
+                  <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">{d.metric}</span>
+                  <span className="text-xs font-mono text-gray-700">DORA - {d.code}</span>
                 </div>
-              ))}
-            </div>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <span
+                    className="text-lg font-mono font-bold"
+                    style={{ ...syne.style, color: d.highlight ? "rgb(239,68,68)" : "rgb(75,85,99)" }}
+                  >
+                    {d.before}
+                  </span>
+                  <span className="font-mono text-gray-700">→</span>
+                  <span
+                    className="text-lg font-mono font-bold"
+                    style={{ ...syne.style, color: d.highlight ? "rgb(6,182,212)" : "rgb(75,85,99)" }}
+                  >
+                    {d.after}
+                  </span>
+                </div>
+                <p className="text-xs font-mono text-gray-600">{d.note}</p>
+              </div>
+            ))}
+          </div>
+
+          <div
+            className="p-5 border"
+            style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: "3px solid rgb(75,85,99)" }}
+          >
+            <p className="text-sm text-gray-500 leading-relaxed">
+              The reduction from 4 hours to 1 hour comes entirely from detection time. Before:
+              someone notices something is wrong, checks the logs, confirms the problem. Now: the
+              system detects the threshold breach and fires an alert. The time between incident
+              start and human awareness collapses from hours to seconds.
+            </p>
           </div>
         </section>
 
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">03</span>
-            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">Mission catalog complete</h2>
+            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">What&apos;s next</h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
           <div
-            className="flex flex-col gap-4 p-6 border"
+            className="flex flex-col gap-3 p-6 border"
             style={{
               backgroundColor: "#080808",
               borderColor: "rgba(6,182,212,0.2)",
@@ -571,36 +593,33 @@ function Phase4() {
             }}
           >
             <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-              End of current mission catalog
+              Second Way: Feedback — In Progress
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              More Third Way missions are coming: Making Work Visible, Improvement Kata, and
-              organizational learning at scale. You have built a high-performing engineering organization
-              from scratch — from a 41-day lead time to elite DORA metrics across all four dimensions.
+              Next: Fast Incident Response — alerts fire, but does your team know what to do?
+              Build the runbook and the process that turns alerts into resolved incidents.
             </p>
-            <div className="flex flex-col gap-2 border-t border-gray-800 pt-4">
-              {[
-                "First Way: Flow — M-01 through M-07 complete",
-                "Second Way: Feedback — M-08 through M-12 complete",
-                "Third Way: Learning — M-13 through M-15 complete",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(6,182,212)" }}>✓</span>
-                  <p className="text-sm text-gray-400">{item}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
         <section className="flex flex-col gap-4 border-t border-gray-900 pt-10">
-          <a
-            href="/dashboard"
-            className="self-start px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-            style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
-          >
-            Back to dashboard →
-          </a>
+          <div className="flex flex-wrap items-center gap-4">
+            <a
+              href="/dashboard"
+              className="px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
+              style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+            >
+              Back to dashboard →
+            </a>
+            <div
+              className="flex items-center gap-3 px-8 py-4 text-sm font-mono border cursor-not-allowed"
+              style={{ backgroundColor: "#0a0a0a", borderColor: "rgb(31,41,55)", color: "rgb(55,65,81)" }}
+              title="Not yet available"
+            >
+              <span>⊘</span>
+              Continue to M-16 →
+            </div>
+          </div>
         </section>
 
       </div>
@@ -610,7 +629,7 @@ function Phase4() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default async function M15Page({
+export default async function M09Page({
   searchParams,
 }: {
   searchParams: Promise<{ phase?: string }>

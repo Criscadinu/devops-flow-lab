@@ -144,7 +144,6 @@ export function Phase3() {
   const [task3Done, setTask3Done] = useState(false)
   const [task4Done, setTask4Done] = useState(false)
   const [task5Done, setTask5Done] = useState(false)
-  const [postmortemUrl, setPostmortemUrl] = useState("")
   const [actionsUrl, setActionsUrl] = useState("")
 
   const allDone = task1Done && task2Done && task3Done && task4Done && task5Done
@@ -161,10 +160,10 @@ export function Phase3() {
             className="text-3xl text-white tracking-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Your Mission - Build the Postmortem Process
+            Your Mission - Build the Experiment Engine
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Create a postmortem template, write a real postmortem for a past incident, link it to your runbook, and expose it through an API endpoint.
+            State a hypothesis, implement pagination behind a feature flag, measure the result.
           </p>
         </div>
 
@@ -182,7 +181,7 @@ export function Phase3() {
               Before you start
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              This mission builds on your M-12 work. Both items should already be ready.
+              This mission builds on your M-16 work. Both items should already be ready.
             </p>
           </div>
 
@@ -190,12 +189,12 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Branch protection and PR process in place from M-12
+                Fork from M-16 with incident process in place
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Your nexus-corp-app fork has branch protection enabled, a PR template, and a CONTRIBUTING.md. All changes go through PRs.
+              Your nexus-corp-app fork has /api/alerts, /api/status, docs/runbook.md, and a green pipeline.
             </p>
 
             <div style={{ borderTop: "1px solid rgb(31,41,55)" }} />
@@ -203,80 +202,33 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Runbook committed to the repo from M-10
+                Feature flags pattern already established (M-11)
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Your RUNBOOK.md is already in the repo from M-10. This postmortem will link back to it.
+              You have used environment-variable feature flags since M-11. This mission uses the same pattern for experiments.
             </p>
           </div>
         </div>
 
         {/* Task 1 */}
-        <TaskCard number="01" title="Create a postmortem template" done={task1Done} locked={false}>
+        <TaskCard number="01" title="State the hypothesis as code" done={task1Done} locked={false}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A template enforces consistency across every incident.</span>{" "}
-              Without a template, postmortems are written differently every time — or not at all.
-              A standard format means every postmortem answers the same questions, making them
-              comparable, searchable, and actually useful for preventing recurrence.
+              <span className="text-white">A hypothesis written as a comment in the code is a decision record.</span>{" "}
+              Six months from now, when someone asks why pagination exists and whether it worked,
+              the answer is in the code. It also forces you to be specific before you build anything.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Create docs/postmortem-template.md in the nexus-corp-app repo</SectionLabel>
-            <CodeBlock>{`# Postmortem: [Incident Title]
-
-**Date:** YYYY-MM-DD
-**Severity:** P1 / P2 / P3
-**Duration:** HH:MM — HH:MM (X minutes)
-**Author:** @your-handle
-
----
-
-## Summary
-One paragraph. What broke, for how long, and what the impact was.
-
-## Timeline
-| Time (UTC) | Event |
-|------------|-------|
-| HH:MM | First alert fired |
-| HH:MM | On-call engineer paged |
-| HH:MM | Root cause identified |
-| HH:MM | Fix deployed |
-| HH:MM | Service restored |
-
-## Root Cause
-What actually caused the incident. Be specific — not "human error" but exactly what decision or
-condition led to the failure.
-
-## Contributing Factors
-- Factor 1
-- Factor 2
-
-## Impact
-- Users affected: ~N
-- Duration: X minutes
-- Services impacted: list them
-
-## What Went Well
-- Monitoring caught it quickly
-- Runbook was accurate
-- Communication was clear
-
-## What Went Poorly
-- Root cause took too long to identify
-- Alert threshold was too high
-
-## Action Items
-| Action | Owner | Due |
-|--------|-------|-----|
-| Add test for this failure mode | @engineer | YYYY-MM-DD |
-| Update runbook with new step | @ops | YYYY-MM-DD |
-
-## Runbook Reference
-[RUNBOOK.md — Section X](./RUNBOOK.md#section-x)`}</CodeBlock>
+            <SectionLabel>Add to src/index.js — above the /api/orders route</SectionLabel>
+            <CodeBlock>{`// HYPOTHESIS: Adding pagination to /api/orders will reduce response
+// time for large order sets by limiting payload size.
+// MEASURE: Compare response time with and without FEATURE_PAGINATION=true
+// DECIDE: Ship if p95 response time improves by >20% for requests >20 orders
+// STATUS: experimenting`}</CodeBlock>
           </div>
 
           {!task1Done && (
@@ -287,30 +239,57 @@ condition led to the failure.
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                docs/postmortem-template.md is created and committed to the repo
+                Hypothesis is documented as a comment above the /api/orders route
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 2 */}
-        <TaskCard number="02" title="Write a real postmortem" done={task2Done} locked={!task1Done}>
+        <TaskCard number="02" title="Implement pagination behind a feature flag" done={task2Done} locked={!task1Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A postmortem is only valuable when it is written for a real incident.</span>{" "}
-              Use the health endpoint outage from M-12 — the one caused by Lisa&apos;s direct push to main.
-              Fill in the template completely. The timeline, the root cause, the contributing factors,
-              the action items. This is a permanent record that future engineers can learn from.
+              <span className="text-white">The flag lets you run control and treatment side by side.</span>{" "}
+              You can enable it for specific environments without touching the code again. Default
+              is off — you ship dark, measure first.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Create docs/postmortems/2024-health-endpoint-outage.md</SectionLabel>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              Use the M-12 incident: direct push to main broke the health endpoint. Fill in every section
-              of the template. Action items should include &ldquo;enable branch protection&rdquo; — which you&apos;ve
-              already done. That&apos;s the point: postmortems drive the process changes that prevent recurrence.
-            </p>
+            <SectionLabel>Update the /api/orders route in src/index.js</SectionLabel>
+            <CodeBlock>{`app.get('/api/orders', (req, res) => {
+  const start = Date.now()
+
+  let result = orders
+
+  if (process.env.FEATURE_PAGINATION === 'true') {
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 10
+    const offset = (page - 1) * limit
+    result = {
+      data: orders.slice(offset, offset + limit),
+      pagination: {
+        page,
+        limit,
+        total: orders.length,
+        pages: Math.ceil(orders.length / limit),
+      }
+    }
+  }
+
+  const duration = Date.now() - start
+  req.log && req.log.info(
+    { duration_ms: duration, feature_pagination: process.env.FEATURE_PAGINATION === 'true' },
+    'orders request'
+  )
+
+  res.json(result)
+})`}</CodeBlock>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Add to docker-compose.yml</SectionLabel>
+            <CodeBlock>{`- FEATURE_PAGINATION=false`}</CodeBlock>
           </div>
 
           {!task2Done && (
@@ -321,32 +300,49 @@ condition led to the failure.
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                A complete postmortem is written and committed to docs/postmortems/
+                Pagination is implemented behind FEATURE_PAGINATION flag, default off
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 3 */}
-        <TaskCard number="03" title="Link the postmortem from your runbook" done={task3Done} locked={!task2Done}>
+        <TaskCard number="03" title="Add response time logging to measure the experiment" done={task3Done} locked={!task2Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Runbooks and postmortems reinforce each other.</span>{" "}
-              The runbook tells you what to do when an incident happens. The postmortem explains
-              what you learned. Linking them creates a feedback loop: every update to the runbook
-              can point to the incident that motivated it.
+              <span className="text-white">You cannot validate a hypothesis without measurement.</span>{" "}
+              Adding experiment context to /api/metrics means you can check the status of every
+              running experiment in one call — without reading raw logs.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add a &ldquo;Related Postmortems&rdquo; section to RUNBOOK.md</SectionLabel>
-            <CodeBlock>{`## Related Postmortems
-
-Incidents that led to updates in this runbook:
-
-| Date | Incident | Postmortem |
-|------|----------|------------|
-| 2024-XX-XX | Health endpoint 500s after direct push to main | [docs/postmortems/2024-health-endpoint-outage.md](./docs/postmortems/2024-health-endpoint-outage.md) |`}</CodeBlock>
+            <SectionLabel>Update /api/metrics in src/index.js — add experiments object</SectionLabel>
+            <CodeBlock>{`app.get('/api/metrics', (req, res) => {
+  const uptime = Math.floor((Date.now() - startTime) / 1000)
+  res.json({
+    // DORA baseline
+    deploymentFrequency: '1x per month',
+    leadTime: '43 days',
+    changeFailureRate: '42%',
+    mttr: '72 hours',
+    // Live app metrics
+    uptime_seconds: uptime,
+    requests_total: requestCount,
+    errors_total: errorCount,
+    error_rate: requestCount > 0
+      ? ((errorCount / requestCount) * 100).toFixed(2) + '%'
+      : '0%',
+    // Active experiments
+    experiments: {
+      pagination: {
+        enabled: process.env.FEATURE_PAGINATION === 'true',
+        hypothesis: 'Pagination reduces response time for large order sets',
+        status: 'experimenting',
+      }
+    }
+  })
+})`}</CodeBlock>
           </div>
 
           {!task3Done && (
@@ -357,46 +353,48 @@ Incidents that led to updates in this runbook:
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                RUNBOOK.md has a Related Postmortems section linking to the incident
+                GET /api/metrics includes experiments object with pagination status
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 4 */}
-        <TaskCard number="04" title="Expose postmortems through /api/postmortems" done={task4Done} locked={!task3Done}>
+        <TaskCard number="04" title="Write tests for both flag states" done={task4Done} locked={!task3Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Postmortems should be as accessible as metrics.</span>{" "}
-              Exposing them through an API endpoint means they are observable — tooling can read them,
-              dashboards can link them, and the learning is not locked in a folder nobody checks.
+              <span className="text-white">A feature flag with no tests is a trap.</span>{" "}
+              You need to verify both paths work correctly — with and without pagination. Without
+              tests, you will discover the broken path in production.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Create app/api/postmortems/route.ts</SectionLabel>
-            <CodeBlock>{`import { NextResponse } from 'next/server'
-
-export async function GET() {
-  return NextResponse.json({
-    postmortems: [
-      {
-        id: 'pm-001',
-        date: '2024-XX-XX',
-        title: 'Health endpoint 500s after direct push to main',
-        severity: 'P2',
-        duration_minutes: 20,
-        root_cause: 'Direct push to main bypassed CI; unintended import broke health endpoint',
-        status: 'resolved',
-        runbook: '/RUNBOOK.md',
-        document: '/docs/postmortems/2024-health-endpoint-outage.md',
-      },
-    ],
+            <SectionLabel>Add to src/index.test.js</SectionLabel>
+            <CodeBlock>{`describe('Hypothesis: Pagination', () => {
+  it('GET /api/orders returns array when FEATURE_PAGINATION is off', async () => {
+    delete process.env.FEATURE_PAGINATION
+    const res = await request(app).get('/api/orders')
+    expect(res.status).toBe(200)
+    expect(Array.isArray(res.body)).toBe(true)
   })
-}`}</CodeBlock>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              Commit and push via PR. After merge, verify: <span className="font-mono text-gray-500">curl https://your-app.onrender.com/api/postmortems</span>
-            </p>
+
+  it('GET /api/orders returns paginated object when FEATURE_PAGINATION is on', async () => {
+    process.env.FEATURE_PAGINATION = 'true'
+    const res = await request(app).get('/api/orders?page=1&limit=5')
+    expect(res.status).toBe(200)
+    expect(res.body).toHaveProperty('data')
+    expect(res.body).toHaveProperty('pagination')
+    expect(res.body.pagination).toHaveProperty('total')
+    delete process.env.FEATURE_PAGINATION
+  })
+
+  it('GET /api/metrics includes experiments object', async () => {
+    const res = await request(app).get('/api/metrics')
+    expect(res.body).toHaveProperty('experiments')
+    expect(res.body.experiments).toHaveProperty('pagination')
+  })
+})`}</CodeBlock>
           </div>
 
           {!task4Done && (
@@ -407,37 +405,34 @@ export async function GET() {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                /api/postmortems returns postmortem data in production
+                npm test passes for both flag states
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 5 */}
-        <TaskCard number="05" title="Commit, push via PR, and verify CI" done={task5Done} locked={!task4Done}>
+        <TaskCard number="05" title="Commit and push — verify CI is green" done={task5Done} locked={!task4Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">The postmortem process must itself follow the review process.</span>{" "}
-              Push all changes through a PR — not directly to main. This is the practice you documented.
-              Follow it even for docs. The habit matters more than any individual change.
+              <span className="text-white">The experiment is live — deployed dark.</span>{" "}
+              To run it: set FEATURE_PAGINATION=true in production, measure response times via
+              /api/metrics, compare with the baseline. When you have data, update the hypothesis
+              STATUS from &lsquo;experimenting&rsquo; to &lsquo;validated&rsquo; or &lsquo;rejected&rsquo;.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Push all changes through a PR to main</SectionLabel>
-            <CodeBlock>{`git checkout -b feat/postmortem-process
-git add docs/ RUNBOOK.md app/api/postmortems/
-git commit -m 'feat: add postmortem template, first postmortem, and /api/postmortems'
-git push origin feat/postmortem-process`}</CodeBlock>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              Open a PR. Fill in the PR template. Wait for CI. Merge to main.
-            </p>
+            <SectionLabel>Commit and push</SectionLabel>
+            <CodeBlock>{`git add src/index.js src/index.test.js docker-compose.yml
+git commit -m 'feat: add pagination experiment behind feature flag with hypothesis documentation'
+git push`}</CodeBlock>
           </div>
 
           {!task5Done && (
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-2">
-                <SectionLabel>Paste your green Actions run URL for the merged PR</SectionLabel>
+                <SectionLabel>Paste your green Actions run URL</SectionLabel>
                 <input
                   type="url"
                   value={actionsUrl}
@@ -447,27 +442,16 @@ git push origin feat/postmortem-process`}</CodeBlock>
                   style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
                 />
               </div>
-              <div className="flex flex-col gap-2">
-                <SectionLabel>Paste your live /api/postmortems URL</SectionLabel>
-                <input
-                  type="url"
-                  value={postmortemUrl}
-                  onChange={(e) => setPostmortemUrl(e.target.value)}
-                  placeholder="https://your-app.onrender.com/api/postmortems"
-                  className="w-full px-3 py-2 text-sm font-mono text-white outline-none border"
-                  style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
-                />
-              </div>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <input
                   type="checkbox"
                   onChange={(e) => {
-                    if (e.target.checked && actionsUrl.includes("github.com") && postmortemUrl.includes("http")) setTask5Done(true)
+                    if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true)
                   }}
                   className="w-4 h-4 accent-cyan-400 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                  PR is merged, CI is green, /api/postmortems is live
+                  Pipeline is green — experiment is deployed dark
                 </span>
               </label>
             </div>
@@ -485,7 +469,7 @@ git push origin feat/postmortem-process`}</CodeBlock>
             }}
           >
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-              ✓ Postmortem process established. Incidents are now learning opportunities, not just outages.
+              ✓ Experiment deployed dark. Nexus Corp now ships with evidence, not hope.
             </p>
             <a
               href="?phase=4"

@@ -7,7 +7,7 @@ import { completeMission } from "@/app/actions/progress"
 import { prisma } from "@/lib/prisma"
 
 export const metadata: Metadata = {
-  title: "M-11 Hypothesis-Driven Development - DevOps Flow Lab",
+  title: "M-11 Architecture for Low-Risk Releases - DevOps Flow Lab",
 }
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
@@ -23,7 +23,7 @@ function MissionHeader({ fase }: { fase: number }) {
           M-11
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
-          Hypothesis-Driven Development
+          Architecture for Low-Risk Releases
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
           Phase {fase} of 4
@@ -59,18 +59,18 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
 
 const panels = [
   {
-    initials: "TO",
-    name: "Tom",
-    role: "Product Owner",
-    badge: "PRODUCT",
-    accent: "rgb(167,139,250)",
-    badgeBg: "rgba(167,139,250,0.08)",
-    badgeBorder: "rgba(167,139,250,0.3)",
+    initials: "SM",
+    name: "Sarah",
+    role: "Engineering Manager",
+    badge: "MANAGEMENT",
+    accent: "rgb(6,182,212)",
+    badgeBg: "rgba(6,182,212,0.08)",
+    badgeBorder: "rgba(6,182,212,0.3)",
     quote: (
       <>
-        &ldquo;We built the pagination feature because a customer asked for it. We shipped it. I
-        have no idea if anyone uses it. I have no idea if it made things{" "}
-        <mark>better or worse</mark>.&rdquo;
+        &ldquo;Last release broke the orders API for <mark>2 hours</mark>. Every user was affected.
+        We had to roll back manually. That took <mark>45 minutes</mark> on top of the 2-hour
+        outage.&rdquo;
       </>
     ),
   },
@@ -84,8 +84,9 @@ const panels = [
     badgeBorder: "rgba(34,197,94,0.3)",
     quote: (
       <>
-        &ldquo;I spent two weeks on that feature. When I asked how we would know if it worked, Tom
-        said &lsquo;we will feel it&rsquo;. <mark>That is not an answer</mark>.&rdquo;
+        &ldquo;I want to ship a new feature but I am scared. If it breaks, it breaks for everyone
+        immediately. I need a way to test in production with real users without risking
+        everything.&rdquo;
       </>
     ),
   },
@@ -99,8 +100,39 @@ const panels = [
     badgeBorder: "rgba(239,68,68,0.3)",
     quote: (
       <>
-        &ldquo;Error rate went up 0.3% after the pagination deploy. Nobody connected the dots.
-        We have the data. We just <mark>never look at it</mark> as feedback on what we shipped.&rdquo;
+        &ldquo;Rollback means re-deploying the old version manually. That takes{" "}
+        <mark>30 minutes</mark> minimum. During that 30 minutes, users see errors. Every deploy
+        is a risk.&rdquo;
+      </>
+    ),
+  },
+  {
+    initials: "KA",
+    name: "Kai",
+    role: "QA Engineer",
+    badge: "QA",
+    accent: "rgb(251,146,60)",
+    badgeBg: "rgba(251,146,60,0.08)",
+    badgeBorder: "rgba(251,146,60,0.3)",
+    quote: (
+      <>
+        &ldquo;We tested the feature in staging but prod behaves differently. Real traffic patterns
+        are different. We need to test with real users before full rollout.&rdquo;
+      </>
+    ),
+  },
+  {
+    initials: "TO",
+    name: "Tom",
+    role: "Product Owner",
+    badge: "PRODUCT",
+    accent: "rgb(167,139,250)",
+    badgeBg: "rgba(167,139,250,0.08)",
+    badgeBorder: "rgba(167,139,250,0.3)",
+    quote: (
+      <>
+        &ldquo;We have a big new feature ready. But we are afraid to ship it. The last big release
+        caused <mark>4 incidents</mark>. We are delaying again.&rdquo;
       </>
     ),
   },
@@ -115,11 +147,11 @@ const panels = [
     isPlayer: true,
     quote: (
       <>
-        &ldquo;Feature flags let us deploy dark. Telemetry lets us measure. Put them together and
-        you have an experiment engine. <mark>Ship, measure, decide</mark> — with data.&rdquo;
+        &ldquo;The problem is not the code. The problem is how we release it. All-or-nothing
+        deploys are inherently risky. The solution is to decouple deployment from release.&rdquo;
       </>
     ),
-    outro: "Hope is not a strategy. Measure everything.",
+    outro: "Deploy dark. Release gradually.",
   },
 ]
 
@@ -133,10 +165,10 @@ function Phase1() {
             className="text-4xl text-white tracking-tight leading-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Week eleven. Nexus Corp.
+            Week seven. Nexus Corp.
           </h2>
           <p className="text-gray-400 text-base leading-relaxed">
-            Tom shipped a new orders feature last month. Three weeks of work. Deployed on a Friday. Nobody measured if it helped. It probably did not.
+            Every deploy is still a gamble. One bad release hits all users at once.
           </p>
         </div>
 
@@ -198,7 +230,7 @@ function Phase1() {
         <CTA
           href="?phase=2"
           label="Understand the theory →"
-          sub="Phase 2 of 4 - From assumption to evidence"
+          sub="Phase 2 of 4 - Deploy vs release, and how to decouple them"
         />
       </div>
 
@@ -216,12 +248,43 @@ function Phase1() {
 
 // ─── Phase 2 - The theory ─────────────────────────────────────────────────────
 
-const experimentLifecycle = [
-  { step: "State hypothesis",           note: "We believe X will result in Y. We will know when Z." },
-  { step: "Implement behind flag",      note: "Default: off. Control group sees current behavior."   },
-  { step: "Enable for subset",          note: "Treatment group gets the change. Measure both."       },
-  { step: "Compare control vs treatment", note: "Use telemetry from M-08 to read the signal."       },
-  { step: "Ship or kill",               note: "Never leave flags permanent — decide with data."      },
+const releasePatterns = [
+  {
+    title: "Blue / Green",
+    body: "Run two identical environments. Blue is live. Green gets the new version. Switch traffic instantly when ready. Rollback is switching back — takes seconds.",
+    accent: "rgb(6,182,212)",
+    bg: "#020d0f",
+    border: "rgba(6,182,212,0.25)",
+  },
+  {
+    title: "Canary release",
+    body: "Release to 1% of users first. Monitor error rates, latency, and key metrics. Expand to 10%, then 50%, then 100% only if stable. Problems affect 1% — not everyone.",
+    accent: "rgb(234,179,8)",
+    bg: "#0a0800",
+    border: "rgba(234,179,8,0.25)",
+  },
+  {
+    title: "Feature flags",
+    body: "Deploy to all servers with the feature disabled. Enable for specific users, percentages, or regions. Rollback is flipping a flag — no redeploy, no downtime.",
+    accent: "rgb(34,197,94)",
+    bg: "#020a02",
+    border: "rgba(34,197,94,0.25)",
+  },
+]
+
+const strangler = [
+  { step: "01", label: "Identify a seam",    body: "Find a bounded piece of the monolith that can be extracted without touching everything else. Start small." },
+  { step: "02", label: "Build alongside",    body: "Build the new service next to the old code. Do not replace — add. The old code still runs." },
+  { step: "03", label: "Route traffic",      body: "Send a subset of requests to the new service. Use a proxy or feature flag to control the split." },
+  { step: "04", label: "Verify and expand",  body: "Confirm the new service handles the load correctly. Gradually increase the traffic share." },
+  { step: "05", label: "Strangle the old",   body: "Once the new service handles 100% of traffic, delete the old code. The monolith shrinks one piece at a time." },
+]
+
+const patternTable = [
+  { pattern: "Blue / Green",   useCase: "Zero-downtime deploys, instant rollback",   risk: "LOW",    rollback: "Seconds — switch traffic back"  },
+  { pattern: "Canary",         useCase: "Testing with real traffic before full rollout", risk: "LOW", rollback: "Minutes — reroute traffic to stable" },
+  { pattern: "Feature flags",  useCase: "Dark launches, A/B tests, ring deployments", risk: "VERY LOW", rollback: "Seconds — flip the flag"       },
+  { pattern: "Rolling deploy", useCase: "Gradual rollout across a fleet of servers",  risk: "MEDIUM", rollback: "Minutes — redeploy old version"  },
 ]
 
 function Phase2() {
@@ -235,12 +298,39 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The problem with opinion-driven development
+            Deployment vs release — the crucial distinction
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            Most features are built on assumptions. &ldquo;Users want this.&rdquo; &ldquo;This will improve
-            conversion.&rdquo; These are hypotheses — but they are never stated as hypotheses, never tested,
-            and never validated. The result: teams build things that do not matter and cannot tell the difference.
+            Most teams treat these as the same thing. They are not.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              {
+                word: "Deploy",
+                def: "Put code on a server. The code runs in production but may not be available to users yet. This is a technical operation.",
+                accent: "rgb(75,85,99)",
+              },
+              {
+                word: "Release",
+                def: "Make a feature available to users. This is a business decision — it can happen independently of deployment, at any time.",
+                accent: "rgb(6,182,212)",
+              },
+            ].map((item) => (
+              <div
+                key={item.word}
+                className="flex flex-col gap-3 p-6 border"
+                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${item.accent}` }}
+              >
+                <span className="text-sm font-mono font-bold uppercase tracking-widest" style={{ color: item.accent }}>
+                  {item.word}
+                </span>
+                <p className="text-gray-400 text-sm leading-relaxed">{item.def}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-gray-400 leading-relaxed">
+            When you decouple these, you can deploy any time and release when the business is ready.
+            Deploys become boring. Releases become intentional.
           </p>
         </section>
 
@@ -250,39 +340,21 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            What is a hypothesis
+            Three patterns for low-risk releases
           </h2>
-          <p className="text-gray-400 leading-relaxed">
-            A good hypothesis has three parts:
-          </p>
-          <div className="flex flex-col gap-0 border border-gray-800">
-            {[
-              { n: "1", text: "We believe that [change]" },
-              { n: "2", text: "Will result in [outcome]" },
-              { n: "3", text: "We will know this is true when [measurable signal]" },
-            ].map((row, i) => (
+          <div className="flex flex-col gap-3">
+            {releasePatterns.map((card) => (
               <div
-                key={row.n}
-                className="flex gap-4 px-5 py-4 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+                key={card.title}
+                className="flex flex-col gap-3 p-6 border"
+                style={{ backgroundColor: card.bg, borderColor: card.border, borderLeft: `3px solid ${card.accent}` }}
               >
-                <span className="text-xs font-mono font-bold shrink-0 w-4" style={{ color: "rgb(6,182,212)" }}>
-                  {row.n}
+                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: card.accent }}>
+                  {card.title}
                 </span>
-                <p className="text-sm text-gray-300 font-mono">{row.text}</p>
+                <p className="text-gray-400 text-sm leading-relaxed">{card.body}</p>
               </div>
             ))}
-          </div>
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>
-              Example
-            </p>
-            <pre
-              className="text-xs font-mono leading-relaxed p-4 overflow-x-auto whitespace-pre-wrap"
-              style={{ backgroundColor: "#0d0d0d", borderLeft: "3px solid rgb(31,41,55)", color: "rgb(156,163,175)" }}
-            >
-              {`We believe that adding pagination to /api/orders\nwill result in faster response times.\nWe will know this is true when p95 response time\ndrops below 100ms for requests with more than 50 orders.`}
-            </pre>
           </div>
         </section>
 
@@ -292,28 +364,24 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Feature flags as experiment infrastructure
+            The strangler fig pattern
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            M-07 gave us feature flags for dark launches. Now we use them for A/B experiments.
-            Flag off = control group. Flag on = treatment group. Measure both. Decide with data.
+            Named after the strangler fig tree, which grows around a host tree until it replaces it.
+            Applied to software: incrementally replace a monolith by building new services alongside
+            it — without a big-bang rewrite.
           </p>
           <div className="flex flex-col gap-0 border border-gray-800">
-            {experimentLifecycle.map((row, i) => (
+            {strangler.map((s, i) => (
               <div
-                key={row.step}
-                className="flex gap-4 px-5 py-4 border-b border-gray-800 last:border-b-0"
+                key={s.step}
+                className="flex gap-5 px-5 py-4 border-b border-gray-800 last:border-b-0"
                 style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
               >
-                <span
-                  className="text-xs font-mono font-bold shrink-0 w-5"
-                  style={{ color: "rgb(6,182,212)" }}
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div className="flex flex-col gap-1 flex-1">
-                  <span className="text-sm text-white font-mono">{row.step}</span>
-                  <span className="text-xs text-gray-500">{row.note}</span>
+                <span className="text-xs font-mono font-bold shrink-0 mt-0.5" style={{ color: "rgb(6,182,212)" }}>{s.step}</span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-xs font-mono font-bold text-white uppercase tracking-widest">{s.label}</span>
+                  <p className="text-xs text-gray-500 leading-relaxed">{s.body}</p>
                 </div>
               </div>
             ))}
@@ -326,28 +394,33 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The DORA connection
+            When to use each pattern
           </h2>
-          <p className="text-gray-400 leading-relaxed">
-            CFR drops when you ship smaller, validated changes instead of large, assumed-correct
-            features. Failures are caught during the experiment phase, not after full rollout.
-            Target: CFR from 4% to 2%.
-          </p>
-          <div className="flex flex-col gap-0 border border-gray-800">
-            {[
-              { label: "Current CFR",      value: "4%",  color: "rgb(239,68,68)",  note: "Features shipped on assumptions — validated by customer complaints after full rollout." },
-              { label: "Target after M-11", value: "2%", color: "rgb(6,182,212)", note: "Features validated by data before full rollout — failures caught in experiment phase." },
-            ].map((row, i) => (
+          <div className="border border-gray-800">
+            <div
+              className="grid grid-cols-12 border-b border-gray-800 px-5 py-3"
+              style={{ backgroundColor: "#0d0d0d" }}
+            >
+              <span className="col-span-3 text-xs font-mono text-gray-600 uppercase tracking-widest">Pattern</span>
+              <span className="col-span-4 text-xs font-mono text-gray-600 uppercase tracking-widest">Use case</span>
+              <span className="col-span-2 text-xs font-mono text-gray-600 uppercase tracking-widest">Risk</span>
+              <span className="col-span-3 text-xs font-mono text-gray-600 uppercase tracking-widest">Rollback</span>
+            </div>
+            {patternTable.map((row, i) => (
               <div
-                key={row.label}
-                className="flex items-start gap-5 px-5 py-4 border-b border-gray-800 last:border-b-0"
+                key={row.pattern}
+                className="grid grid-cols-12 px-5 py-4 border-b border-gray-800 last:border-b-0"
                 style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
               >
-                <span className="text-2xl font-mono font-bold shrink-0" style={{ ...syne.style, color: row.color }}>{row.value}</span>
-                <div className="flex flex-col gap-1">
-                  <span className="text-xs font-mono uppercase tracking-widest text-gray-600">{row.label}</span>
-                  <span className="text-sm text-gray-500">{row.note}</span>
-                </div>
+                <span className="col-span-3 text-sm font-mono font-bold text-white">{row.pattern}</span>
+                <span className="col-span-4 text-xs text-gray-400 leading-relaxed">{row.useCase}</span>
+                <span
+                  className="col-span-2 text-xs font-mono font-bold"
+                  style={{ color: row.risk === "LOW" || row.risk === "VERY LOW" ? "rgb(34,197,94)" : "rgb(234,179,8)" }}
+                >
+                  {row.risk}
+                </span>
+                <span className="col-span-3 text-xs text-gray-500 leading-relaxed">{row.rollback}</span>
               </div>
             ))}
           </div>
@@ -355,7 +428,7 @@ function Phase2() {
 
         <CTA
           href="?phase=3"
-          label="Build the experiment engine →"
+          label="Deploy dark for Nexus Corp →"
           sub="Phase 3 of 4 - Do it yourself"
         />
       </div>
@@ -365,39 +438,17 @@ function Phase2() {
 
 // ─── Phase 4 - Result ─────────────────────────────────────────────────────────
 
+const beforeAfter = [
+  { before: "All-or-nothing deploys affect all users instantly",   after: "Feature flags let you release to 1% first"           },
+  { before: "Rollback takes 30 minutes of manual work",            after: "Disable a flag in seconds, no redeploy"               },
+  { before: "Afraid to ship large features",                       after: "Ship dark, enable when confident"                     },
+  { before: "Staging tests but prod behaves differently",          after: "Test with real prod traffic using canary releases"     },
+]
+
 const doraImpact = [
-  {
-    metric: "Change Failure Rate",
-    code: "CFR",
-    before: "4%",
-    after: "2%",
-    note: "failures caught during experiment phase, not after full rollout",
-    highlight: true,
-  },
-  {
-    metric: "Deployment Frequency",
-    code: "DF",
-    before: "Multiple×/week",
-    after: "Multiple×/week",
-    note: "unchanged",
-    highlight: false,
-  },
-  {
-    metric: "Lead Time for Changes",
-    code: "LT",
-    before: "5 days",
-    after: "5 days",
-    note: "unchanged",
-    highlight: false,
-  },
-  {
-    metric: "Mean Time to Restore",
-    code: "MTTR",
-    before: "30 min",
-    after: "30 min",
-    note: "unchanged",
-    highlight: false,
-  },
+  { metric: "Change Failure Rate",   code: "CFR", before: "7%",        after: "4%",                   note: "dark launches eliminate risky big-bang releases"    },
+  { metric: "Lead Time for Changes", code: "LT",  before: "7 days",    after: "5 days",               note: "fearless shipping means faster iteration"           },
+  { metric: "Deployment Frequency",  code: "DF",  before: "1× / week", after: "Multiple times / week", note: "decoupled release removes hesitation to deploy"    },
 ]
 
 function Phase4() {
@@ -410,45 +461,43 @@ function Phase4() {
             Mission Complete - M-11
           </p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Nexus Corp Ships With Evidence
+            Deploy Dark. Release Gradually.
           </h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">
-            Features validated before full rollout. The change failure rate drops because failures are now caught
-            during the experiment phase, not after the full rollout.
+            This is what you built for Nexus Corp.
           </p>
         </div>
 
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">01</span>
-            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">CFR impact</h2>
+            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">What changed</h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <div
-            className="flex flex-col gap-5 p-6 border"
-            style={{
-              backgroundColor: "#020d0f",
-              borderColor: "rgba(6,182,212,0.3)",
-              borderLeft: "3px solid rgb(6,182,212)",
-            }}
-          >
-            <div className="flex items-center gap-6 flex-wrap">
-              <div className="flex flex-col gap-1">
-                <span className="text-xs font-mono uppercase tracking-widest text-gray-600">Before</span>
-                <span className="text-4xl font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>4%</span>
-                <span className="text-xs text-gray-600">features shipped on assumptions, validated by customer complaints</span>
+          <div className="border border-gray-800">
+            <div className="grid grid-cols-2 border-b border-gray-800" style={{ backgroundColor: "#0d0d0d" }}>
+              <div className="px-5 py-3 border-r border-gray-800">
+                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(239,68,68)" }}>Before</span>
               </div>
-              <span className="text-2xl font-mono text-gray-700">→</span>
-              <div className="flex flex-col gap-1">
-                <span className="text-xs font-mono uppercase tracking-widest text-gray-600">After</span>
-                <span className="text-4xl font-mono font-bold" style={{ ...syne.style, color: "rgb(6,182,212)" }}>2%</span>
-                <span className="text-xs text-gray-600">features validated by data before full rollout</span>
+              <div className="px-5 py-3">
+                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(34,197,94)" }}>After</span>
               </div>
             </div>
-            <p className="text-sm text-gray-500 leading-relaxed border-t border-gray-800 pt-4">
-              The change failure rate drops because failures are now caught during the experiment phase, not after full rollout.
-            </p>
+            {beforeAfter.map((row, i) => (
+              <div
+                key={i}
+                className="grid grid-cols-2 border-b border-gray-800 last:border-b-0"
+                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+              >
+                <div className="px-5 py-4 border-r border-gray-800">
+                  <p className="text-sm text-gray-500">{row.before}</p>
+                </div>
+                <div className="px-5 py-4">
+                  <p className="text-sm text-gray-300">{row.after}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -459,33 +508,23 @@ function Phase4() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {doraImpact.map((d) => (
               <div
                 key={d.code}
                 className="flex flex-col gap-4 border p-6"
-                style={{
-                  backgroundColor: d.highlight ? "#020d0f" : "#080808",
-                  borderColor: d.highlight ? "rgba(6,182,212,0.3)" : "rgb(31,41,55)",
-                  borderLeft: d.highlight ? "3px solid rgb(6,182,212)" : "3px solid rgb(31,41,55)",
-                }}
+                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
               >
                 <div className="flex flex-col gap-1">
                   <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">{d.metric}</span>
                   <span className="text-xs font-mono text-gray-700">DORA - {d.code}</span>
                 </div>
                 <div className="flex items-center gap-3 flex-wrap">
-                  <span
-                    className="text-lg font-mono font-bold"
-                    style={{ ...syne.style, color: d.highlight ? "rgb(239,68,68)" : "rgb(75,85,99)" }}
-                  >
+                  <span className="text-lg font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>
                     {d.before}
                   </span>
                   <span className="font-mono text-gray-700">→</span>
-                  <span
-                    className="text-lg font-mono font-bold"
-                    style={{ ...syne.style, color: d.highlight ? "rgb(6,182,212)" : "rgb(75,85,99)" }}
-                  >
+                  <span className="text-lg font-mono font-bold" style={{ ...syne.style, color: "rgb(6,182,212)" }}>
                     {d.after}
                   </span>
                 </div>
@@ -511,10 +550,11 @@ function Phase4() {
             }}
           >
             <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-              Second Way: Feedback — In Progress
+              First Way: Flow — Complete
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Next: Review and Coordinate Changes — make code review a quality gate, not a bottleneck.
+              First Way complete. Flow is fast and low-risk. Next: The Second Way — Feedback. Make
+              production visible.
             </p>
           </div>
         </section>
@@ -528,14 +568,14 @@ function Phase4() {
             >
               Back to dashboard →
             </a>
-            <div
+            <span
               className="flex items-center gap-3 px-8 py-4 text-sm font-mono border cursor-not-allowed"
               style={{ backgroundColor: "#0a0a0a", borderColor: "rgb(31,41,55)", color: "rgb(55,65,81)" }}
               title="Not yet available"
             >
               <span>⊘</span>
-              Continue to M-12 →
-            </div>
+              Next mission: The Second Way →
+            </span>
           </div>
         </section>
 
@@ -546,7 +586,7 @@ function Phase4() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default async function M11Page({
+export default async function M07Page({
   searchParams,
 }: {
   searchParams: Promise<{ phase?: string }>

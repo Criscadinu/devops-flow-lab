@@ -160,10 +160,10 @@ export function Phase3() {
             className="text-3xl text-white tracking-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Your Mission - Break Things Deliberately
+            Your Mission - Make the System Speak
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Run three chaos experiments, add timeout configuration, document the failure modes, and commit it all to version control.
+            Add an automated alert endpoint to the Nexus Corp app with configurable thresholds.
           </p>
         </div>
 
@@ -189,12 +189,12 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Docker Compose with health checks from M-06
+                Fork from M-14 with telemetry in place
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Your nexus-corp-app fork has a docker-compose.yml with a prod service and health checks configured from M-06.
+              Your nexus-corp-app fork has pino logging, the upgraded /health endpoint, request counters in /api/metrics, and a green pipeline.
             </p>
 
             <div style={{ borderTop: "1px solid rgb(31,41,55)" }} />
@@ -202,44 +202,67 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                /health endpoint and RUNBOOK.md from M-10
+                requestCount and errorCount variables exist
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Your app exposes /health and your RUNBOOK.md is in place. The failure modes you discover will be added there.
+              The alert endpoint reads these variables. Confirm they are declared at module scope in src/index.js.
             </p>
           </div>
         </div>
 
         {/* Task 1 */}
-        <TaskCard number="01" title="Run experiment 1 — kill the process" done={task1Done} locked={false}>
+        <TaskCard number="01" title="Add the /api/alerts endpoint" done={task1Done} locked={false}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">The simplest chaos experiment is also the most revealing.</span>{" "}
-              Stop your app while it is running and observe what happens. Does Docker restart it?
-              How long does it take? Does your health check catch it? This is the baseline — if your
-              app cannot survive a restart, nothing else matters.
+              <span className="text-white">An alert endpoint evaluates the current state of your app against configured thresholds.</span>{" "}
+              This is what monitoring tools poll. It is also what you can call yourself to get an
+              instant health snapshot beyond the basic /health check.
             </p>
           </MentorNote>
 
-          <div className="flex flex-col gap-3">
-            <SectionLabel>Terminal 1 — start the app</SectionLabel>
-            <CodeBlock>{`docker compose up prod`}</CodeBlock>
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Add to src/index.js — after the /health route</SectionLabel>
+            <CodeBlock>{`const ERROR_RATE_WARNING = parseFloat(process.env.ALERT_ERROR_RATE_WARNING || '1')
+const ERROR_RATE_CRITICAL = parseFloat(process.env.ALERT_ERROR_CRITICAL || '5')
+const MIN_UPTIME = parseInt(process.env.ALERT_MIN_UPTIME || '60')
 
-            <SectionLabel>Terminal 2 — kill the process and observe</SectionLabel>
-            <CodeBlock>{`docker ps
-docker kill nexus-corp-app-prod-1
+app.get('/api/alerts', (req, res) => {
+  const uptime = Math.floor((Date.now() - startTime) / 1000)
+  const errorRate = requestCount > 0
+    ? (errorCount / requestCount) * 100
+    : 0
 
-# Observe:
-# - Does Docker restart the container automatically?
-# - How long until /health returns 200 again?
-# - Check docker-compose.yml — is restart: unless-stopped set?`}</CodeBlock>
+  const checks = {
+    error_rate: {
+      value: errorRate.toFixed(2) + '%',
+      threshold: ERROR_RATE_CRITICAL + '%',
+      status: errorRate >= ERROR_RATE_CRITICAL
+        ? 'CRITICAL'
+        : errorRate >= ERROR_RATE_WARNING
+        ? 'WARNING'
+        : 'OK',
+    },
+    uptime: {
+      value: uptime,
+      threshold: MIN_UPTIME,
+      status: uptime < MIN_UPTIME ? 'WARNING' : 'OK',
+    },
+  }
 
-            <p className="text-xs text-gray-600 leading-relaxed">
-              If restart policy is not set, add to the prod service in docker-compose.yml:
-            </p>
-            <CodeBlock>{`restart: unless-stopped`}</CodeBlock>
+  const overallStatus = Object.values(checks).some(c => c.status === 'CRITICAL')
+    ? 'CRITICAL'
+    : Object.values(checks).some(c => c.status === 'WARNING')
+    ? 'WARNING'
+    : 'OK'
+
+  res.json({
+    status: overallStatus,
+    checks,
+    timestamp: new Date().toISOString(),
+  })
+})`}</CodeBlock>
           </div>
 
           {!task1Done && (
@@ -250,42 +273,33 @@ docker kill nexus-corp-app-prod-1
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Process kill experiment run — restart policy confirmed
+                GET /api/alerts returns status, checks, and timestamp
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 2 */}
-        <TaskCard number="02" title="Run experiment 2 — slow the dependency" done={task2Done} locked={!task1Done}>
+        <TaskCard number="02" title="Make thresholds configurable in docker-compose.yml" done={task2Done} locked={!task1Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Most outages are not caused by your code — they are caused by a dependency your code trusts too much.</span>{" "}
-              Adding a timeout is the single most important resilience improvement most apps can make.
-              Without a timeout, one slow dependency can hang every request.
+              <span className="text-white">Hardcoded thresholds are technical debt.</span>{" "}
+              Production and staging have different traffic patterns — a 5% error rate in staging
+              during a load test is fine; in production it is an incident. Environment variables
+              let you tune thresholds per environment without touching code.
             </p>
           </MentorNote>
 
-          <div className="flex flex-col gap-3">
-            <SectionLabel>Add a chaos endpoint to src/index.js</SectionLabel>
-            <CodeBlock>{`// Chaos experiment endpoint — simulates a slow dependency
-app.get('/api/chaos/slow', async (req, res) => {
-  const delay = parseInt(req.query.delay) || 5000
-  await new Promise(resolve => setTimeout(resolve, delay))
-  res.json({ delayed_ms: delay })
-})`}</CodeBlock>
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Add to the prod service environment in docker-compose.yml</SectionLabel>
+            <CodeBlock>{`- ALERT_ERROR_RATE_WARNING=1
+- ALERT_ERROR_CRITICAL=5
+- ALERT_MIN_UPTIME=60`}</CodeBlock>
+          </div>
 
-            <SectionLabel>Run the experiment</SectionLabel>
-            <CodeBlock>{`# Start the app
-docker compose up prod
-
-# Hit the slow endpoint (10 second delay)
-curl "http://localhost:3000/api/chaos/slow?delay=10000" &
-
-# While that is running — does /health still respond?
-curl http://localhost:3000/health
-
-# Check if the error rate is affected
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Test locally</SectionLabel>
+            <CodeBlock>{`docker compose up dev
 curl http://localhost:3000/api/alerts`}</CodeBlock>
           </div>
 
@@ -297,39 +311,46 @@ curl http://localhost:3000/api/alerts`}</CodeBlock>
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Slow dependency experiment run — /health responds independently of slow endpoint
+                Alert thresholds are defined in docker-compose.yml and /api/alerts responds correctly
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 3 */}
-        <TaskCard number="03" title="Add timeout configuration" done={task3Done} locked={!task2Done}>
+        <TaskCard number="03" title="Write tests for the alert endpoint" done={task3Done} locked={!task2Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A timeout is a contract: if a dependency does not respond within X milliseconds, give up and fail fast.</span>{" "}
-              Failing fast is better than hanging forever — it lets the rest of the system keep working.
-              Configure timeouts as environment variables so they can be tuned per environment.
+              <span className="text-white">Alert logic that is not tested will drift.</span>{" "}
+              Thresholds get changed, logic gets refactored, and suddenly your CRITICAL alert fires
+              at 50% instead of 5%. Tests lock the behavior in place.
             </p>
           </MentorNote>
 
-          <div className="flex flex-col gap-3">
-            <SectionLabel>Add timeout middleware to src/index.js</SectionLabel>
-            <CodeBlock>{`const REQUEST_TIMEOUT_MS = parseInt(process.env.REQUEST_TIMEOUT_MS || '5000')
-
-// Add timeout middleware — applies to all routes
-app.use((req, res, next) => {
-  res.setTimeout(REQUEST_TIMEOUT_MS, () => {
-    res.status(503).json({
-      error: 'Request timeout',
-      timeout_ms: REQUEST_TIMEOUT_MS,
-    })
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Add to src/index.test.js</SectionLabel>
+            <CodeBlock>{`describe('Alerting', () => {
+  it('GET /api/alerts returns status and checks', async () => {
+    const res = await request(app).get('/api/alerts')
+    expect(res.status).toBe(200)
+    expect(res.body).toHaveProperty('status')
+    expect(res.body).toHaveProperty('checks')
+    expect(res.body).toHaveProperty('timestamp')
   })
-  next()
-})`}</CodeBlock>
 
-            <SectionLabel>Add to docker-compose.yml prod environment</SectionLabel>
-            <CodeBlock>{`- REQUEST_TIMEOUT_MS=5000`}</CodeBlock>
+  it('alert status is OK, WARNING, or CRITICAL', async () => {
+    const res = await request(app).get('/api/alerts')
+    expect(['OK', 'WARNING', 'CRITICAL']).toContain(res.body.status)
+  })
+
+  it('error_rate check has value, threshold, and status', async () => {
+    const res = await request(app).get('/api/alerts')
+    const check = res.body.checks.error_rate
+    expect(check).toHaveProperty('value')
+    expect(check).toHaveProperty('threshold')
+    expect(check).toHaveProperty('status')
+  })
+})`}</CodeBlock>
           </div>
 
           {!task3Done && (
@@ -340,43 +361,30 @@ app.use((req, res, next) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Request timeout configured and wired to environment variable
+                npm test passes with the new alerting tests
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 4 */}
-        <TaskCard number="04" title="Document the failure modes" done={task4Done} locked={!task3Done}>
+        <TaskCard number="04" title="Add a LOG_LEVEL environment variable" done={task4Done} locked={!task3Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A chaos experiment that is not documented is just breaking things.</span>{" "}
-              Document every failure mode you discover so the runbook is updated with the new knowledge.
-              Future on-call engineers will thank you.
+              <span className="text-white">In production you want info-level logs. In development you want debug.</span>{" "}
+              In a crisis you might temporarily set LOG_LEVEL=debug in production to get more
+              detail. This should be a switch, not a code change.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to docs/runbook.md</SectionLabel>
-            <CodeBlock>{`## Known Failure Modes
+            <SectionLabel>Add to docker-compose.yml — prod service</SectionLabel>
+            <CodeBlock>{`- LOG_LEVEL=info`}</CodeBlock>
+          </div>
 
-### Process crash
-- Symptom: /health returns connection refused
-- Recovery: Docker restarts automatically (restart: unless-stopped)
-- Expected recovery time: < 30 seconds
-- Prevention: health check in docker-compose.yml
-
-### Slow dependency
-- Symptom: requests hang, error rate spikes after timeout
-- Recovery: requests time out after REQUEST_TIMEOUT_MS (default 5000ms)
-- Expected impact: 503 errors during dependency outage
-- Prevention: configure REQUEST_TIMEOUT_MS, add circuit breaker if needed
-
-### Resource exhaustion
-- Symptom: high memory usage visible in /health, eventual OOM crash
-- Recovery: Docker restarts automatically
-- Prevention: monitor memory via /health, add memory limits to
-  docker-compose.yml`}</CodeBlock>
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Add to docker-compose.yml — dev service</SectionLabel>
+            <CodeBlock>{`- LOG_LEVEL=debug`}</CodeBlock>
           </div>
 
           {!task4Done && (
@@ -387,7 +395,7 @@ app.use((req, res, next) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Known failure modes documented in RUNBOOK.md
+                LOG_LEVEL is set per environment in docker-compose.yml
               </span>
             </label>
           )}
@@ -397,17 +405,16 @@ app.use((req, res, next) => {
         <TaskCard number="05" title="Commit and push — verify CI is green" done={task5Done} locked={!task4Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Chaos engineering is not a one-time exercise. It is a practice.</span>{" "}
-              Add the slow endpoint and timeout middleware to the codebase so future engineers can run
-              these experiments themselves. The failure modes you discovered today are in the runbook.
-              The next engineer benefits from your chaos.
+              <span className="text-white">Alerting is only useful when it runs in production. Ship it.</span>{" "}
+              From now on, any monitoring tool can poll /api/alerts and get a structured response.
+              No more checking dashboards manually at 11pm.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Push all changes through a PR to main</SectionLabel>
-            <CodeBlock>{`git add src/index.js docker-compose.yml docs/runbook.md
-git commit -m 'feat: add chaos engineering experiments, timeout middleware, and failure mode docs'
+            <SectionLabel>Commit and push</SectionLabel>
+            <CodeBlock>{`git add src/index.js src/index.test.js docker-compose.yml
+git commit -m 'feat: add /api/alerts endpoint with configurable thresholds'
 git push`}</CodeBlock>
           </div>
 
@@ -433,7 +440,7 @@ git push`}</CodeBlock>
                   className="w-4 h-4 accent-cyan-400 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                  Pipeline is green — chaos engineering is part of the codebase
+                  Pipeline is green — alerting endpoint is live
                 </span>
               </label>
             </div>
@@ -451,7 +458,7 @@ git push`}</CodeBlock>
             }}
           >
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-              ✓ Chaos experiments complete. You know how your system fails — and you fixed it before it mattered.
+              ✓ Alerting is live. The system now speaks before your customers do.
             </p>
             <a
               href="?phase=4"

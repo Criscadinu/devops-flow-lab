@@ -7,7 +7,7 @@ import { completeMission } from "@/app/actions/progress"
 import { prisma } from "@/lib/prisma"
 
 export const metadata: Metadata = {
-  title: "M-14 Learning Culture - DevOps Flow Lab",
+  title: "M-14 Create Telemetry - DevOps Flow Lab",
 }
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
@@ -23,7 +23,7 @@ function MissionHeader({ fase }: { fase: number }) {
           M-14
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
-          Learning Culture
+          Create Telemetry
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
           Phase {fase} of 4
@@ -59,21 +59,6 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
 
 const panels = [
   {
-    initials: "LI",
-    name: "Lisa",
-    role: "Developer",
-    badge: "DEV",
-    accent: "rgb(34,197,94)",
-    badgeBg: "rgba(34,197,94,0.08)",
-    badgeBorder: "rgba(34,197,94,0.3)",
-    quote: (
-      <>
-        &ldquo;I fixed a race condition in the orders service. It took me 3 hours. I wrote it up in
-        my head, closed the ticket, and moved on. <mark>I never told anyone how I did it.</mark>&rdquo;
-      </>
-    ),
-  },
-  {
     initials: "MA",
     name: "Marco",
     role: "Ops Engineer",
@@ -83,23 +68,38 @@ const panels = [
     badgeBorder: "rgba(239,68,68,0.3)",
     quote: (
       <>
-        &ldquo;Two months ago I hit the same race condition. I spent 2 days on it. If Lisa had written
-        it down anywhere, I would have solved it in 3 hours too. <mark>We lost 13 hours as a team.</mark>&rdquo;
+        &ldquo;Production went down at 2am. I spent <mark>3 hours</mark> SSH-ing through servers
+        reading raw log files. I still don&apos;t know the root cause.&rdquo;
       </>
     ),
   },
   {
-    initials: "TO",
-    name: "Tom",
-    role: "Product Owner",
-    badge: "PRODUCT",
-    accent: "rgb(167,139,250)",
-    badgeBg: "rgba(167,139,250,0.08)",
-    badgeBorder: "rgba(167,139,250,0.3)",
+    initials: "LI",
+    name: "Lisa",
+    role: "Developer",
+    badge: "DEV",
+    accent: "rgb(34,197,94)",
+    badgeBg: "rgba(34,197,94,0.08)",
+    badgeBorder: "rgba(34,197,94,0.3)",
     quote: (
       <>
-        &ldquo;We keep solving the same problems. Every sprint someone rediscovers something the team
-        already knows. It is <mark>invisible waste</mark> — nobody sees it because it never shows up in a ticket.&rdquo;
+        &ldquo;I pushed a fix but I have no idea if it actually helped. The only feedback I get is
+        &ldquo;it seems better now&rdquo; from support.&rdquo;
+      </>
+    ),
+  },
+  {
+    initials: "KA",
+    name: "Kai",
+    role: "QA Engineer",
+    badge: "QA",
+    accent: "rgb(251,146,60)",
+    badgeBg: "rgba(251,146,60,0.08)",
+    badgeBorder: "rgba(251,146,60,0.3)",
+    quote: (
+      <>
+        &ldquo;We have logs. Somewhere. Nobody knows where. Last month someone deleted them to free
+        up <mark>disk space</mark>.&rdquo;
       </>
     ),
   },
@@ -114,11 +114,11 @@ const panels = [
     isPlayer: true,
     quote: (
       <>
-        &ldquo;A learning that stays in one person&apos;s head is a single point of failure. Write it
-        down. Share it. Make <mark>individual knowledge into team knowledge</mark>.&rdquo;
+        &ldquo;If you cannot measure it, you cannot improve it. Nexus Corp is flying blind.
+        Time to add eyes.&rdquo;
       </>
     ),
-    outro: "Local discovery. Global improvement.",
+    outro: "Fix the foundation first.",
   },
 ]
 
@@ -132,10 +132,10 @@ function Phase1() {
             className="text-4xl text-white tracking-tight leading-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Week fourteen. Nexus Corp.
+            Week eight. Nexus Corp.
           </h2>
           <p className="text-gray-400 text-base leading-relaxed">
-            Lisa fixed a tricky race condition last week. She figured it out in 3 hours. Two months ago Marco spent 2 days on the exact same bug. Nobody told him.
+            The pipeline is green. Deployments are faster. But nobody knows what the app is actually doing in production.
           </p>
         </div>
 
@@ -197,7 +197,7 @@ function Phase1() {
         <CTA
           href="?phase=2"
           label="Understand the theory →"
-          sub="Phase 2 of 4 - From individual learning to team knowledge"
+          sub="Phase 2 of 4 - The three pillars of observability"
         />
       </div>
 
@@ -215,6 +215,45 @@ function Phase1() {
 
 // ─── Phase 2 - The theory ─────────────────────────────────────────────────────
 
+const pillars = [
+  {
+    num: "01",
+    title: "Logs",
+    body: "A record of what happened. Every request should emit a structured log line with timestamp, method, path, status code, and duration. Unstructured logs (console.log) cannot be searched, filtered, or aggregated.",
+    accent: "rgb(6,182,212)",
+    bg: "#020d0f",
+    border: "rgba(6,182,212,0.25)",
+    example: `{"timestamp":"2024-01-15T02:31:44Z","level":"info","method":"GET","path":"/api/orders","status":200,"duration_ms":23}`,
+  },
+  {
+    num: "02",
+    title: "Metrics",
+    body: "Numerical measurements over time. Counters (requests served, errors thrown) and gauges (memory usage, active connections). Metrics answer: how often? how many? is this normal?",
+    accent: "rgb(34,197,94)",
+    bg: "#020a02",
+    border: "rgba(34,197,94,0.25)",
+    example: `{ requests_total: 14820, errors_total: 3, error_rate: "0.02%", uptime_seconds: 86400 }`,
+  },
+  {
+    num: "03",
+    title: "Traces",
+    body: "A record of a single request across all services. Shows where time was spent. Traces answer: why was this request slow? which service is the bottleneck? (Coming in a future mission.)",
+    accent: "rgb(167,139,250)",
+    bg: "#06020a",
+    border: "rgba(167,139,250,0.25)",
+    example: null,
+  },
+]
+
+const healthBefore = `{ "status": "ok" }`
+const healthAfter = `{
+  "status": "ok",
+  "version": "1.4.2",
+  "uptime_seconds": 86400,
+  "memory": { "used_mb": 48, "total_mb": 128 },
+  "timestamp": "2024-01-15T14:22:00Z"
+}`
+
 function Phase2() {
   return (
     <div className="flex-1 px-6 py-14">
@@ -226,54 +265,18 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The problem with tribal knowledge
+            Why telemetry matters
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            Most engineering teams run on tribal knowledge — things that only certain people know
-            because they experienced them. This knowledge is invisible until it is needed, and by
-            then it is often too late. The DevOps Handbook calls this the Third Way: creating a culture
-            of continual learning and experimentation where local discoveries are converted into global
-            improvements.
+            Nexus Corp deploys more often now. But faster deployments into darkness is not progress.
+            MTTR is still <span className="text-white font-mono font-bold">72 hours</span> because
+            finding problems requires SSH access and manual log hunting. You cannot fix what you
+            cannot see.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
-              {
-                label: "Tribal knowledge",
-                items: [
-                  "Fixes stay in one person's head",
-                  "Same bugs solved repeatedly across the team",
-                  "New engineers start from zero",
-                  "Knowledge is lost when engineers leave",
-                ],
-                accent: "rgb(239,68,68)",
-              },
-              {
-                label: "Team knowledge",
-                items: [
-                  "Every fix is written down and findable",
-                  "The second person solves it in minutes, not days",
-                  "New engineers inherit accumulated context",
-                  "Knowledge compounds over time",
-                ],
-                accent: "rgb(34,197,94)",
-              },
-            ].map((col) => (
-              <div
-                key={col.label}
-                className="flex flex-col gap-3 p-5 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${col.accent}` }}
-              >
-                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: col.accent }}>
-                  {col.label}
-                </span>
-                <div className="flex flex-col gap-2">
-                  {col.items.map((item, i) => (
-                    <p key={i} className="text-xs text-gray-400 leading-relaxed">{item}</p>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+          <p className="text-gray-400 leading-relaxed">
+            Telemetry fixes this. It makes production observable — not just running, but
+            understandable. When something breaks, you know within seconds, not hours.
+          </p>
         </section>
 
         <section className="flex flex-col gap-5">
@@ -282,48 +285,28 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The three formats for sharing knowledge
+            The Three Pillars of Observability
           </h2>
-          <p className="text-gray-400 leading-relaxed">
-            There are three practical formats for converting individual learning into team knowledge.
-            Each serves a different purpose and lives in a different part of the repository.
-          </p>
-          <div className="flex flex-col gap-0 border border-gray-800">
-            {[
-              {
-                label: "TIL",
-                title: "Today I Learned",
-                note: "A short note, 3–5 sentences, written the same day. What was the problem, what was the fix, what should you remember next time.",
-                accent: "rgb(6,182,212)",
-              },
-              {
-                label: "ADR",
-                title: "Architecture Decision Record",
-                note: "A structured document that captures why a technical decision was made. Future engineers who question the decision can read why it was made instead of reversing it without context.",
-                accent: "rgb(167,139,250)",
-              },
-              {
-                label: "Runbook entry",
-                title: "New failure mode → new playbook",
-                note: "When a fix reveals a new failure mode, add a playbook to the runbook. The postmortem process from M-13 already triggers this.",
-                accent: "rgb(34,197,94)",
-              },
-            ].map((row, i) => (
+          <div className="flex flex-col gap-4">
+            {pillars.map((p) => (
               <div
-                key={row.label}
-                className="flex gap-4 px-5 py-5 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606", borderLeft: `3px solid ${row.accent}` }}
+                key={p.num}
+                className="flex flex-col gap-3 p-6 border"
+                style={{ backgroundColor: p.bg, borderColor: p.border, borderLeft: `3px solid ${p.accent}` }}
               >
-                <span
-                  className="text-xs font-mono font-bold shrink-0 w-20 mt-0.5"
-                  style={{ color: row.accent }}
-                >
-                  {row.label}
-                </span>
-                <div className="flex flex-col gap-1 flex-1">
-                  <span className="text-sm text-white font-mono">{row.title}</span>
-                  <span className="text-xs text-gray-500 leading-relaxed">{row.note}</span>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-mono font-bold" style={{ color: p.accent }}>{p.num}</span>
+                  <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: p.accent }}>{p.title}</span>
                 </div>
+                <p className="text-gray-400 text-sm leading-relaxed">{p.body}</p>
+                {p.example && (
+                  <pre
+                    className="text-xs font-mono leading-relaxed p-3 overflow-x-auto"
+                    style={{ backgroundColor: "#0d0d0d", borderLeft: "3px solid rgb(31,41,55)", color: "rgb(156,163,175)" }}
+                  >
+                    {p.example}
+                  </pre>
+                )}
               </div>
             ))}
           </div>
@@ -335,30 +318,31 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Making learning a habit
+            What a real /health endpoint looks like
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            The difference between teams that learn and teams that repeat mistakes is not intelligence
-            — it is habit. Two practices that work at the team level:
+            A health check that only returns <code className="text-white font-mono">{`{ "status": "ok" }`}</code> tells
+            you nothing. A real health check tells you whether the app is about to fail before it does.
           </p>
-          <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
-              {
-                title: "The weekly TIL",
-                body: "At the end of every week, each engineer posts one thing they learned to a shared channel. Takes 5 minutes. Compounds over months.",
-              },
-              {
-                title: "The pre-mortem",
-                body: "Before shipping a feature, ask \"what could go wrong?\" Write it down. It surfaces risks and creates a shared mental model before the incident, not after.",
-              },
+              { label: "Before (useless)", code: healthBefore, accent: "rgb(239,68,68)" },
+              { label: "After (observable)", code: healthAfter, accent: "rgb(34,197,94)" },
             ].map((item) => (
               <div
-                key={item.title}
-                className="flex flex-col gap-2 p-5 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: "3px solid rgba(6,182,212,0.4)" }}
+                key={item.label}
+                className="flex flex-col gap-3 p-5 border"
+                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${item.accent}` }}
               >
-                <span className="text-sm text-white font-mono font-bold">{item.title}</span>
-                <p className="text-sm text-gray-500 leading-relaxed">{item.body}</p>
+                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: item.accent }}>
+                  {item.label}
+                </span>
+                <pre
+                  className="text-xs font-mono leading-relaxed overflow-x-auto"
+                  style={{ color: "rgb(156,163,175)" }}
+                >
+                  {item.code}
+                </pre>
               </div>
             ))}
           </div>
@@ -373,29 +357,33 @@ function Phase2() {
             The DORA connection
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            Learning culture does not show up in a single DORA metric. It shows up in the trend.
-            Teams with strong learning cultures maintain their DORA improvements over time. Teams
-            without it see metrics regress as the same problems recur. The goal of M-14 is to protect
-            everything you have built in M-01 through M-13.
+            MTTR measures how fast you recover from incidents. But you cannot recover fast if you
+            cannot <em className="text-white not-italic font-semibold">detect</em>. Telemetry is
+            the prerequisite for MTTR improvement.
           </p>
-          <div
-            className="flex flex-col gap-3 p-5 border"
-            style={{ backgroundColor: "#080808", borderColor: "rgba(6,182,212,0.2)", borderLeft: "3px solid rgba(6,182,212,0.4)" }}
-          >
-            <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-              What this mission does
-            </span>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              All four DORA metrics are protected. Learning culture is the practice that prevents
-              regression — the same incidents stop recurring, the same bugs stop reappearing, and
-              the improvements you have made compound over time instead of decaying.
-            </p>
+          <div className="flex flex-col gap-0 border border-gray-800">
+            {[
+              { label: "Current MTTR",   value: "72 hours", color: "rgb(239,68,68)",  note: "Detected by customer complaints. Diagnosed by SSH log hunting." },
+              { label: "Target after M-14", value: "4 hours",  color: "rgb(6,182,212)", note: "Structured logs, health endpoint, error rate visible in /api/metrics." },
+            ].map((row, i) => (
+              <div
+                key={row.label}
+                className="flex items-start gap-5 px-5 py-4 border-b border-gray-800 last:border-b-0"
+                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+              >
+                <span className="text-2xl font-mono font-bold shrink-0" style={{ ...syne.style, color: row.color }}>{row.value}</span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-xs font-mono uppercase tracking-widest text-gray-600">{row.label}</span>
+                  <span className="text-sm text-gray-500">{row.note}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
         <CTA
           href="?phase=3"
-          label="Build the learning culture →"
+          label="Add telemetry to Nexus Corp →"
           sub="Phase 3 of 4 - Do it yourself"
         />
       </div>
@@ -405,30 +393,45 @@ function Phase2() {
 
 // ─── Phase 4 - Result ─────────────────────────────────────────────────────────
 
-const doraProtected = [
+const beforeAfter = [
+  { before: "Incidents detected by customer complaints",  after: "Errors visible in /api/metrics within seconds"       },
+  { before: "Diagnosis required SSH access to servers",  after: "Structured logs searchable and filterable"             },
+  { before: "MTTR: 72 hours of manual log hunting",      after: "MTTR: 4 hours — root cause visible immediately"       },
+  { before: "/health just returned { status: 'ok' }",    after: "/health shows uptime, memory, version, timestamp"     },
+]
+
+const doraImpact = [
+  {
+    metric: "Mean Time to Restore",
+    code: "MTTR",
+    before: "72 hours",
+    after: "4 hours",
+    note: "structured logs and metrics cut detection and diagnosis time by 95%",
+    highlight: true,
+  },
   {
     metric: "Deployment Frequency",
     code: "DF",
-    value: "Multiple×/week",
-    note: "team knowledge prevents regressions that slow deploy cadence",
+    before: "Multiple×/week",
+    after: "Multiple×/week",
+    note: "unchanged — telemetry does not affect deploy frequency directly",
+    highlight: false,
   },
   {
     metric: "Lead Time for Changes",
     code: "LT",
-    value: "5 days",
-    note: "shared context reduces time spent rediscovering known solutions",
+    before: "5 days",
+    after: "5 days",
+    note: "unchanged — telemetry is a prerequisite for further improvement",
+    highlight: false,
   },
   {
     metric: "Change Failure Rate",
     code: "CFR",
-    value: "1%",
-    note: "TILs and ADRs prevent the same mistakes from recurring",
-  },
-  {
-    metric: "Mean Time to Restore",
-    code: "MTTR",
-    value: "30 min",
-    note: "documented fixes make the second incident faster than the first",
+    before: "4%",
+    after: "4%",
+    note: "unchanged — but failures are now visible and recoverable faster",
+    highlight: false,
   },
 ]
 
@@ -442,101 +445,96 @@ function Phase4() {
             Mission Complete - M-14
           </p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Nexus Corp Stops Repeating Mistakes
+            Nexus Corp Can Now See
           </h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">
-            Learning culture does not move a DORA metric today. It protects every metric you have
-            already moved. Without it, teams regress — the same incidents recur, the same bugs
-            reappear, the same architectural mistakes get made twice. M-14 is the practice that
-            makes all previous improvements permanent.
+            This is what you built for Nexus Corp.
           </p>
         </div>
 
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">01</span>
-            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">What you built</h2>
+            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">What changed</h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <div
-            className="flex flex-col gap-5 p-6 border"
-            style={{
-              backgroundColor: "#080808",
-              borderColor: "rgba(6,182,212,0.2)",
-              borderLeft: "3px solid rgb(6,182,212)",
-            }}
-          >
-            <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-              The system now learns from itself
-            </p>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              Every engineer who joins Nexus Corp from now on starts with the accumulated knowledge
-              of everyone who came before them. The team&apos;s learning is version controlled, discoverable,
-              and growing.
-            </p>
-            <div className="flex flex-col gap-3 border-t border-gray-800 pt-4">
-              {[
-                "TIL format: every fix is written down and findable in docs/til/",
-                "ADR format: every significant decision has a documented rationale in docs/adr/",
-                "Learning practices in the runbook: weekly TIL, pre-mortem, ADR are team agreements",
-                "/api/learning: learning artifacts are discoverable and observable",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(34,197,94)" }}>✓</span>
-                  <p className="text-sm text-gray-400">{item}</p>
-                </div>
-              ))}
+          <div className="border border-gray-800">
+            <div className="grid grid-cols-2 border-b border-gray-800" style={{ backgroundColor: "#0d0d0d" }}>
+              <div className="px-5 py-3 border-r border-gray-800">
+                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(239,68,68)" }}>Before</span>
+              </div>
+              <div className="px-5 py-3">
+                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(34,197,94)" }}>After</span>
+              </div>
             </div>
+            {beforeAfter.map((row, i) => (
+              <div
+                key={i}
+                className="grid grid-cols-2 border-b border-gray-800 last:border-b-0"
+                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+              >
+                <div className="px-5 py-4 border-r border-gray-800">
+                  <p className="text-sm text-gray-500">{row.before}</p>
+                </div>
+                <div className="px-5 py-4">
+                  <p className="text-sm text-gray-300">{row.after}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">02</span>
-            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">Your DORA metrics — protected</h2>
+            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">Your impact on Nexus Corp</h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {doraProtected.map((d) => (
+            {doraImpact.map((d) => (
               <div
                 key={d.code}
                 className="flex flex-col gap-4 border p-6"
                 style={{
-                  backgroundColor: "#060f06",
-                  borderColor: "rgba(34,197,94,0.25)",
-                  borderLeft: "3px solid rgba(34,197,94,0.6)",
+                  backgroundColor: d.highlight ? "#020d0f" : "#080808",
+                  borderColor: d.highlight ? "rgba(6,182,212,0.3)" : "rgb(31,41,55)",
+                  borderLeft: d.highlight ? "3px solid rgb(6,182,212)" : "3px solid rgb(31,41,55)",
                 }}
               >
                 <div className="flex flex-col gap-1">
                   <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">{d.metric}</span>
                   <span className="text-xs font-mono text-gray-700">DORA - {d.code}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono shrink-0" style={{ color: "rgb(34,197,94)" }}>✓</span>
+                <div className="flex items-center gap-3 flex-wrap">
                   <span
                     className="text-lg font-mono font-bold"
-                    style={{ ...syne.style, color: "rgb(34,197,94)" }}
+                    style={{ ...syne.style, color: d.highlight ? "rgb(239,68,68)" : "rgb(75,85,99)" }}
                   >
-                    {d.value}
+                    {d.before}
                   </span>
-                </div>
-                <div className="flex items-center gap-2">
+                  <span className="font-mono text-gray-700">→</span>
                   <span
-                    className="text-xs font-mono font-bold px-1.5 py-0.5 uppercase tracking-widest"
-                    style={{
-                      color: "rgb(34,197,94)",
-                      backgroundColor: "rgba(34,197,94,0.08)",
-                      border: "1px solid rgba(34,197,94,0.3)",
-                    }}
+                    className="text-lg font-mono font-bold"
+                    style={{ ...syne.style, color: d.highlight ? "rgb(6,182,212)" : "rgb(75,85,99)" }}
                   >
-                    PROTECTED
+                    {d.after}
                   </span>
                 </div>
                 <p className="text-xs font-mono text-gray-600">{d.note}</p>
               </div>
             ))}
+          </div>
+
+          <div
+            className="p-5 border"
+            style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: "3px solid rgb(75,85,99)" }}
+          >
+            <p className="text-sm text-gray-500 leading-relaxed">
+              Telemetry does not directly improve deployment frequency or lead time. But it is the
+              prerequisite for everything in the Second Way. Without measurement, feedback is impossible.
+            </p>
           </div>
         </section>
 
@@ -556,12 +554,11 @@ function Phase4() {
             }}
           >
             <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-              Coming next — Chaos Engineering
+              Second Way: Feedback — In Progress
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Next: Chaos Engineering — if you want to know how your system fails, break it deliberately
-              before it breaks on its own. Inject failures in a controlled environment. Find weaknesses
-              before your users do.
+              Next: Build a monitoring dashboard on top of this telemetry — and set up alerts so
+              Marco sleeps through the night.
             </p>
           </div>
         </section>
@@ -593,7 +590,7 @@ function Phase4() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default async function M14Page({
+export default async function M08Page({
   searchParams,
 }: {
   searchParams: Promise<{ phase?: string }>

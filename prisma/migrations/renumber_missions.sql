@@ -1,0 +1,14 @@
+-- Renumber UserProgress moduleIds to follow new DevOps Handbook hierarchy
+UPDATE "UserProgress" SET "moduleId" = 'M-04' WHERE "moduleId" = 'M-03';
+UPDATE "UserProgress" SET "moduleId" = 'M-09' WHERE "moduleId" = 'M-04';
+UPDATE "UserProgress" SET "moduleId" = 'M-10' WHERE "moduleId" = 'M-06';
+UPDATE "UserProgress" SET "moduleId" = 'M-11' WHERE "moduleId" = 'M-07';
+UPDATE "UserProgress" SET "moduleId" = 'M-14' WHERE "moduleId" = 'M-08';
+UPDATE "UserProgress" SET "moduleId" = 'M-15' WHERE "moduleId" = 'M-09';
+UPDATE "UserProgress" SET "moduleId" = 'M-16' WHERE "moduleId" = 'M-10';
+UPDATE "UserProgress" SET "moduleId" = 'M-17' WHERE "moduleId" = 'M-11';
+UPDATE "UserProgress" SET "moduleId" = 'M-18' WHERE "moduleId" = 'M-12';
+UPDATE "UserProgress" SET "moduleId" = 'M-19' WHERE "moduleId" = 'M-13';
+UPDATE "UserProgress" SET "moduleId" = 'M-20' WHERE "moduleId" = 'M-14';
+UPDATE "UserProgress" SET "moduleId" = 'M-21' WHERE "moduleId" = 'M-15';
+UPDATE "UserProgress" SET "moduleId" = 'M-03' WHERE "moduleId" = 'M-16';

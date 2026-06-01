@@ -160,10 +160,10 @@ export function Phase3() {
             className="text-3xl text-white tracking-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Your Mission - Add Eyes to Production
+            Your Mission - Break Things Deliberately
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Wire structured logging, a real health endpoint, and live request counters into the Nexus Corp app.
+            Run three chaos experiments, add timeout configuration, document the failure modes, and commit it all to version control.
           </p>
         </div>
 
@@ -181,7 +181,7 @@ export function Phase3() {
               Before you start
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              This mission builds on your M-07 work. Both items should already be ready.
+              This mission builds on your M-20 work. Both items should already be ready.
             </p>
           </div>
 
@@ -189,12 +189,12 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Fork from M-07 with green pipeline
+                Docker Compose with health checks from M-10
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Your nexus-corp-app fork has feature flags, passing tests, and GitHub Actions running on every push.
+              Your nexus-corp-app fork has a docker-compose.yml with a prod service and health checks configured from M-10.
             </p>
 
             <div style={{ borderTop: "1px solid rgb(31,41,55)" }} />
@@ -202,40 +202,44 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Node.js and npm installed
+                /health endpoint and RUNBOOK.md from M-16
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Verify with <code className="text-cyan-400 font-mono">node --version</code> and <code className="text-cyan-400 font-mono">npm --version</code>.
+              Your app exposes /health and your RUNBOOK.md is in place. The failure modes you discover will be added there.
             </p>
           </div>
         </div>
 
         {/* Task 1 */}
-        <TaskCard number="01" title="Add structured logging with pino" done={task1Done} locked={false}>
+        <TaskCard number="01" title="Run experiment 1 — kill the process" done={task1Done} locked={false}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">console.log is not logging.</span>{" "}
-              It has no structure, no levels, no timestamps. pino is the standard structured logger
-              for Node.js. Every request gets a JSON log line automatically.
+              <span className="text-white">The simplest chaos experiment is also the most revealing.</span>{" "}
+              Stop your app while it is running and observe what happens. Does Docker restart it?
+              How long does it take? Does your health check catch it? This is the baseline — if your
+              app cannot survive a restart, nothing else matters.
             </p>
           </MentorNote>
 
-          <div className="flex flex-col gap-2">
-            <SectionLabel>Install pino</SectionLabel>
-            <CodeBlock>{`npm install pino pino-http`}</CodeBlock>
-          </div>
+          <div className="flex flex-col gap-3">
+            <SectionLabel>Terminal 1 — start the app</SectionLabel>
+            <CodeBlock>{`docker compose up prod`}</CodeBlock>
 
-          <div className="flex flex-col gap-2">
-            <SectionLabel>Add to src/index.js</SectionLabel>
-            <CodeBlock>{`const pino = require('pino')
-const pinoHttp = require('pino-http')
+            <SectionLabel>Terminal 2 — kill the process and observe</SectionLabel>
+            <CodeBlock>{`docker ps
+docker kill nexus-corp-app-prod-1
 
-const logger = pino({ level: process.env.LOG_LEVEL || 'info' })
+# Observe:
+# - Does Docker restart the container automatically?
+# - How long until /health returns 200 again?
+# - Check docker-compose.yml — is restart: unless-stopped set?`}</CodeBlock>
 
-// Add after app is created, before routes:
-app.use(pinoHttp({ logger }))`}</CodeBlock>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              If restart policy is not set, add to the prod service in docker-compose.yml:
+            </p>
+            <CodeBlock>{`restart: unless-stopped`}</CodeBlock>
           </div>
 
           {!task1Done && (
@@ -246,40 +250,43 @@ app.use(pinoHttp({ logger }))`}</CodeBlock>
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Every request now produces a structured JSON log line
+                Process kill experiment run — restart policy confirmed
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 2 */}
-        <TaskCard number="02" title="Upgrade the /health endpoint" done={task2Done} locked={!task1Done}>
+        <TaskCard number="02" title="Run experiment 2 — slow the dependency" done={task2Done} locked={!task1Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A health check that only says &ldquo;ok&rdquo; is useless.</span>{" "}
-              A real health check tells you uptime, memory pressure, and version. Load balancers
-              and monitoring tools use this to decide if your app is healthy.
+              <span className="text-white">Most outages are not caused by your code — they are caused by a dependency your code trusts too much.</span>{" "}
+              Adding a timeout is the single most important resilience improvement most apps can make.
+              Without a timeout, one slow dependency can hang every request.
             </p>
           </MentorNote>
 
-          <div className="flex flex-col gap-2">
-            <SectionLabel>Replace the /health route in src/index.js</SectionLabel>
-            <CodeBlock>{`const startTime = Date.now()
-
-app.get('/health', (req, res) => {
-  const uptime = Math.floor((Date.now() - startTime) / 1000)
-  const mem = process.memoryUsage()
-  res.json({
-    status: 'ok',
-    version: process.env.APP_VERSION || '1.0.0',
-    uptime_seconds: uptime,
-    memory: {
-      used_mb: Math.round(mem.heapUsed / 1024 / 1024),
-      total_mb: Math.round(mem.heapTotal / 1024 / 1024),
-    },
-    timestamp: new Date().toISOString(),
-  })
+          <div className="flex flex-col gap-3">
+            <SectionLabel>Add a chaos endpoint to src/index.js</SectionLabel>
+            <CodeBlock>{`// Chaos experiment endpoint — simulates a slow dependency
+app.get('/api/chaos/slow', async (req, res) => {
+  const delay = parseInt(req.query.delay) || 5000
+  await new Promise(resolve => setTimeout(resolve, delay))
+  res.json({ delayed_ms: delay })
 })`}</CodeBlock>
+
+            <SectionLabel>Run the experiment</SectionLabel>
+            <CodeBlock>{`# Start the app
+docker compose up prod
+
+# Hit the slow endpoint (10 second delay)
+curl "http://localhost:3000/api/chaos/slow?delay=10000" &
+
+# While that is running — does /health still respond?
+curl http://localhost:3000/health
+
+# Check if the error rate is affected
+curl http://localhost:3000/api/alerts`}</CodeBlock>
           </div>
 
           {!task2Done && (
@@ -290,56 +297,39 @@ app.get('/health', (req, res) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                GET /health returns uptime, memory, version and timestamp
+                Slow dependency experiment run — /health responds independently of slow endpoint
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 3 */}
-        <TaskCard number="03" title="Add request counters" done={task3Done} locked={!task2Done}>
+        <TaskCard number="03" title="Add timeout configuration" done={task3Done} locked={!task2Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Logs tell you what happened. Metrics tell you how often.</span>{" "}
-              A request counter lets you answer: how many errors in the last hour? What is my
-              error rate? Is traffic normal?
+              <span className="text-white">A timeout is a contract: if a dependency does not respond within X milliseconds, give up and fail fast.</span>{" "}
+              Failing fast is better than hanging forever — it lets the rest of the system keep working.
+              Configure timeouts as environment variables so they can be tuned per environment.
             </p>
           </MentorNote>
 
-          <div className="flex flex-col gap-2">
-            <SectionLabel>Add counters above the routes in src/index.js</SectionLabel>
-            <CodeBlock>{`let requestCount = 0
-let errorCount = 0
+          <div className="flex flex-col gap-3">
+            <SectionLabel>Add timeout middleware to src/index.js</SectionLabel>
+            <CodeBlock>{`const REQUEST_TIMEOUT_MS = parseInt(process.env.REQUEST_TIMEOUT_MS || '5000')
 
-// Add this middleware after pinoHttp:
+// Add timeout middleware — applies to all routes
 app.use((req, res, next) => {
-  requestCount++
-  res.on('finish', () => {
-    if (res.statusCode >= 500) errorCount++
+  res.setTimeout(REQUEST_TIMEOUT_MS, () => {
+    res.status(503).json({
+      error: 'Request timeout',
+      timeout_ms: REQUEST_TIMEOUT_MS,
+    })
   })
   next()
 })`}</CodeBlock>
-          </div>
 
-          <div className="flex flex-col gap-2">
-            <SectionLabel>Update /api/metrics to include live counters</SectionLabel>
-            <CodeBlock>{`app.get('/api/metrics', (req, res) => {
-  const uptime = Math.floor((Date.now() - startTime) / 1000)
-  res.json({
-    // DORA baseline
-    deploymentFrequency: '1x per month',
-    leadTime: '43 days',
-    changeFailureRate: '42%',
-    mttr: '72 hours',
-    // Live app metrics
-    uptime_seconds: uptime,
-    requests_total: requestCount,
-    errors_total: errorCount,
-    error_rate: requestCount > 0
-      ? ((errorCount / requestCount) * 100).toFixed(2) + '%'
-      : '0%',
-  })
-})`}</CodeBlock>
+            <SectionLabel>Add to docker-compose.yml prod environment</SectionLabel>
+            <CodeBlock>{`- REQUEST_TIMEOUT_MS=5000`}</CodeBlock>
           </div>
 
           {!task3Done && (
@@ -350,40 +340,43 @@ app.use((req, res, next) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                GET /api/metrics returns live request and error counts
+                Request timeout configured and wired to environment variable
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 4 */}
-        <TaskCard number="04" title="Write tests for the new endpoints" done={task4Done} locked={!task3Done}>
+        <TaskCard number="04" title="Document the failure modes" done={task4Done} locked={!task3Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Telemetry that breaks silently is worse than no telemetry.</span>{" "}
-              Add tests so the CI pipeline catches regressions in your observability layer.
+              <span className="text-white">A chaos experiment that is not documented is just breaking things.</span>{" "}
+              Document every failure mode you discover so the runbook is updated with the new knowledge.
+              Future on-call engineers will thank you.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to src/index.test.js</SectionLabel>
-            <CodeBlock>{`describe('Telemetry', () => {
-  it('GET /health returns uptime and memory', async () => {
-    const res = await request(app).get('/health')
-    expect(res.status).toBe(200)
-    expect(res.body).toHaveProperty('uptime_seconds')
-    expect(res.body).toHaveProperty('memory')
-    expect(res.body).toHaveProperty('timestamp')
-  })
+            <SectionLabel>Add to docs/runbook.md</SectionLabel>
+            <CodeBlock>{`## Known Failure Modes
 
-  it('GET /api/metrics returns request counters', async () => {
-    const res = await request(app).get('/api/metrics')
-    expect(res.status).toBe(200)
-    expect(res.body).toHaveProperty('requests_total')
-    expect(res.body).toHaveProperty('errors_total')
-    expect(res.body).toHaveProperty('error_rate')
-  })
-})`}</CodeBlock>
+### Process crash
+- Symptom: /health returns connection refused
+- Recovery: Docker restarts automatically (restart: unless-stopped)
+- Expected recovery time: < 30 seconds
+- Prevention: health check in docker-compose.yml
+
+### Slow dependency
+- Symptom: requests hang, error rate spikes after timeout
+- Recovery: requests time out after REQUEST_TIMEOUT_MS (default 5000ms)
+- Expected impact: 503 errors during dependency outage
+- Prevention: configure REQUEST_TIMEOUT_MS, add circuit breaker if needed
+
+### Resource exhaustion
+- Symptom: high memory usage visible in /health, eventual OOM crash
+- Recovery: Docker restarts automatically
+- Prevention: monitor memory via /health, add memory limits to
+  docker-compose.yml`}</CodeBlock>
           </div>
 
           {!task4Done && (
@@ -394,7 +387,7 @@ app.use((req, res, next) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                npm test passes with the new telemetry tests
+                Known failure modes documented in RUNBOOK.md
               </span>
             </label>
           )}
@@ -404,16 +397,17 @@ app.use((req, res, next) => {
         <TaskCard number="05" title="Commit and push — verify CI is green" done={task5Done} locked={!task4Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Telemetry only works in production. Ship it.</span>{" "}
-              From now on every deploy gives you visibility. Marco will sleep better.
+              <span className="text-white">Chaos engineering is not a one-time exercise. It is a practice.</span>{" "}
+              Add the slow endpoint and timeout middleware to the codebase so future engineers can run
+              these experiments themselves. The failure modes you discovered today are in the runbook.
+              The next engineer benefits from your chaos.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Commit and push</SectionLabel>
-            <CodeBlock>{`npm install
-git add src/index.js src/index.test.js package.json package-lock.json
-git commit -m 'feat: add structured logging, health check, and request metrics'
+            <SectionLabel>Push all changes through a PR to main</SectionLabel>
+            <CodeBlock>{`git add src/index.js docker-compose.yml docs/runbook.md
+git commit -m 'feat: add chaos engineering experiments, timeout middleware, and failure mode docs'
 git push`}</CodeBlock>
           </div>
 
@@ -439,7 +433,7 @@ git push`}</CodeBlock>
                   className="w-4 h-4 accent-cyan-400 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                  Pipeline is green — telemetry is live
+                  Pipeline is green — chaos engineering is part of the codebase
                 </span>
               </label>
             </div>
@@ -457,7 +451,7 @@ git push`}</CodeBlock>
             }}
           >
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-              ✓ Telemetry is live. Nexus Corp can now see what is happening in production.
+              ✓ Chaos experiments complete. You know how your system fails — and you fixed it before it mattered.
             </p>
             <a
               href="?phase=4"
