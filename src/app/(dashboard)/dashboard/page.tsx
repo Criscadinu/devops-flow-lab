@@ -70,6 +70,24 @@ const missionDefs = [
     unlockedBy: "M-05",
   },
   {
+    id: "M-07",
+    title: "Small Batch Development",
+    category: "FLOW",
+    description: "Lisa's branch has 47 commits and 2,400 lines. Nobody knows what is in it. Kai approved it because he could not read it. It broke production. Merge small. Merge often.",
+    href: "/missions/m07",
+    alwaysUnlocked: false,
+    unlockedBy: "M-06",
+  },
+  {
+    id: "M-08",
+    title: "Trunk-Based Development",
+    category: "FLOW",
+    description: "Four active branches. Eleven days since the last merge to main. Two days resolving conflicts. The feature was done on Friday. The merge was not. One branch. Many commits. No surprises.",
+    href: "/missions/m08",
+    alwaysUnlocked: false,
+    unlockedBy: "M-07",
+  },
+  {
     id: "M-09",
     title: "Continuous Deployment",
     category: "FLOW",
@@ -321,7 +339,7 @@ export default async function DashboardPage() {
   });
 
   // ── Maturity bar ─────────────────────────────────────────────────────────
-  const TOTAL_MISSIONS = 17;
+  const TOTAL_MISSIONS = 19;
   const completedCount = completedIds.size;
   const maturityPct    = Math.round((completedCount / TOTAL_MISSIONS) * 100);
 
