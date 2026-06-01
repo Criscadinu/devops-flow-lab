@@ -26,7 +26,7 @@ describe('Security: Role validation', () => {
 
 describe('Security: Mission ID validation', () => {
   it('mission IDs follow the expected format', () => {
-    const validMissionIds = ['M-01', 'M-02', 'M-04', 'M-09', 'M-05', 'M-10', 'M-11', 'M-14', 'M-15', 'M-16']
+    const validMissionIds = ['M-01', 'M-02', 'M-03', 'M-04', 'M-05', 'M-06', 'M-09', 'M-10', 'M-11', 'M-14', 'M-15', 'M-16']
     const missionIdPattern = /^M-\d{2}$/
 
     validMissionIds.forEach(id => {
@@ -44,7 +44,7 @@ describe('Security: Mission ID validation', () => {
   })
 
   it('mission IDs are non-empty strings', () => {
-    const validMissionIds = ['M-01', 'M-02', 'M-04', 'M-09', 'M-05', 'M-10', 'M-11', 'M-14', 'M-15', 'M-16']
+    const validMissionIds = ['M-01', 'M-02', 'M-03', 'M-04', 'M-05', 'M-06', 'M-09', 'M-10', 'M-11', 'M-14', 'M-15', 'M-16']
     validMissionIds.forEach(id => {
       expect(typeof id).toBe('string')
       expect(id.length).toBeGreaterThan(0)
@@ -54,7 +54,7 @@ describe('Security: Mission ID validation', () => {
 
 describe('Security: DORA values are within expected ranges', () => {
   it('CFR values are valid percentages', () => {
-    const allMissions = new Set(['M-01', 'M-02', 'M-04', 'M-09', 'M-05', 'M-10', 'M-11', 'M-14', 'M-15', 'M-16'])
+    const allMissions = new Set(['M-01', 'M-02', 'M-03', 'M-04', 'M-05', 'M-06', 'M-09', 'M-10', 'M-11', 'M-14', 'M-15', 'M-16'])
     const result = computeDora(allMissions)
 
     const cfrValue = parseFloat(result.cfr.value)
@@ -71,7 +71,7 @@ describe('Security: DORA values are within expected ranges', () => {
 
   it('perf values are one of the known categories', () => {
     const validPerf = ['LOW PERFORMER', 'MEDIUM PERFORMER', 'HIGH PERFORMER', 'ELITE']
-    const allMissions = new Set(['M-01', 'M-02', 'M-04', 'M-09', 'M-05', 'M-10', 'M-11', 'M-14', 'M-15', 'M-16'])
+    const allMissions = new Set(['M-01', 'M-02', 'M-03', 'M-04', 'M-05', 'M-06', 'M-09', 'M-10', 'M-11', 'M-14', 'M-15', 'M-16'])
     const result = computeDora(allMissions)
 
     expect(validPerf).toContain(result.df.perf)

@@ -61,6 +61,15 @@ const missionDefs = [
     unlockedBy: "M-04",
   },
   {
+    id: "M-06",
+    title: "Catch Errors as Early as Possible",
+    category: "FLOW",
+    description: "The bug was in production for three weeks. The test suite existed. Nobody ran it. Shift left — catch errors at the source, not in the customer's inbox.",
+    href: "/missions/m06",
+    alwaysUnlocked: false,
+    unlockedBy: "M-05",
+  },
+  {
     id: "M-09",
     title: "Continuous Deployment",
     category: "FLOW",
@@ -312,7 +321,7 @@ export default async function DashboardPage() {
   });
 
   // ── Maturity bar ─────────────────────────────────────────────────────────
-  const TOTAL_MISSIONS = 16;
+  const TOTAL_MISSIONS = 17;
   const completedCount = completedIds.size;
   const maturityPct    = Math.round((completedCount / TOTAL_MISSIONS) * 100);
 
