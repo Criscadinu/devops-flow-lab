@@ -160,10 +160,10 @@ export function Phase3() {
             className="text-3xl text-white tracking-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Your Mission - Break Things Deliberately
+            Your Mission - Build the Learning Culture
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Run three chaos experiments, add timeout configuration, document the failure modes, and commit it all to version control.
+            Write a TIL, create an ADR, document your learning practices, expose them through an API, and commit it all to version control.
           </p>
         </div>
 
@@ -181,7 +181,7 @@ export function Phase3() {
               Before you start
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              This mission builds on your M-20 work. Both items should already be ready.
+              This mission builds on your M-25 work. Both items should already be ready.
             </p>
           </div>
 
@@ -189,12 +189,12 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Docker Compose with health checks from M-10
+                Postmortem process in place from M-25
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Your nexus-corp-app fork has a docker-compose.yml with a prod service and health checks configured from M-10.
+              Your nexus-corp-app fork has a postmortem template, a completed postmortem, and /api/postmortems live.
             </p>
 
             <div style={{ borderTop: "1px solid rgb(31,41,55)" }} />
@@ -202,44 +202,61 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                /health endpoint and RUNBOOK.md from M-16
+                docs/ folder already exists with postmortems and runbook
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Your app exposes /health and your RUNBOOK.md is in place. The failure modes you discover will be added there.
+              The docs/ folder structure from M-17 and M-25 is already in place. You will add til/ and adr/ subdirectories.
             </p>
           </div>
         </div>
 
         {/* Task 1 */}
-        <TaskCard number="01" title="Run experiment 1 — kill the process" done={task1Done} locked={false}>
+        <TaskCard number="01" title="Write your first TIL" done={task1Done} locked={false}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">The simplest chaos experiment is also the most revealing.</span>{" "}
-              Stop your app while it is running and observe what happens. Does Docker restart it?
-              How long does it take? Does your health check catch it? This is the baseline — if your
-              app cannot survive a restart, nothing else matters.
+              <span className="text-white">A TIL does not need to be profound. It needs to be written.</span>{" "}
+              The discipline of writing down what you learned — even something small — is what separates
+              teams that compound knowledge from teams that repeat mistakes.
             </p>
           </MentorNote>
 
-          <div className="flex flex-col gap-3">
-            <SectionLabel>Terminal 1 — start the app</SectionLabel>
-            <CodeBlock>{`docker compose up prod`}</CodeBlock>
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Create docs/til/2024-01-race-condition-orders.md</SectionLabel>
+            <CodeBlock>{`# TIL: Race Condition in Orders Service
 
-            <SectionLabel>Terminal 2 — kill the process and observe</SectionLabel>
-            <CodeBlock>{`docker ps
-docker kill nexus-corp-app-prod-1
+**Date:** 2024-01-22
+**Author:** Lisa
+**Time to fix:** 3 hours
 
-# Observe:
-# - Does Docker restart the container automatically?
-# - How long until /health returns 200 again?
-# - Check docker-compose.yml — is restart: unless-stopped set?`}</CodeBlock>
+## What happened
+The /api/orders endpoint occasionally returned duplicate entries when two
+requests arrived within the same millisecond. The issue only appeared under load.
 
-            <p className="text-xs text-gray-600 leading-relaxed">
-              If restart policy is not set, add to the prod service in docker-compose.yml:
-            </p>
-            <CodeBlock>{`restart: unless-stopped`}</CodeBlock>
+## Root cause
+The endpoint read from the orders array and wrote to it in two separate
+operations. Between the read and the write, a second request could read
+the same stale state.
+
+## Fix
+Wrap the read-modify-write operation in a mutex or use an atomic operation.
+In this case, filter the array in a single pass:
+
+\`\`\`javascript
+// Before (race condition)
+const existing = orders.find(o => o.id === newOrder.id)
+if (!existing) orders.push(newOrder)
+
+// After (atomic)
+if (!orders.some(o => o.id === newOrder.id)) {
+  orders.push(newOrder)
+}
+\`\`\`
+
+## Remember next time
+Any read-modify-write on shared state is a potential race condition.
+If the operation is not atomic, it is not safe under concurrent load.`}</CodeBlock>
           </div>
 
           {!task1Done && (
@@ -250,43 +267,53 @@ docker kill nexus-corp-app-prod-1
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Process kill experiment run — restart policy confirmed
+                docs/til/2024-01-race-condition-orders.md is created
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 2 */}
-        <TaskCard number="02" title="Run experiment 2 — slow the dependency" done={task2Done} locked={!task1Done}>
+        <TaskCard number="02" title="Write an ADR for a past decision" done={task2Done} locked={!task1Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Most outages are not caused by your code — they are caused by a dependency your code trusts too much.</span>{" "}
-              Adding a timeout is the single most important resilience improvement most apps can make.
-              Without a timeout, one slow dependency can hang every request.
+              <span className="text-white">An ADR captures the why behind a technical decision.</span>{" "}
+              Without it, future engineers see the what but not the why — and they will reverse good decisions
+              because they do not understand the tradeoffs that were already considered.
             </p>
           </MentorNote>
 
-          <div className="flex flex-col gap-3">
-            <SectionLabel>Add a chaos endpoint to src/index.js</SectionLabel>
-            <CodeBlock>{`// Chaos experiment endpoint — simulates a slow dependency
-app.get('/api/chaos/slow', async (req, res) => {
-  const delay = parseInt(req.query.delay) || 5000
-  await new Promise(resolve => setTimeout(resolve, delay))
-  res.json({ delayed_ms: delay })
-})`}</CodeBlock>
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Create docs/adr/001-use-environment-variables-for-feature-flags.md</SectionLabel>
+            <CodeBlock>{`# ADR 001: Use Environment Variables for Feature Flags
 
-            <SectionLabel>Run the experiment</SectionLabel>
-            <CodeBlock>{`# Start the app
-docker compose up prod
+**Date:** 2024-01-22
+**Status:** Accepted
+**Author:** [Your name]
 
-# Hit the slow endpoint (10 second delay)
-curl "http://localhost:3000/api/chaos/slow?delay=10000" &
+## Context
+We need a way to deploy features dark and enable them without a code deploy.
+We considered three options: environment variables, a feature flag service
+(LaunchDarkly, Unleash), and a database-backed flag system.
 
-# While that is running — does /health still respond?
-curl http://localhost:3000/health
+## Decision
+We will use environment variables for feature flags.
 
-# Check if the error rate is affected
-curl http://localhost:3000/api/alerts`}</CodeBlock>
+## Reasons
+- Zero dependencies — no external service to configure, pay for, or go down
+- Already in use for configuration — the pattern is familiar to the team
+- Sufficient for current scale — we deploy from Docker Compose, env vars
+  are trivial to change
+- Changing a flag requires a restart, not a deploy — acceptable for our
+  current deploy frequency
+
+## Tradeoffs
+- Cannot change flags without a service restart
+- No flag history or audit trail
+- Does not scale to per-user targeting
+
+## Revisit when
+Traffic exceeds 10,000 daily active users or when per-user targeting is needed.`}</CodeBlock>
           </div>
 
           {!task2Done && (
@@ -297,39 +324,38 @@ curl http://localhost:3000/api/alerts`}</CodeBlock>
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Slow dependency experiment run — /health responds independently of slow endpoint
+                docs/adr/001-use-environment-variables-for-feature-flags.md is created
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 3 */}
-        <TaskCard number="03" title="Add timeout configuration" done={task3Done} locked={!task2Done}>
+        <TaskCard number="03" title="Add a learning practices section to the runbook" done={task3Done} locked={!task2Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A timeout is a contract: if a dependency does not respond within X milliseconds, give up and fail fast.</span>{" "}
-              Failing fast is better than hanging forever — it lets the rest of the system keep working.
-              Configure timeouts as environment variables so they can be tuned per environment.
+              <span className="text-white">A learning culture needs a home.</span>{" "}
+              Adding a weekly learning practice to the runbook makes it a process, not a suggestion.
+              The runbook is where the team&apos;s agreements live — if it is not there, it is optional.
             </p>
           </MentorNote>
 
-          <div className="flex flex-col gap-3">
-            <SectionLabel>Add timeout middleware to src/index.js</SectionLabel>
-            <CodeBlock>{`const REQUEST_TIMEOUT_MS = parseInt(process.env.REQUEST_TIMEOUT_MS || '5000')
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Add this section to the end of RUNBOOK.md</SectionLabel>
+            <CodeBlock>{`## Learning Practices
 
-// Add timeout middleware — applies to all routes
-app.use((req, res, next) => {
-  res.setTimeout(REQUEST_TIMEOUT_MS, () => {
-    res.status(503).json({
-      error: 'Request timeout',
-      timeout_ms: REQUEST_TIMEOUT_MS,
-    })
-  })
-  next()
-})`}</CodeBlock>
+### Weekly TIL
+Every Friday, each engineer posts one thing they learned this week to the team channel.
+Format: What was the problem? What was the fix? What should we remember?
+File it in docs/til/ if it is worth preserving.
 
-            <SectionLabel>Add to docker-compose.yml prod environment</SectionLabel>
-            <CodeBlock>{`- REQUEST_TIMEOUT_MS=5000`}</CodeBlock>
+### Pre-mortem
+Before shipping a major feature, the team spends 15 minutes asking: what could go wrong?
+Write the answers down. Use them to inform the rollout plan.
+
+### ADR
+When a significant technical decision is made, write an ADR in docs/adr/.
+Future engineers should never have to guess why something was built the way it was.`}</CodeBlock>
           </div>
 
           {!task3Done && (
@@ -340,43 +366,50 @@ app.use((req, res, next) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Request timeout configured and wired to environment variable
+                Learning practices section added to RUNBOOK.md
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 4 */}
-        <TaskCard number="04" title="Document the failure modes" done={task4Done} locked={!task3Done}>
+        <TaskCard number="04" title="Add a /api/learning endpoint" done={task4Done} locked={!task3Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A chaos experiment that is not documented is just breaking things.</span>{" "}
-              Document every failure mode you discover so the runbook is updated with the new knowledge.
-              Future on-call engineers will thank you.
+              <span className="text-white">Making the team&apos;s learning artifacts discoverable via API means they can be surfaced in dashboards and tooling.</span>{" "}
+              It also signals that learning is a first-class engineering output — not something that happens
+              in a Slack thread and disappears.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to docs/runbook.md</SectionLabel>
-            <CodeBlock>{`## Known Failure Modes
+            <SectionLabel>Add to src/index.js</SectionLabel>
+            <CodeBlock>{`const learningArtifacts = [
+  {
+    type: 'til',
+    title: 'Race Condition in Orders Service',
+    author: 'Lisa',
+    date: '2024-01-22',
+    path: 'docs/til/2024-01-race-condition-orders.md',
+  },
+  {
+    type: 'adr',
+    title: 'ADR 001: Use Environment Variables for Feature Flags',
+    author: 'Team',
+    date: '2024-01-22',
+    path: 'docs/adr/001-use-environment-variables-for-feature-flags.md',
+  },
+]
 
-### Process crash
-- Symptom: /health returns connection refused
-- Recovery: Docker restarts automatically (restart: unless-stopped)
-- Expected recovery time: < 30 seconds
-- Prevention: health check in docker-compose.yml
-
-### Slow dependency
-- Symptom: requests hang, error rate spikes after timeout
-- Recovery: requests time out after REQUEST_TIMEOUT_MS (default 5000ms)
-- Expected impact: 503 errors during dependency outage
-- Prevention: configure REQUEST_TIMEOUT_MS, add circuit breaker if needed
-
-### Resource exhaustion
-- Symptom: high memory usage visible in /health, eventual OOM crash
-- Recovery: Docker restarts automatically
-- Prevention: monitor memory via /health, add memory limits to
-  docker-compose.yml`}</CodeBlock>
+app.get('/api/learning', (req, res) => {
+  res.json({
+    total: learningArtifacts.length,
+    artifacts: learningArtifacts,
+  })
+})`}</CodeBlock>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              Commit and push via PR. After merge, verify: <span className="font-mono text-gray-500">curl https://your-app.onrender.com/api/learning</span>
+            </p>
           </div>
 
           {!task4Done && (
@@ -387,7 +420,7 @@ app.use((req, res, next) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Known failure modes documented in RUNBOOK.md
+                GET /api/learning returns learning artifacts
               </span>
             </label>
           )}
@@ -397,17 +430,16 @@ app.use((req, res, next) => {
         <TaskCard number="05" title="Commit and push — verify CI is green" done={task5Done} locked={!task4Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Chaos engineering is not a one-time exercise. It is a practice.</span>{" "}
-              Add the slow endpoint and timeout middleware to the codebase so future engineers can run
-              these experiments themselves. The failure modes you discovered today are in the runbook.
-              The next engineer benefits from your chaos.
+              <span className="text-white">Learning artifacts in version control are learning artifacts that cannot be lost.</span>{" "}
+              Every engineer who joins the team in the future starts with the accumulated knowledge
+              of everyone who came before them.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
             <SectionLabel>Push all changes through a PR to main</SectionLabel>
-            <CodeBlock>{`git add src/index.js docker-compose.yml docs/runbook.md
-git commit -m 'feat: add chaos engineering experiments, timeout middleware, and failure mode docs'
+            <CodeBlock>{`git add docs/ src/index.js
+git commit -m 'feat: add TIL, ADR, learning practices, and /api/learning endpoint'
 git push`}</CodeBlock>
           </div>
 
@@ -433,7 +465,7 @@ git push`}</CodeBlock>
                   className="w-4 h-4 accent-cyan-400 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                  Pipeline is green — chaos engineering is part of the codebase
+                  Pipeline is green — learning culture is version controlled
                 </span>
               </label>
             </div>
@@ -451,7 +483,7 @@ git push`}</CodeBlock>
             }}
           >
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-              ✓ Chaos experiments complete. You know how your system fails — and you fixed it before it mattered.
+              ✓ Learning culture established. Individual discoveries are now team knowledge.
             </p>
             <a
               href="?phase=4"

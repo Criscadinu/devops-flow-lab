@@ -8,19 +8,19 @@ describe('Mission ordering and DORA progression', () => {
     expect(result.mttr.value).toBe('72 hours')
   })
 
-  it('MTTR only improves after M-14, not before', () => {
-    const beforeM08 = computeDora(new Set(['M-01', 'M-02', 'M-04', 'M-09', 'M-05', 'M-10', 'M-11']))
+  it('MTTR only improves after M-23, not before', () => {
+    const beforeM08 = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16', 'M-06', 'M-04', 'M-20']))
     expect(beforeM08.mttr.value).toBe('72 hours')
 
-    const afterM08 = computeDora(new Set(['M-01', 'M-02', 'M-04', 'M-09', 'M-05', 'M-10', 'M-11', 'M-14']))
+    const afterM08 = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16', 'M-06', 'M-04', 'M-20', 'M-23']))
     expect(afterM08.mttr.value).toBe('4 hours')
   })
 
-  it('CFR only reaches HIGH PERFORMER after M-11', () => {
-    const beforeM07 = computeDora(new Set(['M-01', 'M-02', 'M-04', 'M-09', 'M-05', 'M-10']))
+  it('CFR only reaches HIGH PERFORMER after M-20', () => {
+    const beforeM07 = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16', 'M-06', 'M-04']))
     expect(beforeM07.cfr.perf).not.toBe('HIGH PERFORMER')
 
-    const afterM07 = computeDora(new Set(['M-01', 'M-02', 'M-04', 'M-09', 'M-05', 'M-10', 'M-11']))
+    const afterM07 = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16', 'M-06', 'M-04', 'M-20']))
     expect(afterM07.cfr.perf).toBe('HIGH PERFORMER')
   })
 
@@ -37,10 +37,10 @@ describe('Mission ordering and DORA progression', () => {
     expect(result).toEqual(doraBaseline)
   })
 
-  it('M-14 through M-16 form a continuous MTTR improvement chain', () => {
-    const after08 = computeDora(new Set(['M-01', 'M-02', 'M-04', 'M-09', 'M-05', 'M-10', 'M-11', 'M-14']))
-    const after09 = computeDora(new Set(['M-01', 'M-02', 'M-04', 'M-09', 'M-05', 'M-10', 'M-11', 'M-14', 'M-15']))
-    const after10 = computeDora(new Set(['M-01', 'M-02', 'M-04', 'M-09', 'M-05', 'M-10', 'M-11', 'M-14', 'M-15', 'M-16']))
+  it('M-23 through M-17 form a continuous MTTR improvement chain', () => {
+    const after08 = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16', 'M-06', 'M-04', 'M-20', 'M-23']))
+    const after09 = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16', 'M-06', 'M-04', 'M-20', 'M-23', 'M-24']))
+    const after10 = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16', 'M-06', 'M-04', 'M-20', 'M-23', 'M-24', 'M-17']))
 
     expect(after08.mttr.value).toBe('4 hours')
     expect(after09.mttr.value).toBe('1 hour')
@@ -48,8 +48,8 @@ describe('Mission ordering and DORA progression', () => {
   })
 
   it('completing only Second Way missions without First Way still applies their impact', () => {
-    // M-14 standalone — MTTR should still improve even without M-01–M-11
-    const result = computeDora(new Set(['M-14']))
+    // M-23 standalone — MTTR should still improve even without M-01–M-20
+    const result = computeDora(new Set(['M-23']))
     expect(result.mttr.value).toBe('4 hours')
     // First Way metrics stay at baseline
     expect(result.df.value).toBe('1× per month')

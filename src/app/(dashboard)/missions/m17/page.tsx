@@ -7,7 +7,7 @@ import { completeMission } from "@/app/actions/progress"
 import { prisma } from "@/lib/prisma"
 
 export const metadata: Metadata = {
-  title: "M-17 Hypothesis-Driven Development - DevOps Flow Lab",
+  title: "M-17 Fast Incident Response - DevOps Flow Lab",
 }
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
@@ -23,7 +23,7 @@ function MissionHeader({ fase }: { fase: number }) {
           M-17
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
-          Hypothesis-Driven Development
+          Fast Incident Response
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
           Phase {fase} of 4
@@ -59,18 +59,18 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
 
 const panels = [
   {
-    initials: "TO",
-    name: "Tom",
-    role: "Product Owner",
-    badge: "PRODUCT",
-    accent: "rgb(167,139,250)",
-    badgeBg: "rgba(167,139,250,0.08)",
-    badgeBorder: "rgba(167,139,250,0.3)",
+    initials: "MA",
+    name: "Marco",
+    role: "Ops Engineer",
+    badge: "OPS",
+    accent: "rgb(239,68,68)",
+    badgeBg: "rgba(239,68,68,0.08)",
+    badgeBorder: "rgba(239,68,68,0.3)",
     quote: (
       <>
-        &ldquo;We built the pagination feature because a customer asked for it. We shipped it. I
-        have no idea if anyone uses it. I have no idea if it made things{" "}
-        <mark>better or worse</mark>.&rdquo;
+        &ldquo;The alert fired. I saw it. But I did not know if it was my problem or Lisa&apos;s.
+        I called her. She said call Tom. Tom did not pick up. I started fixing it myself at{" "}
+        <mark>3:30am</mark>.&rdquo;
       </>
     ),
   },
@@ -84,23 +84,23 @@ const panels = [
     badgeBorder: "rgba(34,197,94,0.3)",
     quote: (
       <>
-        &ldquo;I spent two weeks on that feature. When I asked how we would know if it worked, Tom
-        said &lsquo;we will feel it&rsquo;. <mark>That is not an answer</mark>.&rdquo;
+        &ldquo;There is no process. Every incident is improvised. Sometimes Marco leads. Sometimes
+        I lead. Sometimes we both start fixing the same thing and <mark>make it worse</mark>.&rdquo;
       </>
     ),
   },
   {
-    initials: "MA",
-    name: "Marco",
-    role: "Ops Engineer",
-    badge: "OPS",
-    accent: "rgb(239,68,68)",
-    badgeBg: "rgba(239,68,68,0.08)",
-    badgeBorder: "rgba(239,68,68,0.3)",
+    initials: "SM",
+    name: "Sarah",
+    role: "Engineering Manager",
+    badge: "MANAGEMENT",
+    accent: "rgb(6,182,212)",
+    badgeBg: "rgba(6,182,212,0.08)",
+    badgeBorder: "rgba(6,182,212,0.3)",
     quote: (
       <>
-        &ldquo;Error rate went up 0.3% after the pagination deploy. Nobody connected the dots.
-        We have the data. We just <mark>never look at it</mark> as feedback on what we shipped.&rdquo;
+        &ldquo;MTTR is still too high. Not because we cannot fix things — we can. It is because
+        we lose the first <mark>30 to 60 minutes</mark> figuring out who does what.&rdquo;
       </>
     ),
   },
@@ -115,11 +115,11 @@ const panels = [
     isPlayer: true,
     quote: (
       <>
-        &ldquo;Feature flags let us deploy dark. Telemetry lets us measure. Put them together and
-        you have an experiment engine. <mark>Ship, measure, decide</mark> — with data.&rdquo;
+        &ldquo;An alert without a runbook is just noise with a timestamp. We need a process: who
+        responds, what they check first, how they communicate, and how we close the incident.&rdquo;
       </>
     ),
-    outro: "Hope is not a strategy. Measure everything.",
+    outro: "Process beats heroics.",
   },
 ]
 
@@ -133,10 +133,10 @@ function Phase1() {
             className="text-4xl text-white tracking-tight leading-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Week eleven. Nexus Corp.
+            Week ten. Nexus Corp.
           </h2>
           <p className="text-gray-400 text-base leading-relaxed">
-            Tom shipped a new orders feature last month. Three weeks of work. Deployed on a Friday. Nobody measured if it helped. It probably did not.
+            The alert fired at 2:47am. Nobody knew what to do. Marco called Lisa. Lisa called Tom. Forty minutes later they were still arguing about who should fix it.
           </p>
         </div>
 
@@ -198,7 +198,7 @@ function Phase1() {
         <CTA
           href="?phase=2"
           label="Understand the theory →"
-          sub="Phase 2 of 4 - From assumption to evidence"
+          sub="Phase 2 of 4 - From alert to resolution"
         />
       </div>
 
@@ -216,13 +216,22 @@ function Phase1() {
 
 // ─── Phase 2 - The theory ─────────────────────────────────────────────────────
 
-const experimentLifecycle = [
-  { step: "State hypothesis",           note: "We believe X will result in Y. We will know when Z." },
-  { step: "Implement behind flag",      note: "Default: off. Control group sees current behavior."   },
-  { step: "Enable for subset",          note: "Treatment group gets the change. Measure both."       },
-  { step: "Compare control vs treatment", note: "Use telemetry from M-14 to read the signal."       },
-  { step: "Ship or kill",               note: "Never leave flags permanent — decide with data."      },
+const incidentPhases = [
+  { phase: "Detection",  note: "Alert fires. M-24 solved this — it is now instant."                       },
+  { phase: "Triage",     note: "What is the blast radius? Who owns it? What is the fix path?"             },
+  { phase: "Fix",        note: "Apply the fix or roll back."                                              },
+  { phase: "Verify",     note: "Confirm /api/alerts returns OK and error rate is back to normal."         },
+  { phase: "Close",      note: "Update /api/status to operational. Post resolution in #incidents."        },
+  { phase: "Review",     note: "Blameless postmortem within 48 hours. What do we change so it does not happen again?" },
 ]
+
+const runbookEntry = `## High Error Rate Alert
+**Threshold:** error_rate > 5%
+**First check:** GET /api/alerts — confirm status is CRITICAL
+**Second check:** GET /health — check uptime and memory
+**Likely causes:** recent deploy, database issue, upstream dependency
+**Fix path:** roll back last deploy → check logs → escalate if unresolved in 15min
+**Escalation:** ping #incidents Slack channel, notify Sarah`
 
 function Phase2() {
   return (
@@ -235,13 +244,30 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The problem with opinion-driven development
+            The anatomy of an incident
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            Most features are built on assumptions. &ldquo;Users want this.&rdquo; &ldquo;This will improve
-            conversion.&rdquo; These are hypotheses — but they are never stated as hypotheses, never tested,
-            and never validated. The result: teams build things that do not matter and cannot tell the difference.
+            Every incident has the same phases. The time lost at Nexus Corp is almost always in
+            the first two: detection (now solved by M-24) and triage. Triage means: what is the
+            blast radius, who owns it, what is the fix path?
           </p>
+          <div className="flex flex-col gap-0 border border-gray-800">
+            {incidentPhases.map((row, i) => (
+              <div
+                key={row.phase}
+                className="flex gap-4 px-5 py-4 border-b border-gray-800 last:border-b-0"
+                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+              >
+                <span
+                  className="text-xs font-mono font-bold shrink-0 w-20"
+                  style={{ color: i < 2 ? "rgb(6,182,212)" : "rgb(75,85,99)" }}
+                >
+                  {String(i + 1).padStart(2, "0")} {row.phase}
+                </span>
+                <p className="text-xs text-gray-500 leading-relaxed">{row.note}</p>
+              </div>
+            ))}
+          </div>
         </section>
 
         <section className="flex flex-col gap-5">
@@ -250,38 +276,22 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            What is a hypothesis
+            The runbook
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            A good hypothesis has three parts:
+            A runbook is a documented response procedure for a known failure mode. Not a novel — a
+            checklist. When an alert fires, the on-call engineer opens the runbook, follows the
+            steps, and resolves the incident without needing to think from scratch at 3am.
           </p>
-          <div className="flex flex-col gap-0 border border-gray-800">
-            {[
-              { n: "1", text: "We believe that [change]" },
-              { n: "2", text: "Will result in [outcome]" },
-              { n: "3", text: "We will know this is true when [measurable signal]" },
-            ].map((row, i) => (
-              <div
-                key={row.n}
-                className="flex gap-4 px-5 py-4 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
-              >
-                <span className="text-xs font-mono font-bold shrink-0 w-4" style={{ color: "rgb(6,182,212)" }}>
-                  {row.n}
-                </span>
-                <p className="text-sm text-gray-300 font-mono">{row.text}</p>
-              </div>
-            ))}
-          </div>
           <div className="flex flex-col gap-2">
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>
-              Example
+              Example runbook entry
             </p>
             <pre
-              className="text-xs font-mono leading-relaxed p-4 overflow-x-auto whitespace-pre-wrap"
+              className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
               style={{ backgroundColor: "#0d0d0d", borderLeft: "3px solid rgb(31,41,55)", color: "rgb(156,163,175)" }}
             >
-              {`We believe that adding pagination to /api/orders\nwill result in faster response times.\nWe will know this is true when p95 response time\ndrops below 100ms for requests with more than 50 orders.`}
+              {runbookEntry}
             </pre>
           </div>
         </section>
@@ -292,29 +302,38 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Feature flags as experiment infrastructure
+            Incident communication
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            M-11 gave us feature flags for dark launches. Now we use them for A/B experiments.
-            Flag off = control group. Flag on = treatment group. Measure both. Decide with data.
+            The status endpoint (<code className="text-white font-mono">/api/status</code>) is your
+            public-facing incident page. Internal: Slack channel. External: status page. Rule:
+            communicate early and often.
           </p>
-          <div className="flex flex-col gap-0 border border-gray-800">
-            {experimentLifecycle.map((row, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              {
+                label: "Bad",
+                example: "Silence for 30 minutes.",
+                note: "Stakeholders assume the worst. Support inbox fills up. Trust erodes.",
+                accent: "rgb(239,68,68)",
+              },
+              {
+                label: "Good",
+                example: '"Investigating high error rate since 02:47. Update in 15 minutes."',
+                note: 'Posted in 5 minutes. Even "investigating" is better than silence.',
+                accent: "rgb(34,197,94)",
+              },
+            ].map((item) => (
               <div
-                key={row.step}
-                className="flex gap-4 px-5 py-4 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+                key={item.label}
+                className="flex flex-col gap-3 p-5 border"
+                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${item.accent}` }}
               >
-                <span
-                  className="text-xs font-mono font-bold shrink-0 w-5"
-                  style={{ color: "rgb(6,182,212)" }}
-                >
-                  {String(i + 1).padStart(2, "0")}
+                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: item.accent }}>
+                  {item.label}
                 </span>
-                <div className="flex flex-col gap-1 flex-1">
-                  <span className="text-sm text-white font-mono">{row.step}</span>
-                  <span className="text-xs text-gray-500">{row.note}</span>
-                </div>
+                <p className="text-sm font-mono text-white">{item.example}</p>
+                <p className="text-xs text-gray-500 leading-relaxed">{item.note}</p>
               </div>
             ))}
           </div>
@@ -329,14 +348,14 @@ function Phase2() {
             The DORA connection
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            CFR drops when you ship smaller, validated changes instead of large, assumed-correct
-            features. Failures are caught during the experiment phase, not after full rollout.
-            Target: CFR from 4% to 2%.
+            MTTR 1 hour → 30 minutes. The remaining time is now in fix and verify, not in triage.
+            A runbook eliminates the &ldquo;who does what&rdquo; conversation. A status endpoint
+            eliminates the &ldquo;is anyone working on it&rdquo; question.
           </p>
           <div className="flex flex-col gap-0 border border-gray-800">
             {[
-              { label: "Current CFR",      value: "4%",  color: "rgb(239,68,68)",  note: "Features shipped on assumptions — validated by customer complaints after full rollout." },
-              { label: "Target after M-17", value: "2%", color: "rgb(6,182,212)", note: "Features validated by data before full rollout — failures caught in experiment phase." },
+              { label: "Current MTTR",      value: "1 hour",    color: "rgb(239,68,68)",  note: "Alerts fire but triage is improvised — 30-60 minutes lost figuring out who does what." },
+              { label: "Target after M-17", value: "30 minutes", color: "rgb(6,182,212)", note: "Runbook eliminates triage chaos — first responder knows exactly what to check and when to escalate." },
             ].map((row, i) => (
               <div
                 key={row.label}
@@ -355,7 +374,7 @@ function Phase2() {
 
         <CTA
           href="?phase=3"
-          label="Build the experiment engine →"
+          label="Build the incident process →"
           sub="Phase 3 of 4 - Do it yourself"
         />
       </div>
@@ -365,13 +384,20 @@ function Phase2() {
 
 // ─── Phase 4 - Result ─────────────────────────────────────────────────────────
 
+const beforeAfter = [
+  { before: "Alert at 2:47am — 40 minutes of phone calls before anyone starts fixing",  after: "Alert at 2:47am — on-call opens runbook, starts fixing within 5 minutes"    },
+  { before: "Multiple engineers fixing the same thing, making it worse",                 after: "Single first responder; escalation path defined and time-boxed"              },
+  { before: "Stakeholders find out from support tickets, not from the team",             after: "/api/status updated to degraded within minutes of incident start"            },
+  { before: "No postmortem — incident forgotten after the fix",                          after: "Blameless postmortem within 48 hours, learnings committed to runbook"        },
+]
+
 const doraImpact = [
   {
-    metric: "Change Failure Rate",
-    code: "CFR",
-    before: "4%",
-    after: "2%",
-    note: "failures caught during experiment phase, not after full rollout",
+    metric: "Mean Time to Restore",
+    code: "MTTR",
+    before: "1 hour",
+    after: "30 minutes",
+    note: "runbook eliminates the triage phase — first responder knows what to do immediately",
     highlight: true,
   },
   {
@@ -391,11 +417,11 @@ const doraImpact = [
     highlight: false,
   },
   {
-    metric: "Mean Time to Restore",
-    code: "MTTR",
-    before: "30 min",
-    after: "30 min",
-    note: "unchanged",
+    metric: "Change Failure Rate",
+    code: "CFR",
+    before: "4%",
+    after: "4%",
+    note: "unchanged — process improves recovery, not prevention",
     highlight: false,
   },
 ]
@@ -410,45 +436,43 @@ function Phase4() {
             Mission Complete - M-17
           </p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Nexus Corp Ships With Evidence
+            Nexus Corp Has a Process
           </h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">
-            Features validated before full rollout. The change failure rate drops because failures are now caught
-            during the experiment phase, not after the full rollout.
+            This is what you built for Nexus Corp.
           </p>
         </div>
 
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">01</span>
-            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">CFR impact</h2>
+            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">What changed</h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <div
-            className="flex flex-col gap-5 p-6 border"
-            style={{
-              backgroundColor: "#020d0f",
-              borderColor: "rgba(6,182,212,0.3)",
-              borderLeft: "3px solid rgb(6,182,212)",
-            }}
-          >
-            <div className="flex items-center gap-6 flex-wrap">
-              <div className="flex flex-col gap-1">
-                <span className="text-xs font-mono uppercase tracking-widest text-gray-600">Before</span>
-                <span className="text-4xl font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>4%</span>
-                <span className="text-xs text-gray-600">features shipped on assumptions, validated by customer complaints</span>
+          <div className="border border-gray-800">
+            <div className="grid grid-cols-2 border-b border-gray-800" style={{ backgroundColor: "#0d0d0d" }}>
+              <div className="px-5 py-3 border-r border-gray-800">
+                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(239,68,68)" }}>Before</span>
               </div>
-              <span className="text-2xl font-mono text-gray-700">→</span>
-              <div className="flex flex-col gap-1">
-                <span className="text-xs font-mono uppercase tracking-widest text-gray-600">After</span>
-                <span className="text-4xl font-mono font-bold" style={{ ...syne.style, color: "rgb(6,182,212)" }}>2%</span>
-                <span className="text-xs text-gray-600">features validated by data before full rollout</span>
+              <div className="px-5 py-3">
+                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(34,197,94)" }}>After</span>
               </div>
             </div>
-            <p className="text-sm text-gray-500 leading-relaxed border-t border-gray-800 pt-4">
-              The change failure rate drops because failures are now caught during the experiment phase, not after full rollout.
-            </p>
+            {beforeAfter.map((row, i) => (
+              <div
+                key={i}
+                className="grid grid-cols-2 border-b border-gray-800 last:border-b-0"
+                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+              >
+                <div className="px-5 py-4 border-r border-gray-800">
+                  <p className="text-sm text-gray-500">{row.before}</p>
+                </div>
+                <div className="px-5 py-4">
+                  <p className="text-sm text-gray-300">{row.after}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -493,6 +517,18 @@ function Phase4() {
               </div>
             ))}
           </div>
+
+          <div
+            className="p-5 border"
+            style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: "3px solid rgb(75,85,99)" }}
+          >
+            <p className="text-sm text-gray-500 leading-relaxed">
+              The runbook does not make engineers faster. It eliminates the time they spend being
+              slow — the 3am phone calls, the overlapping fix attempts, the &ldquo;is anyone working on
+              this&rdquo; messages. Process is not bureaucracy when it is the difference between 30
+              minutes and 3 hours.
+            </p>
+          </div>
         </section>
 
         <section className="flex flex-col gap-6">
@@ -514,7 +550,8 @@ function Phase4() {
               Second Way: Feedback — In Progress
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Next: Review and Coordinate Changes — make code review a quality gate, not a bottleneck.
+              Next: Hypothesis-Driven Development — stop shipping features and hoping they work.
+              Build the experiment engine that turns feature flags into data-driven decisions.
             </p>
           </div>
         </section>
@@ -546,7 +583,7 @@ function Phase4() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default async function M11Page({
+export default async function M10Page({
   searchParams,
 }: {
   searchParams: Promise<{ phase?: string }>

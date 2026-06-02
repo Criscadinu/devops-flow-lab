@@ -7,7 +7,7 @@ import { completeMission } from "@/app/actions/progress"
 import { prisma } from "@/lib/prisma"
 
 export const metadata: Metadata = {
-  title: "M-07 Small Batch Development - DevOps Flow Lab",
+  title: "M-07 Catch Errors as Early as Possible - DevOps Flow Lab",
 }
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
@@ -23,7 +23,7 @@ function MissionHeader({ fase }: { fase: number }) {
           M-07
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
-          Small Batch Development
+          Catch Errors as Early as Possible
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
           Phase {fase} of 4
@@ -65,11 +65,11 @@ type DialogueEntry =
 const dialogue: DialogueEntry[] = [
   {
     type: "line",
-    initials: "MA",
-    name: "Marco",
-    role: "OPS",
-    accent: "rgb(239,68,68)",
-    text: "When is the orders feature going to be merged?",
+    initials: "KA",
+    name: "Kai",
+    role: "QA",
+    accent: "rgb(251,146,60)",
+    text: "The orders bug. How long was it in production?",
   },
   {
     type: "line",
@@ -77,23 +77,7 @@ const dialogue: DialogueEntry[] = [
     name: "Lisa",
     role: "DEV",
     accent: "rgb(34,197,94)",
-    text: "It is almost ready. I still need to finish the pagination, the sorting, the export, and the email notification.",
-  },
-  {
-    type: "line",
-    initials: "MA",
-    name: "Marco",
-    role: "OPS",
-    accent: "rgb(239,68,68)",
-    text: "That is four features.",
-  },
-  {
-    type: "line",
-    initials: "LI",
-    name: "Lisa",
-    role: "DEV",
-    accent: "rgb(34,197,94)",
-    text: "They are related.",
+    text: "Three weeks. Since the pagination feature shipped.",
   },
   {
     type: "line",
@@ -101,15 +85,7 @@ const dialogue: DialogueEntry[] = [
     name: "Kai",
     role: "QA",
     accent: "rgb(251,146,60)",
-    text: "I tried to review it yesterday. The diff is 2,400 lines. I approved it because I could not hold it all in my head.",
-  },
-  {
-    type: "line",
-    initials: "LI",
-    name: "Lisa",
-    role: "DEV",
-    accent: "rgb(34,197,94)",
-    text: "At least you approved it.",
+    text: "Three weeks. And we caught it because a customer called.",
   },
   {
     type: "line",
@@ -117,7 +93,15 @@ const dialogue: DialogueEntry[] = [
     name: "Marco",
     role: "OPS",
     accent: "rgb(239,68,68)",
-    text: "We merged it this morning. The health check is failing.",
+    text: "We have tests. The pipeline runs them.",
+  },
+  {
+    type: "line",
+    initials: "KA",
+    name: "Kai",
+    role: "QA",
+    accent: "rgb(251,146,60)",
+    text: "We have tests for the happy path. The pagination feature changed how orders are sorted. Nobody wrote a test for that edge case.",
   },
   {
     type: "line",
@@ -125,19 +109,19 @@ const dialogue: DialogueEntry[] = [
     name: "Lisa",
     role: "DEV",
     accent: "rgb(34,197,94)",
-    text: "Which part broke it?",
+    text: "To be fair, the test suite takes 12 minutes to run. I stopped running it locally.",
   },
   {
     type: "line",
-    initials: "MA",
-    name: "Marco",
-    role: "OPS",
-    accent: "rgb(239,68,68)",
-    text: "We do not know. There are 47 commits to look through.",
+    initials: "KA",
+    name: "Kai",
+    role: "QA",
+    accent: "rgb(251,146,60)",
+    text: "So the first time the tests ran against that code was in production.",
   },
   {
     type: "beat",
-    text: "Lisa opened the diff. It was 2,400 lines long.",
+    text: "A silence.",
   },
   {
     type: "line",
@@ -145,12 +129,28 @@ const dialogue: DialogueEntry[] = [
     name: "Kai",
     role: "QA",
     accent: "rgb(251,146,60)",
-    text: "Next time, can we just do one thing at a time?",
+    text: "That is not a test suite. That is a post-mortem waiting to happen.",
+  },
+  {
+    type: "line",
+    initials: "MA",
+    name: "Marco",
+    role: "OPS",
+    accent: "rgb(239,68,68)",
+    text: "What do we do differently?",
+  },
+  {
+    type: "line",
+    initials: "KA",
+    name: "Kai",
+    role: "QA",
+    accent: "rgb(251,146,60)",
+    text: "We move the tests closer to the code. Unit tests that run in seconds. Linting that catches type errors before the pipeline. The further right a bug gets, the more expensive it is.",
   },
   {
     type: "you",
-    text: "A large batch is a risk that compounds. Every line of code that has not been integrated is a line that might conflict, break something, or sit unreviewed for weeks. Small batches integrate continuously. Large batches integrate catastrophically.",
-    closing: "Merge small. Merge often. Merge before it becomes a problem.",
+    text: "Shift left means catching errors at the earliest possible stage. A linter catches a type error in milliseconds. A unit test catches a logic error in seconds. An integration test catches a wiring error in minutes. A customer catches a missing feature in three weeks — and tells everyone.",
+    closing: "The cost of a bug doubles with every stage it passes through.",
   },
 ]
 
@@ -164,10 +164,10 @@ function Phase1() {
             className="text-4xl text-white tracking-tight leading-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Week seven. Nexus Corp.
+            Week six. Nexus Corp.
           </h2>
           <p className="text-gray-400 text-base leading-relaxed">
-            Lisa has been working on the same feature branch for three weeks. It has 47 commits. Nobody knows what is in it.
+            The bug was introduced three weeks ago. Nobody caught it until a customer called.
           </p>
         </div>
 
@@ -242,7 +242,7 @@ function Phase1() {
         <CTA
           href="?phase=2"
           label="Understand the theory →"
-          sub="Phase 2 of 4 - Small batches, fast feedback"
+          sub="Phase 2 of 4 - Find bugs before they find users"
         />
       </div>
     </div>
@@ -251,6 +251,14 @@ function Phase1() {
 
 // ─── Phase 2 - The theory ─────────────────────────────────────────────────────
 
+const costProgression = [
+  { stage: "Linter / type check", time: "Milliseconds", impact: "Zero user impact" },
+  { stage: "Unit test",           time: "Seconds",      impact: "Zero user impact" },
+  { stage: "Integration test",    time: "Minutes",      impact: "Zero user impact" },
+  { stage: "Staging environment", time: "Hours",        impact: "Internal impact only" },
+  { stage: "Production",          time: "Hours to days", impact: "Real users affected, potential data loss" },
+]
+
 function Phase2() {
   return (
     <div className="flex-1 px-6 py-14">
@@ -258,10 +266,10 @@ function Phase2() {
 
         <div className="flex flex-col gap-2">
           <p className="text-xs font-mono tracking-widest uppercase text-gray-600">
-            CONTINUOUS INTEGRATION — Enable and practice continuous integration
+            AUTOMATED TESTING — Enable fast and reliable automated testing
           </p>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Small Batches, Fast Feedback
+            Shift Left — Find Bugs Before They Find Users
           </h2>
         </div>
 
@@ -271,14 +279,33 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h3 className="text-2xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Why batch size matters
+            The cost of late detection
           </h3>
           <p className="text-gray-400 leading-relaxed">
-            Batch size in software development is the amount of work done before it is integrated into the main codebase.
-            Large batches feel efficient — you finish a whole feature before touching the pipeline. But they create invisible
-            risk: merge conflicts that take days to resolve, review diffs nobody can actually read, and integration failures
-            that are impossible to attribute to a specific change.
+            Every stage a bug passes through multiplies its cost. A type error caught by a linter costs milliseconds.
+            The same error caught in production costs hours of debugging, a hotfix deploy, potential data corruption,
+            and a customer support ticket. The principle is simple: find it as close to the source as possible.
           </p>
+          <div className="flex flex-col gap-0 border border-gray-800">
+            <div className="grid grid-cols-3 gap-4 px-5 py-3 border-b border-gray-800" style={{ backgroundColor: "#060606" }}>
+              <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">Stage</span>
+              <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">Time to detect</span>
+              <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">User impact</span>
+            </div>
+            {costProgression.map((row, i) => (
+              <div
+                key={row.stage}
+                className="grid grid-cols-3 gap-4 px-5 py-4 border-b border-gray-800 last:border-b-0"
+                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+              >
+                <span className="text-xs font-mono font-bold" style={{ color: i === 4 ? "rgb(239,68,68)" : "rgb(6,182,212)" }}>
+                  {row.stage}
+                </span>
+                <span className="text-xs text-gray-500">{row.time}</span>
+                <span className="text-xs text-gray-500">{row.impact}</span>
+              </div>
+            ))}
+          </div>
         </section>
 
         <section className="flex flex-col gap-5">
@@ -287,39 +314,31 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h3 className="text-2xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The economics of small batches
+            The test pyramid
           </h3>
           <p className="text-gray-400 leading-relaxed">
-            Small batches reduce transaction cost per integration. When integrating is cheap — automated tests, fast CI —
-            you can afford to do it ten times a day. When integrating is expensive — manual testing, slow pipeline — you batch
-            up work to amortize the cost. The First Way is about making integration cheap enough that batching becomes irrational.
+            The test pyramid describes the right ratio of test types: many unit tests (fast, isolated, test one function),
+            fewer integration tests (slower, test how components connect), and few end-to-end tests (slowest, test the full user journey).
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <p className="text-gray-400 leading-relaxed">
+            Most teams invert this pyramid — many slow E2E tests, few fast unit tests. The result: a test suite that takes
+            20 minutes and nobody runs locally. Invert it back.
+          </p>
+          <div className="flex flex-col gap-3">
             {[
-              {
-                label: "Large batch",
-                items: ["2,400 lines to review", "47 commits to bisect", "Unknown which change broke it", "3-day merge conflict"],
-                accent: "rgb(239,68,68)",
-              },
-              {
-                label: "Small batch",
-                items: ["Under 400 lines", "One logical change", "Clear what it does", "Merges in minutes"],
-                accent: "rgb(34,197,94)",
-              },
-            ].map((col) => (
+              { label: "Many unit tests",         note: "fast, isolated, test one function — run in seconds", accent: "rgb(34,197,94)" },
+              { label: "Fewer integration tests",  note: "slower, test how components connect — run in minutes", accent: "rgb(251,146,60)" },
+              { label: "Few E2E tests",            note: "slowest, test the full user journey — run sparingly", accent: "rgb(239,68,68)" },
+            ].map((row) => (
               <div
-                key={col.label}
-                className="flex flex-col gap-3 p-5 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${col.accent}` }}
+                key={row.label}
+                className="flex items-center gap-4 px-5 py-4 border"
+                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${row.accent}` }}
               >
-                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: col.accent }}>
-                  {col.label}
+                <span className="text-xs font-mono font-bold w-48 shrink-0" style={{ color: row.accent }}>
+                  {row.label}
                 </span>
-                <div className="flex flex-col gap-2">
-                  {col.items.map((item, i) => (
-                    <p key={i} className="text-xs text-gray-400 leading-relaxed">{item}</p>
-                  ))}
-                </div>
+                <span className="text-xs text-gray-500">{row.note}</span>
               </div>
             ))}
           </div>
@@ -331,31 +350,25 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h3 className="text-2xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            What a small batch looks like
+            Linting and static analysis as a first gate
           </h3>
           <p className="text-gray-400 leading-relaxed">
-            A small batch is one logical change: one bug fix, one refactor, one new endpoint, one config change.
-            It has a clear description, a diff under 400 lines, and a test that covers the change. It can be reviewed
-            in 10 minutes. If your PR description starts with &ldquo;and also...&rdquo;, the batch is too large.
+            Before tests run, linting and static analysis should catch syntax errors, type mismatches, unused variables,
+            and code style violations that mask logic errors. Add linting to the pipeline before the test step.
+            A lint failure is faster to catch and faster to fix than a test failure.
           </p>
           <div
             className="flex flex-col gap-3 p-5 border"
             style={{ backgroundColor: "#080808", borderColor: "rgba(6,182,212,0.2)", borderLeft: "3px solid rgba(6,182,212,0.4)" }}
           >
             <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-              The small batch checklist
+              Pipeline order
             </span>
             <div className="flex flex-col gap-2">
-              {[
-                "One logical change — describable in one sentence",
-                "Diff under 400 lines",
-                "At least one test covering the change",
-                "Reviewable in under 10 minutes",
-                "PR description has no 'and also'",
-              ].map((item, i) => (
+              {["1. Lint (fastest — catches syntax and type errors)", "2. Unit tests (fast — catches logic errors)", "3. Integration tests (slower — catches wiring errors)", "4. Deploy (only reaches here if everything above passed)"].map((step, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(34,197,94)" }}>✓</span>
-                  <p className="text-xs text-gray-400">{item}</p>
+                  <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(6,182,212)" }}>→</span>
+                  <p className="text-xs text-gray-400">{step}</p>
                 </div>
               ))}
             </div>
@@ -371,15 +384,28 @@ function Phase2() {
             The DORA connection
           </h3>
           <p className="text-gray-400 leading-relaxed">
-            Small batches directly improve Lead Time for Changes and reduce Change Failure Rate. A change that is 50 lines
-            is reviewed faster, tested faster, and deployed faster than one that is 2,400 lines. Elite teams commit to trunk
-            multiple times per day. The batch size is the lever.
+            Catching errors early directly reduces Change Failure Rate. Bugs that never reach production cannot cause incidents.
+            Teams with strong shift-left practices have CFR below 5% — elite teams below 1%. This mission targets CFR reduction
+            as part of the AUTOMATED_TESTING cluster.
           </p>
+          <div
+            className="flex flex-col gap-3 p-5 border"
+            style={{ backgroundColor: "#080808", borderColor: "rgba(6,182,212,0.2)", borderLeft: "3px solid rgba(6,182,212,0.4)" }}
+          >
+            <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+              What this mission does
+            </span>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              Every unit test you add to Nexus Corp is a class of bugs that can never reach production again.
+              The lint gate blocks entire categories of errors before they ever run. CFR starts moving — not to a fixed number yet,
+              but directionally down.
+            </p>
+          </div>
         </section>
 
         <CTA
           href="?phase=3"
-          label="Shrink the batch →"
+          label="Shift left →"
           sub="Phase 3 of 4 - Do it yourself"
         />
       </div>
@@ -388,20 +414,6 @@ function Phase2() {
 }
 
 // ─── Phase 4 - Result ─────────────────────────────────────────────────────────
-
-type MetricCard = {
-  metric: string
-  code: string
-  badge: "IMPROVING" | "FOUNDATION"
-  note: string
-}
-
-const m07Metrics: MetricCard[] = [
-  { metric: "Deployment Frequency", code: "DF",   badge: "IMPROVING",  note: "when batches are small, deploying frequently becomes natural" },
-  { metric: "Lead Time for Changes", code: "LT",  badge: "IMPROVING",  note: "smaller batches move faster through the pipeline" },
-  { metric: "Change Failure Rate",   code: "CFR", badge: "IMPROVING",  note: "smaller changes are easier to test and review" },
-  { metric: "Mean Time to Restore",  code: "MTTR", badge: "FOUNDATION", note: "no direct improvement yet — fewer incidents will follow" },
-]
 
 function Phase4() {
   return (
@@ -413,10 +425,10 @@ function Phase4() {
             Mission Complete - M-07
           </p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Nexus Corp Merges Small. Merges Often.
+            Nexus Corp Catches Bugs Before Users Do
           </h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">
-            Small batches are the multiplier for everything else. A fast pipeline means nothing if you batch up three weeks of work before using it.
+            The lint gate is active. The unit test is real. The pipeline now stops errors before they reach production.
           </p>
         </div>
 
@@ -428,48 +440,119 @@ function Phase4() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {m07Metrics.map((d) => (
-              <div
-                key={d.code}
-                className="flex flex-col gap-4 border p-6"
-                style={{
-                  backgroundColor: d.badge === "IMPROVING" ? "#0a0700" : "#080808",
-                  borderColor: d.badge === "IMPROVING" ? "rgba(251,146,60,0.25)" : "rgb(31,41,55)",
-                  borderLeft: d.badge === "IMPROVING" ? "3px solid rgb(251,146,60)" : "3px solid rgb(55,65,81)",
-                }}
-              >
-                <div className="flex flex-col gap-1">
-                  <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">{d.metric}</span>
-                  <span className="text-xs font-mono text-gray-700">DORA - {d.code}</span>
-                </div>
-                <div>
-                  {d.badge === "IMPROVING" ? (
-                    <span
-                      className="text-xs font-mono px-2 py-0.5 border"
-                      style={{
-                        color: "rgb(251,146,60)",
-                        borderColor: "rgba(251,146,60,0.4)",
-                        backgroundColor: "rgba(251,146,60,0.06)",
-                      }}
-                    >
-                      IMPROVING ↓
-                    </span>
-                  ) : (
-                    <span
-                      className="text-xs font-mono px-2 py-0.5 border"
-                      style={{
-                        color: "rgb(107,114,128)",
-                        borderColor: "rgb(55,65,81)",
-                        backgroundColor: "rgba(75,85,99,0.06)",
-                      }}
-                    >
-                      FOUNDATION
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs font-mono text-gray-600">{d.note}</p>
+            {/* CFR - Improving */}
+            <div
+              className="flex flex-col gap-4 border p-6"
+              style={{
+                backgroundColor: "#0a0700",
+                borderColor: "rgba(251,146,60,0.25)",
+                borderLeft: "3px solid rgb(251,146,60)",
+              }}
+            >
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">Change Failure Rate</span>
+                <span className="text-xs font-mono text-gray-700">DORA - CFR</span>
               </div>
-            ))}
+              <div>
+                <span
+                  className="text-xs font-mono px-2 py-0.5 border"
+                  style={{
+                    color: "rgb(251,146,60)",
+                    borderColor: "rgba(251,146,60,0.4)",
+                    backgroundColor: "rgba(251,146,60,0.06)",
+                  }}
+                >
+                  IMPROVING ↓
+                </span>
+              </div>
+              <p className="text-xs font-mono text-gray-600">
+                The change failure rate drops as you build test coverage. Every unit test you add is a bug that can never reach production again.
+              </p>
+            </div>
+
+            {/* DF - Foundation */}
+            <div
+              className="flex flex-col gap-4 border p-6"
+              style={{
+                backgroundColor: "#080808",
+                borderColor: "rgb(31,41,55)",
+                borderLeft: "3px solid rgb(55,65,81)",
+              }}
+            >
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">Deployment Frequency</span>
+                <span className="text-xs font-mono text-gray-700">DORA - DF</span>
+              </div>
+              <div>
+                <span
+                  className="text-xs font-mono px-2 py-0.5 border"
+                  style={{
+                    color: "rgb(107,114,128)",
+                    borderColor: "rgb(55,65,81)",
+                    backgroundColor: "rgba(75,85,99,0.06)",
+                  }}
+                >
+                  FOUNDATION
+                </span>
+              </div>
+              <p className="text-xs font-mono text-gray-600">faster feedback enables more frequent deploys</p>
+            </div>
+
+            {/* LT - Foundation */}
+            <div
+              className="flex flex-col gap-4 border p-6"
+              style={{
+                backgroundColor: "#080808",
+                borderColor: "rgb(31,41,55)",
+                borderLeft: "3px solid rgb(55,65,81)",
+              }}
+            >
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">Lead Time for Changes</span>
+                <span className="text-xs font-mono text-gray-700">DORA - LT</span>
+              </div>
+              <div>
+                <span
+                  className="text-xs font-mono px-2 py-0.5 border"
+                  style={{
+                    color: "rgb(107,114,128)",
+                    borderColor: "rgb(55,65,81)",
+                    backgroundColor: "rgba(75,85,99,0.06)",
+                  }}
+                >
+                  FOUNDATION
+                </span>
+              </div>
+              <p className="text-xs font-mono text-gray-600">less rework from production bugs shortens lead time</p>
+            </div>
+
+            {/* MTTR - Foundation */}
+            <div
+              className="flex flex-col gap-4 border p-6"
+              style={{
+                backgroundColor: "#080808",
+                borderColor: "rgb(31,41,55)",
+                borderLeft: "3px solid rgb(55,65,81)",
+              }}
+            >
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">Mean Time to Restore</span>
+                <span className="text-xs font-mono text-gray-700">DORA - MTTR</span>
+              </div>
+              <div>
+                <span
+                  className="text-xs font-mono px-2 py-0.5 border"
+                  style={{
+                    color: "rgb(107,114,128)",
+                    borderColor: "rgb(55,65,81)",
+                    backgroundColor: "rgba(75,85,99,0.06)",
+                  }}
+                >
+                  FOUNDATION
+                </span>
+              </div>
+              <p className="text-xs font-mono text-gray-600">fewer incidents means less restoration work</p>
+            </div>
           </div>
         </section>
 
@@ -489,11 +572,11 @@ function Phase4() {
             }}
           >
             <p className="text-xs font-mono font-bold uppercase tracking-widest text-gray-500">
-              Next: Trunk-Based Development
+              Next: Enable and practice continuous integration
             </p>
             <p className="text-gray-500 text-sm leading-relaxed">
-              Small batches only work if everyone commits to the same branch. Trunk-based development eliminates
-              the merge conflicts that happen when teams work in isolation.
+              Small batches, trunk-based development, and committing frequently. The test suite you built here is the safety net
+              that makes continuous integration possible.
             </p>
           </div>
         </section>
@@ -501,7 +584,7 @@ function Phase4() {
         <section className="flex flex-col gap-4 border-t border-gray-900 pt-10">
           <div className="flex flex-wrap items-center gap-4">
             <a
-              href="/missions/m08"
+              href="/missions/m07"
               className="px-8 py-4 text-sm font-bold tracking-wide"
               style={{
                 backgroundColor: "rgb(31,41,55)",
@@ -512,7 +595,7 @@ function Phase4() {
                 pointerEvents: "none" as const,
               }}
             >
-              Continue to M-08 →
+              Continue to M-14 →
             </a>
             <a
               href="/dashboard"
@@ -522,7 +605,7 @@ function Phase4() {
               Back to dashboard →
             </a>
           </div>
-          <p className="text-xs font-mono text-gray-700">M-08 unlocks when you complete CONTINUOUS_INTEGRATION</p>
+          <p className="text-xs font-mono text-gray-700">M-14 is coming soon</p>
         </section>
 
       </div>
@@ -532,7 +615,7 @@ function Phase4() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default async function M07Page({
+export default async function M06Page({
   searchParams,
 }: {
   searchParams: Promise<{ phase?: string }>

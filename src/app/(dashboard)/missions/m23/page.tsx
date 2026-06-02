@@ -7,7 +7,7 @@ import { completeMission } from "@/app/actions/progress"
 import { prisma } from "@/lib/prisma"
 
 export const metadata: Metadata = {
-  title: "M-09 Continuous Deployment - DevOps Flow Lab",
+  title: "M-23 Create Telemetry - DevOps Flow Lab",
 }
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
@@ -20,10 +20,10 @@ function MissionHeader({ fase }: { fase: number }) {
     <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "#080808" }}>
       <div className="max-w-5xl mx-auto flex items-center justify-between">
         <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-          M-09
+          M-23
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
-          Continuous Deployment
+          Create Telemetry
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
           Phase {fase} of 4
@@ -59,17 +59,17 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
 
 const panels = [
   {
-    initials: "SM",
-    name: "Sarah",
-    role: "Engineering Manager",
-    badge: "MANAGEMENT",
-    accent: "rgb(6,182,212)",
-    badgeBg: "rgba(6,182,212,0.08)",
-    badgeBorder: "rgba(6,182,212,0.3)",
+    initials: "MA",
+    name: "Marco",
+    role: "Ops Engineer",
+    badge: "OPS",
+    accent: "rgb(239,68,68)",
+    badgeBg: "rgba(239,68,68,0.08)",
+    badgeBorder: "rgba(239,68,68,0.3)",
     quote: (
       <>
-        &ldquo;The tests pass automatically now. But Marco still deploys manually. Every deploy is
-        still a meeting, a checklist, and a prayer. We need to close the loop.&rdquo;
+        &ldquo;Production went down at 2am. I spent <mark>3 hours</mark> SSH-ing through servers
+        reading raw log files. I still don&apos;t know the root cause.&rdquo;
       </>
     ),
   },
@@ -83,24 +83,8 @@ const panels = [
     badgeBorder: "rgba(34,197,94,0.3)",
     quote: (
       <>
-        &ldquo;I merged a fix 3 days ago. It passed all tests. It is still not in production.
-        Marco has not had time to deploy it. Customers are still hitting the bug.&rdquo;
-      </>
-    ),
-  },
-  {
-    initials: "MA",
-    name: "Marco",
-    role: "Ops Engineer",
-    badge: "OPS",
-    accent: "rgb(239,68,68)",
-    badgeBg: "rgba(239,68,68,0.08)",
-    badgeBorder: "rgba(239,68,68,0.3)",
-    quote: (
-      <>
-        &ldquo;I am the bottleneck and I know it. Every deploy goes through me. I have{" "}
-        <mark>12 pending deploys</mark> this week. I cannot keep up. And every manual deploy is
-        a risk.&rdquo;
+        &ldquo;I pushed a fix but I have no idea if it actually helped. The only feedback I get is
+        &ldquo;it seems better now&rdquo; from support.&rdquo;
       </>
     ),
   },
@@ -114,23 +98,8 @@ const panels = [
     badgeBorder: "rgba(251,146,60,0.3)",
     quote: (
       <>
-        &ldquo;We fixed the tests. The pipeline is green. But we are still finding bugs in
-        production that were caught by the pipeline weeks ago. The fix just never shipped.&rdquo;
-      </>
-    ),
-  },
-  {
-    initials: "TO",
-    name: "Tom",
-    role: "Product Owner",
-    badge: "PRODUCT",
-    accent: "rgb(167,139,250)",
-    badgeBg: "rgba(167,139,250,0.08)",
-    badgeBorder: "rgba(167,139,250,0.3)",
-    quote: (
-      <>
-        &ldquo;Time to market is still <mark>3 weeks</mark> minimum. Even with a green pipeline.
-        The code is done, tested, and sitting there. We just cannot get it out the door.&rdquo;
+        &ldquo;We have logs. Somewhere. Nobody knows where. Last month someone deleted them to free
+        up <mark>disk space</mark>.&rdquo;
       </>
     ),
   },
@@ -145,11 +114,11 @@ const panels = [
     isPlayer: true,
     quote: (
       <>
-        &ldquo;The last mile. Code goes in, tests pass, and then it stops. The pipeline needs one
-        more step - automatically deploy every green build.&rdquo;
+        &ldquo;If you cannot measure it, you cannot improve it. Nexus Corp is flying blind.
+        Time to add eyes.&rdquo;
       </>
     ),
-    outro: "Close the loop.",
+    outro: "Fix the foundation first.",
   },
 ]
 
@@ -163,10 +132,10 @@ function Phase1() {
             className="text-4xl text-white tracking-tight leading-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Week four. Nexus Corp.
+            Week eight. Nexus Corp.
           </h2>
           <p className="text-gray-400 text-base leading-relaxed">
-            The pipeline is green. But nothing ships automatically.
+            The pipeline is green. Deployments are faster. But nobody knows what the app is actually doing in production.
           </p>
         </div>
 
@@ -228,7 +197,7 @@ function Phase1() {
         <CTA
           href="?phase=2"
           label="Understand the theory →"
-          sub="Phase 2 of 4 - What is Continuous Deployment?"
+          sub="Phase 2 of 4 - The three pillars of observability"
         />
       </div>
 
@@ -246,64 +215,44 @@ function Phase1() {
 
 // ─── Phase 2 - The theory ─────────────────────────────────────────────────────
 
-const ciVsCd = [
+const pillars = [
   {
-    title: "Continuous Integration",
-    body: "Every commit is automatically built and tested. You know within minutes if your code works. But it still needs a human to deploy.",
-    accent: "rgb(75,85,99)",
-    bg: "#080808",
-    border: "rgba(75,85,99,0.3)",
-  },
-  {
-    title: "Continuous Deployment",
-    body: "Every green build is automatically deployed. No human in the loop. Code goes from commit to production without anyone pressing a button.",
+    num: "01",
+    title: "Logs",
+    body: "A record of what happened. Every request should emit a structured log line with timestamp, method, path, status code, and duration. Unstructured logs (console.log) cannot be searched, filtered, or aggregated.",
     accent: "rgb(6,182,212)",
     bg: "#020d0f",
     border: "rgba(6,182,212,0.25)",
+    example: `{"timestamp":"2024-01-15T02:31:44Z","level":"info","method":"GET","path":"/api/orders","status":200,"duration_ms":23}`,
   },
-]
-
-const cdPrereqs = [
   {
-    title: "Automated tests",
-    body: "If you do not have tests, CD is dangerous. Every commit goes to production - you need the pipeline to catch bugs before users do.",
+    num: "02",
+    title: "Metrics",
+    body: "Numerical measurements over time. Counters (requests served, errors thrown) and gauges (memory usage, active connections). Metrics answer: how often? how many? is this normal?",
     accent: "rgb(34,197,94)",
-    bg: "#060f06",
+    bg: "#020a02",
     border: "rgba(34,197,94,0.25)",
+    example: `{ requests_total: 14820, errors_total: 3, error_rate: "0.02%", uptime_seconds: 86400 }`,
   },
   {
-    title: "Fast pipeline",
-    body: "If your pipeline takes 30 minutes, every deploy blocks the next one. CD pipelines should complete in under 10 minutes.",
-    accent: "rgb(6,182,212)",
-    bg: "#020d0f",
-    border: "rgba(6,182,212,0.25)",
-  },
-  {
-    title: "Easy rollback",
-    body: "When something goes wrong - and it will - you need to be able to revert in seconds. CD without rollback is reckless.",
-    accent: "rgb(251,146,60)",
-    bg: "#0a0700",
-    border: "rgba(251,146,60,0.25)",
+    num: "03",
+    title: "Traces",
+    body: "A record of a single request across all services. Shows where time was spent. Traces answer: why was this request slow? which service is the bottleneck? (Coming in a future mission.)",
+    accent: "rgb(167,139,250)",
+    bg: "#06020a",
+    border: "rgba(167,139,250,0.25)",
+    example: null,
   },
 ]
 
-const platforms = [
-  {
-    name: "Render",
-    desc: "Simple GitHub integration. Free tier. Deploys on every push. Zero config for Node.js apps.",
-    url: "render.com",
-  },
-  {
-    name: "Railway",
-    desc: "Modern platform. Clean UI. Free trial. Excellent for small apps.",
-    url: "railway.app",
-  },
-  {
-    name: "Fly.io",
-    desc: "More powerful. Free tier. Global edge deployment.",
-    url: "fly.io",
-  },
-]
+const healthBefore = `{ "status": "ok" }`
+const healthAfter = `{
+  "status": "ok",
+  "version": "1.4.2",
+  "uptime_seconds": 86400,
+  "memory": { "used_mb": 48, "total_mb": 128 },
+  "timestamp": "2024-01-15T14:22:00Z"
+}`
 
 function Phase2() {
   return (
@@ -316,12 +265,17 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            What is Continuous Deployment?
+            Why telemetry matters
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            Continuous Deployment means every commit that passes the automated tests is automatically
-            deployed to production. No manual steps. No deployment meetings. No Marco. The pipeline
-            does it all. The goal: reduce the time from commit to customer to minutes.
+            Nexus Corp deploys more often now. But faster deployments into darkness is not progress.
+            MTTR is still <span className="text-white font-mono font-bold">72 hours</span> because
+            finding problems requires SSH access and manual log hunting. You cannot fix what you
+            cannot see.
+          </p>
+          <p className="text-gray-400 leading-relaxed">
+            Telemetry fixes this. It makes production observable — not just running, but
+            understandable. When something breaks, you know within seconds, not hours.
           </p>
         </section>
 
@@ -331,26 +285,28 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            CD vs CI - what is the difference?
+            The Three Pillars of Observability
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {ciVsCd.map((card) => (
+          <div className="flex flex-col gap-4">
+            {pillars.map((p) => (
               <div
-                key={card.title}
+                key={p.num}
                 className="flex flex-col gap-3 p-6 border"
-                style={{
-                  backgroundColor: card.bg,
-                  borderColor: card.border,
-                  borderLeft: `3px solid ${card.accent}`,
-                }}
+                style={{ backgroundColor: p.bg, borderColor: p.border, borderLeft: `3px solid ${p.accent}` }}
               >
-                <span
-                  className="text-xs font-mono font-bold uppercase tracking-widest"
-                  style={{ color: card.accent }}
-                >
-                  {card.title}
-                </span>
-                <p className="text-gray-400 text-sm leading-relaxed">{card.body}</p>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-mono font-bold" style={{ color: p.accent }}>{p.num}</span>
+                  <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: p.accent }}>{p.title}</span>
+                </div>
+                <p className="text-gray-400 text-sm leading-relaxed">{p.body}</p>
+                {p.example && (
+                  <pre
+                    className="text-xs font-mono leading-relaxed p-3 overflow-x-auto"
+                    style={{ backgroundColor: "#0d0d0d", borderLeft: "3px solid rgb(31,41,55)", color: "rgb(156,163,175)" }}
+                  >
+                    {p.example}
+                  </pre>
+                )}
               </div>
             ))}
           </div>
@@ -362,26 +318,31 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Three prerequisites for CD
+            What a real /health endpoint looks like
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {cdPrereqs.map((card) => (
+          <p className="text-gray-400 leading-relaxed">
+            A health check that only returns <code className="text-white font-mono">{`{ "status": "ok" }`}</code> tells
+            you nothing. A real health check tells you whether the app is about to fail before it does.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              { label: "Before (useless)", code: healthBefore, accent: "rgb(239,68,68)" },
+              { label: "After (observable)", code: healthAfter, accent: "rgb(34,197,94)" },
+            ].map((item) => (
               <div
-                key={card.title}
-                className="flex flex-col gap-3 p-6 border"
-                style={{
-                  backgroundColor: card.bg,
-                  borderColor: card.border,
-                  borderLeft: `3px solid ${card.accent}`,
-                }}
+                key={item.label}
+                className="flex flex-col gap-3 p-5 border"
+                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${item.accent}` }}
               >
-                <span
-                  className="text-xs font-mono font-bold uppercase tracking-widest"
-                  style={{ color: card.accent }}
-                >
-                  {card.title}
+                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: item.accent }}>
+                  {item.label}
                 </span>
-                <p className="text-gray-400 text-sm leading-relaxed">{card.body}</p>
+                <pre
+                  className="text-xs font-mono leading-relaxed overflow-x-auto"
+                  style={{ color: "rgb(156,163,175)" }}
+                >
+                  {item.code}
+                </pre>
               </div>
             ))}
           </div>
@@ -393,34 +354,36 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Choose your deployment platform
+            The DORA connection
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {platforms.map((p) => (
+          <p className="text-gray-400 leading-relaxed">
+            MTTR measures how fast you recover from incidents. But you cannot recover fast if you
+            cannot <em className="text-white not-italic font-semibold">detect</em>. Telemetry is
+            the prerequisite for MTTR improvement.
+          </p>
+          <div className="flex flex-col gap-0 border border-gray-800">
+            {[
+              { label: "Current MTTR",   value: "72 hours", color: "rgb(239,68,68)",  note: "Detected by customer complaints. Diagnosed by SSH log hunting." },
+              { label: "Target after M-23", value: "4 hours",  color: "rgb(6,182,212)", note: "Structured logs, health endpoint, error rate visible in /api/metrics." },
+            ].map((row, i) => (
               <div
-                key={p.name}
-                className="flex flex-col gap-3 p-5 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
+                key={row.label}
+                className="flex items-start gap-5 px-5 py-4 border-b border-gray-800 last:border-b-0"
+                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
               >
-                <span
-                  className="text-sm font-bold uppercase tracking-widest"
-                  style={{ ...syne.style, color: "rgb(6,182,212)" }}
-                >
-                  {p.name}
-                </span>
-                <p className="text-gray-400 text-sm leading-relaxed flex-1">{p.desc}</p>
-                <span className="text-xs font-mono text-gray-700">{p.url}</span>
+                <span className="text-2xl font-mono font-bold shrink-0" style={{ ...syne.style, color: row.color }}>{row.value}</span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-xs font-mono uppercase tracking-widest text-gray-600">{row.label}</span>
+                  <span className="text-sm text-gray-500">{row.note}</span>
+                </div>
               </div>
             ))}
           </div>
-          <p className="text-xs font-mono text-gray-600">
-            All three support automatic deployment from GitHub. Pick one and stick with it.
-          </p>
         </section>
 
         <CTA
           href="?phase=3"
-          label="Set up CD for Nexus Corp →"
+          label="Add telemetry to Nexus Corp →"
           sub="Phase 3 of 4 - Do it yourself"
         />
       </div>
@@ -431,15 +394,45 @@ function Phase2() {
 // ─── Phase 4 - Result ─────────────────────────────────────────────────────────
 
 const beforeAfter = [
-  { before: "Manual deploy by Marco every release",     after: "Automatic deploy on every green commit"  },
-  { before: "12 pending deploys stuck in queue",         after: "Every commit ships within minutes"        },
-  { before: "Deploy meetings and checklists",            after: "No humans in the deployment loop"         },
-  { before: "Bugs fixed but not shipped for weeks",      after: "Fix merged, tested, and live in minutes"  },
+  { before: "Incidents detected by customer complaints",  after: "Errors visible in /api/metrics within seconds"       },
+  { before: "Diagnosis required SSH access to servers",  after: "Structured logs searchable and filterable"             },
+  { before: "MTTR: 72 hours of manual log hunting",      after: "MTTR: 4 hours — root cause visible immediately"       },
+  { before: "/health just returned { status: 'ok' }",    after: "/health shows uptime, memory, version, timestamp"     },
 ]
 
 const doraImpact = [
-  { metric: "Deployment Frequency",  code: "DF", before: "2x per month", after: "1x per week",  note: "automated deploy unblocks frequency" },
-  { metric: "Lead Time for Changes", code: "LT", before: "28 days",      after: "14 days",       note: "commit to production in minutes"     },
+  {
+    metric: "Mean Time to Restore",
+    code: "MTTR",
+    before: "72 hours",
+    after: "4 hours",
+    note: "structured logs and metrics cut detection and diagnosis time by 95%",
+    highlight: true,
+  },
+  {
+    metric: "Deployment Frequency",
+    code: "DF",
+    before: "Multiple×/week",
+    after: "Multiple×/week",
+    note: "unchanged — telemetry does not affect deploy frequency directly",
+    highlight: false,
+  },
+  {
+    metric: "Lead Time for Changes",
+    code: "LT",
+    before: "5 days",
+    after: "5 days",
+    note: "unchanged — telemetry is a prerequisite for further improvement",
+    highlight: false,
+  },
+  {
+    metric: "Change Failure Rate",
+    code: "CFR",
+    before: "4%",
+    after: "4%",
+    note: "unchanged — but failures are now visible and recoverable faster",
+    highlight: false,
+  },
 ]
 
 function Phase4() {
@@ -449,10 +442,10 @@ function Phase4() {
 
         <div className="flex flex-col gap-4">
           <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(6,182,212)" }}>
-            Mission Complete - M-09
+            Mission Complete - M-23
           </p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Shipping Automatically.
+            Nexus Corp Can Now See
           </h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">
             This is what you built for Nexus Corp.
@@ -499,29 +492,49 @@ function Phase4() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {doraImpact.map((d) => (
               <div
                 key={d.code}
                 className="flex flex-col gap-4 border p-6"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
+                style={{
+                  backgroundColor: d.highlight ? "#020d0f" : "#080808",
+                  borderColor: d.highlight ? "rgba(6,182,212,0.3)" : "rgb(31,41,55)",
+                  borderLeft: d.highlight ? "3px solid rgb(6,182,212)" : "3px solid rgb(31,41,55)",
+                }}
               >
                 <div className="flex flex-col gap-1">
                   <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">{d.metric}</span>
                   <span className="text-xs font-mono text-gray-700">DORA - {d.code}</span>
                 </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-xl font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <span
+                    className="text-lg font-mono font-bold"
+                    style={{ ...syne.style, color: d.highlight ? "rgb(239,68,68)" : "rgb(75,85,99)" }}
+                  >
                     {d.before}
                   </span>
                   <span className="font-mono text-gray-700">→</span>
-                  <span className="text-xl font-mono font-bold" style={{ ...syne.style, color: "rgb(6,182,212)" }}>
+                  <span
+                    className="text-lg font-mono font-bold"
+                    style={{ ...syne.style, color: d.highlight ? "rgb(6,182,212)" : "rgb(75,85,99)" }}
+                  >
                     {d.after}
                   </span>
                 </div>
                 <p className="text-xs font-mono text-gray-600">{d.note}</p>
               </div>
             ))}
+          </div>
+
+          <div
+            className="p-5 border"
+            style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: "3px solid rgb(75,85,99)" }}
+          >
+            <p className="text-sm text-gray-500 leading-relaxed">
+              Telemetry does not directly improve deployment frequency or lead time. But it is the
+              prerequisite for everything in the Second Way. Without measurement, feedback is impossible.
+            </p>
           </div>
         </section>
 
@@ -536,13 +549,16 @@ function Phase4() {
             className="flex flex-col gap-3 p-6 border"
             style={{
               backgroundColor: "#080808",
-              borderColor: "rgb(31,41,55)",
-              borderLeft: "3px solid rgb(31,41,55)",
+              borderColor: "rgba(6,182,212,0.2)",
+              borderLeft: "3px solid rgb(6,182,212)",
             }}
           >
+            <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+              Second Way: Feedback — In Progress
+            </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Code ships automatically. But how do you know it is working in production? You need
-              visibility into what is happening after deploy. Next mission: Monitoring and Observability.
+              Next: Build a monitoring dashboard on top of this telemetry — and set up alerts so
+              Marco sleeps through the night.
             </p>
           </div>
         </section>
@@ -556,14 +572,14 @@ function Phase4() {
             >
               Back to dashboard →
             </a>
-            <span
+            <div
               className="flex items-center gap-3 px-8 py-4 text-sm font-mono border cursor-not-allowed"
               style={{ backgroundColor: "#0a0a0a", borderColor: "rgb(31,41,55)", color: "rgb(55,65,81)" }}
               title="Not yet available"
             >
               <span>⊘</span>
-              Next mission: Monitoring and Observability →
-            </span>
+              Continue to M-24 →
+            </div>
           </div>
         </section>
 
@@ -574,7 +590,7 @@ function Phase4() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default async function M04Page({
+export default async function M08Page({
   searchParams,
 }: {
   searchParams: Promise<{ phase?: string }>
@@ -593,11 +609,11 @@ export default async function M04Page({
     if (!gateUser) redirect("?phase=3")
 
     // Complete the mission first (idempotent — safe to call multiple times)
-    await completeMission("M-09")
+    await completeMission("M-23")
 
     // Now verify it actually exists (guards against DB errors)
     const completed = await prisma.userProgress.findFirst({
-      where: { userId: gateUser.id, moduleId: "M-09" },
+      where: { userId: gateUser.id, moduleId: "M-23" },
     })
     if (!completed) redirect("?phase=3")
   }

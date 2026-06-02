@@ -160,10 +160,10 @@ export function Phase3() {
             className="text-3xl text-white tracking-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Your Mission - Make the System Speak
+            Your Mission - Get on the Trunk
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Add an automated alert endpoint to the Nexus Corp app with configurable thresholds.
+            Audit your branches, protect main, practice a short-lived branch cycle, and hide incomplete work behind a feature flag.
           </p>
         </div>
 
@@ -181,88 +181,44 @@ export function Phase3() {
               Before you start
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              This mission builds on your M-14 work. Both items should already be ready.
+              This mission builds on M-14. Your repo should have a commit convention and small-batch habits in place.
             </p>
           </div>
-
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
-              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Fork from M-14 with telemetry in place
-              </p>
-              <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
-            </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Your nexus-corp-app fork has pino logging, the upgraded /health endpoint, request counters in /api/metrics, and a green pipeline.
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
+            <p className="text-white text-sm font-bold flex-1" style={syne.style}>
+              nexus-corp-app with CONTRIBUTING.md and commit convention from M-14
             </p>
-
-            <div style={{ borderTop: "1px solid rgb(31,41,55)" }} />
-
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
-              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                requestCount and errorCount variables exist
-              </p>
-              <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
-            </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              The alert endpoint reads these variables. Confirm they are declared at module scope in src/index.js.
-            </p>
+            <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
           </div>
         </div>
 
         {/* Task 1 */}
-        <TaskCard number="01" title="Add the /api/alerts endpoint" done={task1Done} locked={false}>
+        <TaskCard number="01" title="Audit your current branches" done={task1Done} locked={false}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">An alert endpoint evaluates the current state of your app against configured thresholds.</span>{" "}
-              This is what monitoring tools poll. It is also what you can call yourself to get an
-              instant health snapshot beyond the basic /health check.
+              <span className="text-white">Before changing how you branch, understand what you have.</span>{" "}
+              List every branch, its age, and what is blocking it from merging.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to src/index.js — after the /health route</SectionLabel>
-            <CodeBlock>{`const ERROR_RATE_WARNING = parseFloat(process.env.ALERT_ERROR_RATE_WARNING || '1')
-const ERROR_RATE_CRITICAL = parseFloat(process.env.ALERT_ERROR_CRITICAL || '5')
-const MIN_UPTIME = parseInt(process.env.ALERT_MIN_UPTIME || '60')
+            <SectionLabel>List all branches and their history</SectionLabel>
+            <CodeBlock>{`git branch -a
+git log --oneline --graph --all | head -20`}</CodeBlock>
+          </div>
 
-app.get('/api/alerts', (req, res) => {
-  const uptime = Math.floor((Date.now() - startTime) / 1000)
-  const errorRate = requestCount > 0
-    ? (errorCount / requestCount) * 100
-    : 0
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Create BRANCH-AUDIT.md at the repo root</SectionLabel>
+            <CodeBlock>{`# Branch Audit
 
-  const checks = {
-    error_rate: {
-      value: errorRate.toFixed(2) + '%',
-      threshold: ERROR_RATE_CRITICAL + '%',
-      status: errorRate >= ERROR_RATE_CRITICAL
-        ? 'CRITICAL'
-        : errorRate >= ERROR_RATE_WARNING
-        ? 'WARNING'
-        : 'OK',
-    },
-    uptime: {
-      value: uptime,
-      threshold: MIN_UPTIME,
-      status: uptime < MIN_UPTIME ? 'WARNING' : 'OK',
-    },
-  }
+## Active branches
+| Branch | Age | Last commit | Status |
+|--------|-----|-------------|--------|
+| main   | ... | ...         | active |
 
-  const overallStatus = Object.values(checks).some(c => c.status === 'CRITICAL')
-    ? 'CRITICAL'
-    : Object.values(checks).some(c => c.status === 'WARNING')
-    ? 'WARNING'
-    : 'OK'
-
-  res.json({
-    status: overallStatus,
-    checks,
-    timestamp: new Date().toISOString(),
-  })
-})`}</CodeBlock>
+## Finding
+Are any branches older than 1 day? What is blocking them from merging?`}</CodeBlock>
           </div>
 
           {!task1Done && (
@@ -273,34 +229,39 @@ app.get('/api/alerts', (req, res) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                GET /api/alerts returns status, checks, and timestamp
+                Branch audit complete
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 2 */}
-        <TaskCard number="02" title="Make thresholds configurable in docker-compose.yml" done={task2Done} locked={!task1Done}>
+        <TaskCard number="02" title="Enable branch protection on main" done={task2Done} locked={!task1Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Hardcoded thresholds are technical debt.</span>{" "}
-              Production and staging have different traffic patterns — a 5% error rate in staging
-              during a load test is fine; in production it is an incident. Environment variables
-              let you tune thresholds per environment without touching code.
+              <span className="text-white">Trunk-based development does not mean unprotected main.</span>{" "}
+              It means fast, frequent, protected merges. Branch protection ensures every commit to main has passed CI.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to the prod service environment in docker-compose.yml</SectionLabel>
-            <CodeBlock>{`- ALERT_ERROR_RATE_WARNING=1
-- ALERT_ERROR_CRITICAL=5
-- ALERT_MIN_UPTIME=60`}</CodeBlock>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <SectionLabel>Test locally</SectionLabel>
-            <CodeBlock>{`docker compose up dev
-curl http://localhost:3000/api/alerts`}</CodeBlock>
+            <SectionLabel>On GitHub: Settings → Branches → Add rule</SectionLabel>
+            <div
+              className="flex flex-col gap-3 p-4 border"
+              style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+            >
+              {[
+                "Branch name pattern: main",
+                "Require status checks to pass before merging: ✓",
+                "Status check: test",
+                "Do not allow bypassing the above settings: ✓",
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(6,182,212)" }}>→</span>
+                  <p className="text-xs font-mono text-gray-400">{item}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
           {!task2Done && (
@@ -311,46 +272,32 @@ curl http://localhost:3000/api/alerts`}</CodeBlock>
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Alert thresholds are defined in docker-compose.yml and /api/alerts responds correctly
+                Branch protection enabled — nothing merges to main without green CI
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 3 */}
-        <TaskCard number="03" title="Write tests for the alert endpoint" done={task3Done} locked={!task2Done}>
+        <TaskCard number="03" title="Create a short-lived branch, commit, and merge within the hour" done={task3Done} locked={!task2Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Alert logic that is not tested will drift.</span>{" "}
-              Thresholds get changed, logic gets refactored, and suddenly your CRITICAL alert fires
-              at 50% instead of 5%. Tests lock the behavior in place.
+              <span className="text-white">The discipline of trunk-based development is practiced, not declared.</span>{" "}
+              Create a branch, make one change, open a PR, merge it. The whole cycle should take less than an hour.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to src/index.test.js</SectionLabel>
-            <CodeBlock>{`describe('Alerting', () => {
-  it('GET /api/alerts returns status and checks', async () => {
-    const res = await request(app).get('/api/alerts')
-    expect(res.status).toBe(200)
-    expect(res.body).toHaveProperty('status')
-    expect(res.body).toHaveProperty('checks')
-    expect(res.body).toHaveProperty('timestamp')
-  })
-
-  it('alert status is OK, WARNING, or CRITICAL', async () => {
-    const res = await request(app).get('/api/alerts')
-    expect(['OK', 'WARNING', 'CRITICAL']).toContain(res.body.status)
-  })
-
-  it('error_rate check has value, threshold, and status', async () => {
-    const res = await request(app).get('/api/alerts')
-    const check = res.body.checks.error_rate
-    expect(check).toHaveProperty('value')
-    expect(check).toHaveProperty('threshold')
-    expect(check).toHaveProperty('status')
-  })
-})`}</CodeBlock>
+            <SectionLabel>Full short-lived branch cycle</SectionLabel>
+            <CodeBlock>{`git checkout -b feat/add-order-count-endpoint
+# Make one small change
+git add .
+git commit -m 'feat: add GET /api/orders/count endpoint'
+git push origin feat/add-order-count-endpoint
+# Open PR, wait for CI, merge`}</CodeBlock>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              The branch name describes one thing. The PR has one commit. CI runs and goes green. You merge and delete the branch. The whole cycle takes minutes.
+            </p>
           </div>
 
           {!task3Done && (
@@ -361,30 +308,32 @@ curl http://localhost:3000/api/alerts`}</CodeBlock>
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                npm test passes with the new alerting tests
+                Branch created, PR opened, CI green, merged to main — all within one hour
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 4 */}
-        <TaskCard number="04" title="Add a LOG_LEVEL environment variable" done={task4Done} locked={!task3Done}>
+        <TaskCard number="04" title="Add a feature flag to hide incomplete work" done={task4Done} locked={!task3Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">In production you want info-level logs. In development you want debug.</span>{" "}
-              In a crisis you might temporarily set LOG_LEVEL=debug in production to get more
-              detail. This should be a switch, not a code change.
+              <span className="text-white">If you have work in progress that is not ready for users, it should be behind a flag — not on a branch.</span>{" "}
+              Commit it to main, hide it with a flag, finish it safely.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to docker-compose.yml — prod service</SectionLabel>
-            <CodeBlock>{`- LOG_LEVEL=info`}</CodeBlock>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <SectionLabel>Add to docker-compose.yml — dev service</SectionLabel>
-            <CodeBlock>{`- LOG_LEVEL=debug`}</CodeBlock>
+            <SectionLabel>Add to src/index.js</SectionLabel>
+            <CodeBlock>{`// Feature flag — incomplete feature hidden from users
+if (process.env.ENABLE_ORDER_EXPORT === 'true') {
+  app.get('/api/orders/export', (req, res) => {
+    res.json({ status: 'coming soon' })
+  })
+}`}</CodeBlock>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              The code is in main. The feature is invisible in production. You can iterate on it freely without a long-lived branch.
+            </p>
           </div>
 
           {!task4Done && (
@@ -395,26 +344,25 @@ curl http://localhost:3000/api/alerts`}</CodeBlock>
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                LOG_LEVEL is set per environment in docker-compose.yml
+                Incomplete feature is behind a flag, not a branch
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 5 */}
-        <TaskCard number="05" title="Commit and push — verify CI is green" done={task5Done} locked={!task4Done}>
+        <TaskCard number="05" title="Commit and push" done={task5Done} locked={!task4Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Alerting is only useful when it runs in production. Ship it.</span>{" "}
-              From now on, any monitoring tool can poll /api/alerts and get a structured response.
-              No more checking dashboards manually at 11pm.
+              <span className="text-white">The branch audit, the protection rules, and the feature flag are now permanent.</span>{" "}
+              Nexus Corp is on one trunk. Long-lived branches are no longer the default.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Commit and push</SectionLabel>
-            <CodeBlock>{`git add src/index.js src/index.test.js docker-compose.yml
-git commit -m 'feat: add /api/alerts endpoint with configurable thresholds'
+            <SectionLabel>Commit and push all changes</SectionLabel>
+            <CodeBlock>{`git add BRANCH-AUDIT.md src/index.js
+git commit -m 'docs: branch audit and feature flag for incomplete work'
 git push`}</CodeBlock>
           </div>
 
@@ -440,7 +388,7 @@ git push`}</CodeBlock>
                   className="w-4 h-4 accent-cyan-400 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                  Pipeline is green — alerting endpoint is live
+                  Pipeline is green
                 </span>
               </label>
             </div>
@@ -458,7 +406,7 @@ git push`}</CodeBlock>
             }}
           >
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-              ✓ Alerting is live. The system now speaks before your customers do.
+              ✓ One trunk. Protected. Everyone on it. Incomplete work is behind a flag, not a branch.
             </p>
             <a
               href="?phase=4"

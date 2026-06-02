@@ -42,7 +42,11 @@ function TaskCard({
           <span
             className="text-xs font-mono font-bold"
             style={{
-              color: locked ? "rgb(75,85,99)" : done ? "rgb(34,197,94)" : "rgb(6,182,212)",
+              color: locked
+                ? "rgb(75,85,99)"
+                : done
+                ? "rgb(34,197,94)"
+                : "rgb(6,182,212)",
             }}
           >
             {number}
@@ -62,6 +66,7 @@ function TaskCard({
           )}
         </div>
       </div>
+
       {!locked && <div className="flex flex-col gap-4">{children}</div>}
     </div>
   )
@@ -85,6 +90,24 @@ function MentorNote({ children }: { children: React.ReactNode }) {
   )
 }
 
+function HintBox({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      className="flex gap-3 p-4 border"
+      style={{
+        backgroundColor: "#0a0800",
+        borderColor: "rgba(234,179,8,0.2)",
+        borderLeft: "3px solid rgba(234,179,8,0.6)",
+      }}
+    >
+      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(234,179,8)" }}>
+        ?
+      </span>
+      <div className="flex flex-col gap-1">{children}</div>
+    </div>
+  )
+}
+
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>
@@ -93,30 +116,19 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   )
 }
 
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre
-      className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
-      style={{
-        backgroundColor: "#0d0d0d",
-        borderLeft: "3px solid rgb(31,41,55)",
-        color: "rgb(156,163,175)",
-      }}
-    >
-      {children}
-    </pre>
-  )
-}
-
 export function Phase3() {
+  const [prereq1Done] = useState(true) // fork from M-02, assumed done
+  const [prereq2Done, setPrereq2Done] = useState(false)
+
   const [task1Done, setTask1Done] = useState(false)
   const [task2Done, setTask2Done] = useState(false)
   const [task3Done, setTask3Done] = useState(false)
   const [task4Done, setTask4Done] = useState(false)
-  const [task5Done, setTask5Done] = useState(false)
+
   const [actionsUrl, setActionsUrl] = useState("")
 
-  const allDone = task1Done && task2Done && task3Done && task4Done && task5Done
+  const prereqsDone = prereq1Done && prereq2Done
+  const allDone = task1Done && task2Done && task3Done && task4Done
 
   return (
     <div className="flex-1 px-6 py-14">
@@ -128,10 +140,10 @@ export function Phase3() {
             className="text-3xl text-white tracking-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Your Mission - Build a Real Test Suite
+            Your Mission - Get the Pipeline Green
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            The Nexus Corp app has 3 tests. It needs more. You are going to build them.
+            Nexus Corp has failing tests and no CI. You are going to fix both.
           </p>
         </div>
 
@@ -149,62 +161,125 @@ export function Phase3() {
               Before you start
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              This mission builds on your M-03 work. Both items should already be ready.
+              This mission builds on your work from M-02. Check both before continuing.
             </p>
           </div>
 
-          <div className="flex flex-col gap-4">
-            {/* Prereq 1 */}
+          {/* Prereq 1 - Fork from M-02 */}
+          <div className="flex flex-col gap-2">
             <div className="flex items-center gap-3">
-              <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
-              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Fork from M-03 with green pipeline
+              <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
+                01
+              </span>
+              <p className="text-white text-sm font-bold" style={syne.style}>
+                GitHub account with the nexus-corp-app fork from M-02
               </p>
-              <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
+              <span className="text-xs font-mono ml-auto" style={{ color: "rgb(34,197,94)" }}>
+                ✓ READY
+              </span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Your nexus-corp-app fork has all tests passing and GitHub Actions running on every push.
+            <p className="text-gray-500 text-sm leading-relaxed">
+              You already forked and containerized nexus-corp-app in M-02. That fork is what we continue with here.
             </p>
+          </div>
 
-            <div style={{ borderTop: "1px solid rgb(31,41,55)" }} />
+          <div style={{ borderTop: "1px solid rgb(31,41,55)" }} />
 
-            {/* Prereq 2 */}
+          {/* Prereq 2 - Node.js */}
+          <div className="flex flex-col gap-3">
             <div className="flex items-center gap-3">
-              <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
-              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
+              <span
+                className="text-xs font-mono font-bold"
+                style={{ color: prereq2Done ? "rgb(34,197,94)" : "rgb(251,146,60)" }}
+              >
+                02
+              </span>
+              <p className="text-white text-sm font-bold" style={syne.style}>
                 Node.js installed
               </p>
-              <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
+              {prereq2Done && (
+                <span className="text-xs font-mono ml-auto" style={{ color: "rgb(34,197,94)" }}>
+                  ✓ READY
+                </span>
+              )}
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              You need Node.js to run the test suite locally. Verify with{" "}
-              <code className="text-cyan-400 font-mono">node --version</code>.
+            <p className="text-gray-400 text-sm leading-relaxed">
+              You need Node.js to run the tests locally. Verify it is installed by running{" "}
+              <code className="text-cyan-400 font-mono">node --version</code> in your terminal.
             </p>
+            {!prereq2Done && (
+              <label className="flex items-center gap-3 cursor-pointer group">
+                <input
+                  type="checkbox"
+                  onChange={(e) => { if (e.target.checked) setPrereq2Done(true) }}
+                  className="w-4 h-4 cursor-pointer"
+                  style={{ accentColor: "rgb(251,146,60)" }}
+                />
+                <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                  I have Node.js installed (<code className="text-orange-400 font-mono">node --version</code> works)
+                </span>
+              </label>
+            )}
           </div>
         </div>
 
+        {/* Task list */}
+        {prereqsDone && <>
+
         {/* Task 1 */}
-        <TaskCard number="01" title="Understand what is already tested" done={task1Done} locked={false}>
+        <TaskCard number="01" title="Run the tests locally" done={task1Done} locked={false}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Before writing new tests, understand what exists.</span>{" "}
-              The current test file tests 3 endpoints with wrong expected values — you already fixed
-              those in M-03. Now audit what is NOT tested.
+              <span className="text-white">Before you fix anything, understand what is broken.</span>{" "}
+              The repo has 3 tests - all failing. Running them first tells you exactly what is wrong
+              and gives you a target to aim at. Never fix what you have not seen fail.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>How to audit</SectionLabel>
+            <SectionLabel>How to run</SectionLabel>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Open <code className="text-cyan-400 font-mono">src/index.test.js</code>. List the
-              endpoints that exist in{" "}
-              <code className="text-cyan-400 font-mono">src/index.js</code> but have no tests.
+              Clone your fork locally if not already done, then install dependencies and run the
+              test suite.
             </p>
-            <CodeBlock>{`GET /           - tested
-GET /health     - tested
-GET /api/orders - tested
-GET /api/metrics - NOT tested`}</CodeBlock>
+            <pre
+              className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
+              style={{
+                backgroundColor: "#0d0d0d",
+                borderLeft: "3px solid rgb(31,41,55)",
+                color: "rgb(156,163,175)",
+              }}
+            >{`git clone https://github.com/your-username/nexus-corp-app
+cd nexus-corp-app
+npm install
+npm test`}</pre>
           </div>
+
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Expected output - 3 failing tests</SectionLabel>
+            <pre
+              className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
+              style={{
+                backgroundColor: "#0d0d0d",
+                borderLeft: "3px solid rgba(239,68,68,0.5)",
+                color: "rgb(239,68,68)",
+              }}
+            >{`FAIL src/index.test.js
+  x should return company info (expected "Acme Inc", got "Nexus Corp")
+  x should return status ok (expected "healthy", got "ok")
+  x should return a list of orders (expected 10 items, got 3)`}</pre>
+          </div>
+
+          <MentorNote>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              <span className="text-white">Read the error carefully.</span> The tests have wrong
+              expected values - not the app. The test says it expects{" "}
+              <code className="text-cyan-400 font-mono">&quot;Acme Inc&quot;</code> but the app
+              returns <code className="text-cyan-400 font-mono">&quot;Nexus Corp&quot;</code>. Open{" "}
+              <code className="text-cyan-400 font-mono">src/index.test.js</code> and read all 3 wrong
+              values. You will fix them in the next task.
+            </p>
+          </MentorNote>
 
           {!task1Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
@@ -214,41 +289,50 @@ GET /api/metrics - NOT tested`}</CodeBlock>
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                I have identified the untested endpoints
+                I ran <code className="text-cyan-400 font-mono">npm test</code> and see 3 failing tests
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 2 */}
-        <TaskCard number="02" title="Write tests for the metrics endpoint" done={task2Done} locked={!task1Done}>
+        <TaskCard number="02" title="Fix the failing tests" done={task2Done} locked={!task1Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">The metrics endpoint returns the DORA baseline for Nexus Corp.</span>{" "}
-              If someone changes it accidentally, we want to know immediately. Write tests that
-              lock in the expected shape and values.
+              <span className="text-white">The test file has intentional bugs - wrong expected values.</span>{" "}
+              Find them and correct them. This teaches you to read tests, not just write them.
+              A test that expects the wrong value is worse than no test - it gives you false confidence.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to src/index.test.js</SectionLabel>
-            <CodeBlock>{`describe('GET /api/metrics', () => {
-  it('should return DORA metrics', async () => {
-    const res = await request(app).get('/api/metrics')
-    expect(res.statusCode).toBe(200)
-    expect(res.body).toHaveProperty('deploymentFrequency')
-    expect(res.body).toHaveProperty('leadTime')
-    expect(res.body).toHaveProperty('changeFailureRate')
-    expect(res.body).toHaveProperty('mttr')
-  })
-
-  it('should return the Nexus Corp baseline values', async () => {
-    const res = await request(app).get('/api/metrics')
-    expect(res.body.deploymentFrequency).toBe('1x per month')
-    // TODO: add assertions for the other three metrics
-  })
-})`}</CodeBlock>
+            <SectionLabel>How to fix</SectionLabel>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Open <code className="text-cyan-400 font-mono">src/index.test.js</code> in your editor.
+              Find the 3 wrong expected values and correct them. Then run{" "}
+              <code className="text-cyan-400 font-mono">npm test</code> again - all 3 should pass.
+            </p>
           </div>
+
+          <HintBox>
+            <p className="text-sm text-gray-300 leading-relaxed">
+              <span className="text-white">What the API actually returns:</span>
+            </p>
+            <ul className="flex flex-col gap-1 mt-1">
+              <li className="text-sm text-gray-400">
+                <code className="text-yellow-400 font-mono">GET /</code> returns{" "}
+                <code className="text-gray-300 font-mono">company: &quot;Nexus Corp&quot;</code>
+              </li>
+              <li className="text-sm text-gray-400">
+                <code className="text-yellow-400 font-mono">GET /health</code> returns{" "}
+                <code className="text-gray-300 font-mono">status: &quot;ok&quot;</code>
+              </li>
+              <li className="text-sm text-gray-400">
+                <code className="text-yellow-400 font-mono">GET /api/orders</code> returns{" "}
+                <code className="text-gray-300 font-mono">3 orders</code>
+              </li>
+            </ul>
+          </HintBox>
 
           {!task2Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
@@ -258,31 +342,89 @@ GET /api/metrics - NOT tested`}</CodeBlock>
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                npm test shows the new metrics tests passing
+                <code className="text-cyan-400 font-mono">npm test</code> shows 3 passing, 0 failing
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 3 */}
-        <TaskCard number="03" title="Test edge cases and error handling" done={task3Done} locked={!task2Done}>
+        <TaskCard number="03" title="Add a test step to the GitHub Actions workflow" done={task3Done} locked={!task2Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Happy path tests are not enough.</span>{" "}
-              What happens when someone requests a route that does not exist? What happens with
-              wrong HTTP methods? These are the bugs customers find.
+              <span className="text-white">The pipeline only installs dependencies right now.</span>{" "}
+              It never runs tests. A pipeline without tests is just automated file copying - it catches
+              nothing. Adding{" "}
+              <code className="text-cyan-400 font-mono">npm test</code> as a step is the difference
+              between a build pipeline and a CI pipeline.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add error case tests</SectionLabel>
-            <CodeBlock>{`describe('Error handling', () => {
-  it('should return 404 for unknown routes', async () => {
-    const res = await request(app).get('/api/unknown')
-    expect(res.statusCode).toBe(404)
-  })
-})`}</CodeBlock>
+            <SectionLabel>How to add the test step</SectionLabel>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Open <code className="text-cyan-400 font-mono">.github/workflows/ci.yml</code> in your
+              editor. Find the <code className="text-cyan-400 font-mono">TODO</code> comment below the
+              install step. Replace it with the following:
+            </p>
+            <pre
+              className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
+              style={{
+                backgroundColor: "#0d0d0d",
+                borderLeft: "3px solid rgb(31,41,55)",
+                color: "rgb(156,163,175)",
+              }}
+            >{`      - name: Run tests
+        run: npm test`}</pre>
           </div>
+
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Incomplete workflow with TODO visible</SectionLabel>
+            <pre
+              className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
+              style={{
+                backgroundColor: "#0d0d0d",
+                borderLeft: "3px solid rgba(239,68,68,0.4)",
+                color: "rgb(156,163,175)",
+              }}
+            >{`name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      # TODO: add a step to run the tests`}</pre>
+          </div>
+
+          <p className="text-gray-400 text-sm leading-relaxed">
+            Once you have added the step, commit and push to your fork.
+          </p>
+          <pre
+            className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
+            style={{
+              backgroundColor: "#0d0d0d",
+              borderLeft: "3px solid rgb(31,41,55)",
+              color: "rgb(156,163,175)",
+            }}
+          >{`git add .github/workflows/ci.yml
+git commit -m "feat: add test step to CI pipeline"
+git push`}</pre>
 
           {!task3Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
@@ -292,95 +434,89 @@ GET /api/metrics - NOT tested`}</CodeBlock>
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                I have added at least 2 error case tests and they pass
+                I added the test step and pushed to my fork on GitHub
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 4 */}
-        <TaskCard number="04" title="Check your test coverage" done={task4Done} locked={!task3Done}>
+        <TaskCard number="04" title="See the pipeline run green" done={task4Done} locked={!task3Done}>
+          <div
+            className="flex flex-col gap-2 p-5 border"
+            style={{
+              backgroundColor: "#0a0700",
+              borderColor: "rgba(251,146,60,0.4)",
+              borderLeft: "3px solid rgb(251,146,60)",
+            }}
+          >
+            <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
+              First time on your fork?
+            </span>
+            <p className="text-sm text-gray-300 leading-relaxed">
+              GitHub disables Actions on forked repositories by default. If you see
+              &ldquo;Workflows aren&apos;t being run on this forked repository&rdquo;, go to the{" "}
+              <span className="text-white">Actions</span> tab on your fork and click{" "}
+              &ldquo;I understand my workflows, go ahead and enable them&rdquo;. You only need to
+              do this once per fork.
+            </p>
+          </div>
+
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Coverage tells you which lines of code are executed by your tests.</span>{" "}
-              It is not a goal in itself — 100% coverage with bad tests means nothing — but it
-              helps you find untested code paths.
+              <span className="text-white">This is the moment.</span> Every future commit to this
+              repo will now be automatically tested. No more bugs hiding in the codebase for months.
+              No more &quot;it worked on my machine.&quot; The pipeline tells you - on every push.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add coverage script to package.json</SectionLabel>
-            <CodeBlock>{`"test:coverage": "jest --coverage"`}</CodeBlock>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <SectionLabel>Run it</SectionLabel>
+            <SectionLabel>How to verify</SectionLabel>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Run <code className="text-cyan-400 font-mono">npm run test:coverage</code>. Look at
-              the coverage report. Find the lowest-covered file.
+              Go to your fork on GitHub. Click the{" "}
+              <span className="text-white">Actions</span> tab. You should see a workflow run
+              triggered by your last push. Wait for it to complete - it should show a green
+              checkmark. Click into it to see all steps pass including{" "}
+              <span className="text-white font-mono">Run tests</span>.
             </p>
           </div>
 
           {!task4Done && (
-            <label className="flex items-center gap-3 cursor-pointer group">
-              <input
-                type="checkbox"
-                onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
-              />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                I have run coverage and seen the report
-              </span>
-            </label>
-          )}
-        </TaskCard>
-
-        {/* Task 5 */}
-        <TaskCard number="05" title="Push and see all tests pass in CI" done={task5Done} locked={!task4Done}>
-          <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Local tests passing is not enough.</span>{" "}
-              The pipeline must run them too. Every commit should trigger the full test suite.
-            </p>
-          </MentorNote>
-
-          <div className="flex flex-col gap-2">
-            <SectionLabel>Commit and push your changes</SectionLabel>
-            <CodeBlock>{`git add src/index.test.js package.json
-git commit -m 'test: add metrics endpoint and error handling tests'
-git push`}</CodeBlock>
-          </div>
-
-          <p className="text-gray-400 text-sm leading-relaxed">
-            Go to the <strong className="text-white">Actions</strong> tab on GitHub and verify all
-            tests pass in CI.
-          </p>
-
-          {!task5Done && (
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-2">
-                <SectionLabel>Paste your green Actions run URL</SectionLabel>
-                <input
-                  type="url"
-                  value={actionsUrl}
-                  onChange={(e) => setActionsUrl(e.target.value)}
-                  placeholder="https://github.com/your-username/nexus-corp-app/actions/runs/..."
-                  className="w-full px-3 py-2 text-sm font-mono text-white outline-none border"
-                  style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
-                />
+                <label className="text-xs font-mono text-gray-600 uppercase tracking-widest">
+                  Paste the URL of your green Actions run
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="url"
+                    value={actionsUrl}
+                    onChange={(e) => setActionsUrl(e.target.value)}
+                    placeholder="https://github.com/your-username/nexus-corp-app/actions/runs/..."
+                    className="flex-1 px-3 py-2 text-sm font-mono text-white outline-none border"
+                    style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+                  />
+                </div>
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <input
                   type="checkbox"
                   onChange={(e) => {
-                    if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true)
+                    if (e.target.checked && actionsUrl.includes("github.com") && actionsUrl.includes("actions")) {
+                      setTask4Done(true)
+                    }
                   }}
                   className="w-4 h-4 accent-cyan-400 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                  All tests pass in CI
+                  My pipeline is green
                 </span>
               </label>
+              {actionsUrl && (!actionsUrl.includes("github.com") || !actionsUrl.includes("actions")) && (
+                <p className="text-xs font-mono" style={{ color: "rgb(239,68,68)" }}>
+                  Paste a GitHub Actions run URL to confirm
+                </p>
+              )}
             </div>
           )}
         </TaskCard>
@@ -396,7 +532,7 @@ git push`}</CodeBlock>
             }}
           >
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-              ✓ Test suite complete. Nexus Corp now has meaningful test coverage.
+              ✓ Pipeline established. Every commit is now automatically tested.
             </p>
             <a
               href="?phase=4"
@@ -407,6 +543,8 @@ git push`}</CodeBlock>
             </a>
           </div>
         )}
+
+        </> }
 
       </div>
     </div>

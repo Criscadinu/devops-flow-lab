@@ -20,20 +20,20 @@ describe('computeDora', () => {
     expect(result.mttr).toEqual(doraBaseline.mttr)
   })
 
-  it('applies M-01 + M-02 + M-04: CFR and LT update again (DF still at baseline)', () => {
-    const result = computeDora(new Set(['M-01', 'M-02', 'M-04']))
+  it('applies M-01 + M-02 + M-05: CFR and LT update again (DF still at baseline)', () => {
+    const result = computeDora(new Set(['M-01', 'M-02', 'M-05']))
     expect(result.df).toEqual(doraBaseline.df)
     expect(result.cfr.value).toBe('18%')
     expect(result.lt.value).toBe('28 days')
     expect(result.mttr).toEqual(doraBaseline.mttr)
   })
 
-  it('applies all four missions M-01 through M-09 correctly', () => {
-    const result = computeDora(new Set(['M-01', 'M-02', 'M-04', 'M-09']))
-    // M-09 overrides DF and LT
+  it('applies all four missions M-01 through M-16 correctly', () => {
+    const result = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16']))
+    // M-16 overrides DF and LT
     expect(result.df.value).toBe('1× per week')
     expect(result.lt.value).toBe('14 days')
-    // M-04 set CFR to 18%
+    // M-05 set CFR to 18%
     expect(result.cfr.value).toBe('18%')
     // MTTR never touched
     expect(result.mttr).toEqual(doraBaseline.mttr)
@@ -52,48 +52,48 @@ describe('computeDora', () => {
     expect(result.lt.value).toBe('36 days')
   })
 
-  it('missions are always applied in canonical order M-01→M-09 regardless of Set insertion order', () => {
-    // M-09 inserted before M-04 in the Set — result should still reflect M-09 overriding M-04's LT
-    const result = computeDora(new Set(['M-09', 'M-04', 'M-02', 'M-01']))
-    expect(result.lt.value).toBe('14 days')     // M-09 wins (applied last)
-    expect(result.df.value).toBe('1× per week') // M-09 is first to set DF
+  it('missions are always applied in canonical order M-01→M-16 regardless of Set insertion order', () => {
+    // M-16 inserted before M-05 in the Set — result should still reflect M-16 overriding M-05's LT
+    const result = computeDora(new Set(['M-16', 'M-05', 'M-02', 'M-01']))
+    expect(result.lt.value).toBe('14 days')     // M-16 wins (applied last)
+    expect(result.df.value).toBe('1× per week') // M-16 is first to set DF
   })
 
-  it('applies M-05: CFR improves', () => {
-    const result = computeDora(new Set(['M-01', 'M-02', 'M-04', 'M-09', 'M-05']))
+  it('applies M-06: CFR improves', () => {
+    const result = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16', 'M-06']))
     expect(result.cfr.value).toBe('10%')
     expect(result.cfr.perf).toBe('MEDIUM PERFORMER')
   })
 
-  it('applies M-10: LT improves', () => {
-    const result = computeDora(new Set(['M-01', 'M-02', 'M-04', 'M-09', 'M-05', 'M-10']))
+  it('applies M-04: LT improves', () => {
+    const result = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16', 'M-06', 'M-04']))
     expect(result.lt.value).toBe('7 days')
   })
 
-  it('applies M-11: DF and CFR reach high performer', () => {
-    const result = computeDora(new Set(['M-01', 'M-02', 'M-04', 'M-09', 'M-05', 'M-10', 'M-11']))
+  it('applies M-20: DF and CFR reach high performer', () => {
+    const result = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16', 'M-06', 'M-04', 'M-20']))
     expect(result.df.perf).toBe('HIGH PERFORMER')
     expect(result.cfr.perf).toBe('HIGH PERFORMER')
   })
 
-  it('applies M-14: MTTR improves from 72 hours to 4 hours', () => {
-    const result = computeDora(new Set(['M-01', 'M-02', 'M-04', 'M-09', 'M-05', 'M-10', 'M-11', 'M-14']))
+  it('applies M-23: MTTR improves from 72 hours to 4 hours', () => {
+    const result = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16', 'M-06', 'M-04', 'M-20', 'M-23']))
     expect(result.mttr.value).toBe('4 hours')
     expect(result.mttr.perf).not.toBe('LOW PERFORMER')
   })
 
-  it('applies M-15: MTTR improves to 1 hour', () => {
-    const result = computeDora(new Set(['M-01', 'M-02', 'M-04', 'M-09', 'M-05', 'M-10', 'M-11', 'M-14', 'M-15']))
+  it('applies M-24: MTTR improves to 1 hour', () => {
+    const result = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16', 'M-06', 'M-04', 'M-20', 'M-23', 'M-24']))
     expect(result.mttr.value).toBe('1 hour')
   })
 
-  it('applies M-16: MTTR improves to 30 minutes', () => {
-    const result = computeDora(new Set(['M-01', 'M-02', 'M-04', 'M-09', 'M-05', 'M-10', 'M-11', 'M-14', 'M-15', 'M-16']))
+  it('applies M-17: MTTR improves to 30 minutes', () => {
+    const result = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16', 'M-06', 'M-04', 'M-20', 'M-23', 'M-24', 'M-17']))
     expect(result.mttr.value).toBe('30 minutes')
   })
 
-  it('full M-01 through M-16 produces elite or high performer across all metrics', () => {
-    const result = computeDora(new Set(['M-01', 'M-02', 'M-04', 'M-09', 'M-05', 'M-10', 'M-11', 'M-14', 'M-15', 'M-16']))
+  it('full M-01 through M-17 produces elite or high performer across all metrics', () => {
+    const result = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16', 'M-06', 'M-04', 'M-20', 'M-23', 'M-24', 'M-17']))
     expect(['HIGH PERFORMER', 'ELITE']).toContain(result.df.perf)
     expect(['HIGH PERFORMER', 'ELITE']).toContain(result.lt.perf)
     expect(['HIGH PERFORMER', 'ELITE']).toContain(result.cfr.perf)

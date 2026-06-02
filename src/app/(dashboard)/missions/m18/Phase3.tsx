@@ -144,7 +144,6 @@ export function Phase3() {
   const [task3Done, setTask3Done] = useState(false)
   const [task4Done, setTask4Done] = useState(false)
   const [task5Done, setTask5Done] = useState(false)
-  const [prUrl, setPrUrl] = useState("")
   const [actionsUrl, setActionsUrl] = useState("")
 
   const allDone = task1Done && task2Done && task3Done && task4Done && task5Done
@@ -161,10 +160,10 @@ export function Phase3() {
             className="text-3xl text-white tracking-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Your Mission - Build the Review Process
+            Your Mission - Build the Experiment Engine
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Enable branch protection, create a PR template and contributing guide, then open and merge a real PR.
+            State a hypothesis, implement pagination behind a feature flag, measure the result.
           </p>
         </div>
 
@@ -190,12 +189,12 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Fork from M-17 with experiment engine in place
+                Fork from M-17 with incident process in place
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Your nexus-corp-app fork has the pagination experiment, /api/metrics with experiments object, and a green pipeline.
+              Your nexus-corp-app fork has /api/alerts, /api/status, docs/runbook.md, and a green pipeline.
             </p>
 
             <div style={{ borderTop: "1px solid rgb(31,41,55)" }} />
@@ -203,46 +202,33 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                GitHub repository is public and accessible
+                Feature flags pattern already established (M-20)
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Branch protection requires a GitHub repository. Your fork from the previous missions is already set up.
+              You have used environment-variable feature flags since M-20. This mission uses the same pattern for experiments.
             </p>
           </div>
         </div>
 
         {/* Task 1 */}
-        <TaskCard number="01" title="Enable branch protection on main" done={task1Done} locked={false}>
+        <TaskCard number="01" title="State the hypothesis as code" done={task1Done} locked={false}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Branch protection is not bureaucracy — it is a technical enforcement of process.</span>{" "}
-              Without it, any engineer can push directly to main at any time. With it, the process
-              is enforced by the platform, not by trust. The rule is not &ldquo;please don&apos;t push
-              to main&rdquo; — it is &ldquo;you cannot push to main.&rdquo;
+              <span className="text-white">A hypothesis written as a comment in the code is a decision record.</span>{" "}
+              Six months from now, when someone asks why pagination exists and whether it worked,
+              the answer is in the code. It also forces you to be specific before you build anything.
             </p>
           </MentorNote>
 
-          <div className="flex flex-col gap-3">
-            <SectionLabel>On GitHub: Settings → Branches → Add rule</SectionLabel>
-            <div className="flex flex-col gap-2">
-              {[
-                { label: "Branch name pattern", value: "main" },
-                { label: "Require a pull request before merging", value: "✓ enabled" },
-                { label: "Require status checks to pass", value: "✓ enabled (select: test)" },
-                { label: "Do not allow bypassing the above settings", value: "✓ enabled" },
-              ].map((row, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-4 px-4 py-3 border-b last:border-b-0"
-                  style={{ borderColor: "rgb(31,41,55)", backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
-                >
-                  <span className="text-xs font-mono text-gray-600 shrink-0 w-48">{row.label}</span>
-                  <span className="text-xs font-mono" style={{ color: "rgb(6,182,212)" }}>{row.value}</span>
-                </div>
-              ))}
-            </div>
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Add to src/index.js — above the /api/orders route</SectionLabel>
+            <CodeBlock>{`// HYPOTHESIS: Adding pagination to /api/orders will reduce response
+// time for large order sets by limiting payload size.
+// MEASURE: Compare response time with and without FEATURE_PAGINATION=true
+// DECIDE: Ship if p95 response time improves by >20% for requests >20 orders
+// STATUS: experimenting`}</CodeBlock>
           </div>
 
           {!task1Done && (
@@ -253,42 +239,57 @@ export function Phase3() {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Branch protection is enabled on main — direct pushes are blocked
+                Hypothesis is documented as a comment above the /api/orders route
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 2 */}
-        <TaskCard number="02" title="Create a pull request template" done={task2Done} locked={!task1Done}>
+        <TaskCard number="02" title="Implement pagination behind a feature flag" done={task2Done} locked={!task1Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A PR template ensures every pull request answers the same questions: what changed, why, and how to test it.</span>{" "}
-              Without a template, reviews are inconsistent. With one, every reviewer knows exactly
-              what context to expect.
+              <span className="text-white">The flag lets you run control and treatment side by side.</span>{" "}
+              You can enable it for specific environments without touching the code again. Default
+              is off — you ship dark, measure first.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Create .github/pull_request_template.md in the nexus-corp-app repo</SectionLabel>
-            <CodeBlock>{`## What changed
-<!-- Brief description of what this PR does -->
+            <SectionLabel>Update the /api/orders route in src/index.js</SectionLabel>
+            <CodeBlock>{`app.get('/api/orders', (req, res) => {
+  const start = Date.now()
 
-## Why
-<!-- The problem this solves or the feature this adds -->
+  let result = orders
 
-## How to test
-<!-- Steps to verify this works correctly -->
-1.
-2.
+  if (process.env.FEATURE_PAGINATION === 'true') {
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 10
+    const offset = (page - 1) * limit
+    result = {
+      data: orders.slice(offset, offset + limit),
+      pagination: {
+        page,
+        limit,
+        total: orders.length,
+        pages: Math.ceil(orders.length / limit),
+      }
+    }
+  }
 
-## Checklist
-- [ ] Tests pass locally (\`npm test\`)
-- [ ] No console errors
-- [ ] DORA impact considered (does this affect any metrics?)
+  const duration = Date.now() - start
+  req.log && req.log.info(
+    { duration_ms: duration, feature_pagination: process.env.FEATURE_PAGINATION === 'true' },
+    'orders request'
+  )
 
-## Related
-<!-- Link to issue, hypothesis, or postmortem if applicable -->`}</CodeBlock>
+  res.json(result)
+})`}</CodeBlock>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Add to docker-compose.yml</SectionLabel>
+            <CodeBlock>{`- FEATURE_PAGINATION=false`}</CodeBlock>
           </div>
 
           {!task2Done && (
@@ -299,50 +300,49 @@ export function Phase3() {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                .github/pull_request_template.md is created and committed to the repo
+                Pagination is implemented behind FEATURE_PAGINATION flag, default off
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 3 */}
-        <TaskCard number="03" title="Create a CONTRIBUTING.md" done={task3Done} locked={!task2Done}>
+        <TaskCard number="03" title="Add response time logging to measure the experiment" done={task3Done} locked={!task2Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A CONTRIBUTING.md makes the process explicit and discoverable.</span>{" "}
-              Every new engineer who clones the repo immediately understands how the team works.
-              Process in a document is better than process in someone&apos;s head.
+              <span className="text-white">You cannot validate a hypothesis without measurement.</span>{" "}
+              Adding experiment context to /api/metrics means you can check the status of every
+              running experiment in one call — without reading raw logs.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Create CONTRIBUTING.md in the nexus-corp-app repo</SectionLabel>
-            <CodeBlock>{`# Contributing to Nexus Corp App
-
-## Branch strategy
-- Never push directly to \`main\`
-- Create a feature branch: \`git checkout -b feat/your-feature-name\`
-- Open a pull request when ready
-
-## Pull request process
-1. Fill in the PR template completely
-2. Ensure \`npm test\` passes locally
-3. Request review from at least one team member
-4. Address all review comments before merging
-5. Squash merge to keep history clean
-
-## Commit message format
-Use conventional commits:
-- \`feat:\` — new feature
-- \`fix:\` — bug fix
-- \`chore:\` — maintenance, no production change
-- \`docs:\` — documentation only
-
-## Code review guidelines
-- Review within 24 hours of request
-- Comment on logic, not style
-- Approve only when you would ship this yourself
-- Ask questions before blocking`}</CodeBlock>
+            <SectionLabel>Update /api/metrics in src/index.js — add experiments object</SectionLabel>
+            <CodeBlock>{`app.get('/api/metrics', (req, res) => {
+  const uptime = Math.floor((Date.now() - startTime) / 1000)
+  res.json({
+    // DORA baseline
+    deploymentFrequency: '1x per month',
+    leadTime: '43 days',
+    changeFailureRate: '42%',
+    mttr: '72 hours',
+    // Live app metrics
+    uptime_seconds: uptime,
+    requests_total: requestCount,
+    errors_total: errorCount,
+    error_rate: requestCount > 0
+      ? ((errorCount / requestCount) * 100).toFixed(2) + '%'
+      : '0%',
+    // Active experiments
+    experiments: {
+      pagination: {
+        enabled: process.env.FEATURE_PAGINATION === 'true',
+        hypothesis: 'Pagination reduces response time for large order sets',
+        status: 'experimenting',
+      }
+    }
+  })
+})`}</CodeBlock>
           </div>
 
           {!task3Done && (
@@ -353,85 +353,86 @@ Use conventional commits:
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                CONTRIBUTING.md is created and committed to the repo
+                GET /api/metrics includes experiments object with pagination status
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 4 */}
-        <TaskCard number="04" title="Open a real pull request" done={task4Done} locked={!task3Done}>
+        <TaskCard number="04" title="Write tests for both flag states" done={task4Done} locked={!task3Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">The process only exists if you use it.</span>{" "}
-              Open a real PR on your fork — even a small improvement. Fill in the template.
-              Let the CI run. This is the first time the full process runs end to end:
-              branch → PR → review → CI → merge.
+              <span className="text-white">A feature flag with no tests is a trap.</span>{" "}
+              You need to verify both paths work correctly — with and without pagination. Without
+              tests, you will discover the broken path in production.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Create a branch and open a PR</SectionLabel>
-            <CodeBlock>{`git checkout -b feat/add-contributing-docs
-git add .github/pull_request_template.md CONTRIBUTING.md
-git commit -m 'docs: add PR template and contributing guidelines'
-git push origin feat/add-contributing-docs`}</CodeBlock>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              Then open a PR from this branch to main on GitHub. The PR template will auto-populate. Fill it in.
-            </p>
+            <SectionLabel>Add to src/index.test.js</SectionLabel>
+            <CodeBlock>{`describe('Hypothesis: Pagination', () => {
+  it('GET /api/orders returns array when FEATURE_PAGINATION is off', async () => {
+    delete process.env.FEATURE_PAGINATION
+    const res = await request(app).get('/api/orders')
+    expect(res.status).toBe(200)
+    expect(Array.isArray(res.body)).toBe(true)
+  })
+
+  it('GET /api/orders returns paginated object when FEATURE_PAGINATION is on', async () => {
+    process.env.FEATURE_PAGINATION = 'true'
+    const res = await request(app).get('/api/orders?page=1&limit=5')
+    expect(res.status).toBe(200)
+    expect(res.body).toHaveProperty('data')
+    expect(res.body).toHaveProperty('pagination')
+    expect(res.body.pagination).toHaveProperty('total')
+    delete process.env.FEATURE_PAGINATION
+  })
+
+  it('GET /api/metrics includes experiments object', async () => {
+    const res = await request(app).get('/api/metrics')
+    expect(res.body).toHaveProperty('experiments')
+    expect(res.body.experiments).toHaveProperty('pagination')
+  })
+})`}</CodeBlock>
           </div>
 
           {!task4Done && (
-            <div className="flex flex-col gap-3">
-              <div className="flex flex-col gap-2">
-                <SectionLabel>Paste your PR URL</SectionLabel>
-                <input
-                  type="url"
-                  value={prUrl}
-                  onChange={(e) => setPrUrl(e.target.value)}
-                  placeholder="https://github.com/your-username/nexus-corp-app/pull/..."
-                  className="w-full px-3 py-2 text-sm font-mono text-white outline-none border"
-                  style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
-                />
-              </div>
-              <label className="flex items-center gap-3 cursor-pointer group">
-                <input
-                  type="checkbox"
-                  onChange={(e) => {
-                    if (e.target.checked && prUrl.includes("github.com")) setTask4Done(true)
-                  }}
-                  className="w-4 h-4 accent-cyan-400 cursor-pointer"
-                />
-                <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                  Pull request is open and CI is running on the branch
-                </span>
-              </label>
-            </div>
+            <label className="flex items-center gap-3 cursor-pointer group">
+              <input
+                type="checkbox"
+                onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
+                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+              />
+              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                npm test passes for both flag states
+              </span>
+            </label>
           )}
         </TaskCard>
 
         {/* Task 5 */}
-        <TaskCard number="05" title="Merge the PR and verify" done={task5Done} locked={!task4Done}>
+        <TaskCard number="05" title="Commit and push — verify CI is green" done={task5Done} locked={!task4Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Merging through a PR — even for a simple docs change — completes the loop.</span>{" "}
-              The branch protection rules enforce the process. CI must pass. You must have an approval
-              (you can approve your own PR as the repo owner for this exercise). This is the process
-              that prevents 3am rollbacks.
+              <span className="text-white">The experiment is live — deployed dark.</span>{" "}
+              To run it: set FEATURE_PAGINATION=true in production, measure response times via
+              /api/metrics, compare with the baseline. When you have data, update the hypothesis
+              STATUS from &lsquo;experimenting&rsquo; to &lsquo;validated&rsquo; or &lsquo;rejected&rsquo;.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Merge the PR on GitHub, then verify locally</SectionLabel>
-            <CodeBlock>{`git checkout main
-git pull
-git log --oneline -3`}</CodeBlock>
+            <SectionLabel>Commit and push</SectionLabel>
+            <CodeBlock>{`git add src/index.js src/index.test.js docker-compose.yml
+git commit -m 'feat: add pagination experiment behind feature flag with hypothesis documentation'
+git push`}</CodeBlock>
           </div>
 
           {!task5Done && (
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-2">
-                <SectionLabel>Paste your green Actions run URL for the merged PR</SectionLabel>
+                <SectionLabel>Paste your green Actions run URL</SectionLabel>
                 <input
                   type="url"
                   value={actionsUrl}
@@ -450,7 +451,7 @@ git log --oneline -3`}</CodeBlock>
                   className="w-4 h-4 accent-cyan-400 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                  PR is merged, CI is green, main is protected
+                  Pipeline is green — experiment is deployed dark
                 </span>
               </label>
             </div>
@@ -468,7 +469,7 @@ git log --oneline -3`}</CodeBlock>
             }}
           >
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-              ✓ Review process established. No code reaches main without a passing pipeline and a human review.
+              ✓ Experiment deployed dark. Nexus Corp now ships with evidence, not hope.
             </p>
             <a
               href="?phase=4"

@@ -160,10 +160,10 @@ export function Phase3() {
             className="text-3xl text-white tracking-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Your Mission - Add Eyes to Production
+            Your Mission - Shrink the Batch
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Wire structured logging, a real health endpoint, and live request counters into the Nexus Corp app.
+            Audit your commit size, practice splitting a change into two commits, document the convention, and wire a diff-size warning.
           </p>
         </div>
 
@@ -181,61 +181,47 @@ export function Phase3() {
               Before you start
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              This mission builds on your M-11 work. Both items should already be ready.
+              This mission builds on M-07. Your repo should have ESLint and a unit test in place.
             </p>
           </div>
-
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
-              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Fork from M-11 with green pipeline
-              </p>
-              <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
-            </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Your nexus-corp-app fork has feature flags, passing tests, and GitHub Actions running on every push.
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
+            <p className="text-white text-sm font-bold flex-1" style={syne.style}>
+              nexus-corp-app with lint and unit tests from M-07
             </p>
-
-            <div style={{ borderTop: "1px solid rgb(31,41,55)" }} />
-
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
-              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Node.js and npm installed
-              </p>
-              <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
-            </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Verify with <code className="text-cyan-400 font-mono">node --version</code> and <code className="text-cyan-400 font-mono">npm --version</code>.
-            </p>
+            <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
           </div>
         </div>
 
         {/* Task 1 */}
-        <TaskCard number="01" title="Add structured logging with pino" done={task1Done} locked={false}>
+        <TaskCard number="01" title="Audit your last three commits" done={task1Done} locked={false}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">console.log is not logging.</span>{" "}
-              It has no structure, no levels, no timestamps. pino is the standard structured logger
-              for Node.js. Every request gets a JSON log line automatically.
+              <span className="text-white">Before changing how you work, understand how you currently work.</span>{" "}
+              Look at your last three commits and measure the batch size.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Install pino</SectionLabel>
-            <CodeBlock>{`npm install pino pino-http`}</CodeBlock>
+            <SectionLabel>Check commit history and diff stats</SectionLabel>
+            <CodeBlock>{`git log --oneline -10
+git diff HEAD~3 HEAD --stat`}</CodeBlock>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              Count the lines changed per commit. If any commit has more than 400 lines changed, it was a large batch.
+            </p>
           </div>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to src/index.js</SectionLabel>
-            <CodeBlock>{`const pino = require('pino')
-const pinoHttp = require('pino-http')
+            <SectionLabel>Create BATCH-AUDIT.md at the repo root</SectionLabel>
+            <CodeBlock>{`# Batch Size Audit
 
-const logger = pino({ level: process.env.LOG_LEVEL || 'info' })
+## Last 3 commits
+| Commit | Description | Lines changed |
+|--------|-------------|---------------|
+| abc123 | ... | ... |
 
-// Add after app is created, before routes:
-app.use(pinoHttp({ logger }))`}</CodeBlock>
+## Finding
+Were any commits large batches (>400 lines)? What could have been split?`}</CodeBlock>
           </div>
 
           {!task1Done && (
@@ -246,40 +232,34 @@ app.use(pinoHttp({ logger }))`}</CodeBlock>
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Every request now produces a structured JSON log line
+                Batch audit complete — I know my current batch size
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 2 */}
-        <TaskCard number="02" title="Upgrade the /health endpoint" done={task2Done} locked={!task1Done}>
+        <TaskCard number="02" title="Split a large change into two commits" done={task2Done} locked={!task1Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A health check that only says &ldquo;ok&rdquo; is useless.</span>{" "}
-              A real health check tells you uptime, memory pressure, and version. Load balancers
-              and monitoring tools use this to decide if your app is healthy.
+              <span className="text-white">The skill of splitting work is the core of small batch development.</span>{" "}
+              Take one planned change and deliberately split it into two: the infrastructure first, the behavior second.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Replace the /health route in src/index.js</SectionLabel>
-            <CodeBlock>{`const startTime = Date.now()
+            <SectionLabel>Commit 1 — infrastructure (stub + failing test)</SectionLabel>
+            <CodeBlock>{`# Add the new function signature with a stub implementation
+# Add the test that currently fails
+git add src/orders.js src/__tests__/orders.test.js
+git commit -m 'feat: add getOrdersByStatus stub and failing test'`}</CodeBlock>
+          </div>
 
-app.get('/health', (req, res) => {
-  const uptime = Math.floor((Date.now() - startTime) / 1000)
-  const mem = process.memoryUsage()
-  res.json({
-    status: 'ok',
-    version: process.env.APP_VERSION || '1.0.0',
-    uptime_seconds: uptime,
-    memory: {
-      used_mb: Math.round(mem.heapUsed / 1024 / 1024),
-      total_mb: Math.round(mem.heapTotal / 1024 / 1024),
-    },
-    timestamp: new Date().toISOString(),
-  })
-})`}</CodeBlock>
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Commit 2 — behavior (implementation, test now passes)</SectionLabel>
+            <CodeBlock>{`# Implement the function so the test passes
+git add src/orders.js
+git commit -m 'feat: implement getOrdersByStatus — test now passes'`}</CodeBlock>
           </div>
 
           {!task2Done && (
@@ -290,56 +270,33 @@ app.get('/health', (req, res) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                GET /health returns uptime, memory, version and timestamp
+                I made two commits instead of one — infrastructure first, behavior second
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 3 */}
-        <TaskCard number="03" title="Add request counters" done={task3Done} locked={!task2Done}>
+        <TaskCard number="03" title="Add commit message convention to CONTRIBUTING.md" done={task3Done} locked={!task2Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Logs tell you what happened. Metrics tell you how often.</span>{" "}
-              A request counter lets you answer: how many errors in the last hour? What is my
-              error rate? Is traffic normal?
+              <span className="text-white">A commit message convention makes batch size visible in the log.</span>{" "}
+              Conventional commits force you to categorize each change — if you cannot describe it in one line, the batch is probably too large.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add counters above the routes in src/index.js</SectionLabel>
-            <CodeBlock>{`let requestCount = 0
-let errorCount = 0
+            <SectionLabel>Add to CONTRIBUTING.md</SectionLabel>
+            <CodeBlock>{`## Commit message format
+Use conventional commits:
+- feat: a new feature
+- fix: a bug fix
+- refactor: code change that neither fixes a bug nor adds a feature
+- test: adding or updating tests
+- docs: documentation only
+- chore: maintenance
 
-// Add this middleware after pinoHttp:
-app.use((req, res, next) => {
-  requestCount++
-  res.on('finish', () => {
-    if (res.statusCode >= 500) errorCount++
-  })
-  next()
-})`}</CodeBlock>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <SectionLabel>Update /api/metrics to include live counters</SectionLabel>
-            <CodeBlock>{`app.get('/api/metrics', (req, res) => {
-  const uptime = Math.floor((Date.now() - startTime) / 1000)
-  res.json({
-    // DORA baseline
-    deploymentFrequency: '1x per month',
-    leadTime: '43 days',
-    changeFailureRate: '42%',
-    mttr: '72 hours',
-    // Live app metrics
-    uptime_seconds: uptime,
-    requests_total: requestCount,
-    errors_total: errorCount,
-    error_rate: requestCount > 0
-      ? ((errorCount / requestCount) * 100).toFixed(2) + '%'
-      : '0%',
-  })
-})`}</CodeBlock>
+One logical change per commit. If your commit message needs "and", split it.`}</CodeBlock>
           </div>
 
           {!task3Done && (
@@ -350,40 +307,35 @@ app.use((req, res, next) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                GET /api/metrics returns live request and error counts
+                Commit convention documented in CONTRIBUTING.md
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 4 */}
-        <TaskCard number="04" title="Write tests for the new endpoints" done={task4Done} locked={!task3Done}>
+        <TaskCard number="04" title="Set up a pre-commit hook that warns on large diffs" done={task4Done} locked={!task3Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Telemetry that breaks silently is worse than no telemetry.</span>{" "}
-              Add tests so the CI pipeline catches regressions in your observability layer.
+              <span className="text-white">A pre-commit hook that warns when a diff is large makes the cost of large batches visible before you commit.</span>
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to src/index.test.js</SectionLabel>
-            <CodeBlock>{`describe('Telemetry', () => {
-  it('GET /health returns uptime and memory', async () => {
-    const res = await request(app).get('/health')
-    expect(res.status).toBe(200)
-    expect(res.body).toHaveProperty('uptime_seconds')
-    expect(res.body).toHaveProperty('memory')
-    expect(res.body).toHaveProperty('timestamp')
-  })
+            <SectionLabel>Create .git/hooks/pre-commit</SectionLabel>
+            <CodeBlock>{`#!/bin/sh
+LINES=$(git diff --cached --stat | tail -1 | grep -o '[0-9]* insertion' | grep -o '[0-9]*')
+if [ -n "$LINES" ] && [ "$LINES" -gt 400 ]; then
+  echo "Warning: This commit changes $LINES lines. Consider splitting it."
+fi`}</CodeBlock>
+          </div>
 
-  it('GET /api/metrics returns request counters', async () => {
-    const res = await request(app).get('/api/metrics')
-    expect(res.status).toBe(200)
-    expect(res.body).toHaveProperty('requests_total')
-    expect(res.body).toHaveProperty('errors_total')
-    expect(res.body).toHaveProperty('error_rate')
-  })
-})`}</CodeBlock>
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Make it executable</SectionLabel>
+            <CodeBlock>{`chmod +x .git/hooks/pre-commit`}</CodeBlock>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              The hook warns but does not block — the goal is awareness, not enforcement. You can always commit anyway.
+            </p>
           </div>
 
           {!task4Done && (
@@ -394,26 +346,25 @@ app.use((req, res, next) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                npm test passes with the new telemetry tests
+                Pre-commit hook warns on large diffs
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 5 */}
-        <TaskCard number="05" title="Commit and push — verify CI is green" done={task5Done} locked={!task4Done}>
+        <TaskCard number="05" title="Commit and push" done={task5Done} locked={!task4Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Telemetry only works in production. Ship it.</span>{" "}
-              From now on every deploy gives you visibility. Marco will sleep better.
+              <span className="text-white">The audit, the convention, and the habit are now permanent.</span>{" "}
+              Every future engineer who joins Nexus Corp inherits a codebase where small batches are the documented norm.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Commit and push</SectionLabel>
-            <CodeBlock>{`npm install
-git add src/index.js src/index.test.js package.json package-lock.json
-git commit -m 'feat: add structured logging, health check, and request metrics'
+            <SectionLabel>Commit and push all changes</SectionLabel>
+            <CodeBlock>{`git add BATCH-AUDIT.md CONTRIBUTING.md
+git commit -m 'docs: add batch audit and commit convention'
 git push`}</CodeBlock>
           </div>
 
@@ -439,7 +390,7 @@ git push`}</CodeBlock>
                   className="w-4 h-4 accent-cyan-400 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                  Pipeline is green — telemetry is live
+                  Pipeline is green
                 </span>
               </label>
             </div>
@@ -457,7 +408,7 @@ git push`}</CodeBlock>
             }}
           >
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-              ✓ Telemetry is live. Nexus Corp can now see what is happening in production.
+              ✓ The batch is smaller. The convention is documented. The habit is wired in.
             </p>
             <a
               href="?phase=4"

@@ -160,10 +160,10 @@ export function Phase3() {
             className="text-3xl text-white tracking-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Your Mission - Shrink the Batch
+            Your Mission - Shift Left
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Audit your commit size, practice splitting a change into two commits, document the convention, and wire a diff-size warning.
+            Add ESLint, write a unit test for the orders sort bug, wire lint into CI, and prove the safety net works.
           </p>
         </div>
 
@@ -181,47 +181,50 @@ export function Phase3() {
               Before you start
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              This mission builds on M-06. Your repo should have ESLint and a unit test in place.
+              This mission builds on M-06. Your pipeline should already run a test suite on every push.
             </p>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
-            <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-              nexus-corp-app with lint and unit tests from M-06
+
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
+              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
+                nexus-corp-app with a working CI pipeline from M-06
+              </p>
+              <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
+            </div>
+            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+              The pipeline runs tests. Now we move the error detection earlier — before the tests, before the push.
             </p>
-            <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
           </div>
         </div>
 
         {/* Task 1 */}
-        <TaskCard number="01" title="Audit your last three commits" done={task1Done} locked={false}>
+        <TaskCard number="01" title="Add ESLint to the project" done={task1Done} locked={false}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Before changing how you work, understand how you currently work.</span>{" "}
-              Look at your last three commits and measure the batch size.
+              <span className="text-white">Linting is the fastest feedback loop you can add.</span>{" "}
+              It runs before tests, catches entire categories of errors in milliseconds, and requires no test data or environment setup.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Check commit history and diff stats</SectionLabel>
-            <CodeBlock>{`git log --oneline -10
-git diff HEAD~3 HEAD --stat`}</CodeBlock>
+            <SectionLabel>Install ESLint and run the setup wizard</SectionLabel>
+            <CodeBlock>{`npm install --save-dev eslint
+npx eslint --init`}</CodeBlock>
             <p className="text-xs text-gray-600 leading-relaxed">
-              Count the lines changed per commit. If any commit has more than 400 lines changed, it was a large batch.
+              When prompted, choose: &ldquo;To check syntax and find problems&rdquo; → &ldquo;CommonJS&rdquo; → &ldquo;None of these&rdquo; → &ldquo;Node&rdquo; → JSON config format.
             </p>
           </div>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Create BATCH-AUDIT.md at the repo root</SectionLabel>
-            <CodeBlock>{`# Batch Size Audit
+            <SectionLabel>Add to package.json scripts</SectionLabel>
+            <CodeBlock>{`"lint": "eslint src/"`}</CodeBlock>
+          </div>
 
-## Last 3 commits
-| Commit | Description | Lines changed |
-|--------|-------------|---------------|
-| abc123 | ... | ... |
-
-## Finding
-Were any commits large batches (>400 lines)? What could have been split?`}</CodeBlock>
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Run it</SectionLabel>
+            <CodeBlock>{`npm run lint`}</CodeBlock>
           </div>
 
           {!task1Done && (
@@ -232,34 +235,55 @@ Were any commits large batches (>400 lines)? What could have been split?`}</Code
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Batch audit complete — I know my current batch size
+                ESLint is installed and runs without crashing
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 2 */}
-        <TaskCard number="02" title="Split a large change into two commits" done={task2Done} locked={!task1Done}>
+        <TaskCard number="02" title="Write a unit test for a pure function" done={task2Done} locked={!task1Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">The skill of splitting work is the core of small batch development.</span>{" "}
-              Take one planned change and deliberately split it into two: the infrastructure first, the behavior second.
+              <span className="text-white">A unit test tests one function in isolation.</span>{" "}
+              No database, no HTTP, no dependencies. Pure input → expected output. These are the tests that should make up 70% of your test suite.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Commit 1 — infrastructure (stub + failing test)</SectionLabel>
-            <CodeBlock>{`# Add the new function signature with a stub implementation
-# Add the test that currently fails
-git add src/orders.js src/__tests__/orders.test.js
-git commit -m 'feat: add getOrdersByStatus stub and failing test'`}</CodeBlock>
+            <SectionLabel>Add src/__tests__/orders.test.js</SectionLabel>
+            <CodeBlock>{`const { sortOrders } = require('../orders')
+
+describe('sortOrders', () => {
+  test('sorts orders by date descending', () => {
+    const orders = [
+      { id: 1, date: '2024-01-01', amount: 100 },
+      { id: 2, date: '2024-01-03', amount: 200 },
+      { id: 3, date: '2024-01-02', amount: 150 },
+    ]
+    const sorted = sortOrders(orders)
+    expect(sorted[0].id).toBe(2)
+    expect(sorted[1].id).toBe(3)
+    expect(sorted[2].id).toBe(1)
+  })
+
+  test('returns empty array when no orders', () => {
+    expect(sortOrders([])).toEqual([])
+  })
+})`}</CodeBlock>
           </div>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Commit 2 — behavior (implementation, test now passes)</SectionLabel>
-            <CodeBlock>{`# Implement the function so the test passes
-git add src/orders.js
-git commit -m 'feat: implement getOrdersByStatus — test now passes'`}</CodeBlock>
+            <SectionLabel>Add src/orders.js</SectionLabel>
+            <CodeBlock>{`function sortOrders(orders) {
+  return [...orders].sort((a, b) => new Date(b.date) - new Date(a.date))
+}
+module.exports = { sortOrders }`}</CodeBlock>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Run tests</SectionLabel>
+            <CodeBlock>{`npm test`}</CodeBlock>
           </div>
 
           {!task2Done && (
@@ -270,33 +294,30 @@ git commit -m 'feat: implement getOrdersByStatus — test now passes'`}</CodeBlo
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                I made two commits instead of one — infrastructure first, behavior second
+                Unit test passes — sortOrders is tested and green
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 3 */}
-        <TaskCard number="03" title="Add commit message convention to CONTRIBUTING.md" done={task3Done} locked={!task2Done}>
+        <TaskCard number="03" title="Add lint step to the CI pipeline" done={task3Done} locked={!task2Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A commit message convention makes batch size visible in the log.</span>{" "}
-              Conventional commits force you to categorize each change — if you cannot describe it in one line, the batch is probably too large.
+              <span className="text-white">A lint step that only runs locally is a suggestion. A lint step in CI is a gate.</span>
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to CONTRIBUTING.md</SectionLabel>
-            <CodeBlock>{`## Commit message format
-Use conventional commits:
-- feat: a new feature
-- fix: a bug fix
-- refactor: code change that neither fixes a bug nor adds a feature
-- test: adding or updating tests
-- docs: documentation only
-- chore: maintenance
+            <SectionLabel>Update .github/workflows/ci.yml — add lint before the test step</SectionLabel>
+            <CodeBlock>{`- name: Lint
+  run: npm run lint
 
-One logical change per commit. If your commit message needs "and", split it.`}</CodeBlock>
+- name: Run tests
+  run: npm test`}</CodeBlock>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              The lint step must come before the test step. A syntax error should fail the pipeline before tests even start.
+            </p>
           </div>
 
           {!task3Done && (
@@ -307,34 +328,27 @@ One logical change per commit. If your commit message needs "and", split it.`}</
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Commit convention documented in CONTRIBUTING.md
+                Lint runs in CI before tests
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 4 */}
-        <TaskCard number="04" title="Set up a pre-commit hook that warns on large diffs" done={task4Done} locked={!task3Done}>
+        <TaskCard number="04" title="Introduce a deliberate bug and watch it get caught" done={task4Done} locked={!task3Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A pre-commit hook that warns when a diff is large makes the cost of large batches visible before you commit.</span>
+              <span className="text-white">The best way to trust a safety net is to test it.</span>{" "}
+              Introduce a deliberate error, commit it, and watch the pipeline catch it.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Create .git/hooks/pre-commit</SectionLabel>
-            <CodeBlock>{`#!/bin/sh
-LINES=$(git diff --cached --stat | tail -1 | grep -o '[0-9]* insertion' | grep -o '[0-9]*')
-if [ -n "$LINES" ] && [ "$LINES" -gt 400 ]; then
-  echo "Warning: This commit changes $LINES lines. Consider splitting it."
-fi`}</CodeBlock>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <SectionLabel>Make it executable</SectionLabel>
-            <CodeBlock>{`chmod +x .git/hooks/pre-commit`}</CodeBlock>
+            <SectionLabel>Temporarily break the sort in src/orders.js</SectionLabel>
+            <CodeBlock>{`// Deliberate bug: sort ascending instead of descending
+return [...orders].sort((a, b) => new Date(a.date) - new Date(b.date))`}</CodeBlock>
             <p className="text-xs text-gray-600 leading-relaxed">
-              The hook warns but does not block — the goal is awareness, not enforcement. You can always commit anyway.
+              Push this to a branch. Watch the test fail in CI. Then fix it and push again. The pipeline caught what three weeks of production did not.
             </p>
           </div>
 
@@ -346,25 +360,25 @@ fi`}</CodeBlock>
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Pre-commit hook warns on large diffs
+                I introduced a bug, CI caught it, I fixed it
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 5 */}
-        <TaskCard number="05" title="Commit and push" done={task5Done} locked={!task4Done}>
+        <TaskCard number="05" title="Commit everything and push" done={task5Done} locked={!task4Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">The audit, the convention, and the habit are now permanent.</span>{" "}
-              Every future engineer who joins Nexus Corp inherits a codebase where small batches are the documented norm.
+              <span className="text-white">The lint config, the unit test, and the updated pipeline are now permanent.</span>{" "}
+              Every future engineer who joins Nexus Corp inherits a project where errors are caught at the earliest possible stage.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
             <SectionLabel>Commit and push all changes</SectionLabel>
-            <CodeBlock>{`git add BATCH-AUDIT.md CONTRIBUTING.md
-git commit -m 'docs: add batch audit and commit convention'
+            <CodeBlock>{`git add src/ .github/ package.json
+git commit -m 'feat: add ESLint, unit test for sortOrders, lint step in CI pipeline'
 git push`}</CodeBlock>
           </div>
 
@@ -390,7 +404,7 @@ git push`}</CodeBlock>
                   className="w-4 h-4 accent-cyan-400 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                  Pipeline is green
+                  Pipeline is green with lint + tests passing
                 </span>
               </label>
             </div>
@@ -408,7 +422,7 @@ git push`}</CodeBlock>
             }}
           >
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-              ✓ The batch is smaller. The convention is documented. The habit is wired in.
+              ✓ The lint gate is active. The unit test is real. The bug that kills production now dies in CI.
             </p>
             <a
               href="?phase=4"

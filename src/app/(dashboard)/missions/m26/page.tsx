@@ -7,7 +7,7 @@ import { completeMission } from "@/app/actions/progress"
 import { prisma } from "@/lib/prisma"
 
 export const metadata: Metadata = {
-  title: "M-10 Infrastructure as Code - DevOps Flow Lab",
+  title: "M-26 Learning Culture - DevOps Flow Lab",
 }
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
@@ -20,10 +20,10 @@ function MissionHeader({ fase }: { fase: number }) {
     <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "#080808" }}>
       <div className="max-w-5xl mx-auto flex items-center justify-between">
         <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-          M-10
+          M-26
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
-          Infrastructure as Code
+          Learning Culture
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
           Phase {fase} of 4
@@ -59,21 +59,6 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
 
 const panels = [
   {
-    initials: "SM",
-    name: "Sarah",
-    role: "Engineering Manager",
-    badge: "MANAGEMENT",
-    accent: "rgb(6,182,212)",
-    badgeBg: "rgba(6,182,212,0.08)",
-    badgeBorder: "rgba(6,182,212,0.3)",
-    quote: (
-      <>
-        &ldquo;Marco set up the production server 2 years ago. Nobody else knows how it is
-        configured. If it goes down, we are stuck until Marco is available.&rdquo;
-      </>
-    ),
-  },
-  {
     initials: "LI",
     name: "Lisa",
     role: "Developer",
@@ -83,9 +68,8 @@ const panels = [
     badgeBorder: "rgba(34,197,94,0.3)",
     quote: (
       <>
-        &ldquo;I tried to reproduce the prod environment locally last month. Spent{" "}
-        <mark>3 days</mark> on it. Still not identical. There is something on the server nobody
-        documented.&rdquo;
+        &ldquo;I fixed a race condition in the orders service. It took me 3 hours. I wrote it up in
+        my head, closed the ticket, and moved on. <mark>I never told anyone how I did it.</mark>&rdquo;
       </>
     ),
   },
@@ -99,24 +83,8 @@ const panels = [
     badgeBorder: "rgba(239,68,68,0.3)",
     quote: (
       <>
-        &ldquo;I have <mark>14 manual steps</mark> to set up a new server. I know them by heart.
-        But if I get hit by a bus, nobody can recreate it. It is all in my head.&rdquo;
-      </>
-    ),
-  },
-  {
-    initials: "KA",
-    name: "Kai",
-    role: "QA Engineer",
-    badge: "QA",
-    accent: "rgb(251,146,60)",
-    badgeBg: "rgba(251,146,60,0.08)",
-    badgeBorder: "rgba(251,146,60,0.3)",
-    quote: (
-      <>
-        &ldquo;The test environment drifted from prod again. We found{" "}
-        <mark>3 config differences</mark> last week that caused a bug. Nobody knows when they
-        changed.&rdquo;
+        &ldquo;Two months ago I hit the same race condition. I spent 2 days on it. If Lisa had written
+        it down anywhere, I would have solved it in 3 hours too. <mark>We lost 13 hours as a team.</mark>&rdquo;
       </>
     ),
   },
@@ -130,8 +98,8 @@ const panels = [
     badgeBorder: "rgba(167,139,250,0.3)",
     quote: (
       <>
-        &ldquo;We cannot scale. Adding a second server means Marco spending a week configuring it
-        manually. We are stuck at one server.&rdquo;
+        &ldquo;We keep solving the same problems. Every sprint someone rediscovers something the team
+        already knows. It is <mark>invisible waste</mark> — nobody sees it because it never shows up in a ticket.&rdquo;
       </>
     ),
   },
@@ -146,11 +114,11 @@ const panels = [
     isPlayer: true,
     quote: (
       <>
-        &ldquo;The infrastructure is a snowflake. Unique, hand-crafted, irreplaceable. That is the
-        problem. Infrastructure should be boring, repeatable, and defined in code.&rdquo;
+        &ldquo;A learning that stays in one person&apos;s head is a single point of failure. Write it
+        down. Share it. Make <mark>individual knowledge into team knowledge</mark>.&rdquo;
       </>
     ),
-    outro: "Make the infrastructure boring.",
+    outro: "Local discovery. Global improvement.",
   },
 ]
 
@@ -164,10 +132,10 @@ function Phase1() {
             className="text-4xl text-white tracking-tight leading-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Week six. Nexus Corp.
+            Week fourteen. Nexus Corp.
           </h2>
           <p className="text-gray-400 text-base leading-relaxed">
-            The app deploys automatically. But the server it deploys to is a mystery.
+            Lisa fixed a tricky race condition last week. She figured it out in 3 hours. Two months ago Marco spent 2 days on the exact same bug. Nobody told him.
           </p>
         </div>
 
@@ -229,7 +197,7 @@ function Phase1() {
         <CTA
           href="?phase=2"
           label="Understand the theory →"
-          sub="Phase 2 of 4 - What is Infrastructure as Code?"
+          sub="Phase 2 of 4 - From individual learning to team knowledge"
         />
       </div>
 
@@ -247,48 +215,6 @@ function Phase1() {
 
 // ─── Phase 2 - The theory ─────────────────────────────────────────────────────
 
-const infraCards = [
-  {
-    title: "Mutable infrastructure",
-    body: "Servers are patched and configured in place over time. Each change leaves a trace. After months, no two servers are identical. You cannot reproduce the state from scratch. This is called drift.",
-    accent: "rgb(239,68,68)",
-    bg: "#0a0202",
-    border: "rgba(239,68,68,0.25)",
-  },
-  {
-    title: "Immutable infrastructure",
-    body: "Servers are never patched. When a change is needed, a new server image is built from code and the old one is replaced. Every server is identical because every server was built from the same definition.",
-    accent: "rgb(34,197,94)",
-    bg: "#020a02",
-    border: "rgba(34,197,94,0.25)",
-  },
-]
-
-const principles = [
-  {
-    name: "Idempotency",
-    body: "Running the same IaC script twice produces the same result as running it once. You can apply configuration repeatedly without breaking anything.",
-    accent: "rgb(6,182,212)",
-  },
-  {
-    name: "Consistency",
-    body: "Every environment — dev, test, staging, prod — is provisioned from the same code. If it works in staging, it works in prod. Environment drift becomes impossible.",
-    accent: "rgb(167,139,250)",
-  },
-  {
-    name: "Traceability",
-    body: "Every infrastructure change is a commit. You can see who changed what, when, and why. Rolling back infrastructure is the same as reverting a commit.",
-    accent: "rgb(251,146,60)",
-  },
-]
-
-const tools = [
-  { name: "Terraform",       type: "Provisioning",    use: "Create and manage cloud resources (servers, databases, networks). Declarative HCL syntax.",     lang: "HCL"  },
-  { name: "Ansible",         type: "Configuration",   use: "Install and configure software on servers. Runs over SSH, no agent required.",                    lang: "YAML" },
-  { name: "Docker",          type: "Container",        use: "Package your app and its dependencies into a portable image. Runs identically everywhere.",       lang: "Dockerfile" },
-  { name: "Docker Compose",  type: "Orchestration",   use: "Define and run multi-container applications locally. The IaC for your development environment.",  lang: "YAML" },
-]
-
 function Phase2() {
   return (
     <div className="flex-1 px-6 py-14">
@@ -300,19 +226,54 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            What is Infrastructure as Code?
+            The problem with tribal knowledge
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            Infrastructure as Code means your servers, networks, and environments are defined in files
-            — the same way your application is. Those files are version controlled, reviewed in pull
-            requests, and applied by automated tools. The result: infrastructure is reproducible,
-            consistent, and auditable.
+            Most engineering teams run on tribal knowledge — things that only certain people know
+            because they experienced them. This knowledge is invisible until it is needed, and by
+            then it is often too late. The DevOps Handbook calls this the Third Way: creating a culture
+            of continual learning and experimentation where local discoveries are converted into global
+            improvements.
           </p>
-          <p className="text-gray-400 leading-relaxed">
-            The key shift: instead of a human executing commands on a server, a tool reads a
-            definition and makes the server match it. The definition is the source of truth — not the
-            server itself.
-          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              {
+                label: "Tribal knowledge",
+                items: [
+                  "Fixes stay in one person's head",
+                  "Same bugs solved repeatedly across the team",
+                  "New engineers start from zero",
+                  "Knowledge is lost when engineers leave",
+                ],
+                accent: "rgb(239,68,68)",
+              },
+              {
+                label: "Team knowledge",
+                items: [
+                  "Every fix is written down and findable",
+                  "The second person solves it in minutes, not days",
+                  "New engineers inherit accumulated context",
+                  "Knowledge compounds over time",
+                ],
+                accent: "rgb(34,197,94)",
+              },
+            ].map((col) => (
+              <div
+                key={col.label}
+                className="flex flex-col gap-3 p-5 border"
+                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${col.accent}` }}
+              >
+                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: col.accent }}>
+                  {col.label}
+                </span>
+                <div className="flex flex-col gap-2">
+                  {col.items.map((item, i) => (
+                    <p key={i} className="text-xs text-gray-400 leading-relaxed">{item}</p>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
 
         <section className="flex flex-col gap-5">
@@ -321,19 +282,48 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Mutable vs immutable infrastructure
+            The three formats for sharing knowledge
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {infraCards.map((card) => (
+          <p className="text-gray-400 leading-relaxed">
+            There are three practical formats for converting individual learning into team knowledge.
+            Each serves a different purpose and lives in a different part of the repository.
+          </p>
+          <div className="flex flex-col gap-0 border border-gray-800">
+            {[
+              {
+                label: "TIL",
+                title: "Today I Learned",
+                note: "A short note, 3–5 sentences, written the same day. What was the problem, what was the fix, what should you remember next time.",
+                accent: "rgb(6,182,212)",
+              },
+              {
+                label: "ADR",
+                title: "Architecture Decision Record",
+                note: "A structured document that captures why a technical decision was made. Future engineers who question the decision can read why it was made instead of reversing it without context.",
+                accent: "rgb(167,139,250)",
+              },
+              {
+                label: "Runbook entry",
+                title: "New failure mode → new playbook",
+                note: "When a fix reveals a new failure mode, add a playbook to the runbook. The postmortem process from M-25 already triggers this.",
+                accent: "rgb(34,197,94)",
+              },
+            ].map((row, i) => (
               <div
-                key={card.title}
-                className="flex flex-col gap-3 p-6 border"
-                style={{ backgroundColor: card.bg, borderColor: card.border, borderLeft: `3px solid ${card.accent}` }}
+                key={row.label}
+                className="flex gap-4 px-5 py-5 border-b border-gray-800 last:border-b-0"
+                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606", borderLeft: `3px solid ${row.accent}` }}
               >
-                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: card.accent }}>
-                  {card.title}
+                <span
+                  className="text-xs font-mono font-bold shrink-0 w-20 mt-0.5"
+                  style={{ color: row.accent }}
+                >
+                  {row.label}
                 </span>
-                <p className="text-gray-400 text-sm leading-relaxed">{card.body}</p>
+                <div className="flex flex-col gap-1 flex-1">
+                  <span className="text-sm text-white font-mono">{row.title}</span>
+                  <span className="text-xs text-gray-500 leading-relaxed">{row.note}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -345,24 +335,30 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The three IaC principles
+            Making learning a habit
           </h2>
-          <div className="flex flex-col gap-3">
-            {principles.map((p, i) => (
+          <p className="text-gray-400 leading-relaxed">
+            The difference between teams that learn and teams that repeat mistakes is not intelligence
+            — it is habit. Two practices that work at the team level:
+          </p>
+          <div className="flex flex-col gap-4">
+            {[
+              {
+                title: "The weekly TIL",
+                body: "At the end of every week, each engineer posts one thing they learned to a shared channel. Takes 5 minutes. Compounds over months.",
+              },
+              {
+                title: "The pre-mortem",
+                body: "Before shipping a feature, ask \"what could go wrong?\" Write it down. It surfaces risks and creates a shared mental model before the incident, not after.",
+              },
+            ].map((item) => (
               <div
-                key={p.name}
-                className="flex gap-5 p-5 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
+                key={item.title}
+                className="flex flex-col gap-2 p-5 border"
+                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: "3px solid rgba(6,182,212,0.4)" }}
               >
-                <div className="shrink-0 flex flex-col items-center gap-1 pt-0.5">
-                  <span className="text-xs font-mono text-gray-700">{String(i + 1).padStart(2, "0")}</span>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: p.accent }}>
-                    {p.name}
-                  </span>
-                  <p className="text-gray-400 text-sm leading-relaxed">{p.body}</p>
-                </div>
+                <span className="text-sm text-white font-mono font-bold">{item.title}</span>
+                <p className="text-sm text-gray-500 leading-relaxed">{item.body}</p>
               </div>
             ))}
           </div>
@@ -374,36 +370,32 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            IaC tools overview
+            The DORA connection
           </h2>
-          <div className="border border-gray-800">
-            <div
-              className="grid grid-cols-12 border-b border-gray-800 px-5 py-3"
-              style={{ backgroundColor: "#0d0d0d" }}
-            >
-              <span className="col-span-3 text-xs font-mono text-gray-600 uppercase tracking-widest">Tool</span>
-              <span className="col-span-2 text-xs font-mono text-gray-600 uppercase tracking-widest">Type</span>
-              <span className="col-span-5 text-xs font-mono text-gray-600 uppercase tracking-widest">Use</span>
-              <span className="col-span-2 text-xs font-mono text-gray-600 uppercase tracking-widest">Language</span>
-            </div>
-            {tools.map((t, i) => (
-              <div
-                key={t.name}
-                className="grid grid-cols-12 px-5 py-4 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
-              >
-                <span className="col-span-3 text-sm font-mono font-bold text-white">{t.name}</span>
-                <span className="col-span-2 text-xs font-mono" style={{ color: "rgb(6,182,212)" }}>{t.type}</span>
-                <span className="col-span-5 text-xs text-gray-400 leading-relaxed">{t.use}</span>
-                <span className="col-span-2 text-xs font-mono text-gray-600">{t.lang}</span>
-              </div>
-            ))}
+          <p className="text-gray-400 leading-relaxed">
+            Learning culture does not show up in a single DORA metric. It shows up in the trend.
+            Teams with strong learning cultures maintain their DORA improvements over time. Teams
+            without it see metrics regress as the same problems recur. The goal of M-26 is to protect
+            everything you have built in M-01 through M-25.
+          </p>
+          <div
+            className="flex flex-col gap-3 p-5 border"
+            style={{ backgroundColor: "#080808", borderColor: "rgba(6,182,212,0.2)", borderLeft: "3px solid rgba(6,182,212,0.4)" }}
+          >
+            <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+              What this mission does
+            </span>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              All four DORA metrics are protected. Learning culture is the practice that prevents
+              regression — the same incidents stop recurring, the same bugs stop reappearing, and
+              the improvements you have made compound over time instead of decaying.
+            </p>
           </div>
         </section>
 
         <CTA
           href="?phase=3"
-          label="Define the Nexus Corp infrastructure →"
+          label="Build the learning culture →"
           sub="Phase 3 of 4 - Do it yourself"
         />
       </div>
@@ -413,16 +405,31 @@ function Phase2() {
 
 // ─── Phase 4 - Result ─────────────────────────────────────────────────────────
 
-const beforeAfter = [
-  { before: "Mystery server nobody can recreate",       after: "Environment fully defined in version control"   },
-  { before: "14 manual steps to provision a server",   after: "One command to spin up any environment"         },
-  { before: "Configuration drift between environments", after: "Identical environments guaranteed by code"      },
-  { before: "Marco is the bus factor",                  after: "Any developer can provision the infrastructure" },
-]
-
-const doraImpact = [
-  { metric: "Change Failure Rate",   code: "CFR", before: "10%",     after: "7%",      note: "reproducible environments eliminate config-related failures" },
-  { metric: "Lead Time for Changes", code: "LT",  before: "10 days", after: "7 days",  note: "no more waiting for manual environment setup"               },
+const doraProtected = [
+  {
+    metric: "Deployment Frequency",
+    code: "DF",
+    value: "Multiple×/week",
+    note: "team knowledge prevents regressions that slow deploy cadence",
+  },
+  {
+    metric: "Lead Time for Changes",
+    code: "LT",
+    value: "5 days",
+    note: "shared context reduces time spent rediscovering known solutions",
+  },
+  {
+    metric: "Change Failure Rate",
+    code: "CFR",
+    value: "1%",
+    note: "TILs and ADRs prevent the same mistakes from recurring",
+  },
+  {
+    metric: "Mean Time to Restore",
+    code: "MTTR",
+    value: "30 min",
+    note: "documented fixes make the second incident faster than the first",
+  },
 ]
 
 function Phase4() {
@@ -432,74 +439,99 @@ function Phase4() {
 
         <div className="flex flex-col gap-4">
           <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(6,182,212)" }}>
-            Mission Complete - M-10
+            Mission Complete - M-26
           </p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Infrastructure is Code Now.
+            Nexus Corp Stops Repeating Mistakes
           </h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">
-            This is what you built for Nexus Corp.
+            Learning culture does not move a DORA metric today. It protects every metric you have
+            already moved. Without it, teams regress — the same incidents recur, the same bugs
+            reappear, the same architectural mistakes get made twice. M-26 is the practice that
+            makes all previous improvements permanent.
           </p>
         </div>
 
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">01</span>
-            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">What changed</h2>
+            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">What you built</h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <div className="border border-gray-800">
-            <div className="grid grid-cols-2 border-b border-gray-800" style={{ backgroundColor: "#0d0d0d" }}>
-              <div className="px-5 py-3 border-r border-gray-800">
-                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(239,68,68)" }}>Before</span>
-              </div>
-              <div className="px-5 py-3">
-                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(34,197,94)" }}>After</span>
-              </div>
+          <div
+            className="flex flex-col gap-5 p-6 border"
+            style={{
+              backgroundColor: "#080808",
+              borderColor: "rgba(6,182,212,0.2)",
+              borderLeft: "3px solid rgb(6,182,212)",
+            }}
+          >
+            <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+              The system now learns from itself
+            </p>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              Every engineer who joins Nexus Corp from now on starts with the accumulated knowledge
+              of everyone who came before them. The team&apos;s learning is version controlled, discoverable,
+              and growing.
+            </p>
+            <div className="flex flex-col gap-3 border-t border-gray-800 pt-4">
+              {[
+                "TIL format: every fix is written down and findable in docs/til/",
+                "ADR format: every significant decision has a documented rationale in docs/adr/",
+                "Learning practices in the runbook: weekly TIL, pre-mortem, ADR are team agreements",
+                "/api/learning: learning artifacts are discoverable and observable",
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(34,197,94)" }}>✓</span>
+                  <p className="text-sm text-gray-400">{item}</p>
+                </div>
+              ))}
             </div>
-            {beforeAfter.map((row, i) => (
-              <div
-                key={i}
-                className="grid grid-cols-2 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
-              >
-                <div className="px-5 py-4 border-r border-gray-800">
-                  <p className="text-sm text-gray-500">{row.before}</p>
-                </div>
-                <div className="px-5 py-4">
-                  <p className="text-sm text-gray-300">{row.after}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </section>
 
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">02</span>
-            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">Your impact on Nexus Corp</h2>
+            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">Your DORA metrics — protected</h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {doraImpact.map((d) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {doraProtected.map((d) => (
               <div
                 key={d.code}
                 className="flex flex-col gap-4 border p-6"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
+                style={{
+                  backgroundColor: "#060f06",
+                  borderColor: "rgba(34,197,94,0.25)",
+                  borderLeft: "3px solid rgba(34,197,94,0.6)",
+                }}
               >
                 <div className="flex flex-col gap-1">
                   <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">{d.metric}</span>
                   <span className="text-xs font-mono text-gray-700">DORA - {d.code}</span>
                 </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-xl font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>
-                    {d.before}
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono shrink-0" style={{ color: "rgb(34,197,94)" }}>✓</span>
+                  <span
+                    className="text-lg font-mono font-bold"
+                    style={{ ...syne.style, color: "rgb(34,197,94)" }}
+                  >
+                    {d.value}
                   </span>
-                  <span className="font-mono text-gray-700">→</span>
-                  <span className="text-xl font-mono font-bold" style={{ ...syne.style, color: "rgb(6,182,212)" }}>
-                    {d.after}
+                </div>
+                <div className="flex items-center gap-2">
+                  <span
+                    className="text-xs font-mono font-bold px-1.5 py-0.5 uppercase tracking-widest"
+                    style={{
+                      color: "rgb(34,197,94)",
+                      backgroundColor: "rgba(34,197,94,0.08)",
+                      border: "1px solid rgba(34,197,94,0.3)",
+                    }}
+                  >
+                    PROTECTED
                   </span>
                 </div>
                 <p className="text-xs font-mono text-gray-600">{d.note}</p>
@@ -519,13 +551,17 @@ function Phase4() {
             className="flex flex-col gap-3 p-6 border"
             style={{
               backgroundColor: "#080808",
-              borderColor: "rgb(31,41,55)",
-              borderLeft: "3px solid rgb(31,41,55)",
+              borderColor: "rgba(6,182,212,0.2)",
+              borderLeft: "3px solid rgb(6,182,212)",
             }}
           >
+            <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+              Coming next — Chaos Engineering
+            </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Infrastructure is code. But deploys are still risky — one bad release affects all users.
-              Next mission: Architecture for Low-Risk Releases.
+              Next: Chaos Engineering — if you want to know how your system fails, break it deliberately
+              before it breaks on its own. Inject failures in a controlled environment. Find weaknesses
+              before your users do.
             </p>
           </div>
         </section>
@@ -539,14 +575,14 @@ function Phase4() {
             >
               Back to dashboard →
             </a>
-            <span
+            <div
               className="flex items-center gap-3 px-8 py-4 text-sm font-mono border cursor-not-allowed"
               style={{ backgroundColor: "#0a0a0a", borderColor: "rgb(31,41,55)", color: "rgb(55,65,81)" }}
               title="Not yet available"
             >
               <span>⊘</span>
-              Next mission: Architecture for Low-Risk Releases →
-            </span>
+              Continue to M-27 →
+            </div>
           </div>
         </section>
 
@@ -557,7 +593,7 @@ function Phase4() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default async function M06Page({
+export default async function M14Page({
   searchParams,
 }: {
   searchParams: Promise<{ phase?: string }>
@@ -576,11 +612,11 @@ export default async function M06Page({
     if (!gateUser) redirect("?phase=3")
 
     // Complete the mission first (idempotent — safe to call multiple times)
-    await completeMission("M-10")
+    await completeMission("M-26")
 
     // Now verify it actually exists (guards against DB errors)
     const completed = await prisma.userProgress.findFirst({
-      where: { userId: gateUser.id, moduleId: "M-10" },
+      where: { userId: gateUser.id, moduleId: "M-26" },
     })
     if (!completed) redirect("?phase=3")
   }

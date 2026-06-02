@@ -7,7 +7,7 @@ import { completeMission } from "@/app/actions/progress"
 import { prisma } from "@/lib/prisma"
 
 export const metadata: Metadata = {
-  title: "M-18 Review and Coordinate Changes - DevOps Flow Lab",
+  title: "M-18 Hypothesis-Driven Development - DevOps Flow Lab",
 }
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
@@ -23,7 +23,7 @@ function MissionHeader({ fase }: { fase: number }) {
           M-18
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
-          Review and Coordinate Changes
+          Hypothesis-Driven Development
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
           Phase {fase} of 4
@@ -59,6 +59,22 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
 
 const panels = [
   {
+    initials: "TO",
+    name: "Tom",
+    role: "Product Owner",
+    badge: "PRODUCT",
+    accent: "rgb(167,139,250)",
+    badgeBg: "rgba(167,139,250,0.08)",
+    badgeBorder: "rgba(167,139,250,0.3)",
+    quote: (
+      <>
+        &ldquo;We built the pagination feature because a customer asked for it. We shipped it. I
+        have no idea if anyone uses it. I have no idea if it made things{" "}
+        <mark>better or worse</mark>.&rdquo;
+      </>
+    ),
+  },
+  {
     initials: "LI",
     name: "Lisa",
     role: "Developer",
@@ -68,9 +84,8 @@ const panels = [
     badgeBorder: "rgba(34,197,94,0.3)",
     quote: (
       <>
-        &ldquo;I pushed a hotfix directly to main. It was one line. I was sure it was fine.
-        Twenty minutes later the <mark>health endpoint was returning 500s</mark>. I had no idea
-        what I broke.&rdquo;
+        &ldquo;I spent two weeks on that feature. When I asked how we would know if it worked, Tom
+        said &lsquo;we will feel it&rsquo;. <mark>That is not an answer</mark>.&rdquo;
       </>
     ),
   },
@@ -84,25 +99,8 @@ const panels = [
     badgeBorder: "rgba(239,68,68,0.3)",
     quote: (
       <>
-        &ldquo;The alert fired and I went straight to the runbook. But the last three commits
-        were all pushed directly to main by different people. I had no idea <mark>which one
-        caused it</mark>.&rdquo;
-      </>
-    ),
-  },
-  {
-    initials: "TO",
-    name: "Tom",
-    role: "Product Owner",
-    badge: "PRODUCT",
-    accent: "rgb(167,139,250)",
-    badgeBg: "rgba(167,139,250,0.08)",
-    badgeBorder: "rgba(167,139,250,0.3)",
-    quote: (
-      <>
-        &ldquo;We have a pipeline. We have tests. We have a runbook. But we still ship broken
-        code because anyone can push anything to main at <mark>any time</mark>. The process
-        has no enforcement.&rdquo;
+        &ldquo;Error rate went up 0.3% after the pagination deploy. Nobody connected the dots.
+        We have the data. We just <mark>never look at it</mark> as feedback on what we shipped.&rdquo;
       </>
     ),
   },
@@ -117,12 +115,11 @@ const panels = [
     isPlayer: true,
     quote: (
       <>
-        &ldquo;Branch protection blocks direct pushes. A PR template makes every change
-        reviewable. A contributing guide makes the process explicit. <mark>The platform
-        enforces what policy cannot.</mark>&rdquo;
+        &ldquo;Feature flags let us deploy dark. Telemetry lets us measure. Put them together and
+        you have an experiment engine. <mark>Ship, measure, decide</mark> — with data.&rdquo;
       </>
     ),
-    outro: "Trust the process. Enforce it.",
+    outro: "Hope is not a strategy. Measure everything.",
   },
 ]
 
@@ -136,10 +133,10 @@ function Phase1() {
             className="text-4xl text-white tracking-tight leading-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Week twelve. Nexus Corp.
+            Week eleven. Nexus Corp.
           </h2>
           <p className="text-gray-400 text-base leading-relaxed">
-            Lisa pushed directly to main and broke the health endpoint. The pipeline was green on her machine. Nobody reviewed it. The alert fired at 4pm on a Friday.
+            Tom shipped a new orders feature last month. Three weeks of work. Deployed on a Friday. Nobody measured if it helped. It probably did not.
           </p>
         </div>
 
@@ -201,7 +198,7 @@ function Phase1() {
         <CTA
           href="?phase=2"
           label="Understand the theory →"
-          sub="Phase 2 of 4 - From direct pushes to protected branches"
+          sub="Phase 2 of 4 - From assumption to evidence"
         />
       </div>
 
@@ -219,12 +216,12 @@ function Phase1() {
 
 // ─── Phase 2 - The theory ─────────────────────────────────────────────────────
 
-const reviewSteps = [
-  { step: "Create a feature branch",       note: "Never commit directly to main. Branch = isolated context."              },
-  { step: "Open a pull request",           note: "PR = a proposal, not a demand. Context is attached."                    },
-  { step: "CI runs automatically",         note: "Tests pass or the PR cannot merge. Platform enforces quality."           },
-  { step: "Peer review",                   note: "One pair of eyes catches what automated tests cannot."                   },
-  { step: "Merge to main",                 note: "Only after CI green + approval. Protected branch enforces this."         },
+const experimentLifecycle = [
+  { step: "State hypothesis",           note: "We believe X will result in Y. We will know when Z." },
+  { step: "Implement behind flag",      note: "Default: off. Control group sees current behavior."   },
+  { step: "Enable for subset",          note: "Treatment group gets the change. Measure both."       },
+  { step: "Compare control vs treatment", note: "Use telemetry from M-23 to read the signal."       },
+  { step: "Ship or kill",               note: "Never leave flags permanent — decide with data."      },
 ]
 
 function Phase2() {
@@ -238,42 +235,13 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The problem with direct pushes
+            The problem with opinion-driven development
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            Every process Nexus Corp has built — the pipeline, the tests, the runbook — can be bypassed
-            by a direct push to main. Branch protection makes bypass impossible. It is the difference
-            between a sign that says &ldquo;please do not run&rdquo; and a locked door.
+            Most features are built on assumptions. &ldquo;Users want this.&rdquo; &ldquo;This will improve
+            conversion.&rdquo; These are hypotheses — but they are never stated as hypotheses, never tested,
+            and never validated. The result: teams build things that do not matter and cannot tell the difference.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
-              {
-                label: "Without branch protection",
-                items: ["Anyone pushes directly to main", "CI skipped on direct push", "No review — bad code ships", "No audit trail of who changed what"],
-                accent: "rgb(239,68,68)",
-              },
-              {
-                label: "With branch protection",
-                items: ["All changes go through PRs", "CI required before merge", "Review required — errors caught", "Full audit trail in PR history"],
-                accent: "rgb(34,197,94)",
-              },
-            ].map((col) => (
-              <div
-                key={col.label}
-                className="flex flex-col gap-3 p-5 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${col.accent}` }}
-              >
-                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: col.accent }}>
-                  {col.label}
-                </span>
-                <div className="flex flex-col gap-2">
-                  {col.items.map((item, i) => (
-                    <p key={i} className="text-xs text-gray-400 leading-relaxed">{item}</p>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
         </section>
 
         <section className="flex flex-col gap-5">
@@ -282,22 +250,65 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The PR process
+            What is a hypothesis
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            A pull request is not paperwork — it is a conversation. The PR template ensures every
-            change answers the same questions: what changed, why it changed, and how to verify it works.
-            Without a template, reviews are inconsistent. With one, every reviewer knows exactly what
-            context to expect.
+            A good hypothesis has three parts:
           </p>
           <div className="flex flex-col gap-0 border border-gray-800">
-            {reviewSteps.map((row, i) => (
+            {[
+              { n: "1", text: "We believe that [change]" },
+              { n: "2", text: "Will result in [outcome]" },
+              { n: "3", text: "We will know this is true when [measurable signal]" },
+            ].map((row, i) => (
+              <div
+                key={row.n}
+                className="flex gap-4 px-5 py-4 border-b border-gray-800 last:border-b-0"
+                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+              >
+                <span className="text-xs font-mono font-bold shrink-0 w-4" style={{ color: "rgb(6,182,212)" }}>
+                  {row.n}
+                </span>
+                <p className="text-sm text-gray-300 font-mono">{row.text}</p>
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-col gap-2">
+            <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>
+              Example
+            </p>
+            <pre
+              className="text-xs font-mono leading-relaxed p-4 overflow-x-auto whitespace-pre-wrap"
+              style={{ backgroundColor: "#0d0d0d", borderLeft: "3px solid rgb(31,41,55)", color: "rgb(156,163,175)" }}
+            >
+              {`We believe that adding pagination to /api/orders\nwill result in faster response times.\nWe will know this is true when p95 response time\ndrops below 100ms for requests with more than 50 orders.`}
+            </pre>
+          </div>
+        </section>
+
+        <section className="flex flex-col gap-5">
+          <div className="flex items-center gap-4">
+            <span className="text-xs font-mono text-gray-700 tracking-widest">03</span>
+            <div className="flex-1 h-px bg-gray-900" />
+          </div>
+          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+            Feature flags as experiment infrastructure
+          </h2>
+          <p className="text-gray-400 leading-relaxed">
+            M-20 gave us feature flags for dark launches. Now we use them for A/B experiments.
+            Flag off = control group. Flag on = treatment group. Measure both. Decide with data.
+          </p>
+          <div className="flex flex-col gap-0 border border-gray-800">
+            {experimentLifecycle.map((row, i) => (
               <div
                 key={row.step}
                 className="flex gap-4 px-5 py-4 border-b border-gray-800 last:border-b-0"
                 style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
               >
-                <span className="text-xs font-mono font-bold shrink-0 w-5" style={{ color: "rgb(6,182,212)" }}>
+                <span
+                  className="text-xs font-mono font-bold shrink-0 w-5"
+                  style={{ color: "rgb(6,182,212)" }}
+                >
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div className="flex flex-col gap-1 flex-1">
@@ -311,22 +322,6 @@ function Phase2() {
 
         <section className="flex flex-col gap-5">
           <div className="flex items-center gap-4">
-            <span className="text-xs font-mono text-gray-700 tracking-widest">03</span>
-            <div className="flex-1 h-px bg-gray-900" />
-          </div>
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            CONTRIBUTING.md as process documentation
-          </h2>
-          <p className="text-gray-400 leading-relaxed">
-            A CONTRIBUTING.md makes the process explicit and discoverable. Every new engineer who
-            clones the repo immediately understands how the team works. Process in a document is
-            better than process in someone&apos;s head — and far better than process discovered
-            by breaking something.
-          </p>
-        </section>
-
-        <section className="flex flex-col gap-5">
-          <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest">04</span>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
@@ -334,14 +329,14 @@ function Phase2() {
             The DORA connection
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            The final percentage point in CFR drops because peer review catches what automated
-            tests cannot: logic errors, missed edge cases, architectural decisions that will cause
-            pain in six months. Target: CFR from 2% to 1%.
+            CFR drops when you ship smaller, validated changes instead of large, assumed-correct
+            features. Failures are caught during the experiment phase, not after full rollout.
+            Target: CFR from 4% to 2%.
           </p>
           <div className="flex flex-col gap-0 border border-gray-800">
             {[
-              { label: "Current CFR",      value: "2%", color: "rgb(239,68,68)",  note: "Experiments validated but code pushed directly — bad logic reaches main without a second pair of eyes." },
-              { label: "Target after M-18", value: "1%", color: "rgb(6,182,212)", note: "Branch protection + peer review — every change is seen by at least one other engineer before it ships." },
+              { label: "Current CFR",      value: "4%",  color: "rgb(239,68,68)",  note: "Features shipped on assumptions — validated by customer complaints after full rollout." },
+              { label: "Target after M-18", value: "2%", color: "rgb(6,182,212)", note: "Features validated by data before full rollout — failures caught in experiment phase." },
             ].map((row, i) => (
               <div
                 key={row.label}
@@ -360,7 +355,7 @@ function Phase2() {
 
         <CTA
           href="?phase=3"
-          label="Build the review process →"
+          label="Build the experiment engine →"
           sub="Phase 3 of 4 - Do it yourself"
         />
       </div>
@@ -374,9 +369,9 @@ const doraImpact = [
   {
     metric: "Change Failure Rate",
     code: "CFR",
-    before: "2%",
-    after: "1%",
-    note: "peer review catches logic errors and edge cases automated tests miss",
+    before: "4%",
+    after: "2%",
+    note: "failures caught during experiment phase, not after full rollout",
     highlight: true,
   },
   {
@@ -415,11 +410,11 @@ function Phase4() {
             Mission Complete - M-18
           </p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Nexus Corp Has a Review Process
+            Nexus Corp Ships With Evidence
           </h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">
-            The final percentage point drops because peer review catches the issues that automated tests
-            cannot: logic errors, missed edge cases, architectural decisions that will cause pain in six months.
+            Features validated before full rollout. The change failure rate drops because failures are now caught
+            during the experiment phase, not after the full rollout.
           </p>
         </div>
 
@@ -441,18 +436,18 @@ function Phase4() {
             <div className="flex items-center gap-6 flex-wrap">
               <div className="flex flex-col gap-1">
                 <span className="text-xs font-mono uppercase tracking-widest text-gray-600">Before</span>
-                <span className="text-4xl font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>2%</span>
-                <span className="text-xs text-gray-600">experiments validated but code still pushed directly without review</span>
+                <span className="text-4xl font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>4%</span>
+                <span className="text-xs text-gray-600">features shipped on assumptions, validated by customer complaints</span>
               </div>
               <span className="text-2xl font-mono text-gray-700">→</span>
               <div className="flex flex-col gap-1">
                 <span className="text-xs font-mono uppercase tracking-widest text-gray-600">After</span>
-                <span className="text-4xl font-mono font-bold" style={{ ...syne.style, color: "rgb(6,182,212)" }}>1%</span>
-                <span className="text-xs text-gray-600">branch protection enforces review — bad code caught before it reaches main</span>
+                <span className="text-4xl font-mono font-bold" style={{ ...syne.style, color: "rgb(6,182,212)" }}>2%</span>
+                <span className="text-xs text-gray-600">features validated by data before full rollout</span>
               </div>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed border-t border-gray-800 pt-4">
-              The final percentage point drops because peer review catches the issues that automated tests cannot: logic errors, missed edge cases, architectural decisions that will cause pain in six months.
+              The change failure rate drops because failures are now caught during the experiment phase, not after full rollout.
             </p>
           </div>
         </section>
@@ -516,10 +511,10 @@ function Phase4() {
             }}
           >
             <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-              Third Way: Learning — Coming Next
+              Second Way: Feedback — In Progress
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Next: Blameless Postmortems — when things go wrong, what you do next defines your culture. Build the process that turns incidents into learning.
+              Next: Review and Coordinate Changes — make code review a quality gate, not a bottleneck.
             </p>
           </div>
         </section>
@@ -551,7 +546,7 @@ function Phase4() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default async function M12Page({
+export default async function M11Page({
   searchParams,
 }: {
   searchParams: Promise<{ phase?: string }>

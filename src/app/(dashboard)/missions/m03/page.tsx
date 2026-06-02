@@ -544,7 +544,7 @@ function Phase4() {
                 pointerEvents: "none" as const,
               }}
             >
-              Continue to M-04 →
+              Continue to M-05 →
             </a>
             <a
               href="/dashboard"
@@ -554,7 +554,7 @@ function Phase4() {
               Back to dashboard →
             </a>
           </div>
-          <p className="text-xs font-mono text-gray-700">M-04 unlocks when you complete FOUNDATIONS</p>
+          <p className="text-xs font-mono text-gray-700">M-05 unlocks when you complete FOUNDATIONS</p>
         </section>
 
       </div>

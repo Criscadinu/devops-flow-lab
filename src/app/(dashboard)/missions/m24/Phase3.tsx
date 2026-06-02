@@ -1,9 +1,39 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Syne } from "next/font/google"
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
+
+function MobileWarning() {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
+  if (!isMobile) return null
+
+  return (
+    <div
+      className="flex flex-col gap-3 p-5 border mb-6"
+      style={{
+        backgroundColor: "#0a0700",
+        borderColor: "rgba(251,146,60,0.4)",
+        borderLeft: "3px solid rgb(251,146,60)",
+      }}
+    >
+      <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
+        Desktop required
+      </p>
+      <p className="text-sm text-gray-400 leading-relaxed">
+        This phase requires a terminal, a code editor, and GitHub. These tasks cannot be completed on a mobile device. Open this page on your laptop or desktop to continue.
+      </p>
+    </div>
+  )
+}
 
 function TaskCard({
   number,
@@ -122,16 +152,18 @@ export function Phase3() {
     <div className="flex-1 px-6 py-14">
       <div className="max-w-3xl mx-auto flex flex-col gap-8">
 
+        <MobileWarning />
+
         {/* Header */}
         <div className="flex flex-col gap-2">
           <h2
             className="text-3xl text-white tracking-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Your Mission - Deploy Dark, Release Gradually
+            Your Mission - Make the System Speak
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Implement a feature flag in the Nexus Corp app so you can ship without risk.
+            Add an automated alert endpoint to the Nexus Corp app with configurable thresholds.
           </p>
         </div>
 
@@ -149,7 +181,7 @@ export function Phase3() {
               Before you start
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              This mission builds on your M-10 work. Both items should already be ready.
+              This mission builds on your M-23 work. Both items should already be ready.
             </p>
           </div>
 
@@ -157,12 +189,12 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Fork from M-10 with green pipeline
+                Fork from M-23 with telemetry in place
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Your nexus-corp-app fork has a passing test suite, IaC files committed, and GitHub Actions running on every push.
+              Your nexus-corp-app fork has pino logging, the upgraded /health endpoint, request counters in /api/metrics, and a green pipeline.
             </p>
 
             <div style={{ borderTop: "1px solid rgb(31,41,55)" }} />
@@ -170,41 +202,65 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Node.js and Docker installed
+                requestCount and errorCount variables exist
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Verify with <code className="text-cyan-400 font-mono">node --version</code> and <code className="text-cyan-400 font-mono">docker --version</code>.
+              The alert endpoint reads these variables. Confirm they are declared at module scope in src/index.js.
             </p>
           </div>
         </div>
 
         {/* Task 1 */}
-        <TaskCard number="01" title="Add a feature flag system to the app" done={task1Done} locked={false}>
+        <TaskCard number="01" title="Add the /api/alerts endpoint" done={task1Done} locked={false}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Feature flags are the simplest way to decouple deployment from release.</span>{" "}
-              You ship the code dark — deployed but not active. Then you enable it for specific
-              users or percentages without a new deploy.
+              <span className="text-white">An alert endpoint evaluates the current state of your app against configured thresholds.</span>{" "}
+              This is what monitoring tools poll. It is also what you can call yourself to get an
+              instant health snapshot beyond the basic /health check.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to src/index.js</SectionLabel>
-            <CodeBlock>{`// Feature flags - controlled by environment variables
-const FEATURES = {
-  newMetricsDashboard: process.env.FEATURE_NEW_METRICS === 'true',
-  verboseLogging: process.env.FEATURE_VERBOSE_LOGGING === 'true',
-}
+            <SectionLabel>Add to src/index.js — after the /health route</SectionLabel>
+            <CodeBlock>{`const ERROR_RATE_WARNING = parseFloat(process.env.ALERT_ERROR_RATE_WARNING || '1')
+const ERROR_RATE_CRITICAL = parseFloat(process.env.ALERT_ERROR_CRITICAL || '5')
+const MIN_UPTIME = parseInt(process.env.ALERT_MIN_UPTIME || '60')
 
-// Update GET / response to include features
-app.get('/', (req, res) => {
+app.get('/api/alerts', (req, res) => {
+  const uptime = Math.floor((Date.now() - startTime) / 1000)
+  const errorRate = requestCount > 0
+    ? (errorCount / requestCount) * 100
+    : 0
+
+  const checks = {
+    error_rate: {
+      value: errorRate.toFixed(2) + '%',
+      threshold: ERROR_RATE_CRITICAL + '%',
+      status: errorRate >= ERROR_RATE_CRITICAL
+        ? 'CRITICAL'
+        : errorRate >= ERROR_RATE_WARNING
+        ? 'WARNING'
+        : 'OK',
+    },
+    uptime: {
+      value: uptime,
+      threshold: MIN_UPTIME,
+      status: uptime < MIN_UPTIME ? 'WARNING' : 'OK',
+    },
+  }
+
+  const overallStatus = Object.values(checks).some(c => c.status === 'CRITICAL')
+    ? 'CRITICAL'
+    : Object.values(checks).some(c => c.status === 'WARNING')
+    ? 'WARNING'
+    : 'OK'
+
   res.json({
-    company: 'Nexus Corp',
-    status: 'running',
-    version: process.env.APP_VERSION || '1.0.0',
-    features: FEATURES,  // shows which features are active
+    status: overallStatus,
+    checks,
+    timestamp: new Date().toISOString(),
   })
 })`}</CodeBlock>
           </div>
@@ -217,33 +273,34 @@ app.get('/', (req, res) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Feature flags are in the code and visible in GET / response
+                GET /api/alerts returns status, checks, and timestamp
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 2 */}
-        <TaskCard number="02" title="Test the feature flag locally" done={task2Done} locked={!task1Done}>
+        <TaskCard number="02" title="Make thresholds configurable in docker-compose.yml" done={task2Done} locked={!task1Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Before shipping, verify the flag actually works.</span>{" "}
-              Enable it locally and confirm the behavior changes. A flag that does not work is worse
-              than no flag — it gives false confidence.
+              <span className="text-white">Hardcoded thresholds are technical debt.</span>{" "}
+              Production and staging have different traffic patterns — a 5% error rate in staging
+              during a load test is fine; in production it is an incident. Environment variables
+              let you tune thresholds per environment without touching code.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Enable the flag and check the response</SectionLabel>
-            <CodeBlock>{`FEATURE_NEW_METRICS=true docker-compose up dev`}</CodeBlock>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Then call{" "}
-              <code className="text-cyan-400 font-mono">GET /</code> — the{" "}
-              <code className="text-cyan-400 font-mono">features.newMetricsDashboard</code> field
-              should be <code className="text-cyan-400 font-mono">true</code>. Set it back to{" "}
-              <code className="text-cyan-400 font-mono">false</code> and verify it returns{" "}
-              <code className="text-cyan-400 font-mono">false</code>.
-            </p>
+            <SectionLabel>Add to the prod service environment in docker-compose.yml</SectionLabel>
+            <CodeBlock>{`- ALERT_ERROR_RATE_WARNING=1
+- ALERT_ERROR_CRITICAL=5
+- ALERT_MIN_UPTIME=60`}</CodeBlock>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Test locally</SectionLabel>
+            <CodeBlock>{`docker compose up dev
+curl http://localhost:3000/api/alerts`}</CodeBlock>
           </div>
 
           {!task2Done && (
@@ -254,26 +311,46 @@ app.get('/', (req, res) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                I have verified the flag enables and disables correctly
+                Alert thresholds are defined in docker-compose.yml and /api/alerts responds correctly
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 3 */}
-        <TaskCard number="03" title="Add the feature flag to docker-compose.yml" done={task3Done} locked={!task2Done}>
+        <TaskCard number="03" title="Write tests for the alert endpoint" done={task3Done} locked={!task2Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Environment-controlled flags mean you can enable a feature in production without a new deploy.</span>{" "}
-              Just change an environment variable and restart. The code was already there — dark.
+              <span className="text-white">Alert logic that is not tested will drift.</span>{" "}
+              Thresholds get changed, logic gets refactored, and suddenly your CRITICAL alert fires
+              at 50% instead of 5%. Tests lock the behavior in place.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to the prod service in docker-compose.yml</SectionLabel>
-            <CodeBlock>{`  prod:
-    environment:
-      - FEATURE_NEW_METRICS=false  # disabled by default, enable when ready`}</CodeBlock>
+            <SectionLabel>Add to src/index.test.js</SectionLabel>
+            <CodeBlock>{`describe('Alerting', () => {
+  it('GET /api/alerts returns status and checks', async () => {
+    const res = await request(app).get('/api/alerts')
+    expect(res.status).toBe(200)
+    expect(res.body).toHaveProperty('status')
+    expect(res.body).toHaveProperty('checks')
+    expect(res.body).toHaveProperty('timestamp')
+  })
+
+  it('alert status is OK, WARNING, or CRITICAL', async () => {
+    const res = await request(app).get('/api/alerts')
+    expect(['OK', 'WARNING', 'CRITICAL']).toContain(res.body.status)
+  })
+
+  it('error_rate check has value, threshold, and status', async () => {
+    const res = await request(app).get('/api/alerts')
+    const check = res.body.checks.error_rate
+    expect(check).toHaveProperty('value')
+    expect(check).toHaveProperty('threshold')
+    expect(check).toHaveProperty('status')
+  })
+})`}</CodeBlock>
           </div>
 
           {!task3Done && (
@@ -284,31 +361,30 @@ app.get('/', (req, res) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Feature flags are defined in docker-compose.yml
+                npm test passes with the new alerting tests
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 4 */}
-        <TaskCard number="04" title="Write a test for the feature flag" done={task4Done} locked={!task3Done}>
+        <TaskCard number="04" title="Add a LOG_LEVEL environment variable" done={task4Done} locked={!task3Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Feature flags that are not tested become permanent.</span>{" "}
-              A test ensures the flag behaves correctly and reminds you the flag exists. The test
-              is also the reminder to clean it up once the feature is fully rolled out.
+              <span className="text-white">In production you want info-level logs. In development you want debug.</span>{" "}
+              In a crisis you might temporarily set LOG_LEVEL=debug in production to get more
+              detail. This should be a switch, not a code change.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to src/index.test.js</SectionLabel>
-            <CodeBlock>{`describe('Feature flags', () => {
-  it('should return features object in GET /', async () => {
-    const res = await request(app).get('/')
-    expect(res.body).toHaveProperty('features')
-    expect(typeof res.body.features).toBe('object')
-  })
-})`}</CodeBlock>
+            <SectionLabel>Add to docker-compose.yml — prod service</SectionLabel>
+            <CodeBlock>{`- LOG_LEVEL=info`}</CodeBlock>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <SectionLabel>Add to docker-compose.yml — dev service</SectionLabel>
+            <CodeBlock>{`- LOG_LEVEL=debug`}</CodeBlock>
           </div>
 
           {!task4Done && (
@@ -319,26 +395,26 @@ app.get('/', (req, res) => {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Feature flag test passes in npm test
+                LOG_LEVEL is set per environment in docker-compose.yml
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 5 */}
-        <TaskCard number="05" title="Ship it dark and verify in CI" done={task5Done} locked={!task4Done}>
+        <TaskCard number="05" title="Commit and push — verify CI is green" done={task5Done} locked={!task4Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">This is the pattern: deploy the code with the flag disabled.</span>{" "}
-              The feature exists in production but no user sees it. When ready, flip the flag. No
-              redeploy needed. No risk window. No all-hands-on-deck deploy.
+              <span className="text-white">Alerting is only useful when it runs in production. Ship it.</span>{" "}
+              From now on, any monitoring tool can poll /api/alerts and get a structured response.
+              No more checking dashboards manually at 11pm.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Commit and push with the flag disabled by default</SectionLabel>
+            <SectionLabel>Commit and push</SectionLabel>
             <CodeBlock>{`git add src/index.js src/index.test.js docker-compose.yml
-git commit -m 'feat: add feature flags for dark launches'
+git commit -m 'feat: add /api/alerts endpoint with configurable thresholds'
 git push`}</CodeBlock>
           </div>
 
@@ -364,7 +440,7 @@ git push`}</CodeBlock>
                   className="w-4 h-4 accent-cyan-400 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                  Feature flag code deployed dark — pipeline is green
+                  Pipeline is green — alerting endpoint is live
                 </span>
               </label>
             </div>
@@ -382,7 +458,7 @@ git push`}</CodeBlock>
             }}
           >
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-              ✓ Dark launch capability established. You can now deploy without releasing.
+              ✓ Alerting is live. The system now speaks before your customers do.
             </p>
             <a
               href="?phase=4"

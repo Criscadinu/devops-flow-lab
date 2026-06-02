@@ -7,7 +7,7 @@ import { completeMission } from "@/app/actions/progress"
 import { prisma } from "@/lib/prisma"
 
 export const metadata: Metadata = {
-  title: "M-20 Learning Culture - DevOps Flow Lab",
+  title: "M-20 Architecture for Low-Risk Releases - DevOps Flow Lab",
 }
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
@@ -23,7 +23,7 @@ function MissionHeader({ fase }: { fase: number }) {
           M-20
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
-          Learning Culture
+          Architecture for Low-Risk Releases
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
           Phase {fase} of 4
@@ -59,6 +59,22 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
 
 const panels = [
   {
+    initials: "SM",
+    name: "Sarah",
+    role: "Engineering Manager",
+    badge: "MANAGEMENT",
+    accent: "rgb(6,182,212)",
+    badgeBg: "rgba(6,182,212,0.08)",
+    badgeBorder: "rgba(6,182,212,0.3)",
+    quote: (
+      <>
+        &ldquo;Last release broke the orders API for <mark>2 hours</mark>. Every user was affected.
+        We had to roll back manually. That took <mark>45 minutes</mark> on top of the 2-hour
+        outage.&rdquo;
+      </>
+    ),
+  },
+  {
     initials: "LI",
     name: "Lisa",
     role: "Developer",
@@ -68,8 +84,9 @@ const panels = [
     badgeBorder: "rgba(34,197,94,0.3)",
     quote: (
       <>
-        &ldquo;I fixed a race condition in the orders service. It took me 3 hours. I wrote it up in
-        my head, closed the ticket, and moved on. <mark>I never told anyone how I did it.</mark>&rdquo;
+        &ldquo;I want to ship a new feature but I am scared. If it breaks, it breaks for everyone
+        immediately. I need a way to test in production with real users without risking
+        everything.&rdquo;
       </>
     ),
   },
@@ -83,8 +100,24 @@ const panels = [
     badgeBorder: "rgba(239,68,68,0.3)",
     quote: (
       <>
-        &ldquo;Two months ago I hit the same race condition. I spent 2 days on it. If Lisa had written
-        it down anywhere, I would have solved it in 3 hours too. <mark>We lost 13 hours as a team.</mark>&rdquo;
+        &ldquo;Rollback means re-deploying the old version manually. That takes{" "}
+        <mark>30 minutes</mark> minimum. During that 30 minutes, users see errors. Every deploy
+        is a risk.&rdquo;
+      </>
+    ),
+  },
+  {
+    initials: "KA",
+    name: "Kai",
+    role: "QA Engineer",
+    badge: "QA",
+    accent: "rgb(251,146,60)",
+    badgeBg: "rgba(251,146,60,0.08)",
+    badgeBorder: "rgba(251,146,60,0.3)",
+    quote: (
+      <>
+        &ldquo;We tested the feature in staging but prod behaves differently. Real traffic patterns
+        are different. We need to test with real users before full rollout.&rdquo;
       </>
     ),
   },
@@ -98,8 +131,8 @@ const panels = [
     badgeBorder: "rgba(167,139,250,0.3)",
     quote: (
       <>
-        &ldquo;We keep solving the same problems. Every sprint someone rediscovers something the team
-        already knows. It is <mark>invisible waste</mark> — nobody sees it because it never shows up in a ticket.&rdquo;
+        &ldquo;We have a big new feature ready. But we are afraid to ship it. The last big release
+        caused <mark>4 incidents</mark>. We are delaying again.&rdquo;
       </>
     ),
   },
@@ -114,11 +147,11 @@ const panels = [
     isPlayer: true,
     quote: (
       <>
-        &ldquo;A learning that stays in one person&apos;s head is a single point of failure. Write it
-        down. Share it. Make <mark>individual knowledge into team knowledge</mark>.&rdquo;
+        &ldquo;The problem is not the code. The problem is how we release it. All-or-nothing
+        deploys are inherently risky. The solution is to decouple deployment from release.&rdquo;
       </>
     ),
-    outro: "Local discovery. Global improvement.",
+    outro: "Deploy dark. Release gradually.",
   },
 ]
 
@@ -132,10 +165,10 @@ function Phase1() {
             className="text-4xl text-white tracking-tight leading-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Week fourteen. Nexus Corp.
+            Week seven. Nexus Corp.
           </h2>
           <p className="text-gray-400 text-base leading-relaxed">
-            Lisa fixed a tricky race condition last week. She figured it out in 3 hours. Two months ago Marco spent 2 days on the exact same bug. Nobody told him.
+            Every deploy is still a gamble. One bad release hits all users at once.
           </p>
         </div>
 
@@ -197,7 +230,7 @@ function Phase1() {
         <CTA
           href="?phase=2"
           label="Understand the theory →"
-          sub="Phase 2 of 4 - From individual learning to team knowledge"
+          sub="Phase 2 of 4 - Deploy vs release, and how to decouple them"
         />
       </div>
 
@@ -215,6 +248,45 @@ function Phase1() {
 
 // ─── Phase 2 - The theory ─────────────────────────────────────────────────────
 
+const releasePatterns = [
+  {
+    title: "Blue / Green",
+    body: "Run two identical environments. Blue is live. Green gets the new version. Switch traffic instantly when ready. Rollback is switching back — takes seconds.",
+    accent: "rgb(6,182,212)",
+    bg: "#020d0f",
+    border: "rgba(6,182,212,0.25)",
+  },
+  {
+    title: "Canary release",
+    body: "Release to 1% of users first. Monitor error rates, latency, and key metrics. Expand to 10%, then 50%, then 100% only if stable. Problems affect 1% — not everyone.",
+    accent: "rgb(234,179,8)",
+    bg: "#0a0800",
+    border: "rgba(234,179,8,0.25)",
+  },
+  {
+    title: "Feature flags",
+    body: "Deploy to all servers with the feature disabled. Enable for specific users, percentages, or regions. Rollback is flipping a flag — no redeploy, no downtime.",
+    accent: "rgb(34,197,94)",
+    bg: "#020a02",
+    border: "rgba(34,197,94,0.25)",
+  },
+]
+
+const strangler = [
+  { step: "01", label: "Identify a seam",    body: "Find a bounded piece of the monolith that can be extracted without touching everything else. Start small." },
+  { step: "02", label: "Build alongside",    body: "Build the new service next to the old code. Do not replace — add. The old code still runs." },
+  { step: "03", label: "Route traffic",      body: "Send a subset of requests to the new service. Use a proxy or feature flag to control the split." },
+  { step: "04", label: "Verify and expand",  body: "Confirm the new service handles the load correctly. Gradually increase the traffic share." },
+  { step: "05", label: "Strangle the old",   body: "Once the new service handles 100% of traffic, delete the old code. The monolith shrinks one piece at a time." },
+]
+
+const patternTable = [
+  { pattern: "Blue / Green",   useCase: "Zero-downtime deploys, instant rollback",   risk: "LOW",    rollback: "Seconds — switch traffic back"  },
+  { pattern: "Canary",         useCase: "Testing with real traffic before full rollout", risk: "LOW", rollback: "Minutes — reroute traffic to stable" },
+  { pattern: "Feature flags",  useCase: "Dark launches, A/B tests, ring deployments", risk: "VERY LOW", rollback: "Seconds — flip the flag"       },
+  { pattern: "Rolling deploy", useCase: "Gradual rollout across a fleet of servers",  risk: "MEDIUM", rollback: "Minutes — redeploy old version"  },
+]
+
 function Phase2() {
   return (
     <div className="flex-1 px-6 py-14">
@@ -226,54 +298,40 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The problem with tribal knowledge
+            Deployment vs release — the crucial distinction
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            Most engineering teams run on tribal knowledge — things that only certain people know
-            because they experienced them. This knowledge is invisible until it is needed, and by
-            then it is often too late. The DevOps Handbook calls this the Third Way: creating a culture
-            of continual learning and experimentation where local discoveries are converted into global
-            improvements.
+            Most teams treat these as the same thing. They are not.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               {
-                label: "Tribal knowledge",
-                items: [
-                  "Fixes stay in one person's head",
-                  "Same bugs solved repeatedly across the team",
-                  "New engineers start from zero",
-                  "Knowledge is lost when engineers leave",
-                ],
-                accent: "rgb(239,68,68)",
+                word: "Deploy",
+                def: "Put code on a server. The code runs in production but may not be available to users yet. This is a technical operation.",
+                accent: "rgb(75,85,99)",
               },
               {
-                label: "Team knowledge",
-                items: [
-                  "Every fix is written down and findable",
-                  "The second person solves it in minutes, not days",
-                  "New engineers inherit accumulated context",
-                  "Knowledge compounds over time",
-                ],
-                accent: "rgb(34,197,94)",
+                word: "Release",
+                def: "Make a feature available to users. This is a business decision — it can happen independently of deployment, at any time.",
+                accent: "rgb(6,182,212)",
               },
-            ].map((col) => (
+            ].map((item) => (
               <div
-                key={col.label}
-                className="flex flex-col gap-3 p-5 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${col.accent}` }}
+                key={item.word}
+                className="flex flex-col gap-3 p-6 border"
+                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${item.accent}` }}
               >
-                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: col.accent }}>
-                  {col.label}
+                <span className="text-sm font-mono font-bold uppercase tracking-widest" style={{ color: item.accent }}>
+                  {item.word}
                 </span>
-                <div className="flex flex-col gap-2">
-                  {col.items.map((item, i) => (
-                    <p key={i} className="text-xs text-gray-400 leading-relaxed">{item}</p>
-                  ))}
-                </div>
+                <p className="text-gray-400 text-sm leading-relaxed">{item.def}</p>
               </div>
             ))}
           </div>
+          <p className="text-gray-400 leading-relaxed">
+            When you decouple these, you can deploy any time and release when the business is ready.
+            Deploys become boring. Releases become intentional.
+          </p>
         </section>
 
         <section className="flex flex-col gap-5">
@@ -282,48 +340,19 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The three formats for sharing knowledge
+            Three patterns for low-risk releases
           </h2>
-          <p className="text-gray-400 leading-relaxed">
-            There are three practical formats for converting individual learning into team knowledge.
-            Each serves a different purpose and lives in a different part of the repository.
-          </p>
-          <div className="flex flex-col gap-0 border border-gray-800">
-            {[
-              {
-                label: "TIL",
-                title: "Today I Learned",
-                note: "A short note, 3–5 sentences, written the same day. What was the problem, what was the fix, what should you remember next time.",
-                accent: "rgb(6,182,212)",
-              },
-              {
-                label: "ADR",
-                title: "Architecture Decision Record",
-                note: "A structured document that captures why a technical decision was made. Future engineers who question the decision can read why it was made instead of reversing it without context.",
-                accent: "rgb(167,139,250)",
-              },
-              {
-                label: "Runbook entry",
-                title: "New failure mode → new playbook",
-                note: "When a fix reveals a new failure mode, add a playbook to the runbook. The postmortem process from M-19 already triggers this.",
-                accent: "rgb(34,197,94)",
-              },
-            ].map((row, i) => (
+          <div className="flex flex-col gap-3">
+            {releasePatterns.map((card) => (
               <div
-                key={row.label}
-                className="flex gap-4 px-5 py-5 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606", borderLeft: `3px solid ${row.accent}` }}
+                key={card.title}
+                className="flex flex-col gap-3 p-6 border"
+                style={{ backgroundColor: card.bg, borderColor: card.border, borderLeft: `3px solid ${card.accent}` }}
               >
-                <span
-                  className="text-xs font-mono font-bold shrink-0 w-20 mt-0.5"
-                  style={{ color: row.accent }}
-                >
-                  {row.label}
+                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: card.accent }}>
+                  {card.title}
                 </span>
-                <div className="flex flex-col gap-1 flex-1">
-                  <span className="text-sm text-white font-mono">{row.title}</span>
-                  <span className="text-xs text-gray-500 leading-relaxed">{row.note}</span>
-                </div>
+                <p className="text-gray-400 text-sm leading-relaxed">{card.body}</p>
               </div>
             ))}
           </div>
@@ -335,30 +364,25 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Making learning a habit
+            The strangler fig pattern
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            The difference between teams that learn and teams that repeat mistakes is not intelligence
-            — it is habit. Two practices that work at the team level:
+            Named after the strangler fig tree, which grows around a host tree until it replaces it.
+            Applied to software: incrementally replace a monolith by building new services alongside
+            it — without a big-bang rewrite.
           </p>
-          <div className="flex flex-col gap-4">
-            {[
-              {
-                title: "The weekly TIL",
-                body: "At the end of every week, each engineer posts one thing they learned to a shared channel. Takes 5 minutes. Compounds over months.",
-              },
-              {
-                title: "The pre-mortem",
-                body: "Before shipping a feature, ask \"what could go wrong?\" Write it down. It surfaces risks and creates a shared mental model before the incident, not after.",
-              },
-            ].map((item) => (
+          <div className="flex flex-col gap-0 border border-gray-800">
+            {strangler.map((s, i) => (
               <div
-                key={item.title}
-                className="flex flex-col gap-2 p-5 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: "3px solid rgba(6,182,212,0.4)" }}
+                key={s.step}
+                className="flex gap-5 px-5 py-4 border-b border-gray-800 last:border-b-0"
+                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
               >
-                <span className="text-sm text-white font-mono font-bold">{item.title}</span>
-                <p className="text-sm text-gray-500 leading-relaxed">{item.body}</p>
+                <span className="text-xs font-mono font-bold shrink-0 mt-0.5" style={{ color: "rgb(6,182,212)" }}>{s.step}</span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-xs font-mono font-bold text-white uppercase tracking-widest">{s.label}</span>
+                  <p className="text-xs text-gray-500 leading-relaxed">{s.body}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -370,32 +394,41 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The DORA connection
+            When to use each pattern
           </h2>
-          <p className="text-gray-400 leading-relaxed">
-            Learning culture does not show up in a single DORA metric. It shows up in the trend.
-            Teams with strong learning cultures maintain their DORA improvements over time. Teams
-            without it see metrics regress as the same problems recur. The goal of M-20 is to protect
-            everything you have built in M-01 through M-19.
-          </p>
-          <div
-            className="flex flex-col gap-3 p-5 border"
-            style={{ backgroundColor: "#080808", borderColor: "rgba(6,182,212,0.2)", borderLeft: "3px solid rgba(6,182,212,0.4)" }}
-          >
-            <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-              What this mission does
-            </span>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              All four DORA metrics are protected. Learning culture is the practice that prevents
-              regression — the same incidents stop recurring, the same bugs stop reappearing, and
-              the improvements you have made compound over time instead of decaying.
-            </p>
+          <div className="border border-gray-800">
+            <div
+              className="grid grid-cols-12 border-b border-gray-800 px-5 py-3"
+              style={{ backgroundColor: "#0d0d0d" }}
+            >
+              <span className="col-span-3 text-xs font-mono text-gray-600 uppercase tracking-widest">Pattern</span>
+              <span className="col-span-4 text-xs font-mono text-gray-600 uppercase tracking-widest">Use case</span>
+              <span className="col-span-2 text-xs font-mono text-gray-600 uppercase tracking-widest">Risk</span>
+              <span className="col-span-3 text-xs font-mono text-gray-600 uppercase tracking-widest">Rollback</span>
+            </div>
+            {patternTable.map((row, i) => (
+              <div
+                key={row.pattern}
+                className="grid grid-cols-12 px-5 py-4 border-b border-gray-800 last:border-b-0"
+                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+              >
+                <span className="col-span-3 text-sm font-mono font-bold text-white">{row.pattern}</span>
+                <span className="col-span-4 text-xs text-gray-400 leading-relaxed">{row.useCase}</span>
+                <span
+                  className="col-span-2 text-xs font-mono font-bold"
+                  style={{ color: row.risk === "LOW" || row.risk === "VERY LOW" ? "rgb(34,197,94)" : "rgb(234,179,8)" }}
+                >
+                  {row.risk}
+                </span>
+                <span className="col-span-3 text-xs text-gray-500 leading-relaxed">{row.rollback}</span>
+              </div>
+            ))}
           </div>
         </section>
 
         <CTA
           href="?phase=3"
-          label="Build the learning culture →"
+          label="Deploy dark for Nexus Corp →"
           sub="Phase 3 of 4 - Do it yourself"
         />
       </div>
@@ -405,31 +438,17 @@ function Phase2() {
 
 // ─── Phase 4 - Result ─────────────────────────────────────────────────────────
 
-const doraProtected = [
-  {
-    metric: "Deployment Frequency",
-    code: "DF",
-    value: "Multiple×/week",
-    note: "team knowledge prevents regressions that slow deploy cadence",
-  },
-  {
-    metric: "Lead Time for Changes",
-    code: "LT",
-    value: "5 days",
-    note: "shared context reduces time spent rediscovering known solutions",
-  },
-  {
-    metric: "Change Failure Rate",
-    code: "CFR",
-    value: "1%",
-    note: "TILs and ADRs prevent the same mistakes from recurring",
-  },
-  {
-    metric: "Mean Time to Restore",
-    code: "MTTR",
-    value: "30 min",
-    note: "documented fixes make the second incident faster than the first",
-  },
+const beforeAfter = [
+  { before: "All-or-nothing deploys affect all users instantly",   after: "Feature flags let you release to 1% first"           },
+  { before: "Rollback takes 30 minutes of manual work",            after: "Disable a flag in seconds, no redeploy"               },
+  { before: "Afraid to ship large features",                       after: "Ship dark, enable when confident"                     },
+  { before: "Staging tests but prod behaves differently",          after: "Test with real prod traffic using canary releases"     },
+]
+
+const doraImpact = [
+  { metric: "Change Failure Rate",   code: "CFR", before: "7%",        after: "4%",                   note: "dark launches eliminate risky big-bang releases"    },
+  { metric: "Lead Time for Changes", code: "LT",  before: "7 days",    after: "5 days",               note: "fearless shipping means faster iteration"           },
+  { metric: "Deployment Frequency",  code: "DF",  before: "1× / week", after: "Multiple times / week", note: "decoupled release removes hesitation to deploy"    },
 ]
 
 function Phase4() {
@@ -442,96 +461,71 @@ function Phase4() {
             Mission Complete - M-20
           </p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Nexus Corp Stops Repeating Mistakes
+            Deploy Dark. Release Gradually.
           </h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">
-            Learning culture does not move a DORA metric today. It protects every metric you have
-            already moved. Without it, teams regress — the same incidents recur, the same bugs
-            reappear, the same architectural mistakes get made twice. M-20 is the practice that
-            makes all previous improvements permanent.
+            This is what you built for Nexus Corp.
           </p>
         </div>
 
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">01</span>
-            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">What you built</h2>
+            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">What changed</h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <div
-            className="flex flex-col gap-5 p-6 border"
-            style={{
-              backgroundColor: "#080808",
-              borderColor: "rgba(6,182,212,0.2)",
-              borderLeft: "3px solid rgb(6,182,212)",
-            }}
-          >
-            <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-              The system now learns from itself
-            </p>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              Every engineer who joins Nexus Corp from now on starts with the accumulated knowledge
-              of everyone who came before them. The team&apos;s learning is version controlled, discoverable,
-              and growing.
-            </p>
-            <div className="flex flex-col gap-3 border-t border-gray-800 pt-4">
-              {[
-                "TIL format: every fix is written down and findable in docs/til/",
-                "ADR format: every significant decision has a documented rationale in docs/adr/",
-                "Learning practices in the runbook: weekly TIL, pre-mortem, ADR are team agreements",
-                "/api/learning: learning artifacts are discoverable and observable",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(34,197,94)" }}>✓</span>
-                  <p className="text-sm text-gray-400">{item}</p>
-                </div>
-              ))}
+          <div className="border border-gray-800">
+            <div className="grid grid-cols-2 border-b border-gray-800" style={{ backgroundColor: "#0d0d0d" }}>
+              <div className="px-5 py-3 border-r border-gray-800">
+                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(239,68,68)" }}>Before</span>
+              </div>
+              <div className="px-5 py-3">
+                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(34,197,94)" }}>After</span>
+              </div>
             </div>
+            {beforeAfter.map((row, i) => (
+              <div
+                key={i}
+                className="grid grid-cols-2 border-b border-gray-800 last:border-b-0"
+                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+              >
+                <div className="px-5 py-4 border-r border-gray-800">
+                  <p className="text-sm text-gray-500">{row.before}</p>
+                </div>
+                <div className="px-5 py-4">
+                  <p className="text-sm text-gray-300">{row.after}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">02</span>
-            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">Your DORA metrics — protected</h2>
+            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">Your impact on Nexus Corp</h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {doraProtected.map((d) => (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {doraImpact.map((d) => (
               <div
                 key={d.code}
                 className="flex flex-col gap-4 border p-6"
-                style={{
-                  backgroundColor: "#060f06",
-                  borderColor: "rgba(34,197,94,0.25)",
-                  borderLeft: "3px solid rgba(34,197,94,0.6)",
-                }}
+                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
               >
                 <div className="flex flex-col gap-1">
                   <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">{d.metric}</span>
                   <span className="text-xs font-mono text-gray-700">DORA - {d.code}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono shrink-0" style={{ color: "rgb(34,197,94)" }}>✓</span>
-                  <span
-                    className="text-lg font-mono font-bold"
-                    style={{ ...syne.style, color: "rgb(34,197,94)" }}
-                  >
-                    {d.value}
+                <div className="flex items-center gap-3 flex-wrap">
+                  <span className="text-lg font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>
+                    {d.before}
                   </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span
-                    className="text-xs font-mono font-bold px-1.5 py-0.5 uppercase tracking-widest"
-                    style={{
-                      color: "rgb(34,197,94)",
-                      backgroundColor: "rgba(34,197,94,0.08)",
-                      border: "1px solid rgba(34,197,94,0.3)",
-                    }}
-                  >
-                    PROTECTED
+                  <span className="font-mono text-gray-700">→</span>
+                  <span className="text-lg font-mono font-bold" style={{ ...syne.style, color: "rgb(6,182,212)" }}>
+                    {d.after}
                   </span>
                 </div>
                 <p className="text-xs font-mono text-gray-600">{d.note}</p>
@@ -556,12 +550,11 @@ function Phase4() {
             }}
           >
             <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-              Coming next — Chaos Engineering
+              First Way: Flow — Complete
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Next: Chaos Engineering — if you want to know how your system fails, break it deliberately
-              before it breaks on its own. Inject failures in a controlled environment. Find weaknesses
-              before your users do.
+              First Way complete. Flow is fast and low-risk. Next: The Second Way — Feedback. Make
+              production visible.
             </p>
           </div>
         </section>
@@ -575,14 +568,14 @@ function Phase4() {
             >
               Back to dashboard →
             </a>
-            <div
+            <span
               className="flex items-center gap-3 px-8 py-4 text-sm font-mono border cursor-not-allowed"
               style={{ backgroundColor: "#0a0a0a", borderColor: "rgb(31,41,55)", color: "rgb(55,65,81)" }}
               title="Not yet available"
             >
               <span>⊘</span>
-              Continue to M-21 →
-            </div>
+              Next mission: The Second Way →
+            </span>
           </div>
         </section>
 
@@ -593,7 +586,7 @@ function Phase4() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default async function M14Page({
+export default async function M07Page({
   searchParams,
 }: {
   searchParams: Promise<{ phase?: string }>

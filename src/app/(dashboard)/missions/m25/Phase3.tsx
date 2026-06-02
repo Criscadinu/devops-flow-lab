@@ -1,9 +1,39 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Syne } from "next/font/google"
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
+
+function MobileWarning() {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
+  if (!isMobile) return null
+
+  return (
+    <div
+      className="flex flex-col gap-3 p-5 border mb-6"
+      style={{
+        backgroundColor: "#0a0700",
+        borderColor: "rgba(251,146,60,0.4)",
+        borderLeft: "3px solid rgb(251,146,60)",
+      }}
+    >
+      <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
+        Desktop required
+      </p>
+      <p className="text-sm text-gray-400 leading-relaxed">
+        This phase requires a terminal, a code editor, and GitHub. These tasks cannot be completed on a mobile device. Open this page on your laptop or desktop to continue.
+      </p>
+    </div>
+  )
+}
 
 function TaskCard({
   number,
@@ -114,6 +144,7 @@ export function Phase3() {
   const [task3Done, setTask3Done] = useState(false)
   const [task4Done, setTask4Done] = useState(false)
   const [task5Done, setTask5Done] = useState(false)
+  const [postmortemUrl, setPostmortemUrl] = useState("")
   const [actionsUrl, setActionsUrl] = useState("")
 
   const allDone = task1Done && task2Done && task3Done && task4Done && task5Done
@@ -122,16 +153,18 @@ export function Phase3() {
     <div className="flex-1 px-6 py-14">
       <div className="max-w-3xl mx-auto flex flex-col gap-8">
 
+        <MobileWarning />
+
         {/* Header */}
         <div className="flex flex-col gap-2">
           <h2
             className="text-3xl text-white tracking-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Your Mission - Define the Infrastructure as Code
+            Your Mission - Build the Postmortem Process
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Nexus Corp runs on a mystery server. You are going to fix that.
+            Create a postmortem template, write a real postmortem for a past incident, link it to your runbook, and expose it through an API endpoint.
           </p>
         </div>
 
@@ -149,7 +182,7 @@ export function Phase3() {
               Before you start
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              This mission builds on your M-05 work. Both items should already be ready.
+              This mission builds on your M-19 work. Both items should already be ready.
             </p>
           </div>
 
@@ -157,12 +190,12 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Fork from M-05 with green pipeline
+                Branch protection and PR process in place from M-19
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Your nexus-corp-app fork has a passing test suite and GitHub Actions running on every push.
+              Your nexus-corp-app fork has branch protection enabled, a PR template, and a CONTRIBUTING.md. All changes go through PRs.
             </p>
 
             <div style={{ borderTop: "1px solid rgb(31,41,55)" }} />
@@ -170,32 +203,80 @@ export function Phase3() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
               <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-                Docker installed
+                Runbook committed to the repo from M-17
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Verify with <code className="text-cyan-400 font-mono">docker --version</code>. Docker Desktop or Docker Engine both work.
+              Your RUNBOOK.md is already in the repo from M-17. This postmortem will link back to it.
             </p>
           </div>
         </div>
 
         {/* Task 1 */}
-        <TaskCard number="01" title="Document the current environment" done={task1Done} locked={false}>
+        <TaskCard number="01" title="Create a postmortem template" done={task1Done} locked={false}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Before you can codify the infrastructure, you need to know what it is.</span>{" "}
-              The docker-compose.yml from M-02 is a start. But it only defines the app — not the
-              environment variables, health checks, or restart behavior.
+              <span className="text-white">A template enforces consistency across every incident.</span>{" "}
+              Without a template, postmortems are written differently every time — or not at all.
+              A standard format means every postmortem answers the same questions, making them
+              comparable, searchable, and actually useful for preventing recurrence.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>What to look for</SectionLabel>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Open your fork. Look at the <code className="text-cyan-400 font-mono">docker-compose.yml</code>.
-              What is missing? What environment variables are hardcoded? What is not defined anywhere?
-            </p>
+            <SectionLabel>Create docs/postmortem-template.md in the nexus-corp-app repo</SectionLabel>
+            <CodeBlock>{`# Postmortem: [Incident Title]
+
+**Date:** YYYY-MM-DD
+**Severity:** P1 / P2 / P3
+**Duration:** HH:MM — HH:MM (X minutes)
+**Author:** @your-handle
+
+---
+
+## Summary
+One paragraph. What broke, for how long, and what the impact was.
+
+## Timeline
+| Time (UTC) | Event |
+|------------|-------|
+| HH:MM | First alert fired |
+| HH:MM | On-call engineer paged |
+| HH:MM | Root cause identified |
+| HH:MM | Fix deployed |
+| HH:MM | Service restored |
+
+## Root Cause
+What actually caused the incident. Be specific — not "human error" but exactly what decision or
+condition led to the failure.
+
+## Contributing Factors
+- Factor 1
+- Factor 2
+
+## Impact
+- Users affected: ~N
+- Duration: X minutes
+- Services impacted: list them
+
+## What Went Well
+- Monitoring caught it quickly
+- Runbook was accurate
+- Communication was clear
+
+## What Went Poorly
+- Root cause took too long to identify
+- Alert threshold was too high
+
+## Action Items
+| Action | Owner | Due |
+|--------|-------|-----|
+| Add test for this failure mode | @engineer | YYYY-MM-DD |
+| Update runbook with new step | @ops | YYYY-MM-DD |
+
+## Runbook Reference
+[RUNBOOK.md — Section X](./RUNBOOK.md#section-x)`}</CodeBlock>
           </div>
 
           {!task1Done && (
@@ -206,28 +287,30 @@ export function Phase3() {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                I have reviewed the docker-compose.yml and identified at least 2 things that are not defined as code
+                docs/postmortem-template.md is created and committed to the repo
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 2 */}
-        <TaskCard number="02" title="Add a .env.example file" done={task2Done} locked={!task1Done}>
+        <TaskCard number="02" title="Write a real postmortem" done={task2Done} locked={!task1Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Environment variables are infrastructure too.</span>{" "}
-              If they are not documented, new developers cannot run the app.{" "}
-              <code className="text-cyan-400 font-mono">.env.example</code> is the IaC for your
-              configuration — it tells every developer exactly what variables they need.
+              <span className="text-white">A postmortem is only valuable when it is written for a real incident.</span>{" "}
+              Use the health endpoint outage from M-19 — the one caused by Lisa&apos;s direct push to main.
+              Fill in the template completely. The timeline, the root cause, the contributing factors,
+              the action items. This is a permanent record that future engineers can learn from.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Create .env.example at the repo root</SectionLabel>
-            <CodeBlock>{`APP_VERSION=1.0.0
-NODE_ENV=development
-PORT=3000`}</CodeBlock>
+            <SectionLabel>Create docs/postmortems/2024-health-endpoint-outage.md</SectionLabel>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              Use the M-19 incident: direct push to main broke the health endpoint. Fill in every section
+              of the template. Action items should include &ldquo;enable branch protection&rdquo; — which you&apos;ve
+              already done. That&apos;s the point: postmortems drive the process changes that prevent recurrence.
+            </p>
           </div>
 
           {!task2Done && (
@@ -238,37 +321,32 @@ PORT=3000`}</CodeBlock>
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                .env.example committed and pushed to GitHub
+                A complete postmortem is written and committed to docs/postmortems/
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 3 */}
-        <TaskCard number="03" title="Improve the docker-compose.yml" done={task3Done} locked={!task2Done}>
+        <TaskCard number="03" title="Link the postmortem from your runbook" done={task3Done} locked={!task2Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A real IaC setup uses environment files, health checks, and restart policies.</span>{" "}
-              Health checks tell the orchestrator when a container is actually ready. Restart
-              policies define what happens when it crashes. Without these, your infrastructure is
-              only half-defined.
+              <span className="text-white">Runbooks and postmortems reinforce each other.</span>{" "}
+              The runbook tells you what to do when an incident happens. The postmortem explains
+              what you learned. Linking them creates a feedback loop: every update to the runbook
+              can point to the incident that motivated it.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Update docker-compose.yml</SectionLabel>
-            <CodeBlock>{`services:
-  dev:
-    build: .
-    ports:
-      - "3000:3000"
-    env_file: .env
-    healthcheck:
-      test: ["CMD", "wget", "-q", "-O-", "http://localhost:3000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    restart: unless-stopped`}</CodeBlock>
+            <SectionLabel>Add a &ldquo;Related Postmortems&rdquo; section to RUNBOOK.md</SectionLabel>
+            <CodeBlock>{`## Related Postmortems
+
+Incidents that led to updates in this runbook:
+
+| Date | Incident | Postmortem |
+|------|----------|------------|
+| 2024-XX-XX | Health endpoint 500s after direct push to main | [docs/postmortems/2024-health-endpoint-outage.md](./docs/postmortems/2024-health-endpoint-outage.md) |`}</CodeBlock>
           </div>
 
           {!task3Done && (
@@ -279,56 +357,46 @@ PORT=3000`}</CodeBlock>
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                docker-compose up runs with health checks passing
+                RUNBOOK.md has a Related Postmortems section linking to the incident
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 4 */}
-        <TaskCard number="04" title="Add a Makefile for common operations" done={task4Done} locked={!task3Done}>
+        <TaskCard number="04" title="Expose postmortems through /api/postmortems" done={task4Done} locked={!task3Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A Makefile is the simplest form of IaC for developer workflows.</span>{" "}
-              Instead of remembering{" "}
-              <code className="text-cyan-400 font-mono">docker-compose up --build</code>, you run{" "}
-              <code className="text-cyan-400 font-mono">make dev</code>. Every team member gets the
-              same commands, documented and version-controlled.
+              <span className="text-white">Postmortems should be as accessible as metrics.</span>{" "}
+              Exposing them through an API endpoint means they are observable — tooling can read them,
+              dashboards can link them, and the learning is not locked in a folder nobody checks.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Create Makefile at the repo root</SectionLabel>
-            <CodeBlock>{`.PHONY: dev test prod build clean
+            <SectionLabel>Create app/api/postmortems/route.ts</SectionLabel>
+            <CodeBlock>{`import { NextResponse } from 'next/server'
 
-dev:
-	docker-compose up dev
-
-test:
-	docker-compose up test
-
-prod:
-	docker-compose up prod
-
-build:
-	docker-compose build
-
-clean:
-	docker-compose down --volumes --remove-orphans`}</CodeBlock>
-            <div
-              className="flex gap-3 p-4 border"
-              style={{
-                backgroundColor: "#0a0800",
-                borderColor: "rgba(234,179,8,0.2)",
-                borderLeft: "3px solid rgba(234,179,8,0.6)",
-              }}
-            >
-              <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(234,179,8)" }}>!</span>
-              <p className="text-sm text-gray-400 leading-relaxed">
-                The indentation in a Makefile <strong className="text-white">must be a tab character</strong>,
-                not spaces. If your editor converts tabs to spaces, the Makefile will not work.
-              </p>
-            </div>
+export async function GET() {
+  return NextResponse.json({
+    postmortems: [
+      {
+        id: 'pm-001',
+        date: '2024-XX-XX',
+        title: 'Health endpoint 500s after direct push to main',
+        severity: 'P2',
+        duration_minutes: 20,
+        root_cause: 'Direct push to main bypassed CI; unintended import broke health endpoint',
+        status: 'resolved',
+        runbook: '/RUNBOOK.md',
+        document: '/docs/postmortems/2024-health-endpoint-outage.md',
+      },
+    ],
+  })
+}`}</CodeBlock>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              Commit and push via PR. After merge, verify: <span className="font-mono text-gray-500">curl https://your-app.onrender.com/api/postmortems</span>
+            </p>
           </div>
 
           {!task4Done && (
@@ -339,33 +407,37 @@ clean:
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                make dev starts the app successfully
+                /api/postmortems returns postmortem data in production
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 5 */}
-        <TaskCard number="05" title="Commit everything and verify the pipeline" done={task5Done} locked={!task4Done}>
+        <TaskCard number="05" title="Commit, push via PR, and verify CI" done={task5Done} locked={!task4Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">IaC only counts when it is in version control.</span>{" "}
-              Commit all infrastructure files and verify the pipeline stays green. The goal: anyone
-              can clone this repo and recreate the full environment from scratch.
+              <span className="text-white">The postmortem process must itself follow the review process.</span>{" "}
+              Push all changes through a PR — not directly to main. This is the practice you documented.
+              Follow it even for docs. The habit matters more than any individual change.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Commit and push all IaC files</SectionLabel>
-            <CodeBlock>{`git add .env.example docker-compose.yml Makefile
-git commit -m 'feat: infrastructure as code - env example, healthchecks, makefile'
-git push`}</CodeBlock>
+            <SectionLabel>Push all changes through a PR to main</SectionLabel>
+            <CodeBlock>{`git checkout -b feat/postmortem-process
+git add docs/ RUNBOOK.md app/api/postmortems/
+git commit -m 'feat: add postmortem template, first postmortem, and /api/postmortems'
+git push origin feat/postmortem-process`}</CodeBlock>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              Open a PR. Fill in the PR template. Wait for CI. Merge to main.
+            </p>
           </div>
 
           {!task5Done && (
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-2">
-                <SectionLabel>Paste your green Actions run URL</SectionLabel>
+                <SectionLabel>Paste your green Actions run URL for the merged PR</SectionLabel>
                 <input
                   type="url"
                   value={actionsUrl}
@@ -375,16 +447,27 @@ git push`}</CodeBlock>
                   style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
                 />
               </div>
+              <div className="flex flex-col gap-2">
+                <SectionLabel>Paste your live /api/postmortems URL</SectionLabel>
+                <input
+                  type="url"
+                  value={postmortemUrl}
+                  onChange={(e) => setPostmortemUrl(e.target.value)}
+                  placeholder="https://your-app.onrender.com/api/postmortems"
+                  className="w-full px-3 py-2 text-sm font-mono text-white outline-none border"
+                  style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+                />
+              </div>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <input
                   type="checkbox"
                   onChange={(e) => {
-                    if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true)
+                    if (e.target.checked && actionsUrl.includes("github.com") && postmortemUrl.includes("http")) setTask5Done(true)
                   }}
                   className="w-4 h-4 accent-cyan-400 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                  Pipeline is green with all IaC files committed
+                  PR is merged, CI is green, /api/postmortems is live
                 </span>
               </label>
             </div>
@@ -402,7 +485,7 @@ git push`}</CodeBlock>
             }}
           >
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-              ✓ Infrastructure defined as code. Any developer can now recreate the environment in minutes.
+              ✓ Postmortem process established. Incidents are now learning opportunities, not just outages.
             </p>
             <a
               href="?phase=4"

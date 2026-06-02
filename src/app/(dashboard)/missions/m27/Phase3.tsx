@@ -160,10 +160,10 @@ export function Phase3() {
             className="text-3xl text-white tracking-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Your Mission - Get on the Trunk
+            Your Mission - Break Things Deliberately
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Audit your branches, protect main, practice a short-lived branch cycle, and hide incomplete work behind a feature flag.
+            Run three chaos experiments, add timeout configuration, document the failure modes, and commit it all to version control.
           </p>
         </div>
 
@@ -181,44 +181,65 @@ export function Phase3() {
               Before you start
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              This mission builds on M-07. Your repo should have a commit convention and small-batch habits in place.
+              This mission builds on your M-26 work. Both items should already be ready.
             </p>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
-            <p className="text-white text-sm font-bold flex-1" style={syne.style}>
-              nexus-corp-app with CONTRIBUTING.md and commit convention from M-07
+
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
+              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
+                Docker Compose with health checks from M-04
+              </p>
+              <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
+            </div>
+            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+              Your nexus-corp-app fork has a docker-compose.yml with a prod service and health checks configured from M-04.
             </p>
-            <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
+
+            <div style={{ borderTop: "1px solid rgb(31,41,55)" }} />
+
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
+              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
+                /health endpoint and RUNBOOK.md from M-17
+              </p>
+              <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
+            </div>
+            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+              Your app exposes /health and your RUNBOOK.md is in place. The failure modes you discover will be added there.
+            </p>
           </div>
         </div>
 
         {/* Task 1 */}
-        <TaskCard number="01" title="Audit your current branches" done={task1Done} locked={false}>
+        <TaskCard number="01" title="Run experiment 1 — kill the process" done={task1Done} locked={false}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Before changing how you branch, understand what you have.</span>{" "}
-              List every branch, its age, and what is blocking it from merging.
+              <span className="text-white">The simplest chaos experiment is also the most revealing.</span>{" "}
+              Stop your app while it is running and observe what happens. Does Docker restart it?
+              How long does it take? Does your health check catch it? This is the baseline — if your
+              app cannot survive a restart, nothing else matters.
             </p>
           </MentorNote>
 
-          <div className="flex flex-col gap-2">
-            <SectionLabel>List all branches and their history</SectionLabel>
-            <CodeBlock>{`git branch -a
-git log --oneline --graph --all | head -20`}</CodeBlock>
-          </div>
+          <div className="flex flex-col gap-3">
+            <SectionLabel>Terminal 1 — start the app</SectionLabel>
+            <CodeBlock>{`docker compose up prod`}</CodeBlock>
 
-          <div className="flex flex-col gap-2">
-            <SectionLabel>Create BRANCH-AUDIT.md at the repo root</SectionLabel>
-            <CodeBlock>{`# Branch Audit
+            <SectionLabel>Terminal 2 — kill the process and observe</SectionLabel>
+            <CodeBlock>{`docker ps
+docker kill nexus-corp-app-prod-1
 
-## Active branches
-| Branch | Age | Last commit | Status |
-|--------|-----|-------------|--------|
-| main   | ... | ...         | active |
+# Observe:
+# - Does Docker restart the container automatically?
+# - How long until /health returns 200 again?
+# - Check docker-compose.yml — is restart: unless-stopped set?`}</CodeBlock>
 
-## Finding
-Are any branches older than 1 day? What is blocking them from merging?`}</CodeBlock>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              If restart policy is not set, add to the prod service in docker-compose.yml:
+            </p>
+            <CodeBlock>{`restart: unless-stopped`}</CodeBlock>
           </div>
 
           {!task1Done && (
@@ -229,39 +250,43 @@ Are any branches older than 1 day? What is blocking them from merging?`}</CodeBl
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Branch audit complete
+                Process kill experiment run — restart policy confirmed
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 2 */}
-        <TaskCard number="02" title="Enable branch protection on main" done={task2Done} locked={!task1Done}>
+        <TaskCard number="02" title="Run experiment 2 — slow the dependency" done={task2Done} locked={!task1Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Trunk-based development does not mean unprotected main.</span>{" "}
-              It means fast, frequent, protected merges. Branch protection ensures every commit to main has passed CI.
+              <span className="text-white">Most outages are not caused by your code — they are caused by a dependency your code trusts too much.</span>{" "}
+              Adding a timeout is the single most important resilience improvement most apps can make.
+              Without a timeout, one slow dependency can hang every request.
             </p>
           </MentorNote>
 
-          <div className="flex flex-col gap-2">
-            <SectionLabel>On GitHub: Settings → Branches → Add rule</SectionLabel>
-            <div
-              className="flex flex-col gap-3 p-4 border"
-              style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
-            >
-              {[
-                "Branch name pattern: main",
-                "Require status checks to pass before merging: ✓",
-                "Status check: test",
-                "Do not allow bypassing the above settings: ✓",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(6,182,212)" }}>→</span>
-                  <p className="text-xs font-mono text-gray-400">{item}</p>
-                </div>
-              ))}
-            </div>
+          <div className="flex flex-col gap-3">
+            <SectionLabel>Add a chaos endpoint to src/index.js</SectionLabel>
+            <CodeBlock>{`// Chaos experiment endpoint — simulates a slow dependency
+app.get('/api/chaos/slow', async (req, res) => {
+  const delay = parseInt(req.query.delay) || 5000
+  await new Promise(resolve => setTimeout(resolve, delay))
+  res.json({ delayed_ms: delay })
+})`}</CodeBlock>
+
+            <SectionLabel>Run the experiment</SectionLabel>
+            <CodeBlock>{`# Start the app
+docker compose up prod
+
+# Hit the slow endpoint (10 second delay)
+curl "http://localhost:3000/api/chaos/slow?delay=10000" &
+
+# While that is running — does /health still respond?
+curl http://localhost:3000/health
+
+# Check if the error rate is affected
+curl http://localhost:3000/api/alerts`}</CodeBlock>
           </div>
 
           {!task2Done && (
@@ -272,32 +297,39 @@ Are any branches older than 1 day? What is blocking them from merging?`}</CodeBl
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Branch protection enabled — nothing merges to main without green CI
+                Slow dependency experiment run — /health responds independently of slow endpoint
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 3 */}
-        <TaskCard number="03" title="Create a short-lived branch, commit, and merge within the hour" done={task3Done} locked={!task2Done}>
+        <TaskCard number="03" title="Add timeout configuration" done={task3Done} locked={!task2Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">The discipline of trunk-based development is practiced, not declared.</span>{" "}
-              Create a branch, make one change, open a PR, merge it. The whole cycle should take less than an hour.
+              <span className="text-white">A timeout is a contract: if a dependency does not respond within X milliseconds, give up and fail fast.</span>{" "}
+              Failing fast is better than hanging forever — it lets the rest of the system keep working.
+              Configure timeouts as environment variables so they can be tuned per environment.
             </p>
           </MentorNote>
 
-          <div className="flex flex-col gap-2">
-            <SectionLabel>Full short-lived branch cycle</SectionLabel>
-            <CodeBlock>{`git checkout -b feat/add-order-count-endpoint
-# Make one small change
-git add .
-git commit -m 'feat: add GET /api/orders/count endpoint'
-git push origin feat/add-order-count-endpoint
-# Open PR, wait for CI, merge`}</CodeBlock>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              The branch name describes one thing. The PR has one commit. CI runs and goes green. You merge and delete the branch. The whole cycle takes minutes.
-            </p>
+          <div className="flex flex-col gap-3">
+            <SectionLabel>Add timeout middleware to src/index.js</SectionLabel>
+            <CodeBlock>{`const REQUEST_TIMEOUT_MS = parseInt(process.env.REQUEST_TIMEOUT_MS || '5000')
+
+// Add timeout middleware — applies to all routes
+app.use((req, res, next) => {
+  res.setTimeout(REQUEST_TIMEOUT_MS, () => {
+    res.status(503).json({
+      error: 'Request timeout',
+      timeout_ms: REQUEST_TIMEOUT_MS,
+    })
+  })
+  next()
+})`}</CodeBlock>
+
+            <SectionLabel>Add to docker-compose.yml prod environment</SectionLabel>
+            <CodeBlock>{`- REQUEST_TIMEOUT_MS=5000`}</CodeBlock>
           </div>
 
           {!task3Done && (
@@ -308,32 +340,43 @@ git push origin feat/add-order-count-endpoint
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Branch created, PR opened, CI green, merged to main — all within one hour
+                Request timeout configured and wired to environment variable
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 4 */}
-        <TaskCard number="04" title="Add a feature flag to hide incomplete work" done={task4Done} locked={!task3Done}>
+        <TaskCard number="04" title="Document the failure modes" done={task4Done} locked={!task3Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">If you have work in progress that is not ready for users, it should be behind a flag — not on a branch.</span>{" "}
-              Commit it to main, hide it with a flag, finish it safely.
+              <span className="text-white">A chaos experiment that is not documented is just breaking things.</span>{" "}
+              Document every failure mode you discover so the runbook is updated with the new knowledge.
+              Future on-call engineers will thank you.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Add to src/index.js</SectionLabel>
-            <CodeBlock>{`// Feature flag — incomplete feature hidden from users
-if (process.env.ENABLE_ORDER_EXPORT === 'true') {
-  app.get('/api/orders/export', (req, res) => {
-    res.json({ status: 'coming soon' })
-  })
-}`}</CodeBlock>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              The code is in main. The feature is invisible in production. You can iterate on it freely without a long-lived branch.
-            </p>
+            <SectionLabel>Add to docs/runbook.md</SectionLabel>
+            <CodeBlock>{`## Known Failure Modes
+
+### Process crash
+- Symptom: /health returns connection refused
+- Recovery: Docker restarts automatically (restart: unless-stopped)
+- Expected recovery time: < 30 seconds
+- Prevention: health check in docker-compose.yml
+
+### Slow dependency
+- Symptom: requests hang, error rate spikes after timeout
+- Recovery: requests time out after REQUEST_TIMEOUT_MS (default 5000ms)
+- Expected impact: 503 errors during dependency outage
+- Prevention: configure REQUEST_TIMEOUT_MS, add circuit breaker if needed
+
+### Resource exhaustion
+- Symptom: high memory usage visible in /health, eventual OOM crash
+- Recovery: Docker restarts automatically
+- Prevention: monitor memory via /health, add memory limits to
+  docker-compose.yml`}</CodeBlock>
           </div>
 
           {!task4Done && (
@@ -344,25 +387,27 @@ if (process.env.ENABLE_ORDER_EXPORT === 'true') {
                 className="w-4 h-4 accent-cyan-400 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                Incomplete feature is behind a flag, not a branch
+                Known failure modes documented in RUNBOOK.md
               </span>
             </label>
           )}
         </TaskCard>
 
         {/* Task 5 */}
-        <TaskCard number="05" title="Commit and push" done={task5Done} locked={!task4Done}>
+        <TaskCard number="05" title="Commit and push — verify CI is green" done={task5Done} locked={!task4Done}>
           <MentorNote>
             <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">The branch audit, the protection rules, and the feature flag are now permanent.</span>{" "}
-              Nexus Corp is on one trunk. Long-lived branches are no longer the default.
+              <span className="text-white">Chaos engineering is not a one-time exercise. It is a practice.</span>{" "}
+              Add the slow endpoint and timeout middleware to the codebase so future engineers can run
+              these experiments themselves. The failure modes you discovered today are in the runbook.
+              The next engineer benefits from your chaos.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
-            <SectionLabel>Commit and push all changes</SectionLabel>
-            <CodeBlock>{`git add BRANCH-AUDIT.md src/index.js
-git commit -m 'docs: branch audit and feature flag for incomplete work'
+            <SectionLabel>Push all changes through a PR to main</SectionLabel>
+            <CodeBlock>{`git add src/index.js docker-compose.yml docs/runbook.md
+git commit -m 'feat: add chaos engineering experiments, timeout middleware, and failure mode docs'
 git push`}</CodeBlock>
           </div>
 
@@ -388,7 +433,7 @@ git push`}</CodeBlock>
                   className="w-4 h-4 accent-cyan-400 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                  Pipeline is green
+                  Pipeline is green — chaos engineering is part of the codebase
                 </span>
               </label>
             </div>
@@ -406,7 +451,7 @@ git push`}</CodeBlock>
             }}
           >
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>
-              ✓ One trunk. Protected. Everyone on it. Incomplete work is behind a flag, not a branch.
+              ✓ Chaos experiments complete. You know how your system fails — and you fixed it before it mattered.
             </p>
             <a
               href="?phase=4"

@@ -301,10 +301,10 @@ ENABLE_ANALYTICS=false
             <CodeBlock>{`docs/
   README.md       # "Operational documentation for the Nexus Corp app."
   architecture.md # "# Architecture\n\nTBD — describe the system here."
-  adr/            # Architecture Decision Records (from M-20 if complete)
-  til/            # Today I Learned entries (from M-20 if complete)`}</CodeBlock>
+  adr/            # Architecture Decision Records (from M-26 if complete)
+  til/            # Today I Learned entries (from M-26 if complete)`}</CodeBlock>
             <p className="text-xs text-gray-600 leading-relaxed">
-              If you already have docs/ from M-16 or M-20, just add the README.md and architecture.md stubs. Commit the full structure.
+              If you already have docs/ from M-17 or M-26, just add the README.md and architecture.md stubs. Commit the full structure.
             </p>
           </div>
 

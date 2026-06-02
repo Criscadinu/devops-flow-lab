@@ -7,7 +7,7 @@ import { completeMission } from "@/app/actions/progress"
 import { prisma } from "@/lib/prisma"
 
 export const metadata: Metadata = {
-  title: "M-11 Architecture for Low-Risk Releases - DevOps Flow Lab",
+  title: "M-25 Blameless Postmortems - DevOps Flow Lab",
 }
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
@@ -20,10 +20,10 @@ function MissionHeader({ fase }: { fase: number }) {
     <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "#080808" }}>
       <div className="max-w-5xl mx-auto flex items-center justify-between">
         <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-          M-11
+          M-25
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
-          Architecture for Low-Risk Releases
+          Blameless Postmortems
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
           Phase {fase} of 4
@@ -59,18 +59,18 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
 
 const panels = [
   {
-    initials: "SM",
-    name: "Sarah",
-    role: "Engineering Manager",
-    badge: "MANAGEMENT",
-    accent: "rgb(6,182,212)",
-    badgeBg: "rgba(6,182,212,0.08)",
-    badgeBorder: "rgba(6,182,212,0.3)",
+    initials: "MA",
+    name: "Marco",
+    role: "Ops Engineer",
+    badge: "OPS",
+    accent: "rgb(239,68,68)",
+    badgeBg: "rgba(239,68,68,0.08)",
+    badgeBorder: "rgba(239,68,68,0.3)",
     quote: (
       <>
-        &ldquo;Last release broke the orders API for <mark>2 hours</mark>. Every user was affected.
-        We had to roll back manually. That took <mark>45 minutes</mark> on top of the 2-hour
-        outage.&rdquo;
+        &ldquo;After the health endpoint outage, the first thing Tom asked was &lsquo;who pushed that?&rsquo;
+        Lisa didn&apos;t say anything in the next standup. Neither did I. <mark>We stopped talking about failures.</mark>
+        That&apos;s when things start going wrong again.&rdquo;
       </>
     ),
   },
@@ -84,55 +84,25 @@ const panels = [
     badgeBorder: "rgba(34,197,94,0.3)",
     quote: (
       <>
-        &ldquo;I want to ship a new feature but I am scared. If it breaks, it breaks for everyone
-        immediately. I need a way to test in production with real users without risking
-        everything.&rdquo;
+        &ldquo;I was afraid to talk about what happened. But the problem wasn&apos;t me — it was
+        a process that made it <mark>too easy to push directly to main</mark>. Blaming me
+        doesn&apos;t fix the process. It just makes the next person hide it.&rdquo;
       </>
     ),
   },
   {
-    initials: "MA",
-    name: "Marco",
-    role: "Ops Engineer",
-    badge: "OPS",
-    accent: "rgb(239,68,68)",
-    badgeBg: "rgba(239,68,68,0.08)",
-    badgeBorder: "rgba(239,68,68,0.3)",
-    quote: (
-      <>
-        &ldquo;Rollback means re-deploying the old version manually. That takes{" "}
-        <mark>30 minutes</mark> minimum. During that 30 minutes, users see errors. Every deploy
-        is a risk.&rdquo;
-      </>
-    ),
-  },
-  {
-    initials: "KA",
-    name: "Kai",
-    role: "QA Engineer",
-    badge: "QA",
+    initials: "SM",
+    name: "Sam",
+    role: "Engineering Manager",
+    badge: "EM",
     accent: "rgb(251,146,60)",
     badgeBg: "rgba(251,146,60,0.08)",
     badgeBorder: "rgba(251,146,60,0.3)",
     quote: (
       <>
-        &ldquo;We tested the feature in staging but prod behaves differently. Real traffic patterns
-        are different. We need to test with real users before full rollout.&rdquo;
-      </>
-    ),
-  },
-  {
-    initials: "TO",
-    name: "Tom",
-    role: "Product Owner",
-    badge: "PRODUCT",
-    accent: "rgb(167,139,250)",
-    badgeBg: "rgba(167,139,250,0.08)",
-    badgeBorder: "rgba(167,139,250,0.3)",
-    quote: (
-      <>
-        &ldquo;We have a big new feature ready. But we are afraid to ship it. The last big release
-        caused <mark>4 incidents</mark>. We are delaying again.&rdquo;
+        &ldquo;Every incident has a root cause. Rarely is the root cause a person — it&apos;s almost
+        always a <mark>system, a process, or a missing safeguard</mark>. The goal of a postmortem
+        is not accountability. It is improvement.&rdquo;
       </>
     ),
   },
@@ -147,11 +117,12 @@ const panels = [
     isPlayer: true,
     quote: (
       <>
-        &ldquo;The problem is not the code. The problem is how we release it. All-or-nothing
-        deploys are inherently risky. The solution is to decouple deployment from release.&rdquo;
+        &ldquo;A blameless postmortem documents what happened, why, and what changes will prevent
+        it. It is a <mark>permanent record that turns incidents into improvements</mark>.
+        The process is more valuable than any individual fix.&rdquo;
       </>
     ),
-    outro: "Deploy dark. Release gradually.",
+    outro: "Document the failure. Learn from it. Never repeat it.",
   },
 ]
 
@@ -165,10 +136,10 @@ function Phase1() {
             className="text-4xl text-white tracking-tight leading-tight"
             style={{ ...syne.style, fontWeight: 800 }}
           >
-            Week seven. Nexus Corp.
+            Week thirteen. Nexus Corp.
           </h2>
           <p className="text-gray-400 text-base leading-relaxed">
-            Every deploy is still a gamble. One bad release hits all users at once.
+            The health endpoint outage was fixed. Branch protection is in place. But nobody wrote down what happened or why. The next engineer to touch that code will have no idea how close it came to a two-hour outage.
           </p>
         </div>
 
@@ -230,7 +201,7 @@ function Phase1() {
         <CTA
           href="?phase=2"
           label="Understand the theory →"
-          sub="Phase 2 of 4 - Deploy vs release, and how to decouple them"
+          sub="Phase 2 of 4 - From blame to systemic learning"
         />
       </div>
 
@@ -248,45 +219,6 @@ function Phase1() {
 
 // ─── Phase 2 - The theory ─────────────────────────────────────────────────────
 
-const releasePatterns = [
-  {
-    title: "Blue / Green",
-    body: "Run two identical environments. Blue is live. Green gets the new version. Switch traffic instantly when ready. Rollback is switching back — takes seconds.",
-    accent: "rgb(6,182,212)",
-    bg: "#020d0f",
-    border: "rgba(6,182,212,0.25)",
-  },
-  {
-    title: "Canary release",
-    body: "Release to 1% of users first. Monitor error rates, latency, and key metrics. Expand to 10%, then 50%, then 100% only if stable. Problems affect 1% — not everyone.",
-    accent: "rgb(234,179,8)",
-    bg: "#0a0800",
-    border: "rgba(234,179,8,0.25)",
-  },
-  {
-    title: "Feature flags",
-    body: "Deploy to all servers with the feature disabled. Enable for specific users, percentages, or regions. Rollback is flipping a flag — no redeploy, no downtime.",
-    accent: "rgb(34,197,94)",
-    bg: "#020a02",
-    border: "rgba(34,197,94,0.25)",
-  },
-]
-
-const strangler = [
-  { step: "01", label: "Identify a seam",    body: "Find a bounded piece of the monolith that can be extracted without touching everything else. Start small." },
-  { step: "02", label: "Build alongside",    body: "Build the new service next to the old code. Do not replace — add. The old code still runs." },
-  { step: "03", label: "Route traffic",      body: "Send a subset of requests to the new service. Use a proxy or feature flag to control the split." },
-  { step: "04", label: "Verify and expand",  body: "Confirm the new service handles the load correctly. Gradually increase the traffic share." },
-  { step: "05", label: "Strangle the old",   body: "Once the new service handles 100% of traffic, delete the old code. The monolith shrinks one piece at a time." },
-]
-
-const patternTable = [
-  { pattern: "Blue / Green",   useCase: "Zero-downtime deploys, instant rollback",   risk: "LOW",    rollback: "Seconds — switch traffic back"  },
-  { pattern: "Canary",         useCase: "Testing with real traffic before full rollout", risk: "LOW", rollback: "Minutes — reroute traffic to stable" },
-  { pattern: "Feature flags",  useCase: "Dark launches, A/B tests, ring deployments", risk: "VERY LOW", rollback: "Seconds — flip the flag"       },
-  { pattern: "Rolling deploy", useCase: "Gradual rollout across a fleet of servers",  risk: "MEDIUM", rollback: "Minutes — redeploy old version"  },
-]
-
 function Phase2() {
   return (
     <div className="flex-1 px-6 py-14">
@@ -298,40 +230,53 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Deployment vs release — the crucial distinction
+            Why blameless?
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            Most teams treat these as the same thing. They are not.
+            When engineers fear blame, they hide incidents, underreport near-misses, and avoid the
+            areas of the codebase they know are fragile. The cost of blame culture is not just morale
+            — it is incomplete information. You cannot fix a system you do not fully understand.
+            Blameless postmortems create the conditions for honest reporting.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               {
-                word: "Deploy",
-                def: "Put code on a server. The code runs in production but may not be available to users yet. This is a technical operation.",
-                accent: "rgb(75,85,99)",
+                label: "Blame culture",
+                items: [
+                  "Incidents are hidden or minimized",
+                  "Root cause is always 'human error'",
+                  "Engineers avoid risky areas",
+                  "Same incidents recur",
+                ],
+                accent: "rgb(239,68,68)",
               },
               {
-                word: "Release",
-                def: "Make a feature available to users. This is a business decision — it can happen independently of deployment, at any time.",
-                accent: "rgb(6,182,212)",
+                label: "Blameless culture",
+                items: [
+                  "Incidents are reported fully and honestly",
+                  "Root cause is systemic — process, tooling, design",
+                  "Engineers surface fragile areas proactively",
+                  "Each incident improves the system",
+                ],
+                accent: "rgb(34,197,94)",
               },
-            ].map((item) => (
+            ].map((col) => (
               <div
-                key={item.word}
-                className="flex flex-col gap-3 p-6 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${item.accent}` }}
+                key={col.label}
+                className="flex flex-col gap-3 p-5 border"
+                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${col.accent}` }}
               >
-                <span className="text-sm font-mono font-bold uppercase tracking-widest" style={{ color: item.accent }}>
-                  {item.word}
+                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: col.accent }}>
+                  {col.label}
                 </span>
-                <p className="text-gray-400 text-sm leading-relaxed">{item.def}</p>
+                <div className="flex flex-col gap-2">
+                  {col.items.map((item, i) => (
+                    <p key={i} className="text-xs text-gray-400 leading-relaxed">{item}</p>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
-          <p className="text-gray-400 leading-relaxed">
-            When you decouple these, you can deploy any time and release when the business is ready.
-            Deploys become boring. Releases become intentional.
-          </p>
         </section>
 
         <section className="flex flex-col gap-5">
@@ -340,19 +285,33 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Three patterns for low-risk releases
+            What a postmortem is — and is not
           </h2>
-          <div className="flex flex-col gap-3">
-            {releasePatterns.map((card) => (
+          <p className="text-gray-400 leading-relaxed">
+            A postmortem is a structured document. It records what happened, the timeline of the
+            incident, the root cause, what went well, what went poorly, and the specific action
+            items that will prevent recurrence. It is not a blame report. It is not a retrospective.
+            It is not optional. It is the primary mechanism by which your team learns from production.
+          </p>
+          <div className="flex flex-col gap-0 border border-gray-800">
+            {[
+              { section: "Summary",             note: "What broke, for how long, and the business impact. One paragraph."         },
+              { section: "Timeline",            note: "Exact sequence of events with timestamps. Reveals detection and response."  },
+              { section: "Root cause",          note: "The specific condition that caused the failure. Never 'human error.'"       },
+              { section: "Contributing factors",note: "The system properties that made the root cause possible."                   },
+              { section: "What went well",      note: "What worked — monitoring, communication, tooling. Reinforce it."            },
+              { section: "What went poorly",    note: "What failed — gaps in process, missing safeguards, slow detection."         },
+              { section: "Action items",        note: "Specific, assigned, dated changes. Not suggestions — commitments."          },
+            ].map((row, i) => (
               <div
-                key={card.title}
-                className="flex flex-col gap-3 p-6 border"
-                style={{ backgroundColor: card.bg, borderColor: card.border, borderLeft: `3px solid ${card.accent}` }}
+                key={row.section}
+                className="flex gap-4 px-5 py-4 border-b border-gray-800 last:border-b-0"
+                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
               >
-                <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: card.accent }}>
-                  {card.title}
+                <span className="text-xs font-mono font-bold shrink-0 w-36" style={{ color: "rgb(6,182,212)" }}>
+                  {row.section}
                 </span>
-                <p className="text-gray-400 text-sm leading-relaxed">{card.body}</p>
+                <span className="text-xs text-gray-500">{row.note}</span>
               </div>
             ))}
           </div>
@@ -364,28 +323,14 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            The strangler fig pattern
+            Postmortems and runbooks reinforce each other
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            Named after the strangler fig tree, which grows around a host tree until it replaces it.
-            Applied to software: incrementally replace a monolith by building new services alongside
-            it — without a big-bang rewrite.
+            A runbook tells you what to do when an incident occurs. A postmortem explains what you
+            learned after it happened. When a runbook step is missing or wrong, the postmortem
+            documents it — and the runbook gets updated. The next engineer who hits the same alert
+            benefits from the learning without having to live through the incident.
           </p>
-          <div className="flex flex-col gap-0 border border-gray-800">
-            {strangler.map((s, i) => (
-              <div
-                key={s.step}
-                className="flex gap-5 px-5 py-4 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
-              >
-                <span className="text-xs font-mono font-bold shrink-0 mt-0.5" style={{ color: "rgb(6,182,212)" }}>{s.step}</span>
-                <div className="flex flex-col gap-1">
-                  <span className="text-xs font-mono font-bold text-white uppercase tracking-widest">{s.label}</span>
-                  <p className="text-xs text-gray-500 leading-relaxed">{s.body}</p>
-                </div>
-              </div>
-            ))}
-          </div>
         </section>
 
         <section className="flex flex-col gap-5">
@@ -394,41 +339,31 @@ function Phase2() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
           <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            When to use each pattern
+            The DORA connection
           </h2>
-          <div className="border border-gray-800">
-            <div
-              className="grid grid-cols-12 border-b border-gray-800 px-5 py-3"
-              style={{ backgroundColor: "#0d0d0d" }}
-            >
-              <span className="col-span-3 text-xs font-mono text-gray-600 uppercase tracking-widest">Pattern</span>
-              <span className="col-span-4 text-xs font-mono text-gray-600 uppercase tracking-widest">Use case</span>
-              <span className="col-span-2 text-xs font-mono text-gray-600 uppercase tracking-widest">Risk</span>
-              <span className="col-span-3 text-xs font-mono text-gray-600 uppercase tracking-widest">Rollback</span>
-            </div>
-            {patternTable.map((row, i) => (
-              <div
-                key={row.pattern}
-                className="grid grid-cols-12 px-5 py-4 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
-              >
-                <span className="col-span-3 text-sm font-mono font-bold text-white">{row.pattern}</span>
-                <span className="col-span-4 text-xs text-gray-400 leading-relaxed">{row.useCase}</span>
-                <span
-                  className="col-span-2 text-xs font-mono font-bold"
-                  style={{ color: row.risk === "LOW" || row.risk === "VERY LOW" ? "rgb(34,197,94)" : "rgb(234,179,8)" }}
-                >
-                  {row.risk}
-                </span>
-                <span className="col-span-3 text-xs text-gray-500 leading-relaxed">{row.rollback}</span>
-              </div>
-            ))}
+          <p className="text-gray-400 leading-relaxed">
+            Postmortems do not directly move the DORA metrics. They maintain them. By preventing
+            recurrence of known failure modes, they keep CFR from drifting back up as the system grows.
+            They also accelerate MTTR over time — the second time an incident occurs, you have a playbook.
+            The third time, you catch it before it becomes an incident at all.
+          </p>
+          <div
+            className="flex flex-col gap-3 p-5 border"
+            style={{ backgroundColor: "#080808", borderColor: "rgba(6,182,212,0.2)", borderLeft: "3px solid rgba(6,182,212,0.4)" }}
+          >
+            <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+              What this mission does
+            </span>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              All four DORA metrics hold at their current values. The postmortem process is the
+              foundation that prevents regression — as Nexus Corp grows, your metrics stay high.
+            </p>
           </div>
         </section>
 
         <CTA
           href="?phase=3"
-          label="Deploy dark for Nexus Corp →"
+          label="Build the postmortem process →"
           sub="Phase 3 of 4 - Do it yourself"
         />
       </div>
@@ -438,17 +373,39 @@ function Phase2() {
 
 // ─── Phase 4 - Result ─────────────────────────────────────────────────────────
 
-const beforeAfter = [
-  { before: "All-or-nothing deploys affect all users instantly",   after: "Feature flags let you release to 1% first"           },
-  { before: "Rollback takes 30 minutes of manual work",            after: "Disable a flag in seconds, no redeploy"               },
-  { before: "Afraid to ship large features",                       after: "Ship dark, enable when confident"                     },
-  { before: "Staging tests but prod behaves differently",          after: "Test with real prod traffic using canary releases"     },
-]
-
 const doraImpact = [
-  { metric: "Change Failure Rate",   code: "CFR", before: "7%",        after: "4%",                   note: "dark launches eliminate risky big-bang releases"    },
-  { metric: "Lead Time for Changes", code: "LT",  before: "7 days",    after: "5 days",               note: "fearless shipping means faster iteration"           },
-  { metric: "Deployment Frequency",  code: "DF",  before: "1× / week", after: "Multiple times / week", note: "decoupled release removes hesitation to deploy"    },
+  {
+    metric: "Change Failure Rate",
+    code: "CFR",
+    before: "1%",
+    after: "1%",
+    note: "maintained — postmortems prevent recurrence of known failure modes",
+    highlight: false,
+  },
+  {
+    metric: "Deployment Frequency",
+    code: "DF",
+    before: "Multiple×/week",
+    after: "Multiple×/week",
+    note: "maintained",
+    highlight: false,
+  },
+  {
+    metric: "Lead Time for Changes",
+    code: "LT",
+    before: "5 days",
+    after: "5 days",
+    note: "maintained",
+    highlight: false,
+  },
+  {
+    metric: "Mean Time to Restore",
+    code: "MTTR",
+    before: "30 min",
+    after: "30 min",
+    note: "maintained — second incident resolves faster with documented playbook",
+    highlight: false,
+  },
 ]
 
 function Phase4() {
@@ -458,13 +415,15 @@ function Phase4() {
 
         <div className="flex flex-col gap-4">
           <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(6,182,212)" }}>
-            Mission Complete - M-11
+            Mission Complete - M-25
           </p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
-            Deploy Dark. Release Gradually.
+            Nexus Corp Has a Learning Culture
           </h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">
-            This is what you built for Nexus Corp.
+            The metrics don&apos;t move — and that&apos;s the point. Postmortems are not an improvement
+            mechanism. They are a retention mechanism. Your 1% CFR stays at 1% as the system grows,
+            because every failure becomes a permanent improvement to the process.
           </p>
         </div>
 
@@ -475,56 +434,72 @@ function Phase4() {
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <div className="border border-gray-800">
-            <div className="grid grid-cols-2 border-b border-gray-800" style={{ backgroundColor: "#0d0d0d" }}>
-              <div className="px-5 py-3 border-r border-gray-800">
-                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(239,68,68)" }}>Before</span>
-              </div>
-              <div className="px-5 py-3">
-                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(34,197,94)" }}>After</span>
-              </div>
+          <div
+            className="flex flex-col gap-5 p-6 border"
+            style={{
+              backgroundColor: "#080808",
+              borderColor: "rgba(6,182,212,0.2)",
+              borderLeft: "3px solid rgb(6,182,212)",
+            }}
+          >
+            <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+              The system is now self-improving
+            </p>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              Every future incident generates a postmortem. Every postmortem generates action items.
+              Every action item improves the system. Nexus Corp no longer needs to repeat the same
+              mistakes — they are permanently documented, and the fixes are permanent.
+            </p>
+            <div className="flex flex-col gap-3 border-t border-gray-800 pt-4">
+              {[
+                "Postmortem template: every incident answered consistently",
+                "Postmortem index: every incident discoverable",
+                "Runbook linked to postmortems: context survives engineer turnover",
+                "/api/postmortems: learning is observable, not buried in a folder",
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(34,197,94)" }}>✓</span>
+                  <p className="text-sm text-gray-400">{item}</p>
+                </div>
+              ))}
             </div>
-            {beforeAfter.map((row, i) => (
-              <div
-                key={i}
-                className="grid grid-cols-2 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
-              >
-                <div className="px-5 py-4 border-r border-gray-800">
-                  <p className="text-sm text-gray-500">{row.before}</p>
-                </div>
-                <div className="px-5 py-4">
-                  <p className="text-sm text-gray-300">{row.after}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </section>
 
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">02</span>
-            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">Your impact on Nexus Corp</h2>
+            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">Your DORA metrics — maintained</h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {doraImpact.map((d) => (
               <div
                 key={d.code}
                 className="flex flex-col gap-4 border p-6"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
+                style={{
+                  backgroundColor: "#080808",
+                  borderColor: "rgb(31,41,55)",
+                  borderLeft: "3px solid rgb(31,41,55)",
+                }}
               >
                 <div className="flex flex-col gap-1">
                   <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">{d.metric}</span>
                   <span className="text-xs font-mono text-gray-700">DORA - {d.code}</span>
                 </div>
                 <div className="flex items-center gap-3 flex-wrap">
-                  <span className="text-lg font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>
+                  <span
+                    className="text-lg font-mono font-bold"
+                    style={{ ...syne.style, color: "rgb(75,85,99)" }}
+                  >
                     {d.before}
                   </span>
                   <span className="font-mono text-gray-700">→</span>
-                  <span className="text-lg font-mono font-bold" style={{ ...syne.style, color: "rgb(6,182,212)" }}>
+                  <span
+                    className="text-lg font-mono font-bold"
+                    style={{ ...syne.style, color: "rgb(75,85,99)" }}
+                  >
                     {d.after}
                   </span>
                 </div>
@@ -537,7 +512,7 @@ function Phase4() {
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-gray-700 tracking-widest uppercase">03</span>
-            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">What&apos;s next</h2>
+            <h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">Third Way complete</h2>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
 
@@ -550,11 +525,12 @@ function Phase4() {
             }}
           >
             <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
-              First Way: Flow — Complete
+              The Third Way: Learning — Complete
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              First Way complete. Flow is fast and low-risk. Next: The Second Way — Feedback. Make
-              production visible.
+              You&apos;ve built a system that learns from its own failures. Flow moves work through the system.
+              Feedback reveals problems. Learning — the Third Way — creates the conditions for continuous
+              improvement. Nexus Corp is now a high-performing engineering organization.
             </p>
           </div>
         </section>
@@ -568,14 +544,6 @@ function Phase4() {
             >
               Back to dashboard →
             </a>
-            <span
-              className="flex items-center gap-3 px-8 py-4 text-sm font-mono border cursor-not-allowed"
-              style={{ backgroundColor: "#0a0a0a", borderColor: "rgb(31,41,55)", color: "rgb(55,65,81)" }}
-              title="Not yet available"
-            >
-              <span>⊘</span>
-              Next mission: The Second Way →
-            </span>
           </div>
         </section>
 
@@ -586,7 +554,7 @@ function Phase4() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default async function M07Page({
+export default async function M13Page({
   searchParams,
 }: {
   searchParams: Promise<{ phase?: string }>
@@ -605,11 +573,11 @@ export default async function M07Page({
     if (!gateUser) redirect("?phase=3")
 
     // Complete the mission first (idempotent — safe to call multiple times)
-    await completeMission("M-11")
+    await completeMission("M-25")
 
     // Now verify it actually exists (guards against DB errors)
     const completed = await prisma.userProgress.findFirst({
-      where: { userId: gateUser.id, moduleId: "M-11" },
+      where: { userId: gateUser.id, moduleId: "M-25" },
     })
     if (!completed) redirect("?phase=3")
   }
