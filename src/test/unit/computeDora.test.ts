@@ -82,6 +82,15 @@ describe('computeDora', () => {
     expect(result.mttr.perf).not.toBe('LOW PERFORMER')
   })
 
+  it('M-08 through M-13 have no direct DORA impact — they are AUTOMATED_TESTING foundation missions', () => {
+    const withFoundation = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16', 'M-06']))
+    const withAll = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16', 'M-06', 'M-08', 'M-09', 'M-10', 'M-11', 'M-12', 'M-13']))
+    expect(withAll.df).toEqual(withFoundation.df)
+    expect(withAll.lt).toEqual(withFoundation.lt)
+    expect(withAll.cfr).toEqual(withFoundation.cfr)
+    expect(withAll.mttr).toEqual(withFoundation.mttr)
+  })
+
   it('applies M-24: MTTR improves to 1 hour', () => {
     const result = computeDora(new Set(['M-01', 'M-02', 'M-05', 'M-16', 'M-06', 'M-04', 'M-20', 'M-23', 'M-24']))
     expect(result.mttr.value).toBe('1 hour')

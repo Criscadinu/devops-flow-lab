@@ -82,7 +82,7 @@ const missionDefs = [
     id: "M-08",
     title: "Ensure Tests Run Quickly",
     category: "FLOW",
-    description: "A test suite that takes 20 minutes is a test suite nobody runs. Parallelize. Optimize. Make fast feedback the default.",
+    description: "The pipeline takes 22 minutes. Nobody runs tests locally anymore. Parallelize. Optimize. Make fast feedback the default.",
     href: "/missions/m08",
     alwaysUnlocked: false,
     unlockedBy: "M-07",
@@ -91,7 +91,7 @@ const missionDefs = [
     id: "M-09",
     title: "Write Tests Before Code (TDD)",
     category: "FLOW",
-    description: "Test-driven development forces you to define the expected behavior before writing the implementation. The test is the specification.",
+    description: "A customer just applied a 150 percent discount. They got paid to buy things. The edge case was never tested because the test was never written. Write it first.",
     href: "/missions/m09",
     alwaysUnlocked: false,
     unlockedBy: "M-08",
@@ -100,7 +100,7 @@ const missionDefs = [
     id: "M-10",
     title: "Automate Manual Tests",
     category: "FLOW",
-    description: "Every manual test is a bottleneck. Every automated test is a gift to every future engineer on the team.",
+    description: "Kai spends two days clicking through the app before every release. Fourteen percent of his time. Three times this quarter, he missed a step. Automate the checklist.",
     href: "/missions/m10",
     alwaysUnlocked: false,
     unlockedBy: "M-09",
@@ -109,7 +109,7 @@ const missionDefs = [
     id: "M-11",
     title: "Integrate Performance Testing",
     category: "FLOW",
-    description: "Performance problems found in production are expensive. Performance problems found in the pipeline are cheap.",
+    description: "The orders endpoint was fast with 12 records. It is not fast with 47,000. The first performance test was run by customers. Involuntarily.",
     href: "/missions/m11",
     alwaysUnlocked: false,
     unlockedBy: "M-10",
@@ -118,7 +118,7 @@ const missionDefs = [
     id: "M-12",
     title: "Integrate Non-Functional Requirements Testing",
     category: "FLOW",
-    description: "Security, reliability, and compliance are not features. They are requirements. Test them like everything else.",
+    description: "The security audit found a critical vulnerability from six months ago. Nobody checked. There was no automated check. Security is a requirement. Test it like one.",
     href: "/missions/m12",
     alwaysUnlocked: false,
     unlockedBy: "M-11",
@@ -127,7 +127,7 @@ const missionDefs = [
     id: "M-13",
     title: "Dev and Ops Working Together",
     category: "FLOW",
-    description: "The wall between Dev and Ops is where quality goes to die. Build shared ownership into the team structure.",
+    description: "Dev ships. Ops fixes. Nobody talks. Marco spent last night fixing a memory leak Lisa did not know existed. You build it. You run it. You own it.",
     href: "/missions/m13",
     alwaysUnlocked: false,
     unlockedBy: "M-12",
@@ -393,7 +393,7 @@ export default async function DashboardPage() {
   });
 
   // ── Maturity bar ─────────────────────────────────────────────────────────
-  const TOTAL_MISSIONS = 16;
+  const TOTAL_MISSIONS = 22;
   const completedCount = completedIds.size;
   const maturityPct    = Math.round((completedCount / TOTAL_MISSIONS) * 100);
 
