@@ -163,7 +163,7 @@ const missionDefs = [
     id: "M-17",
     title: "Enable Automated Self-Service Deployments",
     category: "FLOW",
-    description: "If deploying requires Marco, Marco is the bottleneck. Anyone on the team should be able to deploy safely.",
+    description: "Lisa's feature has been ready since Tuesday. It is Friday. Marco has not deployed it yet. When deploying requires a specific person, that person is the bottleneck.",
     href: "/missions/m17",
     alwaysUnlocked: false,
     unlockedBy: "M-16",
@@ -172,7 +172,7 @@ const missionDefs = [
     id: "M-18",
     title: "Integrate Code Deployments into the Pipeline",
     category: "FLOW",
-    description: "The pipeline should deploy. Not a person. Not a script. The pipeline.",
+    description: "The pipeline goes green. Then Marco deploys manually from his laptop. Sometimes. For six months. Complete the loop — the pipeline should deploy, not a person.",
     href: "/missions/m18",
     alwaysUnlocked: false,
     unlockedBy: "M-17",
@@ -181,7 +181,7 @@ const missionDefs = [
     id: "M-19",
     title: "Release Patterns — Canary and Blue-Green",
     category: "FLOW",
-    description: "Deploy to 1% of users first. If it breaks, only 1% notice. If it works, roll it out. Risk is a dial, not a switch.",
+    description: "The pricing feature broke for 100% of users. 47 minutes of downtime. With a canary release, it would have been 5 minutes for 1% of users. Risk is a dial, not a switch.",
     href: "/missions/m19",
     alwaysUnlocked: false,
     unlockedBy: "M-18",
@@ -393,7 +393,7 @@ export default async function DashboardPage() {
   });
 
   // ── Maturity bar ─────────────────────────────────────────────────────────
-  const TOTAL_MISSIONS = 22;
+  const TOTAL_MISSIONS = 25;
   const completedCount = completedIds.size;
   const maturityPct    = Math.round((completedCount / TOTAL_MISSIONS) * 100);
 
