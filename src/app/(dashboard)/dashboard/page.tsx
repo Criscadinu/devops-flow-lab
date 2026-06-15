@@ -328,32 +328,97 @@ const firstWayLog = [
   {
     id: "M-02",
     title: "On-Demand Environments",
-    learned: "You containerized Nexus Corp with Docker. Created identical dev, test, and prod environments. Eliminated \"works on my machine.\"",
+    learned: "You containerized Nexus Corp with Docker. Created identical dev, test, and prod environments. Eliminated 'works on my machine.'",
   },
   {
-    id: "M-05",
-    title: "Build the Pipeline",
-    learned: "You fixed 3 failing tests and wired GitHub Actions to run them on every commit. Nexus Corp now gets a pass or fail signal within minutes of every push.",
-  },
-  {
-    id: "M-06",
-    title: "Test Automation",
-    learned: "Build a real test suite: metrics endpoint tests, error handling, coverage reporting, and CI verification. False confidence eliminated.",
-  },
-  {
-    id: "M-16",
-    title: "Continuous Deployment",
-    learned: "You wired automatic deployment to every green build. Every commit that passes tests now ships to production without human intervention.",
+    id: "M-03",
+    title: "Single Repository of Truth",
+    learned: "Everything is in Git. Code, config, docs, infrastructure. If it is not in the repo, it does not exist.",
   },
   {
     id: "M-04",
     title: "Infrastructure as Code",
-    learned: "Defined the full environment in code: .env.example, healthchecks, restart policies, and a Makefile. Any developer can now spin up the environment in one command.",
+    learned: "The environment is defined in code. Anyone can rebuild it in minutes. The server is no longer a mystery.",
+  },
+  {
+    id: "M-05",
+    title: "Build the Pipeline",
+    learned: "Every commit triggers a pipeline. Tests run automatically. Nexus Corp gets a pass or fail signal within minutes of every push.",
+  },
+  {
+    id: "M-06",
+    title: "Test Automation",
+    learned: "A real test suite with meaningful coverage. False confidence eliminated. Green means something.",
+  },
+  {
+    id: "M-07",
+    title: "Catch Errors as Early as Possible",
+    learned: "Linting runs before tests. Unit tests run in seconds. The further left the catch, the cheaper the fix.",
+  },
+  {
+    id: "M-08",
+    title: "Ensure Tests Run Quickly",
+    learned: "Tests run in parallel. Unit and integration tests are separate gates. Fast feedback is the default.",
+  },
+  {
+    id: "M-09",
+    title: "Write Tests Before Code (TDD)",
+    learned: "Red, green, refactor. The test is the specification. Edge cases become requirements, not afterthoughts.",
+  },
+  {
+    id: "M-10",
+    title: "Automate Manual Tests",
+    learned: "The release checklist is automated. Kai no longer spends two days clicking before every release.",
+  },
+  {
+    id: "M-11",
+    title: "Integrate Performance Testing",
+    learned: "Performance thresholds are enforced in CI. The customer is no longer the load tester.",
+  },
+  {
+    id: "M-12",
+    title: "Integrate Non-Functional Requirements Testing",
+    learned: "Security, coverage, and secrets scanning run on every commit. NFRs are requirements, not afterthoughts.",
+  },
+  {
+    id: "M-13",
+    title: "Dev and Ops Working Together",
+    learned: "CODEOWNERS, shared runbook, memory leak test. The wall between Dev and Ops is gone. You build it, you run it.",
+  },
+  {
+    id: "M-14",
+    title: "Small Batch Development",
+    learned: "One logical change per commit. Under 400 lines. Merge small, merge often, merge before it becomes a problem.",
+  },
+  {
+    id: "M-15",
+    title: "Trunk-Based Development",
+    learned: "Everyone commits to main. Feature flags hide incomplete work. No more eleven-day merge conflicts.",
+  },
+  {
+    id: "M-16",
+    title: "Continuous Deployment",
+    learned: "Every green commit deploys automatically. The pipeline ships. Not Marco.",
+  },
+  {
+    id: "M-17",
+    title: "Enable Automated Self-Service Deployments",
+    learned: "Any engineer can deploy safely. The safety is in the process, not the person.",
+  },
+  {
+    id: "M-18",
+    title: "Integrate Code Deployments into the Pipeline",
+    learned: "The pipeline deploys. Staging automatically, production with approval. The loop is complete.",
+  },
+  {
+    id: "M-19",
+    title: "Release Patterns — Canary and Blue-Green",
+    learned: "Risk is a dial, not a switch. Canary releases limit blast radius. Blue-green enables instant rollback.",
   },
   {
     id: "M-20",
-    title: "Architecture for Low-Risk Releases",
-    learned: "Implemented feature flags for dark launches. Decoupled deployment from release. Any feature can now ship dark and be enabled with a flag flip.",
+    title: "Dark Launches and Feature Flags",
+    learned: "Deploy dark. Enable with a flag. Deployment is decoupled from release.",
     nextUp: true,
   },
 ];
@@ -421,7 +486,7 @@ export default async function DashboardPage() {
   const secondWayComplete = firstWayComplete && secondWayMainIds.every((id) => mainMissionProgress[id].isComplete);
 
   // ── First Way log ─────────────────────────────────────────────────────────
-  const FIRST_WAY_TOTAL   = 7;
+  const FIRST_WAY_TOTAL   = 20;
   const firstWayCompleted = firstWayLog.filter((m) => completedIds.has(m.id)).length;
   const firstWayPct       = Math.round((firstWayCompleted / FIRST_WAY_TOTAL) * 100);
 
