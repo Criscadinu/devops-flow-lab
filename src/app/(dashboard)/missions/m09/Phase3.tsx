@@ -75,12 +75,12 @@ export function Phase3() {
 
         <div className="flex flex-col gap-2">
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Your Mission - Red, Green, Refactor</h2>
-          <p className="text-gray-500 text-sm leading-relaxed">Write the test first. Watch it fail. Make it pass. Refactor. Wire the verified function into the app.</p>
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>Write the test first. Watch it fail. Make it pass. Refactor. Wire the verified function into the app.</p>
         </div>
 
         <div className="flex flex-col gap-5 p-6 border" style={{ backgroundColor: "var(--bg-card)", borderColor: "rgba(251,146,60,0.3)", borderLeft: "3px solid rgb(251,146,60)" }}>
           <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>Before you start</p>
-          <p className="text-gray-400 text-sm leading-relaxed">This mission builds on M-08. Your tests should be split into unit/ and integration/ categories and running in parallel in CI.</p>
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>This mission builds on M-08. Your tests should be split into unit/ and integration/ categories and running in parallel in CI.</p>
         </div>
 
         <TaskCard number="01" title="Write a failing test first" done={task1Done} locked={false}>
@@ -113,7 +113,7 @@ describe('applyDiscount', () => {
           {!task1Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask1Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Failing tests written — I see red</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Failing tests written — I see red</span>
             </label>
           )}
         </TaskCard>
@@ -136,7 +136,7 @@ module.exports = { applyDiscount }`}</CodeBlock>
           {!task2Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask2Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">All tests pass — I see green</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>All tests pass — I see green</span>
             </label>
           )}
         </TaskCard>
@@ -165,7 +165,7 @@ module.exports = { applyDiscount }`}</CodeBlock>
           {!task3Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask3Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Refactor complete — tests still green</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Refactor complete — tests still green</span>
             </label>
           )}
         </TaskCard>
@@ -191,7 +191,7 @@ app.post('/api/orders/discount', (req, res) => {
           {!task4Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask4Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Discount endpoint wired — uses the TDD-verified function</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Discount endpoint wired — uses the TDD-verified function</span>
             </label>
           )}
         </TaskCard>
@@ -214,7 +214,7 @@ git push`}</CodeBlock>
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <input type="checkbox" onChange={(e) => { if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Pipeline is green</span>
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Pipeline is green</span>
               </label>
             </div>
           )}

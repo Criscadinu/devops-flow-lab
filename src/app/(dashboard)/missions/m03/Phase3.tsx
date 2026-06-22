@@ -160,7 +160,7 @@ export function Phase3() {
           >
             Your Mission - Build the Repository of Truth
           </h2>
-          <p className="text-gray-500 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Audit what lives outside the repo, add .env.example, structure the docs/ folder, verify .gitignore, and push everything to Git.
           </p>
         </div>
@@ -178,7 +178,7 @@ export function Phase3() {
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
               Before you start
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               This mission builds on your M-02 work. Your repo should already have Docker and a working environment setup.
             </p>
           </div>
@@ -191,7 +191,7 @@ export function Phase3() {
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+            <p className="text-sm leading-relaxed pl-6" style={{ color: "var(--text-muted)" }}>
               Your fork has Docker environments configured. The repo already exists — now we make it the single source of truth.
             </p>
           </div>
@@ -238,7 +238,7 @@ export function Phase3() {
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 REPO-AUDIT.md is created and committed
               </span>
             </label>
@@ -277,7 +277,7 @@ ENABLE_ANALYTICS=false
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 .env.example is committed to the repo
               </span>
             </label>
@@ -313,7 +313,7 @@ ENABLE_ANALYTICS=false
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 docs/ structure is in place and committed
               </span>
             </label>
@@ -350,7 +350,7 @@ dist/
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 .gitignore is verified and committed
               </span>
             </label>
@@ -394,7 +394,7 @@ git push`}</CodeBlock>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                   Pipeline is green
                 </span>
               </label>

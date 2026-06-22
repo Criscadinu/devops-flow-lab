@@ -132,7 +132,7 @@ function Phase1() {
           >
             Week fourteen. Nexus Corp.
           </h2>
-          <p className="text-gray-400 text-base leading-relaxed">
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Lisa fixed a tricky race condition last week. She figured it out in 3 hours. Two months ago Marco spent 2 days on the exact same bug. Nobody told him.
           </p>
         </div>
@@ -226,7 +226,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The problem with tribal knowledge
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Most engineering teams run on tribal knowledge — things that only certain people know
             because they experienced them. This knowledge is invisible until it is needed, and by
             then it is often too late. The DevOps Handbook calls this the Third Way: creating a culture
@@ -266,7 +266,7 @@ function Phase2() {
                 </span>
                 <div className="flex flex-col gap-2">
                   {col.items.map((item, i) => (
-                    <p key={i} className="text-xs text-gray-400 leading-relaxed">{item}</p>
+                    <p key={i} className="text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>{item}</p>
                   ))}
                 </div>
               </div>
@@ -282,7 +282,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The three formats for sharing knowledge
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             There are three practical formats for converting individual learning into team knowledge.
             Each serves a different purpose and lives in a different part of the repository.
           </p>
@@ -320,7 +320,7 @@ function Phase2() {
                 </span>
                 <div className="flex flex-col gap-1 flex-1">
                   <span className="text-sm text-gray-900 font-mono">{row.title}</span>
-                  <span className="text-xs text-gray-500 leading-relaxed">{row.note}</span>
+                  <span className="text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>{row.note}</span>
                 </div>
               </div>
             ))}
@@ -335,7 +335,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Making learning a habit
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             The difference between teams that learn and teams that repeat mistakes is not intelligence
             — it is habit. Two practices that work at the team level:
           </p>
@@ -356,7 +356,7 @@ function Phase2() {
                 style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)", borderLeft: "3px solid rgba(255,85,0,0.4)" }}
               >
                 <span className="text-sm text-gray-900 font-mono font-bold">{item.title}</span>
-                <p className="text-sm text-gray-500 leading-relaxed">{item.body}</p>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{item.body}</p>
               </div>
             ))}
           </div>
@@ -370,7 +370,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The DORA connection
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Learning culture does not show up in a single DORA metric. It shows up in the trend.
             Teams with strong learning cultures maintain their DORA improvements over time. Teams
             without it see metrics regress as the same problems recur. The goal of M-26 is to protect
@@ -383,7 +383,7 @@ function Phase2() {
             <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
               What this mission does
             </span>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               All four DORA metrics are protected. Learning culture is the practice that prevents
               regression — the same incidents stop recurring, the same bugs stop reappearing, and
               the improvements you have made compound over time instead of decaying.
@@ -442,7 +442,7 @@ function Phase4() {
           <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Nexus Corp Stops Repeating Mistakes
           </h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Learning culture does not move a DORA metric today. It protects every metric you have
             already moved. Without it, teams regress — the same incidents recur, the same bugs
             reappear, the same architectural mistakes get made twice. M-26 is the practice that
@@ -468,7 +468,7 @@ function Phase4() {
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
               The system now learns from itself
             </p>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Every engineer who joins Nexus Corp from now on starts with the accumulated knowledge
               of everyone who came before them. The team&apos;s learning is version controlled, discoverable,
               and growing.
@@ -556,7 +556,7 @@ function Phase4() {
             <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
               Coming next — Chaos Engineering
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Next: Chaos Engineering — if you want to know how your system fails, break it deliberately
               before it breaks on its own. Inject failures in a controlled environment. Find weaknesses
               before your users do.

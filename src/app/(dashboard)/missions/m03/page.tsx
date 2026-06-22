@@ -148,7 +148,7 @@ function Phase1() {
           >
             Week three. Nexus Corp.
           </h2>
-          <p className="text-gray-400 text-base leading-relaxed">
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             The deploy broke. Marco has the config. Lisa has the code. Tom has the requirements doc. Nobody has the same version of anything.
           </p>
         </div>
@@ -255,7 +255,7 @@ function Phase2() {
           <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             What belongs in version control
           </h3>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Everything that defines the system belongs in the repository. That means: application code, test suites,
             configuration files (per environment), infrastructure definitions, database migration scripts, build scripts,
             deployment scripts, documentation. The rule is simple: if losing it would break the system or slow down
@@ -279,7 +279,7 @@ function Phase2() {
                 <span className="text-xs font-mono font-bold shrink-0 w-48" style={{ color: "var(--af-orange)" }}>
                   {row.item}
                 </span>
-                <span className="text-xs text-gray-500">{row.note}</span>
+                <span className="text-xs" style={{ color: "var(--text-muted)" }}>{row.note}</span>
               </div>
             ))}
           </div>
@@ -293,7 +293,7 @@ function Phase2() {
           <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Why a single repo
           </h3>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Splitting code across multiple repositories creates coordination overhead. When a change requires updating
             three repos in the right order, you have introduced a deployment dependency that is invisible to your tooling.
             A single repository makes the system&apos;s state unambiguous — one commit hash describes exactly what is deployed.
@@ -308,7 +308,7 @@ function Phase2() {
           <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Configuration as code
           </h3>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Configuration that lives outside the repo is the most common source of &ldquo;it worked in test but not in prod&rdquo;
             failures. Every environment&apos;s configuration should be in the repo, with secrets injected at runtime via
             environment variables. The repo holds the shape of the config; the secrets manager holds the values.
@@ -336,7 +336,7 @@ function Phase2() {
                 </span>
                 <div className="flex flex-col gap-2">
                   {col.items.map((item, i) => (
-                    <p key={i} className="text-xs text-gray-400 leading-relaxed">{item}</p>
+                    <p key={i} className="text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>{item}</p>
                   ))}
                 </div>
               </div>
@@ -352,7 +352,7 @@ function Phase2() {
           <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The DORA connection
           </h3>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             A single repository of truth directly reduces Lead Time for Changes. When everything is in one place,
             any engineer can understand the full system state from a single clone. Onboarding takes hours instead
             of days. Incident response is faster because the runbook, the config, and the code are all in the same place.
@@ -364,7 +364,7 @@ function Phase2() {
             <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
               What this mission does
             </span>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               This is a FOUNDATIONS mission — it enables everything that follows. The DORA metrics don&apos;t move today.
               But every future mission that does move them depends on having a single, trustworthy source of truth.
             </p>
@@ -418,7 +418,7 @@ function Phase4() {
           <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Nexus Corp Has One Source of Truth
           </h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
             The metrics don&apos;t move — and that&apos;s exactly right. A single repository of truth does not
             improve a metric today. It changes what is possible tomorrow.
           </p>
@@ -442,7 +442,7 @@ function Phase4() {
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
               Foundation, not improvement
             </p>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               A single repository of truth does not directly change a DORA metric today. It changes what is possible tomorrow.
               Every future mission in this platform assumes everything is in Git. Without this foundation, automated testing
               cannot find the config, infrastructure cannot be rebuilt, and incident response requires tribal knowledge.
@@ -521,7 +521,7 @@ function Phase4() {
             <p className="text-xs font-mono font-bold uppercase tracking-widest text-gray-500">
               Next: Enable fast and reliable automated testing
             </p>
-            <p className="text-gray-500 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Your pipeline needs a test suite it can trust. The repo is now the foundation —
               the next step is making sure everything in it is verified automatically.
             </p>

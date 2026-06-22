@@ -163,7 +163,7 @@ function Phase1() {
           >
             Week four. Nexus Corp.
           </h2>
-          <p className="text-gray-400 text-base leading-relaxed">
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             The pipeline is green. But nothing ships automatically.
           </p>
         </div>
@@ -316,7 +316,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             What is Continuous Deployment?
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Continuous Deployment means every commit that passes the automated tests is automatically
             deployed to production. No manual steps. No deployment meetings. No Marco. The pipeline
             does it all. The goal: reduce the time from commit to customer to minutes.
@@ -348,7 +348,7 @@ function Phase2() {
                 >
                   {card.title}
                 </span>
-                <p className="text-gray-400 text-sm leading-relaxed">{card.body}</p>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{card.body}</p>
               </div>
             ))}
           </div>
@@ -379,7 +379,7 @@ function Phase2() {
                 >
                   {card.title}
                 </span>
-                <p className="text-gray-400 text-sm leading-relaxed">{card.body}</p>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{card.body}</p>
               </div>
             ))}
           </div>
@@ -452,7 +452,7 @@ function Phase4() {
           <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Shipping Automatically.
           </h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
             This is what you built for Nexus Corp.
           </p>
         </div>
@@ -538,7 +538,7 @@ function Phase4() {
               borderLeft: "3px solid rgb(31,41,55)",
             }}
           >
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Code ships automatically. But how do you know it is working in production? You need
               visibility into what is happening after deploy. Next mission: Monitoring and Observability.
             </p>

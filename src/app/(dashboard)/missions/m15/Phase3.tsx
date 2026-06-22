@@ -160,7 +160,7 @@ export function Phase3() {
           >
             Your Mission - Get on the Trunk
           </h2>
-          <p className="text-gray-500 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Audit your branches, protect main, practice a short-lived branch cycle, and hide incomplete work behind a feature flag.
           </p>
         </div>
@@ -178,7 +178,7 @@ export function Phase3() {
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
               Before you start
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               This mission builds on M-14. Your repo should have a commit convention and small-batch habits in place.
             </p>
           </div>
@@ -226,7 +226,7 @@ Are any branches older than 1 day? What is blocking them from merging?`}</CodeBl
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 Branch audit complete
               </span>
             </label>
@@ -269,7 +269,7 @@ Are any branches older than 1 day? What is blocking them from merging?`}</CodeBl
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 Branch protection enabled — nothing merges to main without green CI
               </span>
             </label>
@@ -305,7 +305,7 @@ git push origin feat/add-order-count-endpoint
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 Branch created, PR opened, CI green, merged to main — all within one hour
               </span>
             </label>
@@ -341,7 +341,7 @@ if (process.env.ENABLE_ORDER_EXPORT === 'true') {
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 Incomplete feature is behind a flag, not a branch
               </span>
             </label>
@@ -385,7 +385,7 @@ git push`}</CodeBlock>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                   Pipeline is green
                 </span>
               </label>

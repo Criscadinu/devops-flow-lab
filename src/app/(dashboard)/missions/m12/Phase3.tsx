@@ -75,12 +75,12 @@ export function Phase3() {
 
         <div className="flex flex-col gap-2">
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Your Mission - Wire the Quality Gates</h2>
-          <p className="text-gray-500 text-sm leading-relaxed">Run npm audit, add it to CI, set a coverage threshold, and add a secrets scanner.</p>
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>Run npm audit, add it to CI, set a coverage threshold, and add a secrets scanner.</p>
         </div>
 
         <div className="flex flex-col gap-5 p-6 border" style={{ backgroundColor: "var(--bg-card)", borderColor: "rgba(251,146,60,0.3)", borderLeft: "3px solid rgb(251,146,60)" }}>
           <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>Before you start</p>
-          <p className="text-gray-400 text-sm leading-relaxed">This mission builds on M-11. Performance tests should already be wired into CI for pull requests.</p>
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>This mission builds on M-11. Performance tests should already be wired into CI for pull requests.</p>
         </div>
 
         <TaskCard number="01" title="Run npm audit and fix vulnerabilities" done={task1Done} locked={false}>
@@ -110,7 +110,7 @@ npm audit --audit-level=high`}</CodeBlock>
           {!task1Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask1Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">npm audit clean — no high or critical vulnerabilities</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>npm audit clean — no high or critical vulnerabilities</span>
             </label>
           )}
         </TaskCard>
@@ -134,7 +134,7 @@ npm audit --audit-level=high`}</CodeBlock>
           {!task2Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask2Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">npm audit runs in CI — high/critical vulnerabilities fail the build</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>npm audit runs in CI — high/critical vulnerabilities fail the build</span>
             </label>
           )}
         </TaskCard>
@@ -163,7 +163,7 @@ npm audit --audit-level=high`}</CodeBlock>
           {!task3Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask3Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Coverage threshold set — build fails if coverage drops below 70%</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Coverage threshold set — build fails if coverage drops below 70%</span>
             </label>
           )}
         </TaskCard>
@@ -184,7 +184,7 @@ npm audit --audit-level=high`}</CodeBlock>
           {!task4Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask4Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Secrets scanner runs in CI — committed secrets fail the build</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Secrets scanner runs in CI — committed secrets fail the build</span>
             </label>
           )}
         </TaskCard>
@@ -207,7 +207,7 @@ git push`}</CodeBlock>
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <input type="checkbox" onChange={(e) => { if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Pipeline is green — NFR gates active</span>
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Pipeline is green — NFR gates active</span>
               </label>
             </div>
           )}

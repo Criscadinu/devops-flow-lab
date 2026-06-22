@@ -160,7 +160,7 @@ export function Phase3() {
           >
             Your Mission - Shift Left
           </h2>
-          <p className="text-gray-500 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Add ESLint, write a unit test for the orders sort bug, wire lint into CI, and prove the safety net works.
           </p>
         </div>
@@ -178,7 +178,7 @@ export function Phase3() {
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
               Before you start
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               This mission builds on M-06. Your pipeline should already run a test suite on every push.
             </p>
           </div>
@@ -191,7 +191,7 @@ export function Phase3() {
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+            <p className="text-sm leading-relaxed pl-6" style={{ color: "var(--text-muted)" }}>
               The pipeline runs tests. Now we move the error detection earlier — before the tests, before the push.
             </p>
           </div>
@@ -232,7 +232,7 @@ npx eslint --init`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 ESLint is installed and runs without crashing
               </span>
             </label>
@@ -291,7 +291,7 @@ module.exports = { sortOrders }`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 Unit test passes — sortOrders is tested and green
               </span>
             </label>
@@ -325,7 +325,7 @@ module.exports = { sortOrders }`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 Lint runs in CI before tests
               </span>
             </label>
@@ -357,7 +357,7 @@ return [...orders].sort((a, b) => new Date(a.date) - new Date(b.date))`}</CodeBl
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 I introduced a bug, CI caught it, I fixed it
               </span>
             </label>
@@ -401,7 +401,7 @@ git push`}</CodeBlock>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                   Pipeline is green with lint + tests passing
                 </span>
               </label>

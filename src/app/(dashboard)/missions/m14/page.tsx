@@ -164,7 +164,7 @@ function Phase1() {
           >
             Week seven. Nexus Corp.
           </h2>
-          <p className="text-gray-400 text-base leading-relaxed">
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Lisa has been working on the same feature branch for three weeks. It has 47 commits. Nobody knows what is in it.
           </p>
         </div>
@@ -271,7 +271,7 @@ function Phase2() {
           <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Why batch size matters
           </h3>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Batch size in software development is the amount of work done before it is integrated into the main codebase.
             Large batches feel efficient — you finish a whole feature before touching the pipeline. But they create invisible
             risk: merge conflicts that take days to resolve, review diffs nobody can actually read, and integration failures
@@ -287,7 +287,7 @@ function Phase2() {
           <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The economics of small batches
           </h3>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Small batches reduce transaction cost per integration. When integrating is cheap — automated tests, fast CI —
             you can afford to do it ten times a day. When integrating is expensive — manual testing, slow pipeline — you batch
             up work to amortize the cost. The First Way is about making integration cheap enough that batching becomes irrational.
@@ -315,7 +315,7 @@ function Phase2() {
                 </span>
                 <div className="flex flex-col gap-2">
                   {col.items.map((item, i) => (
-                    <p key={i} className="text-xs text-gray-400 leading-relaxed">{item}</p>
+                    <p key={i} className="text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>{item}</p>
                   ))}
                 </div>
               </div>
@@ -331,7 +331,7 @@ function Phase2() {
           <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             What a small batch looks like
           </h3>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             A small batch is one logical change: one bug fix, one refactor, one new endpoint, one config change.
             It has a clear description, a diff under 400 lines, and a test that covers the change. It can be reviewed
             in 10 minutes. If your PR description starts with &ldquo;and also...&rdquo;, the batch is too large.
@@ -353,7 +353,7 @@ function Phase2() {
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(34,197,94)" }}>✓</span>
-                  <p className="text-xs text-gray-400">{item}</p>
+                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>{item}</p>
                 </div>
               ))}
             </div>
@@ -368,7 +368,7 @@ function Phase2() {
           <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The DORA connection
           </h3>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Small batches directly improve Lead Time for Changes and reduce Change Failure Rate. A change that is 50 lines
             is reviewed faster, tested faster, and deployed faster than one that is 2,400 lines. Elite teams commit to trunk
             multiple times per day. The batch size is the lever.
@@ -413,7 +413,7 @@ function Phase4() {
           <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Nexus Corp Merges Small. Merges Often.
           </h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Small batches are the multiplier for everything else. A fast pipeline means nothing if you batch up three weeks of work before using it.
           </p>
         </div>
@@ -489,7 +489,7 @@ function Phase4() {
             <p className="text-xs font-mono font-bold uppercase tracking-widest text-gray-500">
               Next: Trunk-Based Development
             </p>
-            <p className="text-gray-500 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Small batches only work if everyone commits to the same branch. Trunk-based development eliminates
               the merge conflicts that happen when teams work in isolation.
             </p>

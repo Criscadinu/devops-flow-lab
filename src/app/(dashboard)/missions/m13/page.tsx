@@ -64,7 +64,7 @@ function Phase1() {
       <div className="max-w-3xl mx-auto flex flex-col gap-12">
         <div className="flex flex-col gap-3 max-w-2xl">
           <h2 className="text-4xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Week thirteen. Nexus Corp.</h2>
-          <p className="text-gray-400 text-base leading-relaxed">Dev ships. Ops fixes. Nobody talks.</p>
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>Dev ships. Ops fixes. Nobody talks.</p>
         </div>
         <div className="flex flex-col">
           {dialogue.map((entry, i) => {
@@ -110,7 +110,7 @@ function Phase2() {
           <section key={s.num} className="flex flex-col gap-5">
             <div className="flex items-center gap-4"><span className="text-xs font-mono text-gray-700 tracking-widest">{s.num}</span><div className="flex-1 h-px bg-gray-900" /></div>
             <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>{s.title}</h3>
-            <p className="text-gray-400 leading-relaxed">{s.body}</p>
+            <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>{s.body}</p>
           </section>
         ))}
         <CTA href="?phase=3" label="Remove the wall →" sub="Phase 3 of 4 - Do it yourself" />
@@ -126,7 +126,7 @@ function Phase4() {
         <div className="flex flex-col gap-4">
           <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "var(--af-orange)" }}>Mission Complete - M-13</p>
           <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Nexus Corp Removes the Wall Between Dev and Ops</h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">Dev and Ops working together is not a DORA metric. It is the condition that makes all DORA metrics achievable.</p>
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>Dev and Ops working together is not a DORA metric. It is the condition that makes all DORA metrics achievable.</p>
         </div>
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4"><span className="text-xs font-mono text-gray-700 tracking-widest uppercase">01</span><h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">Your DORA metrics</h2><div className="flex-1 h-px bg-gray-900" /></div>
@@ -135,7 +135,7 @@ function Phase4() {
             style={{ backgroundColor: "var(--bg-card)", borderColor: "rgba(255,85,0,0.2)", borderLeft: "3px solid rgb(255,85,0)" }}
           >
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>Foundation — enabling all four metrics</p>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Dev and Ops working together does not show up directly in any single DORA metric. It shows up in all of them.
               Without shared ownership, every metric improvement is temporary — Dev keeps shipping problems Ops absorbs silently,
               and the cycle repeats. With shared ownership, the feedback loop closes: the person who wrote the code feels the
@@ -161,7 +161,7 @@ function Phase4() {
           <div className="flex items-center gap-4"><span className="text-xs font-mono text-gray-700 tracking-widest uppercase">02</span><h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">What is next</h2><div className="flex-1 h-px bg-gray-900" /></div>
           <div className="flex flex-col gap-3 p-6 border" style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)", borderLeft: "3px solid rgb(31,41,55)" }}>
             <p className="text-xs font-mono font-bold uppercase tracking-widest text-gray-500">Next: Enable and practice continuous integration</p>
-            <p className="text-gray-500 text-sm leading-relaxed">Small batches, trunk-based development, and committing to trunk multiple times per day. The test suite you built is the safety net that makes continuous integration possible.</p>
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>Small batches, trunk-based development, and committing to trunk multiple times per day. The test suite you built is the safety net that makes continuous integration possible.</p>
           </div>
         </section>
         <section className="flex flex-col gap-4 border-t border-gray-900 pt-10">

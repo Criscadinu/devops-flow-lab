@@ -164,7 +164,7 @@ function Phase1() {
           >
             Week six. Nexus Corp.
           </h2>
-          <p className="text-gray-400 text-base leading-relaxed">
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             The app deploys automatically. But the server it deploys to is a mystery.
           </p>
         </div>
@@ -300,13 +300,13 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             What is Infrastructure as Code?
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Infrastructure as Code means your servers, networks, and environments are defined in files
             — the same way your application is. Those files are version controlled, reviewed in pull
             requests, and applied by automated tools. The result: infrastructure is reproducible,
             consistent, and auditable.
           </p>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             The key shift: instead of a human executing commands on a server, a tool reads a
             definition and makes the server match it. The definition is the source of truth — not the
             server itself.
@@ -331,7 +331,7 @@ function Phase2() {
                 <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: card.accent }}>
                   {card.title}
                 </span>
-                <p className="text-gray-400 text-sm leading-relaxed">{card.body}</p>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{card.body}</p>
               </div>
             ))}
           </div>
@@ -359,7 +359,7 @@ function Phase2() {
                   <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: p.accent }}>
                     {p.name}
                   </span>
-                  <p className="text-gray-400 text-sm leading-relaxed">{p.body}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{p.body}</p>
                 </div>
               </div>
             ))}
@@ -435,7 +435,7 @@ function Phase4() {
           <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Infrastructure is Code Now.
           </h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
             This is what you built for Nexus Corp.
           </p>
         </div>
@@ -521,7 +521,7 @@ function Phase4() {
               borderLeft: "3px solid rgb(31,41,55)",
             }}
           >
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Infrastructure is code. But deploys are still risky — one bad release affects all users.
               Next mission: Architecture for Low-Risk Releases.
             </p>

@@ -132,7 +132,7 @@ function Phase1() {
           >
             Week nine. Nexus Corp.
           </h2>
-          <p className="text-gray-400 text-base leading-relaxed">
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             The logs are flowing. The metrics are there. But nobody is watching. Problems are still reported by customers, not by systems.
           </p>
         </div>
@@ -283,12 +283,12 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The gap between data and action
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Having metrics is not enough. MTTR improved from <span className="text-gray-900 font-mono font-bold">72 hours</span> to{" "}
             <span className="text-gray-900 font-mono font-bold">4 hours</span> in M-23 because you can
             now find problems faster. But you still find them too late — after customers notice.
           </p>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             The missing piece is automated alerting: the system tells you when something crosses a
             threshold. Detection goes from hours to seconds.
           </p>
@@ -316,7 +316,7 @@ function Phase2() {
                   {item.label}
                 </span>
                 <p className="text-sm font-mono text-gray-900">{item.example}</p>
-                <p className="text-xs text-gray-500 leading-relaxed">{item.note}</p>
+                <p className="text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>{item.note}</p>
               </div>
             ))}
           </div>
@@ -340,7 +340,7 @@ function Phase2() {
                 <span className="text-xs font-mono font-bold shrink-0 mt-0.5" style={{ color: p.accent }}>{p.num}</span>
                 <div className="flex flex-col gap-1">
                   <span className="text-xs font-mono font-bold uppercase tracking-widest text-gray-900">{p.title}</span>
-                  <p className="text-sm text-gray-400 leading-relaxed">{p.body}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{p.body}</p>
                 </div>
               </div>
             ))}
@@ -391,7 +391,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The DORA connection
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             MTTR measures recovery time. Recovery starts at <em className="text-gray-900 not-italic font-semibold">detection</em>.
             Manual detection — someone checks a dashboard — adds minutes to hours of delay.
             Automated alerting means detection is instant.
@@ -482,7 +482,7 @@ function Phase4() {
           <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Nexus Corp Stops Flying Blind
           </h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
             This is what you built for Nexus Corp.
           </p>
         </div>
@@ -566,7 +566,7 @@ function Phase4() {
             className="p-5 border"
             style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)", borderLeft: "3px solid rgb(75,85,99)" }}
           >
-            <p className="text-sm text-gray-500 leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               The reduction from 4 hours to 1 hour comes entirely from detection time. Before:
               someone notices something is wrong, checks the logs, confirms the problem. Now: the
               system detects the threshold breach and fires an alert. The time between incident
@@ -593,7 +593,7 @@ function Phase4() {
             <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
               Second Way: Feedback — In Progress
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Next: Fast Incident Response — alerts fire, but does your team know what to do?
               Build the runbook and the process that turns alerts into resolved incidents.
             </p>

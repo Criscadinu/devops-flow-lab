@@ -161,7 +161,7 @@ export function Phase3() {
           >
             Your Mission - Build the Postmortem Process
           </h2>
-          <p className="text-gray-500 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Create a postmortem template, write a real postmortem for a past incident, link it to your runbook, and expose it through an API endpoint.
           </p>
         </div>
@@ -179,7 +179,7 @@ export function Phase3() {
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
               Before you start
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               This mission builds on your M-19 work. Both items should already be ready.
             </p>
           </div>
@@ -192,7 +192,7 @@ export function Phase3() {
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+            <p className="text-sm leading-relaxed pl-6" style={{ color: "var(--text-muted)" }}>
               Your nexus-corp-app fork has branch protection enabled, a PR template, and a CONTRIBUTING.md. All changes go through PRs.
             </p>
 
@@ -205,7 +205,7 @@ export function Phase3() {
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+            <p className="text-sm leading-relaxed pl-6" style={{ color: "var(--text-muted)" }}>
               Your RUNBOOK.md is already in the repo from M-17. This postmortem will link back to it.
             </p>
           </div>
@@ -284,7 +284,7 @@ condition led to the failure.
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 docs/postmortem-template.md is created and committed to the repo
               </span>
             </label>
@@ -318,7 +318,7 @@ condition led to the failure.
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 A complete postmortem is written and committed to docs/postmortems/
               </span>
             </label>
@@ -354,7 +354,7 @@ Incidents that led to updates in this runbook:
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 RUNBOOK.md has a Related Postmortems section linking to the incident
               </span>
             </label>
@@ -404,7 +404,7 @@ export async function GET() {
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 /api/postmortems returns postmortem data in production
               </span>
             </label>
@@ -464,7 +464,7 @@ git push origin feat/postmortem-process`}</CodeBlock>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                   PR is merged, CI is green, /api/postmortems is live
                 </span>
               </label>

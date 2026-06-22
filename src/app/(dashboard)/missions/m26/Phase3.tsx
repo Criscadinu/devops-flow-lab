@@ -160,7 +160,7 @@ export function Phase3() {
           >
             Your Mission - Build the Learning Culture
           </h2>
-          <p className="text-gray-500 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Write a TIL, create an ADR, document your learning practices, expose them through an API, and commit it all to version control.
           </p>
         </div>
@@ -178,7 +178,7 @@ export function Phase3() {
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
               Before you start
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               This mission builds on your M-25 work. Both items should already be ready.
             </p>
           </div>
@@ -191,7 +191,7 @@ export function Phase3() {
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+            <p className="text-sm leading-relaxed pl-6" style={{ color: "var(--text-muted)" }}>
               Your nexus-corp-app fork has a postmortem template, a completed postmortem, and /api/postmortems live.
             </p>
 
@@ -204,7 +204,7 @@ export function Phase3() {
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+            <p className="text-sm leading-relaxed pl-6" style={{ color: "var(--text-muted)" }}>
               The docs/ folder structure from M-17 and M-25 is already in place. You will add til/ and adr/ subdirectories.
             </p>
           </div>
@@ -264,7 +264,7 @@ If the operation is not atomic, it is not safe under concurrent load.`}</CodeBlo
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 docs/til/2024-01-race-condition-orders.md is created
               </span>
             </label>
@@ -321,7 +321,7 @@ Traffic exceeds 10,000 daily active users or when per-user targeting is needed.`
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 docs/adr/001-use-environment-variables-for-feature-flags.md is created
               </span>
             </label>
@@ -363,7 +363,7 @@ Future engineers should never have to guess why something was built the way it w
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 Learning practices section added to RUNBOOK.md
               </span>
             </label>
@@ -417,7 +417,7 @@ app.get('/api/learning', (req, res) => {
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 GET /api/learning returns learning artifacts
               </span>
             </label>
@@ -462,7 +462,7 @@ git push`}</CodeBlock>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                   Pipeline is green — learning culture is version controlled
                 </span>
               </label>

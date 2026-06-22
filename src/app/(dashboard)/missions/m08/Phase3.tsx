@@ -75,12 +75,12 @@ export function Phase3() {
 
         <div className="flex flex-col gap-2">
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Your Mission - Speed Up the Tests</h2>
-          <p className="text-gray-500 text-sm leading-relaxed">Measure, categorize, parallelize, and prove the pipeline is fast.</p>
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>Measure, categorize, parallelize, and prove the pipeline is fast.</p>
         </div>
 
         <div className="flex flex-col gap-5 p-6 border" style={{ backgroundColor: "var(--bg-card)", borderColor: "rgba(251,146,60,0.3)", borderLeft: "3px solid rgb(251,146,60)" }}>
           <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>Before you start</p>
-          <p className="text-gray-400 text-sm leading-relaxed">This mission builds on M-07. Your repo should have ESLint and a unit test for sortOrders in place.</p>
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>This mission builds on M-07. Your repo should have ESLint and a unit test for sortOrders in place.</p>
         </div>
 
         <TaskCard number="01" title="Measure your current test suite speed" done={task1Done} locked={false}>
@@ -107,7 +107,7 @@ export function Phase3() {
           {!task1Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask1Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Test performance baseline recorded</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Test performance baseline recorded</span>
             </label>
           )}
         </TaskCard>
@@ -124,7 +124,7 @@ export function Phase3() {
           {!task2Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask2Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Slowest tests identified — at least one optimized</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Slowest tests identified — at least one optimized</span>
             </label>
           )}
         </TaskCard>
@@ -145,7 +145,7 @@ export function Phase3() {
           {!task3Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask3Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Tests split into unit and integration categories</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Tests split into unit and integration categories</span>
             </label>
           )}
         </TaskCard>
@@ -180,7 +180,7 @@ export function Phase3() {
           {!task4Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask4Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">CI runs unit and integration tests in parallel</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>CI runs unit and integration tests in parallel</span>
             </label>
           )}
         </TaskCard>
@@ -203,7 +203,7 @@ git push`}</CodeBlock>
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <input type="checkbox" onChange={(e) => { if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Pipeline is green — tests run in parallel</span>
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Pipeline is green — tests run in parallel</span>
               </label>
             </div>
           )}

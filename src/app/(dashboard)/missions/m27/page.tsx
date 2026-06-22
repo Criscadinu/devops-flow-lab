@@ -134,7 +134,7 @@ function Phase1() {
           >
             Week fifteen. Nexus Corp.
           </h2>
-          <p className="text-gray-400 text-base leading-relaxed">
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Last month the orders service went down because a dependency nobody knew about failed silently. The system had never been tested under failure conditions. Nobody knew it would break that way.
           </p>
         </div>
@@ -237,7 +237,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             What is chaos engineering
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Chaos engineering is the practice of intentionally injecting failures into a system to test
             its resilience. Netflix invented the discipline with Chaos Monkey — a tool that randomly
             terminated production servers to force engineers to build systems that could survive the
@@ -277,7 +277,7 @@ function Phase2() {
                 </span>
                 <div className="flex flex-col gap-2">
                   {col.items.map((item, i) => (
-                    <p key={i} className="text-xs text-gray-400 leading-relaxed">{item}</p>
+                    <p key={i} className="text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>{item}</p>
                   ))}
                 </div>
               </div>
@@ -293,7 +293,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The chaos experiment lifecycle
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             A chaos experiment follows the same structure as a hypothesis from M-18. Every experiment
             starts with a clear definition of normal and ends with a documented fix — not just an
             observation.
@@ -310,7 +310,7 @@ function Phase2() {
                 </span>
                 <div className="flex flex-col gap-1 flex-1">
                   <span className="text-sm text-gray-900 font-mono">{row.step}</span>
-                  <span className="text-xs text-gray-500">{row.note}</span>
+                  <span className="text-xs" style={{ color: "var(--text-muted)" }}>{row.note}</span>
                 </div>
               </div>
             ))}
@@ -325,7 +325,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Start small: the three beginner experiments
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             You do not need Chaos Monkey to start. Three experiments every team should run — each
             reveals a different class of failure mode.
           </p>
@@ -357,7 +357,7 @@ function Phase2() {
                 </span>
                 <div className="flex flex-col gap-1">
                   <span className="text-sm text-gray-900 font-mono font-bold">{item.title}</span>
-                  <p className="text-sm text-gray-500 leading-relaxed">{item.body}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{item.body}</p>
                 </div>
               </div>
             ))}
@@ -372,7 +372,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The DORA connection
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Chaos engineering directly validates CFR and MTTR. Teams that practice chaos engineering
             find failure modes before users do — confirming the change failure rate holds under
             adversarial conditions. And because they have already seen and fixed the failure, recovery
@@ -462,7 +462,7 @@ function Phase4() {
           <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Nexus Corp Breaks Things On Purpose
           </h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Chaos engineering does not improve your metrics — it validates them. You already achieved
             CFR 1% and MTTR 30 minutes. Now you know those numbers hold when dependencies fail,
             processes crash, and resources are exhausted. That is the difference between metrics
@@ -571,7 +571,7 @@ function Phase4() {
             <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
               End of current mission catalog
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               More Third Way missions are coming: Making Work Visible, Improvement Kata, and
               organizational learning at scale. You have built a high-performing engineering organization
               from scratch — from a 41-day lead time to elite DORA metrics across all four dimensions.

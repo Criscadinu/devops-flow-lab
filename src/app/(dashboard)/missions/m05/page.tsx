@@ -188,7 +188,7 @@ function Phase1() {
           >
             Week three. Nexus Corp.
           </h2>
-          <p className="text-gray-400 text-base leading-relaxed">
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Environments are stable. But every commit is still a gamble.
           </p>
         </div>
@@ -256,7 +256,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             What is Continuous Integration?
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Continuous Integration means every developer integrates their work into the main branch
             at least once a day. Each integration is verified by an automated build and test run.
             The goal: catch bugs in minutes, not weeks.
@@ -289,7 +289,7 @@ function Phase2() {
                 >
                   {card.title}
                 </span>
-                <p className="text-gray-400 text-sm leading-relaxed">{card.body}</p>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{card.body}</p>
               </div>
             ))}
           </div>
@@ -366,7 +366,7 @@ function Phase4() {
           >
             Pipeline Green.
           </h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
             This is what you built for Nexus Corp.
           </p>
         </div>
@@ -474,7 +474,7 @@ function Phase4() {
               borderLeft: "3px solid rgb(31,41,55)",
             }}
           >
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               The pipeline tests every commit. But it still does not deploy automatically. Every
               green build should ship to a real environment. Next mission: Continuous Deployment.
             </p>

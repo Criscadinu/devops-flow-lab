@@ -493,13 +493,13 @@ export default async function DashboardPage() {
 
   // ── Inline components (server-safe — no hooks) ───────────────────────────
   function MissionCard({ m }: { m: typeof missions[number] }) {
-    const borderColor = m.completed ? "rgb(255,85,0)" : m.unlocked ? "rgba(255,85,0,0.5)" : "rgb(31,41,55)";
-    const borderLeft  = m.completed ? "3px solid rgb(255,85,0)" : m.unlocked ? "3px solid rgba(255,85,0,0.5)" : "3px solid rgb(31,41,55)";
-    const bg          = m.completed ? "#060d0f" : m.unlocked ? "#090909" : "#050505";
+    const borderColor = m.completed ? "var(--af-orange)" : m.unlocked ? "rgba(255,85,0,0.5)" : "var(--border)";
+    const borderLeft  = m.completed ? "3px solid var(--af-orange)" : m.unlocked ? "3px solid rgba(255,85,0,0.5)" : "3px solid var(--border)";
+    const bg          = m.completed ? "rgba(255,85,0,0.04)" : m.unlocked ? "var(--bg)" : "var(--bg-card)";
     const card = (
       <div
         className="flex flex-col gap-4 p-6 border h-full"
-        style={{ backgroundColor: bg, borderColor, borderLeft, opacity: m.unlocked || m.completed ? 1 : 0.5 }}
+        style={{ backgroundColor: bg, borderColor, borderLeft, borderRadius: "var(--radius-lg)", opacity: m.unlocked || m.completed ? 1 : 0.5 }}
       >
         <div className="flex items-center justify-between">
           <span className="text-xs font-mono text-gray-600">{m.id}</span>
@@ -521,8 +521,8 @@ export default async function DashboardPage() {
         <h3 className="text-lg text-gray-900 leading-snug" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
           {m.title}
         </h3>
-        <p className="text-sm text-gray-500 leading-relaxed flex-1">{m.description}</p>
-        <div className="border-t border-gray-900 pt-3">
+        <p className="text-sm leading-relaxed flex-1" style={{ color: "var(--text-muted)" }}>{m.description}</p>
+        <div className="border-t pt-3" style={{ borderColor: "var(--border)" }}>
           {m.completed ? (
             <span className="text-xs font-mono tracking-widest" style={{ color: "var(--af-orange)" }}>✓ COMPLETED</span>
           ) : m.unlocked ? (
@@ -547,7 +547,7 @@ export default async function DashboardPage() {
         style={{
           backgroundColor: "var(--bg-card)",
           borderColor: "var(--border)",
-          borderLeft: "3px solid rgb(31,41,55)",
+          borderLeft: "3px solid var(--border)",
           opacity: 0.4,
         }}
       >
@@ -563,8 +563,8 @@ export default async function DashboardPage() {
         <div className="flex-1 flex items-center min-h-[60px]">
           <span className="text-xs font-mono text-gray-700 uppercase tracking-widest">Coming soon</span>
         </div>
-        <div className="border-t border-gray-900 pt-3">
-          <span className="text-xs font-mono text-gray-700 tracking-widest">⊘ PLANNED</span>
+        <div className="border-t pt-3" style={{ borderColor: "var(--border)" }}>
+          <span className="text-xs font-mono text-gray-500 tracking-widest">⊘ PLANNED</span>
         </div>
       </div>
     );
@@ -606,7 +606,7 @@ export default async function DashboardPage() {
         style={{ opacity: isLocked ? 0.4 : 1, pointerEvents: isLocked ? 'none' : undefined }}
       >
         {/* Header */}
-        <div className="flex flex-col gap-2 pl-4" style={{ borderLeft: "2px solid rgb(31,41,55)" }}>
+        <div className="flex flex-col gap-2 pl-4" style={{ borderLeft: "2px solid var(--border)" }}>
           <div className="flex items-baseline justify-between gap-4">
             <h3 className="text-base text-gray-900 leading-snug" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
               {mm.title}
@@ -624,7 +624,7 @@ export default async function DashboardPage() {
             />
           </div>
 
-          <p className="text-sm text-gray-500 leading-relaxed">{mm.description}</p>
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{mm.description}</p>
           <span className="text-xs font-mono uppercase tracking-widest text-gray-700">{mm.bookReference}</span>
 
           {isLocked && (
@@ -655,12 +655,12 @@ export default async function DashboardPage() {
         <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-gray-800 pb-6">
           <div className="flex items-center gap-4">
             <div className="w-2 h-6 shrink-0" style={{ backgroundColor: "var(--af-orange)" }} />
-            <span className="text-xs font-mono tracking-[0.25em] text-gray-400 uppercase">
+            <span className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "var(--text-muted)" }}>
               Nexus Corp - Command Center
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-sm text-gray-400">{displayName}</span>
+            <span className="text-sm" style={{ color: "var(--text-muted)" }}>{displayName}</span>
             {roleLabel && (
               <span
                 className="text-xs font-mono px-2 py-0.5 border"
@@ -679,7 +679,7 @@ export default async function DashboardPage() {
         {/* ── DORA Metrics ──────────────────────────────────────────────────── */}
         <section className="flex flex-col gap-4">
           <div className="flex items-baseline gap-3">
-            <h2 className="text-xs font-mono tracking-[0.2em] text-gray-500 uppercase">
+            <h2 className="text-xs font-mono tracking-[0.2em] uppercase" style={{ color: "var(--text-muted)" }}>
               DORA Metrics - Nexus Corp
             </h2>
             <div className="flex-1 h-px bg-gray-900" />
@@ -696,7 +696,7 @@ export default async function DashboardPage() {
                   key={m.code}
                   className="flex flex-col gap-3 p-5"
                   style={{
-                    borderRight: i < doraMetrics.length - 1 ? "1px solid rgb(31,41,55)" : undefined,
+                    borderRight: i < doraMetrics.length - 1 ? "1px solid var(--border)" : undefined,
                     backgroundColor: "var(--bg-card)",
                   }}
                 >
@@ -712,7 +712,7 @@ export default async function DashboardPage() {
                   </div>
                   <div className="border-t border-gray-900 pt-2">
                     <p className="text-xs text-gray-700 font-mono uppercase tracking-widest mb-0.5">Elite</p>
-                    <p className="text-xs text-gray-500">{m.elite}</p>
+                    <p className="text-xs" style={{ color: "var(--text-muted)" }}>{m.elite}</p>
                   </div>
                 </div>
               );
@@ -723,7 +723,7 @@ export default async function DashboardPage() {
         {/* ── Overall Transformation Progress ───────────────────────────────── */}
         <section className="flex flex-col gap-4">
           <div className="flex items-baseline gap-3">
-            <h2 className="text-xs font-mono tracking-[0.2em] text-gray-500 uppercase">
+            <h2 className="text-xs font-mono tracking-[0.2em] uppercase" style={{ color: "var(--text-muted)" }}>
               Overall Transformation
             </h2>
             <div className="flex-1 h-px bg-gray-900" />
@@ -783,7 +783,7 @@ export default async function DashboardPage() {
               })}
             </div>
 
-            <p className="text-sm text-gray-400 border-t border-gray-900 pt-4">
+            <p className="text-sm border-t pt-4" style={{ color: "var(--text-muted)", borderColor: "var(--border)" }}>
               Nexus Corp is at:{" "}
               <span className="font-bold" style={{ fontFamily: "var(--font-heading)", color: "var(--af-orange)" }}>
                 {currentStage.label}
@@ -803,9 +803,10 @@ export default async function DashboardPage() {
               <div
                 className="flex flex-col gap-4 p-6 border"
                 style={{
-                  backgroundColor: m01.completed ? "#0a0a0a" : "#090909",
-                  borderColor: gray,
+                  backgroundColor: "var(--bg-card)",
+                  borderColor: "var(--border)",
                   borderLeft: `3px solid ${gray}`,
+                  borderRadius: "var(--radius-lg)",
                 }}
               >
                 <div className="flex items-center justify-between">
@@ -823,8 +824,8 @@ export default async function DashboardPage() {
                 <h3 className="text-lg text-gray-900 leading-snug" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
                   {m01.title}
                 </h3>
-                <p className="text-sm text-gray-500 leading-relaxed flex-1">{m01.description}</p>
-                <div className="border-t border-gray-900 pt-3">
+                <p className="text-sm leading-relaxed flex-1" style={{ color: "var(--text-muted)" }}>{m01.description}</p>
+                <div className="border-t pt-3" style={{ borderColor: "var(--border)" }}>
                   {m01.completed ? (
                     <span className="text-xs font-mono tracking-widest" style={{ color: gray }}>✓ COMPLETED</span>
                   ) : (
@@ -899,7 +900,7 @@ export default async function DashboardPage() {
         {/* ── First Way: Flow log ───────────────────────────────────────────── */}
         <section className="flex flex-col gap-4">
           <div className="flex items-baseline gap-3">
-            <h2 className="text-xs font-mono tracking-[0.2em] text-gray-500 uppercase">
+            <h2 className="text-xs font-mono tracking-[0.2em] uppercase" style={{ color: "var(--text-muted)" }}>
               First Way: Flow
             </h2>
             <div className="flex-1 h-px bg-gray-900" />
@@ -930,8 +931,8 @@ export default async function DashboardPage() {
                   key={entry.id}
                   className="flex gap-4 p-5"
                   style={{
-                    borderBottom: isLast ? undefined : "1px solid rgb(21,31,43)",
-                    backgroundColor: done ? "#060d0f" : "#080808",
+                    borderBottom: isLast ? undefined : "1px solid var(--border)",
+                    backgroundColor: done ? "rgba(255,85,0,0.04)" : "var(--bg)",
                     opacity: isLocked ? 0.45 : 1,
                   }}
                 >
@@ -978,7 +979,7 @@ export default async function DashboardPage() {
                         {done ? "COMPLETED" : isNext ? "NEXT UP" : "LOCKED"}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-500 leading-relaxed">{entry.learned}</p>
+                    <p className="text-xs" style={{ color: "var(--text-muted)" }}>{entry.learned}</p>
                   </div>
                 </div>
               );

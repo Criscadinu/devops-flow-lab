@@ -75,12 +75,12 @@ export function Phase3() {
 
         <div className="flex flex-col gap-2">
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Your Mission - Remove the Wall</h2>
-          <p className="text-gray-500 text-sm leading-relaxed">Make ownership explicit, build operational visibility into the app, write the runbook, and test the operational concern.</p>
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>Make ownership explicit, build operational visibility into the app, write the runbook, and test the operational concern.</p>
         </div>
 
         <div className="flex flex-col gap-5 p-6 border" style={{ backgroundColor: "var(--bg-card)", borderColor: "rgba(251,146,60,0.3)", borderLeft: "3px solid rgb(251,146,60)" }}>
           <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>Before you start</p>
-          <p className="text-gray-400 text-sm leading-relaxed">This mission builds on M-12. NFR gates (security, coverage, secrets) should be active in CI.</p>
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>This mission builds on M-12. NFR gates (security, coverage, secrets) should be active in CI.</p>
         </div>
 
         <TaskCard number="01" title="Document who owns what" done={task1Done} locked={false}>
@@ -104,7 +104,7 @@ Dockerfile @ops-team
           {!task1Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask1Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">CODEOWNERS file created — ownership is explicit</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>CODEOWNERS file created — ownership is explicit</span>
             </label>
           )}
         </TaskCard>
@@ -129,7 +129,7 @@ Dockerfile @ops-team
           {!task2Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask2Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Health endpoint exposes operational metadata</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Health endpoint exposes operational metadata</span>
             </label>
           )}
         </TaskCard>
@@ -166,7 +166,7 @@ Dev team (code) + Ops team (infrastructure)
           {!task3Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask3Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Runbook entry written by developer — operational knowledge in the repo</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Runbook entry written by developer — operational knowledge in the repo</span>
             </label>
           )}
         </TaskCard>
@@ -196,7 +196,7 @@ test('GET /health memory usage stays stable under load', async () => {
           {!task4Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask4Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Memory leak test added — operational concern is now a test</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Memory leak test added — operational concern is now a test</span>
             </label>
           )}
         </TaskCard>
@@ -219,7 +219,7 @@ git push`}</CodeBlock>
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <input type="checkbox" onChange={(e) => { if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Pipeline is green</span>
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Pipeline is green</span>
               </label>
             </div>
           )}

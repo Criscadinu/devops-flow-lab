@@ -160,7 +160,7 @@ export function Phase3() {
           >
             Your Mission - Shrink the Batch
           </h2>
-          <p className="text-gray-500 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Audit your commit size, practice splitting a change into two commits, document the convention, and wire a diff-size warning.
           </p>
         </div>
@@ -178,7 +178,7 @@ export function Phase3() {
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
               Before you start
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               This mission builds on M-07. Your repo should have ESLint and a unit test in place.
             </p>
           </div>
@@ -229,7 +229,7 @@ Were any commits large batches (>400 lines)? What could have been split?`}</Code
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 Batch audit complete — I know my current batch size
               </span>
             </label>
@@ -267,7 +267,7 @@ git commit -m 'feat: implement getOrdersByStatus — test now passes'`}</CodeBlo
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 I made two commits instead of one — infrastructure first, behavior second
               </span>
             </label>
@@ -304,7 +304,7 @@ One logical change per commit. If your commit message needs "and", split it.`}</
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 Commit convention documented in CONTRIBUTING.md
               </span>
             </label>
@@ -343,7 +343,7 @@ fi`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 Pre-commit hook warns on large diffs
               </span>
             </label>
@@ -387,7 +387,7 @@ git push`}</CodeBlock>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                   Pipeline is green
                 </span>
               </label>

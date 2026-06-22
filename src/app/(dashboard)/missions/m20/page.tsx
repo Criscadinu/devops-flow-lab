@@ -165,7 +165,7 @@ function Phase1() {
           >
             Week seven. Nexus Corp.
           </h2>
-          <p className="text-gray-400 text-base leading-relaxed">
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Every deploy is still a gamble. One bad release hits all users at once.
           </p>
         </div>
@@ -298,7 +298,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Deployment vs release — the crucial distinction
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Most teams treat these as the same thing. They are not.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -322,11 +322,11 @@ function Phase2() {
                 <span className="text-sm font-mono font-bold uppercase tracking-widest" style={{ color: item.accent }}>
                   {item.word}
                 </span>
-                <p className="text-gray-400 text-sm leading-relaxed">{item.def}</p>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{item.def}</p>
               </div>
             ))}
           </div>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             When you decouple these, you can deploy any time and release when the business is ready.
             Deploys become boring. Releases become intentional.
           </p>
@@ -350,7 +350,7 @@ function Phase2() {
                 <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: card.accent }}>
                   {card.title}
                 </span>
-                <p className="text-gray-400 text-sm leading-relaxed">{card.body}</p>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{card.body}</p>
               </div>
             ))}
           </div>
@@ -364,7 +364,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The strangler fig pattern
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Named after the strangler fig tree, which grows around a host tree until it replaces it.
             Applied to software: incrementally replace a monolith by building new services alongside
             it — without a big-bang rewrite.
@@ -379,7 +379,7 @@ function Phase2() {
                 <span className="text-xs font-mono font-bold shrink-0 mt-0.5" style={{ color: "var(--af-orange)" }}>{s.step}</span>
                 <div className="flex flex-col gap-1">
                   <span className="text-xs font-mono font-bold text-gray-900 uppercase tracking-widest">{s.label}</span>
-                  <p className="text-xs text-gray-500 leading-relaxed">{s.body}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>{s.body}</p>
                 </div>
               </div>
             ))}
@@ -461,7 +461,7 @@ function Phase4() {
           <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Deploy Dark. Release Gradually.
           </h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
             This is what you built for Nexus Corp.
           </p>
         </div>
@@ -550,7 +550,7 @@ function Phase4() {
             <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
               First Way: Flow — Complete
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               First Way complete. Flow is fast and low-risk. Next: The Second Way — Feedback. Make
               production visible.
             </p>

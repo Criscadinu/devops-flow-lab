@@ -160,7 +160,7 @@ export function Phase3() {
           >
             Your Mission - Make the System Speak
           </h2>
-          <p className="text-gray-500 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Add an automated alert endpoint to the Nexus Corp app with configurable thresholds.
           </p>
         </div>
@@ -178,7 +178,7 @@ export function Phase3() {
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
               Before you start
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               This mission builds on your M-23 work. Both items should already be ready.
             </p>
           </div>
@@ -191,7 +191,7 @@ export function Phase3() {
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+            <p className="text-sm leading-relaxed pl-6" style={{ color: "var(--text-muted)" }}>
               Your nexus-corp-app fork has pino logging, the upgraded /health endpoint, request counters in /api/metrics, and a green pipeline.
             </p>
 
@@ -204,7 +204,7 @@ export function Phase3() {
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+            <p className="text-sm leading-relaxed pl-6" style={{ color: "var(--text-muted)" }}>
               The alert endpoint reads these variables. Confirm they are declared at module scope in src/index.js.
             </p>
           </div>
@@ -270,7 +270,7 @@ app.get('/api/alerts', (req, res) => {
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 GET /api/alerts returns status, checks, and timestamp
               </span>
             </label>
@@ -308,7 +308,7 @@ curl http://localhost:3000/api/alerts`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 Alert thresholds are defined in docker-compose.yml and /api/alerts responds correctly
               </span>
             </label>
@@ -358,7 +358,7 @@ curl http://localhost:3000/api/alerts`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 npm test passes with the new alerting tests
               </span>
             </label>
@@ -392,7 +392,7 @@ curl http://localhost:3000/api/alerts`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 LOG_LEVEL is set per environment in docker-compose.yml
               </span>
             </label>
@@ -437,7 +437,7 @@ git push`}</CodeBlock>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                   Pipeline is green — alerting endpoint is live
                 </span>
               </label>

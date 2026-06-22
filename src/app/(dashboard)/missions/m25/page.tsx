@@ -136,7 +136,7 @@ function Phase1() {
           >
             Week thirteen. Nexus Corp.
           </h2>
-          <p className="text-gray-400 text-base leading-relaxed">
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             The health endpoint outage was fixed. Branch protection is in place. But nobody wrote down what happened or why. The next engineer to touch that code will have no idea how close it came to a two-hour outage.
           </p>
         </div>
@@ -230,7 +230,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Why blameless?
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             When engineers fear blame, they hide incidents, underreport near-misses, and avoid the
             areas of the codebase they know are fragile. The cost of blame culture is not just morale
             — it is incomplete information. You cannot fix a system you do not fully understand.
@@ -269,7 +269,7 @@ function Phase2() {
                 </span>
                 <div className="flex flex-col gap-2">
                   {col.items.map((item, i) => (
-                    <p key={i} className="text-xs text-gray-400 leading-relaxed">{item}</p>
+                    <p key={i} className="text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>{item}</p>
                   ))}
                 </div>
               </div>
@@ -285,7 +285,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             What a postmortem is — and is not
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             A postmortem is a structured document. It records what happened, the timeline of the
             incident, the root cause, what went well, what went poorly, and the specific action
             items that will prevent recurrence. It is not a blame report. It is not a retrospective.
@@ -309,7 +309,7 @@ function Phase2() {
                 <span className="text-xs font-mono font-bold shrink-0 w-36" style={{ color: "var(--af-orange)" }}>
                   {row.section}
                 </span>
-                <span className="text-xs text-gray-500">{row.note}</span>
+                <span className="text-xs" style={{ color: "var(--text-muted)" }}>{row.note}</span>
               </div>
             ))}
           </div>
@@ -323,7 +323,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Postmortems and runbooks reinforce each other
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             A runbook tells you what to do when an incident occurs. A postmortem explains what you
             learned after it happened. When a runbook step is missing or wrong, the postmortem
             documents it — and the runbook gets updated. The next engineer who hits the same alert
@@ -339,7 +339,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The DORA connection
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Postmortems do not directly move the DORA metrics. They maintain them. By preventing
             recurrence of known failure modes, they keep CFR from drifting back up as the system grows.
             They also accelerate MTTR over time — the second time an incident occurs, you have a playbook.
@@ -352,7 +352,7 @@ function Phase2() {
             <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
               What this mission does
             </span>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               All four DORA metrics hold at their current values. The postmortem process is the
               foundation that prevents regression — as Nexus Corp grows, your metrics stay high.
             </p>
@@ -418,7 +418,7 @@ function Phase4() {
           <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Nexus Corp Has a Learning Culture
           </h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
             The metrics don&apos;t move — and that&apos;s the point. Postmortems are not an improvement
             mechanism. They are a retention mechanism. Your 1% CFR stays at 1% as the system grows,
             because every failure becomes a permanent improvement to the process.
@@ -443,7 +443,7 @@ function Phase4() {
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
               The system is now self-improving
             </p>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Every future incident generates a postmortem. Every postmortem generates action items.
               Every action item improves the system. Nexus Corp no longer needs to repeat the same
               mistakes — they are permanently documented, and the fixes are permanent.
@@ -525,7 +525,7 @@ function Phase4() {
             <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
               The Third Way: Learning — Complete
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               You&apos;ve built a system that learns from its own failures. Flow moves work through the system.
               Feedback reveals problems. Learning — the Third Way — creates the conditions for continuous
               improvement. Nexus Corp is now a high-performing engineering organization.

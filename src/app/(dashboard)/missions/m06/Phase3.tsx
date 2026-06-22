@@ -128,7 +128,7 @@ export function Phase3() {
           >
             Your Mission - Build a Real Test Suite
           </h2>
-          <p className="text-gray-500 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             The Nexus Corp app has 3 tests. It needs more. You are going to build them.
           </p>
         </div>
@@ -146,7 +146,7 @@ export function Phase3() {
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
               Before you start
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               This mission builds on your M-03 work. Both items should already be ready.
             </p>
           </div>
@@ -160,7 +160,7 @@ export function Phase3() {
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+            <p className="text-sm leading-relaxed pl-6" style={{ color: "var(--text-muted)" }}>
               Your nexus-corp-app fork has all tests passing and GitHub Actions running on every push.
             </p>
 
@@ -174,7 +174,7 @@ export function Phase3() {
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+            <p className="text-sm leading-relaxed pl-6" style={{ color: "var(--text-muted)" }}>
               You need Node.js to run the test suite locally. Verify with{" "}
               <code className="text-orange-400 font-mono">node --version</code>.
             </p>
@@ -193,7 +193,7 @@ export function Phase3() {
 
           <div className="flex flex-col gap-2">
             <SectionLabel>How to audit</SectionLabel>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Open <code className="text-orange-400 font-mono">src/index.test.js</code>. List the
               endpoints that exist in{" "}
               <code className="text-orange-400 font-mono">src/index.js</code> but have no tests.
@@ -211,7 +211,7 @@ GET /api/metrics - NOT tested`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 I have identified the untested endpoints
               </span>
             </label>
@@ -255,7 +255,7 @@ GET /api/metrics - NOT tested`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 npm test shows the new metrics tests passing
               </span>
             </label>
@@ -289,7 +289,7 @@ GET /api/metrics - NOT tested`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 I have added at least 2 error case tests and they pass
               </span>
             </label>
@@ -313,7 +313,7 @@ GET /api/metrics - NOT tested`}</CodeBlock>
 
           <div className="flex flex-col gap-2">
             <SectionLabel>Run it</SectionLabel>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Run <code className="text-orange-400 font-mono">npm run test:coverage</code>. Look at
               the coverage report. Find the lowest-covered file.
             </p>
@@ -326,7 +326,7 @@ GET /api/metrics - NOT tested`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 I have run coverage and seen the report
               </span>
             </label>
@@ -349,7 +349,7 @@ git commit -m 'test: add metrics endpoint and error handling tests'
 git push`}</CodeBlock>
           </div>
 
-          <p className="text-gray-400 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Go to the <strong className="text-gray-900">Actions</strong> tab on GitHub and verify all
             tests pass in CI.
           </p>
@@ -375,7 +375,7 @@ git push`}</CodeBlock>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                   All tests pass in CI
                 </span>
               </label>

@@ -140,7 +140,7 @@ export function Phase3() {
           >
             Your Mission - Get the Pipeline Green
           </h2>
-          <p className="text-gray-500 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Nexus Corp has failing tests and no CI. You are going to fix both.
           </p>
         </div>
@@ -158,7 +158,7 @@ export function Phase3() {
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
               Before you start
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               This mission builds on your work from M-02. Check both before continuing.
             </p>
           </div>
@@ -176,7 +176,7 @@ export function Phase3() {
                 ✓ READY
               </span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               You already forked and containerized nexus-corp-app in M-02. That fork is what we continue with here.
             </p>
           </div>
@@ -201,7 +201,7 @@ export function Phase3() {
                 </span>
               )}
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               You need Node.js to run the tests locally. Verify it is installed by running{" "}
               <code className="text-orange-400 font-mono">node --version</code> in your terminal.
             </p>
@@ -213,7 +213,7 @@ export function Phase3() {
                   className="w-4 h-4 cursor-pointer"
                   style={{ accentColor: "rgb(251,146,60)" }}
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                   I have Node.js installed (<code className="text-orange-400 font-mono">node --version</code> works)
                 </span>
               </label>
@@ -236,7 +236,7 @@ export function Phase3() {
 
           <div className="flex flex-col gap-2">
             <SectionLabel>How to run</SectionLabel>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Clone your fork locally if not already done, then install dependencies and run the
               test suite.
             </p>
@@ -286,7 +286,7 @@ npm test`}</pre>
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 I ran <code className="text-orange-400 font-mono">npm test</code> and see 3 failing tests
               </span>
             </label>
@@ -305,7 +305,7 @@ npm test`}</pre>
 
           <div className="flex flex-col gap-2">
             <SectionLabel>How to fix</SectionLabel>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Open <code className="text-orange-400 font-mono">src/index.test.js</code> in your editor.
               Find the 3 wrong expected values and correct them. Then run{" "}
               <code className="text-orange-400 font-mono">npm test</code> again - all 3 should pass.
@@ -339,7 +339,7 @@ npm test`}</pre>
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 <code className="text-orange-400 font-mono">npm test</code> shows 3 passing, 0 failing
               </span>
             </label>
@@ -360,7 +360,7 @@ npm test`}</pre>
 
           <div className="flex flex-col gap-2">
             <SectionLabel>How to add the test step</SectionLabel>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Open <code className="text-orange-400 font-mono">.github/workflows/ci.yml</code> in your
               editor. Find the <code className="text-orange-400 font-mono">TODO</code> comment below the
               install step. Replace it with the following:
@@ -410,7 +410,7 @@ jobs:
       # TODO: add a step to run the tests`}</pre>
           </div>
 
-          <p className="text-gray-400 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Once you have added the step, commit and push to your fork.
           </p>
           <pre
@@ -431,7 +431,7 @@ git push`}</pre>
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 I added the test step and pushed to my fork on GitHub
               </span>
             </label>
@@ -470,7 +470,7 @@ git push`}</pre>
 
           <div className="flex flex-col gap-2">
             <SectionLabel>How to verify</SectionLabel>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Go to your fork on GitHub. Click the{" "}
               <span className="text-gray-900">Actions</span> tab. You should see a workflow run
               triggered by your last push. Wait for it to complete - it should show a green
@@ -506,7 +506,7 @@ git push`}</pre>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                   My pipeline is green
                 </span>
               </label>

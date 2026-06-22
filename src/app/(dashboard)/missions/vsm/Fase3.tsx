@@ -181,7 +181,7 @@ function Part1({ onComplete }: { onComplete: () => void }) {
         <h3 className="text-xl text-gray-900" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
           Step 1 - Sort the steps in the correct order
         </h3>
-        <p className="text-gray-500 text-sm leading-relaxed">
+        <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
           Drag the steps from idea to production in the order you think is correct.
         </p>
       </div>
@@ -399,7 +399,7 @@ function Part2({ onComplete }: { onComplete: () => void }) {
         <h3 className="text-xl text-gray-900" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
           Step 2 - Fill in the process time and wait time per step
         </h3>
-        <p className="text-gray-500 text-sm leading-relaxed">
+        <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
           Use the information from the conversations. You&apos;ve heard all the numbers.
         </p>
       </div>
@@ -807,7 +807,7 @@ function ContextPanel() {
                   <span className="text-xs font-mono font-bold text-gray-900">{c.name}</span>
                   <span className="text-xs text-gray-600">{c.role}</span>
                 </div>
-                <p className="text-sm text-gray-400 leading-relaxed">&ldquo;{c.quote}&rdquo;</p>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>&ldquo;{c.quote}&rdquo;</p>
               </div>
             </div>
           ))}
@@ -862,7 +862,7 @@ function ReferencePanel() {
               <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(34,197,94)" }}>
                 Process Time
               </span>
-              <p className="text-sm text-gray-400 leading-relaxed">
+              <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
                 The time work is <span className="text-gray-900">actively being done</span>. Someone is working on it right now.
               </p>
               <p className="text-xs font-mono text-gray-600 mt-1">
@@ -888,7 +888,7 @@ function ReferencePanel() {
               <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(239,68,68)" }}>
                 Wait Time
               </span>
-              <p className="text-sm text-gray-400 leading-relaxed">
+              <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
                 The time work <span className="text-gray-900">sits idle</span>. Nobody is actively working on it.
               </p>
               <p className="text-xs font-mono text-gray-600 mt-1">
@@ -914,7 +914,7 @@ function ReferencePanel() {
               <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
                 Flow Efficiency
               </span>
-              <p className="text-sm text-gray-400 leading-relaxed">
+              <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
                 The percentage of total lead time that is actual work.
               </p>
               <div
@@ -946,7 +946,7 @@ function ReferencePanel() {
               <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(234,179,8)" }}>
                 The goal
               </span>
-              <p className="text-sm text-gray-400 leading-relaxed">
+              <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
                 Fill in the PT and WT for each step based on what the team told you. You will calculate the total lead time and flow efficiency at the end.
               </p>
             </div>
@@ -971,7 +971,7 @@ export function Fase3() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Your VSM Analysis
           </h2>
-          <p className="text-gray-500 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Use what you&apos;ve heard and learned. Work through both steps.
           </p>
         </div>

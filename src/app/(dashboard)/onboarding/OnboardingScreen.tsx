@@ -172,7 +172,7 @@ export function OnboardingScreen() {
                     >
                       {role.title}
                     </span>
-                    <span className="text-gray-500 text-sm leading-relaxed">
+                    <span className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
                       {role.description}
                     </span>
                   </div>

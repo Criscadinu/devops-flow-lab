@@ -201,7 +201,7 @@ function Phase1() {
           >
             Week two. Nexus Corp.
           </h2>
-          <p className="text-gray-400 text-base leading-relaxed">
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             The VSM revealed the bottlenecks. Now you see the root cause.
           </p>
         </div>
@@ -268,7 +268,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Why environments break everything
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             When every developer has a different local setup, and test differs from production,
             bugs hide between environments. The solution is environment parity - dev, test, and
             prod behave identically because they are defined in code.
@@ -301,7 +301,7 @@ function Phase2() {
                 >
                   {card.title}
                 </span>
-                <p className="text-gray-400 text-sm leading-relaxed">{card.body}</p>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{card.body}</p>
               </div>
             ))}
           </div>
@@ -401,7 +401,7 @@ function BenefitCard({
       <h3 className="text-gray-900 text-base leading-snug" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
         {title}
       </h3>
-      <p className="text-gray-400 text-sm leading-relaxed">{explanation}</p>
+      <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{explanation}</p>
       <div style={{ border: "1px solid var(--border)" }}>{children}</div>
       <p className="text-xs font-mono">
         <span style={{ color: "rgb(239,68,68)" }}>{metric.before}</span>
@@ -438,7 +438,7 @@ function Phase4() {
           >
             Environments Established.
           </h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
             This is what you built for Nexus Corp.
           </p>
         </div>
@@ -647,7 +647,7 @@ function Phase4() {
               borderLeft: "3px solid rgb(31,41,55)",
             }}
           >
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Environments are stable and reproducible. Now every commit needs to automatically
               build, test, and deploy. Next mission: Build the Pipeline.
             </p>

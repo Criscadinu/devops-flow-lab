@@ -463,7 +463,7 @@ export function Phase3() {
           >
             Your Mission - Containerize Nexus Corp
           </h2>
-          <p className="text-gray-500 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             You have diagnosed the problem. Now you are going to fix it - for every developer, every environment, every time.
           </p>
         </div>
@@ -484,7 +484,7 @@ export function Phase3() {
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
               Before you start
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               This mission requires two tools installed on your machine. Check them off before continuing.
             </p>
           </div>
@@ -507,7 +507,7 @@ export function Phase3() {
                 </span>
               )}
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Docker Desktop gives you the Docker engine and CLI on your local machine. It also
               includes a dashboard so you can see running containers and manage images.
             </p>
@@ -528,7 +528,7 @@ export function Phase3() {
                   className="w-4 h-4 cursor-pointer"
                   style={{ accentColor: "rgb(251,146,60)" }}
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                   Docker Desktop is installed and running
                 </span>
               </label>
@@ -555,7 +555,7 @@ export function Phase3() {
                 </span>
               )}
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Git is the version control system you will use to clone the repository and push your
               changes. Most macOS and Linux machines have it already. On Windows, install Git for Windows.
             </p>
@@ -576,7 +576,7 @@ export function Phase3() {
                   className="w-4 h-4 cursor-pointer"
                   style={{ accentColor: "rgb(251,146,60)" }}
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                   Git is installed
                 </span>
               </label>
@@ -605,7 +605,7 @@ export function Phase3() {
             </p>
           </div>
           <div className="flex flex-col gap-1">
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Right now, this app lives on one server that Marco set up 2 years ago. Nobody else
               knows how it is configured. There is no staging environment. Developers test on their
               local machines - all with different setups. When Lisa deploys a fix, it sometimes works
@@ -614,7 +614,7 @@ export function Phase3() {
             </p>
           </div>
           <div className="flex flex-col gap-1">
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Before you can build a pipeline, you need somewhere reliable to deploy to. Before you
               can automate deployments, every environment needs to behave identically. That is what
               this mission fixes. You are not containerizing for fun - you are containerizing because
@@ -641,7 +641,7 @@ export function Phase3() {
 
           <div className="flex flex-col gap-2">
             <SectionLabel>Step 1 - Fork</SectionLabel>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Click the button below to open the repository on GitHub. Hit the <span className="text-gray-900">Fork</span> button
               in the top right. GitHub will create a copy at{" "}
               <span className="text-gray-900 font-mono">github.com/your-username/nexus-corp-app</span>.
@@ -659,7 +659,7 @@ export function Phase3() {
 
           <div className="flex flex-col gap-2">
             <SectionLabel>Step 2 - Clone your fork</SectionLabel>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Once forked, clone your copy to your machine - not the original. Use your own username in the URL.
             </p>
             <pre
@@ -741,7 +741,7 @@ cd nexus-corp-app`}</pre>
 
           <div className="flex flex-col gap-2">
             <SectionLabel>What to do</SectionLabel>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Create a file named <span className="text-gray-900 font-mono">Dockerfile</span> (no
               extension) at the root of the repo. Use the starter below - it&apos;s mostly complete,
               but you need to add the final command that actually starts the app. Check the{" "}
@@ -809,7 +809,7 @@ EXPOSE 3000
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 My Dockerfile is complete and{" "}
                 <code className="text-orange-400 font-mono">docker build -t nexus-corp .</code>{" "}
                 succeeds
@@ -843,21 +843,21 @@ EXPOSE 3000
 
           <div className="flex flex-col gap-2">
             <SectionLabel>Why three environments?</SectionLabel>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               <span className="text-gray-900">dev</span> - where you write code. Errors are verbose,
               logging is noisy, hot reload might be on. Speed of feedback matters more than
               performance.
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               <span className="text-gray-900">test</span> - where automated tests run. Config matches
               production closely. No debug noise. Predictable behavior.
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               <span className="text-gray-900">prod</span> - what real users hit. Optimized for
               performance, minimal logging, hardened config. You never want dev behavior leaking
               here.
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               By defining all three in one file, anyone on the team can spin up any environment
               with a single command - and they all behave exactly as intended.
             </p>
@@ -865,7 +865,7 @@ EXPOSE 3000
 
           <div className="flex flex-col gap-2">
             <SectionLabel>docker-compose.yml starter</SectionLabel>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Create <span className="text-gray-900 font-mono">docker-compose.yml</span> at the repo
               root. The dev service is provided. Add the test and prod services following the same
               pattern - use ports 3001 and 3002, and set{" "}
@@ -986,7 +986,7 @@ EXPOSE 3000
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 <code className="text-orange-400 font-mono">docker-compose up</code> starts all
                 three services without errors
               </span>
@@ -1023,7 +1023,7 @@ git commit -m "feat: add containerized environments"
 git push`}</pre>
           </div>
 
-          <p className="text-gray-400 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Use that exact commit message.{" "}
             <span className="text-gray-900 font-mono">feat:</span> is a conventional commit prefix -
             it signals that this is a new feature addition, not a bug fix or refactor. It becomes
@@ -1037,7 +1037,7 @@ git push`}</pre>
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 My fork on GitHub contains Dockerfile and docker-compose.yml
               </span>
             </label>

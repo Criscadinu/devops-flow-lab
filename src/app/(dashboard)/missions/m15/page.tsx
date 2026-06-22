@@ -164,7 +164,7 @@ function Phase1() {
           >
             Week eight. Nexus Corp.
           </h2>
-          <p className="text-gray-400 text-base leading-relaxed">
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             There are four active branches. The last time anyone merged to main was eleven days ago.
           </p>
         </div>
@@ -271,7 +271,7 @@ function Phase2() {
           <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Why long-lived branches fail
           </h3>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             A branch is a bet that you can integrate later without paying a penalty. The longer the branch lives,
             the larger the penalty. After two weeks, a branch has diverged so far from main that the merge is a
             mini-project. After a month, it may be faster to rewrite the feature than to merge it. Trunk-based
@@ -287,7 +287,7 @@ function Phase2() {
           <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             How trunk-based development works
           </h3>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Everyone commits to main — the trunk. Features that are not ready are hidden behind feature flags — the
             code is in production, but the behavior is off. Short-lived branches (less than one day) are acceptable
             for code review workflows. The rule: if a branch is older than a day, it is already a problem.
@@ -310,7 +310,7 @@ function Phase2() {
                 >
                   {row.label}
                 </span>
-                <span className="text-xs text-gray-500">{row.note}</span>
+                <span className="text-xs" style={{ color: "var(--text-muted)" }}>{row.note}</span>
               </div>
             ))}
           </div>
@@ -324,7 +324,7 @@ function Phase2() {
           <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Feature flags as the enabler
           </h3>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Trunk-based development requires feature flags. Without them, you cannot commit incomplete work to main
             without breaking the product. With them, you commit freely — the flag keeps the feature invisible until
             it is ready. This is why M-20 (Architecture for Low-Risk Releases) is in the same cluster.
@@ -336,7 +336,7 @@ function Phase2() {
             <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
               The pattern
             </span>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               The code ships. The feature does not. The flag is off in production. When the feature is ready,
               you flip the flag — no deploy required. If something goes wrong, you flip it back.
             </p>
@@ -351,7 +351,7 @@ function Phase2() {
           <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The DORA connection
           </h3>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Trunk-based development is one of the highest-correlation practices with elite DORA performance. Teams
             that practice it have 2× higher deployment frequency and 2× lower change failure rate than teams that
             use long-lived branches. The research is clear: the branch is the risk.
@@ -396,7 +396,7 @@ function Phase4() {
           <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Nexus Corp Is on One Trunk.
           </h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Trunk-based development removes the biggest source of integration pain. When everyone is on the same
             branch, there are no surprises at merge time — because there is no merge time.
           </p>
@@ -473,7 +473,7 @@ function Phase4() {
             <p className="text-xs font-mono font-bold uppercase tracking-widest text-gray-500">
               Next: Automate and enable low-risk releases
             </p>
-            <p className="text-gray-500 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Now that you integrate continuously, automate the path to production. Every green build on trunk
               should be deployable without manual intervention.
             </p>

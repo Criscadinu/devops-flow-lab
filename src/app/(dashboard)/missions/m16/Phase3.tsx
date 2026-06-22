@@ -131,7 +131,7 @@ export function Phase3() {
           >
             Your Mission - Deploy on Every Green Build
           </h2>
-          <p className="text-gray-500 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Every commit that passes tests should automatically reach production.
           </p>
         </div>
@@ -149,7 +149,7 @@ export function Phase3() {
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
               Before you start
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               This mission builds on your M-05 work. Check both items before continuing.
             </p>
           </div>
@@ -165,7 +165,7 @@ export function Phase3() {
                 ✓ READY
               </span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Your nexus-corp-app fork has all tests passing and GitHub Actions running on every push. That is the foundation CD builds on.
             </p>
           </div>
@@ -190,7 +190,7 @@ export function Phase3() {
                 </span>
               )}
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               You need a deployment platform that integrates with GitHub. All three options below are free to start.
             </p>
             <div className="flex flex-wrap gap-2">
@@ -223,7 +223,7 @@ export function Phase3() {
                   className="w-4 h-4 cursor-pointer"
                   style={{ accentColor: "rgb(251,146,60)" }}
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                   I have created a free account on Render, Railway, or Fly.io
                 </span>
               </label>
@@ -246,7 +246,7 @@ export function Phase3() {
 
           <div className="flex flex-col gap-2">
             <SectionLabel>How to deploy manually</SectionLabel>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Connect your GitHub fork to your chosen platform. Each platform has a &quot;New
               project&quot; or &quot;New service&quot; button that lets you import from GitHub.
               Select your nexus-corp-app fork. The platform will detect it is a Node.js app and
@@ -282,7 +282,7 @@ export function Phase3() {
                 }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 My app is live and accessible at the URL above
               </span>
             </label>
@@ -302,7 +302,7 @@ export function Phase3() {
 
           <div className="flex flex-col gap-2">
             <SectionLabel>Check these three endpoints</SectionLabel>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Open your live URL in a browser or use{" "}
               <code className="text-orange-400 font-mono">curl</code>. Each should return the values
               shown below.
@@ -326,7 +326,7 @@ GET /api/orders - should return  3 orders`}</pre>
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 All three endpoints return the correct responses
               </span>
             </label>
@@ -373,7 +373,7 @@ GET /api/orders - should return  3 orders`}</pre>
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 Automatic deployment is enabled
               </span>
             </label>
@@ -430,7 +430,7 @@ GET /api/orders - should return  3 orders`}</pre>
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 I understand the deploy step (added it or confirmed my platform handles it automatically)
               </span>
             </label>
@@ -449,7 +449,7 @@ GET /api/orders - should return  3 orders`}</pre>
 
           <div className="flex flex-col gap-2">
             <SectionLabel>Make a small change and push to main</SectionLabel>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Add a new field to the{" "}
               <code className="text-orange-400 font-mono">GET /</code> response in your app so you
               can visually confirm the new version is live.
@@ -463,7 +463,7 @@ GET /api/orders - should return  3 orders`}</pre>
               }}
             >{`// In src/index.js, add to the GET / route:
 deployedAt: new Date().toISOString()`}</pre>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Then commit and push:
             </p>
             <pre
@@ -481,7 +481,7 @@ git push`}</pre>
                 This triggers both GitHub Actions and your Render auto-deploy automatically.
               </p>
             </MentorNote>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Go to the <strong className="text-gray-900">Actions</strong> tab on GitHub and watch the
               pipeline run. When it turns green, open your live URL - the{" "}
               <code className="text-orange-400 font-mono">deployedAt</code> field should be there.
@@ -509,7 +509,7 @@ git push`}</pre>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                   My change is live in production automatically
                 </span>
               </label>

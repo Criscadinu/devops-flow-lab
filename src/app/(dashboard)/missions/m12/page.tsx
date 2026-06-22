@@ -64,7 +64,7 @@ function Phase1() {
       <div className="max-w-3xl mx-auto flex flex-col gap-12">
         <div className="flex flex-col gap-3 max-w-2xl">
           <h2 className="text-4xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Week twelve. Nexus Corp.</h2>
-          <p className="text-gray-400 text-base leading-relaxed">The security audit found three vulnerabilities. All three were in packages from six months ago.</p>
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>The security audit found three vulnerabilities. All three were in packages from six months ago.</p>
         </div>
         <div className="flex flex-col">
           {dialogue.map((entry, i) => {
@@ -110,7 +110,7 @@ function Phase2() {
           <section key={s.num} className="flex flex-col gap-5">
             <div className="flex items-center gap-4"><span className="text-xs font-mono text-gray-700 tracking-widest">{s.num}</span><div className="flex-1 h-px bg-gray-900" /></div>
             <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>{s.title}</h3>
-            <p className="text-gray-400 leading-relaxed">{s.body}</p>
+            <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>{s.body}</p>
           </section>
         ))}
         <CTA href="?phase=3" label="Wire the quality gates →" sub="Phase 3 of 4 - Do it yourself" />
@@ -135,7 +135,7 @@ function Phase4() {
         <div className="flex flex-col gap-4">
           <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "var(--af-orange)" }}>Mission Complete - M-12</p>
           <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Nexus Corp Enforces Quality Standards Automatically</h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">The six-month-old vulnerability would have been caught on day one. Security, coverage, and secret hygiene are now enforced on every commit.</p>
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>The six-month-old vulnerability would have been caught on day one. Security, coverage, and secret hygiene are now enforced on every commit.</p>
         </div>
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4"><span className="text-xs font-mono text-gray-700 tracking-widest uppercase">01</span><h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">Your DORA metrics</h2><div className="flex-1 h-px bg-gray-900" /></div>
@@ -153,7 +153,7 @@ function Phase4() {
           <div className="flex items-center gap-4"><span className="text-xs font-mono text-gray-700 tracking-widest uppercase">02</span><h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">What is next</h2><div className="flex-1 h-px bg-gray-900" /></div>
           <div className="flex flex-col gap-3 p-6 border" style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)", borderLeft: "3px solid rgb(31,41,55)" }}>
             <p className="text-xs font-mono font-bold uppercase tracking-widest text-gray-500">Next: Dev and Ops Working Together</p>
-            <p className="text-gray-500 text-sm leading-relaxed">Dev ships. Ops fixes. Nobody talks. Break down the wall — shared ownership, shared responsibility.</p>
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>Dev ships. Ops fixes. Nobody talks. Break down the wall — shared ownership, shared responsibility.</p>
           </div>
         </section>
         <section className="flex flex-col gap-4 border-t border-gray-900 pt-10">

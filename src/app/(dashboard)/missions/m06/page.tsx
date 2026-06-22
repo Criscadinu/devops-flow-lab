@@ -163,7 +163,7 @@ function Phase1() {
           >
             Week five. Nexus Corp.
           </h2>
-          <p className="text-gray-400 text-base leading-relaxed">
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             The pipeline is green. But green means nothing if the tests are wrong.
           </p>
         </div>
@@ -292,7 +292,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             What makes a good test suite?
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             A good test suite is fast, reliable, and catches real bugs. It gives developers confidence
             to change code without fear. A bad test suite is slow, flaky, and tests the wrong things —
             it becomes a burden instead of a safety net.
@@ -321,7 +321,7 @@ function Phase2() {
                   <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: level.accent }}>
                     {level.label}
                   </span>
-                  <p className="text-gray-400 text-sm leading-relaxed">{level.desc}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{level.desc}</p>
                 </div>
               </div>
             ))}
@@ -356,7 +356,7 @@ function Phase2() {
                   <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
                     {p.name}
                   </span>
-                  <p className="text-gray-400 text-sm leading-relaxed">{p.body}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{p.body}</p>
                 </div>
               </div>
             ))}
@@ -399,7 +399,7 @@ function Phase4() {
           <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Tests That Mean Something.
           </h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
             This is what you built for Nexus Corp.
           </p>
         </div>
@@ -485,7 +485,7 @@ function Phase4() {
               borderLeft: "3px solid rgb(31,41,55)",
             }}
           >
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               The tests are solid. But the infrastructure is still manually configured. Every server
               is a snowflake. Next mission: Infrastructure as Code.
             </p>

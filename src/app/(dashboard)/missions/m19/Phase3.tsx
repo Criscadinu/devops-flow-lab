@@ -75,12 +75,12 @@ export function Phase3() {
 
         <div className="flex flex-col gap-2">
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Your Mission - Control the Blast Radius</h2>
-          <p className="text-gray-500 text-sm leading-relaxed">Implement a canary release, configure blue-green environments, document rollback, and test the canary logic.</p>
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>Implement a canary release, configure blue-green environments, document rollback, and test the canary logic.</p>
         </div>
 
         <div className="flex flex-col gap-5 p-6 border" style={{ backgroundColor: "var(--bg-card)", borderColor: "rgba(251,146,60,0.3)", borderLeft: "3px solid rgb(251,146,60)" }}>
           <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>Before you start</p>
-          <p className="text-gray-400 text-sm leading-relaxed">This mission builds on M-18. Your pipeline should deploy automatically to staging and require approval for production.</p>
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>This mission builds on M-18. Your pipeline should deploy automatically to staging and require approval for production.</p>
         </div>
 
         <TaskCard number="01" title="Implement a simple canary using percentage routing" done={task1Done} locked={false}>
@@ -113,7 +113,7 @@ app.get('/api/pricing', (req, res) => {
           {!task1Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask1Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Canary endpoint implemented — CANARY_PERCENTAGE controls rollout percentage</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Canary endpoint implemented — CANARY_PERCENTAGE controls rollout percentage</span>
             </label>
           )}
         </TaskCard>
@@ -160,7 +160,7 @@ docker compose stop blue`}</CodeBlock>
           {!task2Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask2Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Blue-green services configured — instant rollback available</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Blue-green services configured — instant rollback available</span>
             </label>
           )}
         </TaskCard>
@@ -194,7 +194,7 @@ The pipeline deploys the reverted commit automatically.`}</CodeBlock>
           {!task3Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask3Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Rollback procedures documented — team knows how to roll back before deploying</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Rollback procedures documented — team knows how to roll back before deploying</span>
             </label>
           )}
         </TaskCard>
@@ -233,7 +233,7 @@ describe('canary routing', () => {
           {!task4Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask4Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Canary routing logic is tested</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Canary routing logic is tested</span>
             </label>
           )}
         </TaskCard>
@@ -256,7 +256,7 @@ git push`}</CodeBlock>
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <input type="checkbox" onChange={(e) => { if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Pipeline is green — release patterns implemented</span>
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Pipeline is green — release patterns implemented</span>
               </label>
             </div>
           )}

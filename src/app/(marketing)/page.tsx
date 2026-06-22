@@ -51,7 +51,7 @@ function AudienceSection() {
             <div key={a.role} className="p-8 flex flex-col gap-4" style={{ backgroundColor: "var(--bg)", borderLeft: a.borderLeft }}>
               <span className="text-xs font-bold uppercase tracking-widest" style={{ fontFamily: "var(--font-heading)", color: a.accentColor }}>{a.role}</span>
               <h3 className="text-xl font-bold" style={{ fontFamily: "var(--font-heading)", color: "var(--text)", textTransform: "uppercase" }}>{a.headline}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>{a.body}</p>
+              <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)", fontFamily: "var(--font-body)" }}>{a.body}</p>
             </div>
           ))}
         </div>
@@ -203,7 +203,7 @@ function FinalCTA({ authenticated }: { authenticated: boolean }) {
         <a href={authenticated ? "/dashboard" : "/api/auth/signin"} className="font-bold px-10 py-4 text-base transition-opacity hover:opacity-85" style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", borderRadius: "var(--radius)" }}>
           {authenticated ? "Go to Dashboard →" : "Start for free with Google →"}
         </a>
-        <p className="text-xs text-gray-400">By signing up you agree to our terms of use.</p>
+        <p className="text-xs" style={{ color: "var(--text-muted)" }}>By signing up you agree to our terms of use.</p>
       </div>
     </section>
   );

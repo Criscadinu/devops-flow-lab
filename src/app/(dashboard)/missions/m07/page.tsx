@@ -164,7 +164,7 @@ function Phase1() {
           >
             Week six. Nexus Corp.
           </h2>
-          <p className="text-gray-400 text-base leading-relaxed">
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             The bug was introduced three weeks ago. Nobody caught it until a customer called.
           </p>
         </div>
@@ -279,7 +279,7 @@ function Phase2() {
           <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The cost of late detection
           </h3>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Every stage a bug passes through multiplies its cost. A type error caught by a linter costs milliseconds.
             The same error caught in production costs hours of debugging, a hotfix deploy, potential data corruption,
             and a customer support ticket. The principle is simple: find it as close to the source as possible.
@@ -299,8 +299,8 @@ function Phase2() {
                 <span className="text-xs font-mono font-bold" style={{ color: i === 4 ? "rgb(239,68,68)" : "rgb(255,85,0)" }}>
                   {row.stage}
                 </span>
-                <span className="text-xs text-gray-500">{row.time}</span>
-                <span className="text-xs text-gray-500">{row.impact}</span>
+                <span className="text-xs" style={{ color: "var(--text-muted)" }}>{row.time}</span>
+                <span className="text-xs" style={{ color: "var(--text-muted)" }}>{row.impact}</span>
               </div>
             ))}
           </div>
@@ -314,11 +314,11 @@ function Phase2() {
           <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The test pyramid
           </h3>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             The test pyramid describes the right ratio of test types: many unit tests (fast, isolated, test one function),
             fewer integration tests (slower, test how components connect), and few end-to-end tests (slowest, test the full user journey).
           </p>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Most teams invert this pyramid — many slow E2E tests, few fast unit tests. The result: a test suite that takes
             20 minutes and nobody runs locally. Invert it back.
           </p>
@@ -336,7 +336,7 @@ function Phase2() {
                 <span className="text-xs font-mono font-bold w-48 shrink-0" style={{ color: row.accent }}>
                   {row.label}
                 </span>
-                <span className="text-xs text-gray-500">{row.note}</span>
+                <span className="text-xs" style={{ color: "var(--text-muted)" }}>{row.note}</span>
               </div>
             ))}
           </div>
@@ -350,7 +350,7 @@ function Phase2() {
           <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Linting and static analysis as a first gate
           </h3>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Before tests run, linting and static analysis should catch syntax errors, type mismatches, unused variables,
             and code style violations that mask logic errors. Add linting to the pipeline before the test step.
             A lint failure is faster to catch and faster to fix than a test failure.
@@ -366,7 +366,7 @@ function Phase2() {
               {["1. Lint (fastest — catches syntax and type errors)", "2. Unit tests (fast — catches logic errors)", "3. Integration tests (slower — catches wiring errors)", "4. Deploy (only reaches here if everything above passed)"].map((step, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "var(--af-orange)" }}>→</span>
-                  <p className="text-xs text-gray-400">{step}</p>
+                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>{step}</p>
                 </div>
               ))}
             </div>
@@ -381,7 +381,7 @@ function Phase2() {
           <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The DORA connection
           </h3>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Catching errors early directly reduces Change Failure Rate. Bugs that never reach production cannot cause incidents.
             Teams with strong shift-left practices have CFR below 5% — elite teams below 1%. This mission targets CFR reduction
             as part of the AUTOMATED_TESTING cluster.
@@ -393,7 +393,7 @@ function Phase2() {
             <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
               What this mission does
             </span>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Every unit test you add to Nexus Corp is a class of bugs that can never reach production again.
               The lint gate blocks entire categories of errors before they ever run. CFR starts moving — not to a fixed number yet,
               but directionally down.
@@ -425,7 +425,7 @@ function Phase4() {
           <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Nexus Corp Catches Bugs Before Users Do
           </h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
             The lint gate is active. The unit test is real. The pipeline now stops errors before they reach production.
           </p>
         </div>
@@ -572,7 +572,7 @@ function Phase4() {
             <p className="text-xs font-mono font-bold uppercase tracking-widest text-gray-500">
               Next: Enable and practice continuous integration
             </p>
-            <p className="text-gray-500 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Small batches, trunk-based development, and committing frequently. The test suite you built here is the safety net
               that makes continuous integration possible.
             </p>

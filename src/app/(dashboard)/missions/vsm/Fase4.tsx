@@ -53,7 +53,7 @@ export function Fase4() {
           >
             Your VSM Analysis
           </h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
             This is what you uncovered at Nexus Corp.
           </p>
         </div>
@@ -200,7 +200,7 @@ export function Fase4() {
               borderLeft: "3px solid rgb(239,68,68)",
             }}
           >
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               This is where Nexus Corp stands today. You have made the invisible visible.
               The next missions will fix it.
             </p>

@@ -75,12 +75,12 @@ export function Phase3() {
 
         <div className="flex flex-col gap-2">
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Your Mission - Test Under Load</h2>
-          <p className="text-gray-500 text-sm leading-relaxed">Measure the baseline, write a load test, add it to CI, and fix one performance problem.</p>
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>Measure the baseline, write a load test, add it to CI, and fix one performance problem.</p>
         </div>
 
         <div className="flex flex-col gap-5 p-6 border" style={{ backgroundColor: "var(--bg-card)", borderColor: "rgba(251,146,60,0.3)", borderLeft: "3px solid rgb(251,146,60)" }}>
           <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>Before you start</p>
-          <p className="text-gray-400 text-sm leading-relaxed">This mission builds on M-10. Your release checklist should be automated as integration tests.</p>
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>This mission builds on M-10. Your release checklist should be automated as integration tests.</p>
         </div>
 
         <TaskCard number="01" title="Establish a performance baseline" done={task1Done} locked={false}>
@@ -115,7 +115,7 @@ npx autocannon -c 10 -d 10 http://localhost:3002/api/orders`}</CodeBlock>
           {!task1Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask1Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Performance baseline recorded</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Performance baseline recorded</span>
             </label>
           )}
         </TaskCard>
@@ -147,7 +147,7 @@ test('GET /api/orders p95 latency under 200ms', async () => {
           {!task2Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask2Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Performance test script written</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Performance test script written</span>
             </label>
           )}
         </TaskCard>
@@ -174,7 +174,7 @@ test('GET /api/orders p95 latency under 200ms', async () => {
           {!task3Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask3Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Performance tests run in CI on PRs</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Performance tests run in CI on PRs</span>
             </label>
           )}
         </TaskCard>
@@ -205,7 +205,7 @@ app.get('/api/orders', (req, res) => {
           {!task4Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask4Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">One performance improvement implemented and verified</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>One performance improvement implemented and verified</span>
             </label>
           )}
         </TaskCard>
@@ -228,7 +228,7 @@ git push`}</CodeBlock>
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <input type="checkbox" onChange={(e) => { if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Pipeline is green</span>
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Pipeline is green</span>
               </label>
             </div>
           )}

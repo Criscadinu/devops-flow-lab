@@ -128,7 +128,7 @@ export function Phase3() {
           >
             Your Mission - Define the Infrastructure as Code
           </h2>
-          <p className="text-gray-500 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Nexus Corp runs on a mystery server. You are going to fix that.
           </p>
         </div>
@@ -146,7 +146,7 @@ export function Phase3() {
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
               Before you start
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               This mission builds on your M-06 work. Both items should already be ready.
             </p>
           </div>
@@ -159,7 +159,7 @@ export function Phase3() {
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+            <p className="text-sm leading-relaxed pl-6" style={{ color: "var(--text-muted)" }}>
               Your nexus-corp-app fork has a passing test suite and GitHub Actions running on every push.
             </p>
 
@@ -172,7 +172,7 @@ export function Phase3() {
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+            <p className="text-sm leading-relaxed pl-6" style={{ color: "var(--text-muted)" }}>
               Verify with <code className="text-orange-400 font-mono">docker --version</code>. Docker Desktop or Docker Engine both work.
             </p>
           </div>
@@ -190,7 +190,7 @@ export function Phase3() {
 
           <div className="flex flex-col gap-2">
             <SectionLabel>What to look for</SectionLabel>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Open your fork. Look at the <code className="text-orange-400 font-mono">docker-compose.yml</code>.
               What is missing? What environment variables are hardcoded? What is not defined anywhere?
             </p>
@@ -203,7 +203,7 @@ export function Phase3() {
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 I have reviewed the docker-compose.yml and identified at least 2 things that are not defined as code
               </span>
             </label>
@@ -235,7 +235,7 @@ PORT=3000`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 .env.example committed and pushed to GitHub
               </span>
             </label>
@@ -276,7 +276,7 @@ PORT=3000`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 docker-compose up runs with health checks passing
               </span>
             </label>
@@ -336,7 +336,7 @@ clean:
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 make dev starts the app successfully
               </span>
             </label>
@@ -381,7 +381,7 @@ git push`}</CodeBlock>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                   Pipeline is green with all IaC files committed
                 </span>
               </label>

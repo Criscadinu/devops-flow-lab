@@ -75,12 +75,12 @@ export function Phase3() {
 
         <div className="flex flex-col gap-2">
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Your Mission - Automate the Checklist</h2>
-          <p className="text-gray-500 text-sm leading-relaxed">Document the manual steps, convert them to integration tests, and delete the checklist from your release process.</p>
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>Document the manual steps, convert them to integration tests, and delete the checklist from your release process.</p>
         </div>
 
         <div className="flex flex-col gap-5 p-6 border" style={{ backgroundColor: "var(--bg-card)", borderColor: "rgba(251,146,60,0.3)", borderLeft: "3px solid rgb(251,146,60)" }}>
           <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>Before you start</p>
-          <p className="text-gray-400 text-sm leading-relaxed">This mission builds on M-09. Your TDD-verified discount module and integration test category should already be in place.</p>
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>This mission builds on M-09. Your TDD-verified discount module and integration test category should already be in place.</p>
         </div>
 
         <TaskCard number="01" title="Document your manual test checklist" done={task1Done} locked={false}>
@@ -103,7 +103,7 @@ Steps performed before every release:
           {!task1Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask1Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Manual test checklist documented</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Manual test checklist documented</span>
             </label>
           )}
         </TaskCard>
@@ -149,7 +149,7 @@ describe('API integration tests — release checklist', () => {
           {!task2Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask2Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Release checklist converted to automated integration tests</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Release checklist converted to automated integration tests</span>
             </label>
           )}
         </TaskCard>
@@ -170,7 +170,7 @@ module.exports = app`}</CodeBlock>
           {!task3Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask3Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">supertest installed, app exported for testing</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>supertest installed, app exported for testing</span>
             </label>
           )}
         </TaskCard>
@@ -188,7 +188,7 @@ Automated. Run \`npm run test:integration\` or let CI handle it.`}</CodeBlock>
           {!task4Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask4Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Manual checklist removed from release process — automation is the process</span>
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Manual checklist removed from release process — automation is the process</span>
             </label>
           )}
         </TaskCard>
@@ -211,7 +211,7 @@ git push`}</CodeBlock>
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <input type="checkbox" onChange={(e) => { if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Pipeline is green — release checklist is automated</span>
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>Pipeline is green — release checklist is automated</span>
               </label>
             </div>
           )}

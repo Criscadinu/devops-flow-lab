@@ -128,7 +128,7 @@ export function Phase3() {
           >
             Your Mission - Deploy Dark, Release Gradually
           </h2>
-          <p className="text-gray-500 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Implement a feature flag in the Nexus Corp app so you can ship without risk.
           </p>
         </div>
@@ -146,7 +146,7 @@ export function Phase3() {
             <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
               Before you start
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               This mission builds on your M-04 work. Both items should already be ready.
             </p>
           </div>
@@ -159,7 +159,7 @@ export function Phase3() {
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+            <p className="text-sm leading-relaxed pl-6" style={{ color: "var(--text-muted)" }}>
               Your nexus-corp-app fork has a passing test suite, IaC files committed, and GitHub Actions running on every push.
             </p>
 
@@ -172,7 +172,7 @@ export function Phase3() {
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed pl-6">
+            <p className="text-sm leading-relaxed pl-6" style={{ color: "var(--text-muted)" }}>
               Verify with <code className="text-orange-400 font-mono">node --version</code> and <code className="text-orange-400 font-mono">docker --version</code>.
             </p>
           </div>
@@ -214,7 +214,7 @@ app.get('/', (req, res) => {
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 Feature flags are in the code and visible in GET / response
               </span>
             </label>
@@ -234,7 +234,7 @@ app.get('/', (req, res) => {
           <div className="flex flex-col gap-2">
             <SectionLabel>Enable the flag and check the response</SectionLabel>
             <CodeBlock>{`FEATURE_NEW_METRICS=true docker-compose up dev`}</CodeBlock>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Then call{" "}
               <code className="text-orange-400 font-mono">GET /</code> — the{" "}
               <code className="text-orange-400 font-mono">features.newMetricsDashboard</code> field
@@ -251,7 +251,7 @@ app.get('/', (req, res) => {
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 I have verified the flag enables and disables correctly
               </span>
             </label>
@@ -281,7 +281,7 @@ app.get('/', (req, res) => {
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 Feature flags are defined in docker-compose.yml
               </span>
             </label>
@@ -316,7 +316,7 @@ app.get('/', (req, res) => {
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                 Feature flag test passes in npm test
               </span>
             </label>
@@ -361,7 +361,7 @@ git push`}</CodeBlock>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
+                <span className="text-sm transition-colors" style={{ color: "var(--text-muted)" }}>
                   Feature flag code deployed dark — pipeline is green
                 </span>
               </label>

@@ -171,7 +171,7 @@ function Phase1() {
           >
             Day one. Nexus Corp.
           </h2>
-          <p className="text-gray-400 text-base leading-relaxed">
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Listen carefully. All the information you need is in these conversations.
           </p>
         </div>
@@ -286,7 +286,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             What is a Value Stream?
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             A value stream is everything needed to turn an idea into working software for
             the customer. From the moment a developer starts coding until the feature goes
             live. Every step costs time - and not every step adds value.
@@ -311,7 +311,7 @@ function Phase2() {
                 Process Time
               </span>
               <p className="text-gray-900 font-medium">The time when real work is being done</p>
-              <p className="text-gray-500 text-sm leading-relaxed">
+              <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
                 A developer writes code, a reviewer looks at a pull request,
                 a pipeline runs tests. Active work that adds value.
               </p>
@@ -325,7 +325,7 @@ function Phase2() {
                 Wait Time
               </span>
               <p className="text-gray-900 font-medium">The time when work waits for something or someone</p>
-              <p className="text-gray-500 text-sm leading-relaxed">
+              <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
                 Waiting for a review, an approval, a deployment slot, another team.
                 No value - just time.
               </p>

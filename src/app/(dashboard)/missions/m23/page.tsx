@@ -132,7 +132,7 @@ function Phase1() {
           >
             Week eight. Nexus Corp.
           </h2>
-          <p className="text-gray-400 text-base leading-relaxed">
+          <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             The pipeline is green. Deployments are faster. But nobody knows what the app is actually doing in production.
           </p>
         </div>
@@ -265,13 +265,13 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Why telemetry matters
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Nexus Corp deploys more often now. But faster deployments into darkness is not progress.
             MTTR is still <span className="text-gray-900 font-mono font-bold">72 hours</span> because
             finding problems requires SSH access and manual log hunting. You cannot fix what you
             cannot see.
           </p>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Telemetry fixes this. It makes production observable — not just running, but
             understandable. When something breaks, you know within seconds, not hours.
           </p>
@@ -296,7 +296,7 @@ function Phase2() {
                   <span className="text-xs font-mono font-bold" style={{ color: p.accent }}>{p.num}</span>
                   <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: p.accent }}>{p.title}</span>
                 </div>
-                <p className="text-gray-400 text-sm leading-relaxed">{p.body}</p>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{p.body}</p>
                 {p.example && (
                   <pre
                     className="text-xs font-mono leading-relaxed p-3 overflow-x-auto"
@@ -318,7 +318,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             What a real /health endpoint looks like
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             A health check that only returns <code className="text-gray-900 font-mono">{`{ "status": "ok" }`}</code> tells
             you nothing. A real health check tells you whether the app is about to fail before it does.
           </p>
@@ -354,7 +354,7 @@ function Phase2() {
           <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The DORA connection
           </h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="leading-relaxed" style={{ color: "var(--text-muted)" }}>
             MTTR measures how fast you recover from incidents. But you cannot recover fast if you
             cannot <em className="text-gray-900 not-italic font-semibold">detect</em>. Telemetry is
             the prerequisite for MTTR improvement.
@@ -445,7 +445,7 @@ function Phase4() {
           <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Nexus Corp Can Now See
           </h1>
-          <p className="text-gray-400 text-base max-w-xl leading-relaxed">
+          <p className="text-base max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
             This is what you built for Nexus Corp.
           </p>
         </div>
@@ -529,7 +529,7 @@ function Phase4() {
             className="p-5 border"
             style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)", borderLeft: "3px solid rgb(75,85,99)" }}
           >
-            <p className="text-sm text-gray-500 leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Telemetry does not directly improve deployment frequency or lead time. But it is the
               prerequisite for everything in the Second Way. Without measurement, feedback is impossible.
             </p>
@@ -554,7 +554,7 @@ function Phase4() {
             <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
               Second Way: Feedback — In Progress
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Next: Build a monitoring dashboard on top of this telemetry — and set up alerts so
               Marco sleeps through the night.
             </p>
