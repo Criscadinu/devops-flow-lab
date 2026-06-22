@@ -2,10 +2,8 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Syne } from "next/font/google"
 import { Terminal, Users, BarChart2 } from "lucide-react"
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 type Role = "ENGINEER" | "COACH" | "MANAGER"
 
@@ -81,21 +79,21 @@ export function OnboardingClient() {
 
       <div
         className="min-h-screen flex flex-col items-center justify-center px-6 py-16"
-        style={{ backgroundColor: "#000" }}
+        style={{ backgroundColor: "var(--bg)" }}
       >
         <div className="w-full max-w-2xl flex flex-col items-center gap-10 text-center">
 
           {/* Label */}
           <p className="fade-up delay-1 text-xs font-mono tracking-[0.3em] uppercase"
-            style={{ color: "rgb(255,85,0)" }}>
+            style={{ color: "var(--af-orange)" }}>
             DevOps Flow Lab
           </p>
 
           {/* Headings */}
           <div className="fade-up delay-2 flex flex-col gap-3">
             <h1
-              className="text-5xl sm:text-6xl text-white tracking-tighter leading-none"
-              style={{ ...syne.style, fontWeight: 800 }}
+              className="text-5xl sm:text-6xl text-gray-900 tracking-tighter leading-none"
+              style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}
             >
               Welcome to DevOps Flow Lab
             </h1>
@@ -128,7 +126,7 @@ export function OnboardingClient() {
                   {isComingSoon ? (
                     <span
                       className="font-mono text-xs uppercase px-2 py-0.5"
-                      style={{ backgroundColor: "#111", color: "rgb(75,85,99)", borderRadius: 0 }}
+                      style={{ backgroundColor: "var(--bg-card)", color: "var(--text-muted)", borderRadius: 0 }}
                     >
                       COMING SOON
                     </span>
@@ -142,8 +140,8 @@ export function OnboardingClient() {
 
                   <div className="flex flex-col gap-1.5">
                     <span
-                      className="text-white text-base"
-                      style={{ ...syne.style, fontWeight: 700 }}
+                      className="text-gray-900 text-base"
+                      style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}
                     >
                       {title}
                     </span>

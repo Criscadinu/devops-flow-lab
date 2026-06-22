@@ -1,9 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Syne } from "next/font/google"
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 function TaskCard({
   number,
@@ -22,7 +20,7 @@ function TaskCard({
     <div
       className="flex flex-col gap-5 p-6 border"
       style={{
-        backgroundColor: locked ? "#050505" : done ? "#060f06" : "#080808",
+        backgroundColor: locked ? "var(--bg-card)" : done ? "rgba(34,197,94,0.08)" : "var(--bg)",
         borderColor: locked
           ? "rgb(31,41,55)"
           : done
@@ -47,7 +45,7 @@ function TaskCard({
           >
             {number}
           </span>
-          <h3 className="text-white text-base" style={{ ...syne.style, fontWeight: 700 }}>
+          <h3 className="text-gray-900 text-base" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             {title}
           </h3>
         </div>
@@ -72,12 +70,12 @@ function MentorNote({ children }: { children: React.ReactNode }) {
     <div
       className="flex gap-3 p-4 border"
       style={{
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "var(--bg)",
         borderColor: "rgba(255,85,0,0.15)",
         borderLeft: "3px solid rgba(255,85,0,0.5)",
       }}
     >
-      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>
+      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "var(--af-orange)" }}>
         //
       </span>
       <div className="flex flex-col gap-1">{children}</div>
@@ -87,7 +85,7 @@ function MentorNote({ children }: { children: React.ReactNode }) {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>
+    <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
       {children}
     </p>
   )
@@ -98,9 +96,9 @@ function CodeBlock({ children }: { children: string }) {
     <pre
       className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
       style={{
-        backgroundColor: "#0d0d0d",
+        backgroundColor: "var(--bg-card)",
         borderLeft: "3px solid rgb(31,41,55)",
-        color: "rgb(156,163,175)",
+        color: "var(--text-muted)",
       }}
     >
       {children}
@@ -125,8 +123,8 @@ export function Phase3() {
         {/* Header */}
         <div className="flex flex-col gap-2">
           <h2
-            className="text-3xl text-white tracking-tight"
-            style={{ ...syne.style, fontWeight: 800 }}
+            className="text-3xl text-gray-900 tracking-tight"
+            style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}
           >
             Your Mission - Define the Infrastructure as Code
           </h2>
@@ -139,7 +137,7 @@ export function Phase3() {
         <div
           className="flex flex-col gap-5 p-6 border"
           style={{
-            backgroundColor: "#0a0700",
+            backgroundColor: "var(--bg-card)",
             borderColor: "rgba(251,146,60,0.3)",
             borderLeft: "3px solid rgb(251,146,60)",
           }}
@@ -156,7 +154,7 @@ export function Phase3() {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
-              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
+              <p className="text-gray-900 text-sm font-bold flex-1" style={{ fontFamily: "var(--font-heading)" }}>
                 Fork from M-06 with green pipeline
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
@@ -169,7 +167,7 @@ export function Phase3() {
 
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
-              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
+              <p className="text-gray-900 text-sm font-bold flex-1" style={{ fontFamily: "var(--font-heading)" }}>
                 Docker installed
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
@@ -183,8 +181,8 @@ export function Phase3() {
         {/* Task 1 */}
         <TaskCard number="01" title="Document the current environment" done={task1Done} locked={false}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Before you can codify the infrastructure, you need to know what it is.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">Before you can codify the infrastructure, you need to know what it is.</span>{" "}
               The docker-compose.yml from M-02 is a start. But it only defines the app — not the
               environment variables, health checks, or restart behavior.
             </p>
@@ -205,7 +203,7 @@ export function Phase3() {
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 I have reviewed the docker-compose.yml and identified at least 2 things that are not defined as code
               </span>
             </label>
@@ -215,8 +213,8 @@ export function Phase3() {
         {/* Task 2 */}
         <TaskCard number="02" title="Add a .env.example file" done={task2Done} locked={!task1Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Environment variables are infrastructure too.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">Environment variables are infrastructure too.</span>{" "}
               If they are not documented, new developers cannot run the app.{" "}
               <code className="text-orange-400 font-mono">.env.example</code> is the IaC for your
               configuration — it tells every developer exactly what variables they need.
@@ -237,7 +235,7 @@ PORT=3000`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 .env.example committed and pushed to GitHub
               </span>
             </label>
@@ -247,8 +245,8 @@ PORT=3000`}</CodeBlock>
         {/* Task 3 */}
         <TaskCard number="03" title="Improve the docker-compose.yml" done={task3Done} locked={!task2Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A real IaC setup uses environment files, health checks, and restart policies.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">A real IaC setup uses environment files, health checks, and restart policies.</span>{" "}
               Health checks tell the orchestrator when a container is actually ready. Restart
               policies define what happens when it crashes. Without these, your infrastructure is
               only half-defined.
@@ -278,7 +276,7 @@ PORT=3000`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 docker-compose up runs with health checks passing
               </span>
             </label>
@@ -288,8 +286,8 @@ PORT=3000`}</CodeBlock>
         {/* Task 4 */}
         <TaskCard number="04" title="Add a Makefile for common operations" done={task4Done} locked={!task3Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A Makefile is the simplest form of IaC for developer workflows.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">A Makefile is the simplest form of IaC for developer workflows.</span>{" "}
               Instead of remembering{" "}
               <code className="text-orange-400 font-mono">docker-compose up --build</code>, you run{" "}
               <code className="text-orange-400 font-mono">make dev</code>. Every team member gets the
@@ -318,14 +316,14 @@ clean:
             <div
               className="flex gap-3 p-4 border"
               style={{
-                backgroundColor: "#0a0800",
+                backgroundColor: "rgba(255,85,0,0.06)",
                 borderColor: "rgba(234,179,8,0.2)",
                 borderLeft: "3px solid rgba(234,179,8,0.6)",
               }}
             >
               <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(234,179,8)" }}>!</span>
-              <p className="text-sm text-gray-400 leading-relaxed">
-                The indentation in a Makefile <strong className="text-white">must be a tab character</strong>,
+              <p className="text-sm text-gray-600 leading-relaxed">
+                The indentation in a Makefile <strong className="text-gray-900">must be a tab character</strong>,
                 not spaces. If your editor converts tabs to spaces, the Makefile will not work.
               </p>
             </div>
@@ -338,7 +336,7 @@ clean:
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 make dev starts the app successfully
               </span>
             </label>
@@ -348,8 +346,8 @@ clean:
         {/* Task 5 */}
         <TaskCard number="05" title="Commit everything and verify the pipeline" done={task5Done} locked={!task4Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">IaC only counts when it is in version control.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">IaC only counts when it is in version control.</span>{" "}
               Commit all infrastructure files and verify the pipeline stays green. The goal: anyone
               can clone this repo and recreate the full environment from scratch.
             </p>
@@ -371,8 +369,8 @@ git push`}</CodeBlock>
                   value={actionsUrl}
                   onChange={(e) => setActionsUrl(e.target.value)}
                   placeholder="https://github.com/your-username/nexus-corp-app/actions/runs/..."
-                  className="w-full px-3 py-2 text-sm font-mono text-white outline-none border"
-                  style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+                  className="w-full px-3 py-2 text-sm font-mono text-gray-900 outline-none border"
+                  style={{ backgroundColor: "var(--bg)", borderColor: "var(--border-bright)" }}
                 />
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
@@ -383,7 +381,7 @@ git push`}</CodeBlock>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                   Pipeline is green with all IaC files committed
                 </span>
               </label>
@@ -396,7 +394,7 @@ git push`}</CodeBlock>
           <div
             className="flex flex-col gap-5 border p-6"
             style={{
-              backgroundColor: "#060f06",
+              backgroundColor: "var(--bg-card)",
               borderColor: "rgba(34,197,94,0.3)",
               borderLeft: "3px solid rgb(34,197,94)",
             }}
@@ -407,7 +405,7 @@ git push`}</CodeBlock>
             <a
               href="?phase=4"
               className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
+              style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}
             >
               See your impact →
             </a>

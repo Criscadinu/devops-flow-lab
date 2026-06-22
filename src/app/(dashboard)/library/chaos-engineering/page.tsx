@@ -1,13 +1,11 @@
-import { Syne } from "next/font/google"
 import { VideoNotice } from "../_components/VideoNotice"
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 const serif: React.CSSProperties = { fontFamily: "Georgia, 'Times New Roman', serif" }
 
 function SectionLabel({ num, title }: { num: string; title: string }) {
   return (
     <div className="flex items-baseline gap-3 mb-6">
       <span className="text-xs font-mono font-bold tracking-[0.2em] text-gray-400">{num}</span>
-      <h2 className="text-xl text-black tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>{title}</h2>
+      <h2 className="text-xl text-black tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>{title}</h2>
     </div>
   )
 }
@@ -69,7 +67,7 @@ export default function ChaosEngineeringPage() {
               <span key={tag} className="text-xs font-mono px-2 py-0.5" style={{ backgroundColor: "#f0fdf4", color: "#15803d", border: "1px solid #bbf7d0" }}>{tag}</span>
             ))}
           </div>
-          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>Chaos Engineering</h1>
+          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Chaos Engineering</h1>
           <p className="text-base leading-relaxed" style={{ color: "#555" }}>Deliberately inject failure to discover weaknesses before users do. How Netflix's Chaos Monkey became an engineering discipline — and how to practice it safely.</p>
           <div className="flex items-center gap-2 pt-1 flex-wrap">
             <span className="text-xs font-mono text-gray-400 mr-1">Sources:</span>

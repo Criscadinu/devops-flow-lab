@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { Syne } from "next/font/google";
 import { TestPanel } from "@/components/TestPanel";
 import { computeDora } from "@/lib/dora";
 
@@ -10,7 +9,6 @@ export const metadata: Metadata = {
   title: "Command Center - DevOps Flow Lab",
 }
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 
 // ─── Static mission definitions ───────────────────────────────────────────────
 
@@ -510,25 +508,25 @@ export default async function DashboardPage() {
               className="text-xs font-mono px-1.5 py-0.5 border"
               style={
                 m.unlocked || m.completed
-                  ? { color: "rgb(255,85,0)", borderColor: "rgba(255,85,0,0.25)", backgroundColor: "rgba(255,85,0,0.05)" }
-                  : { color: "rgb(75,85,99)", borderColor: "rgb(31,41,55)" }
+                  ? { color: "var(--af-orange)", borderColor: "rgba(255,85,0,0.25)", backgroundColor: "rgba(255,85,0,0.05)" }
+                  : { color: "var(--text-muted)", borderColor: "var(--border)" }
               }
             >
               {m.category}
             </span>
             {!m.unlocked && !m.completed && <span className="text-gray-700 text-sm">⊘</span>}
-            {m.completed && <span className="text-xs font-mono" style={{ color: "rgb(255,85,0)" }}>✓</span>}
+            {m.completed && <span className="text-xs font-mono" style={{ color: "var(--af-orange)" }}>✓</span>}
           </div>
         </div>
-        <h3 className="text-lg text-white leading-snug" style={{ ...syne.style, fontWeight: 700 }}>
+        <h3 className="text-lg text-gray-900 leading-snug" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
           {m.title}
         </h3>
         <p className="text-sm text-gray-500 leading-relaxed flex-1">{m.description}</p>
         <div className="border-t border-gray-900 pt-3">
           {m.completed ? (
-            <span className="text-xs font-mono tracking-widest" style={{ color: "rgb(255,85,0)" }}>✓ COMPLETED</span>
+            <span className="text-xs font-mono tracking-widest" style={{ color: "var(--af-orange)" }}>✓ COMPLETED</span>
           ) : m.unlocked ? (
-            <span className="text-xs font-mono tracking-widest" style={{ color: "rgb(255,85,0)" }}>▸ START MISSION</span>
+            <span className="text-xs font-mono tracking-widest" style={{ color: "var(--af-orange)" }}>▸ START MISSION</span>
           ) : (
             <span className="text-xs font-mono text-gray-700 tracking-widest">⊘ LOCKED</span>
           )}
@@ -547,8 +545,8 @@ export default async function DashboardPage() {
       <div
         className="flex flex-col gap-4 p-6 border"
         style={{
-          backgroundColor: "#050505",
-          borderColor: "rgb(31,41,55)",
+          backgroundColor: "var(--bg-card)",
+          borderColor: "var(--border)",
           borderLeft: "3px solid rgb(31,41,55)",
           opacity: 0.4,
         }}
@@ -557,7 +555,7 @@ export default async function DashboardPage() {
           <span className="text-xs font-mono text-gray-700">{id}</span>
           <span
             className="text-xs font-mono px-1.5 py-0.5 border"
-            style={{ color: "rgb(75,85,99)", borderColor: "rgb(31,41,55)" }}
+            style={{ color: "var(--text-muted)", borderColor: "var(--border)" }}
           >
             PLANNED
           </span>
@@ -577,15 +575,15 @@ export default async function DashboardPage() {
       <div className="flex items-center gap-4 py-2">
         <div
           className="w-1 h-7 shrink-0"
-          style={{ backgroundColor: active ? "rgb(255,85,0)" : "rgb(31,41,55)" }}
+          style={{ backgroundColor: active ? "var(--af-orange)" : "var(--border)" }}
         />
         <span
           className="text-sm font-mono tracking-widest uppercase font-bold"
-          style={{ color: active ? "rgb(255,85,0)" : "rgb(75,85,99)" }}
+          style={{ color: active ? "var(--af-orange)" : "var(--text-muted)" }}
         >
           {label}
         </span>
-        <div className="flex-1 h-px" style={{ backgroundColor: active ? "rgb(31,41,55)" : "rgb(21,28,36)" }} />
+        <div className="flex-1 h-px" style={{ backgroundColor: "var(--border)" }} />
       </div>
     );
   }
@@ -610,7 +608,7 @@ export default async function DashboardPage() {
         {/* Header */}
         <div className="flex flex-col gap-2 pl-4" style={{ borderLeft: "2px solid rgb(31,41,55)" }}>
           <div className="flex items-baseline justify-between gap-4">
-            <h3 className="text-base text-white leading-snug" style={{ ...syne.style, fontWeight: 700 }}>
+            <h3 className="text-base text-gray-900 leading-snug" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
               {mm.title}
             </h3>
             <span className="text-xs font-mono text-gray-600 shrink-0">
@@ -619,7 +617,7 @@ export default async function DashboardPage() {
           </div>
 
           {/* Progress bar */}
-          <div className="h-0.5 w-full" style={{ backgroundColor: "rgb(21,28,36)" }}>
+          <div className="h-0.5 w-full" style={{ backgroundColor: "var(--border)" }}>
             <div
               className="h-full transition-all"
               style={{ width: `${pct}%`, background: prog.isComplete ? "linear-gradient(90deg, #FF0000 0%, #FF8C00 100%)" : "rgba(255,85,0,0.5)" }}
@@ -649,14 +647,14 @@ export default async function DashboardPage() {
   return (
     <main
       className="min-h-screen text-gray-100 px-6 py-10"
-      style={{ backgroundColor: "#000", fontFamily: "inherit" }}
+      style={{ backgroundColor: "var(--bg)", fontFamily: "inherit" }}
     >
       <div className="max-w-6xl mx-auto flex flex-col gap-10">
 
         {/* ── Top bar ───────────────────────────────────────────────────────── */}
         <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-gray-800 pb-6">
           <div className="flex items-center gap-4">
-            <div className="w-2 h-6 shrink-0" style={{ backgroundColor: "rgb(255,85,0)" }} />
+            <div className="w-2 h-6 shrink-0" style={{ backgroundColor: "var(--af-orange)" }} />
             <span className="text-xs font-mono tracking-[0.25em] text-gray-400 uppercase">
               Nexus Corp - Command Center
             </span>
@@ -667,7 +665,7 @@ export default async function DashboardPage() {
               <span
                 className="text-xs font-mono px-2 py-0.5 border"
                 style={{
-                  color: "rgb(255,85,0)",
+                  color: "var(--af-orange)",
                   borderColor: "rgba(255,85,0,0.3)",
                   backgroundColor: "rgba(255,85,0,0.06)",
                 }}
@@ -699,7 +697,7 @@ export default async function DashboardPage() {
                   className="flex flex-col gap-3 p-5"
                   style={{
                     borderRight: i < doraMetrics.length - 1 ? "1px solid rgb(31,41,55)" : undefined,
-                    backgroundColor: "#080808",
+                    backgroundColor: "var(--bg-card)",
                   }}
                 >
                   <div className="flex items-center justify-between">
@@ -708,7 +706,7 @@ export default async function DashboardPage() {
                   </div>
                   <div>
                     <p className="text-xs text-gray-600 mb-1">{m.label}</p>
-                    <p className="text-2xl sm:text-3xl font-mono font-bold leading-none overflow-hidden break-words" style={{ ...syne.style, color: accentColor }}>
+                    <p className="text-2xl sm:text-3xl font-mono font-bold leading-none overflow-hidden break-words" style={{ fontFamily: "var(--font-heading)", color: accentColor }}>
                       {m.value}
                     </p>
                   </div>
@@ -733,13 +731,13 @@ export default async function DashboardPage() {
 
           <div
             className="flex flex-col gap-5 p-5 border"
-            style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
+            style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)" }}
           >
             <div className="flex items-baseline justify-between">
               <div className="flex items-center gap-3">
                 <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">Chaos</span>
-                <div className="w-16 h-px" style={{ backgroundColor: "rgb(31,41,55)" }} />
-                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(255,85,0)" }}>
+                <div className="w-16 h-px" style={{ backgroundColor: "var(--bg-card-hover)" }} />
+                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
                   Elite DevOps
                 </span>
               </div>
@@ -750,7 +748,7 @@ export default async function DashboardPage() {
 
             <div
               className="w-full h-2 border"
-              style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+              style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)" }}
             >
               <div
                 className="h-full"
@@ -766,18 +764,18 @@ export default async function DashboardPage() {
                   <div key={s.label} className="flex flex-col items-center gap-1" style={{ width: "20%" }}>
                     <div
                       className="w-1.5 h-1.5"
-                      style={{ backgroundColor: isPast ? "rgb(255,85,0)" : "rgb(31,41,55)" }}
+                      style={{ backgroundColor: isPast ? "var(--af-orange)" : "var(--border)" }}
                     />
                     <span
                       className="text-xs font-mono text-center leading-tight"
                       style={{
-                        color: isActive ? "rgb(255,85,0)" : isPast ? "rgb(75,85,99)" : "rgb(55,65,81)",
+                        color: isActive ? "var(--af-orange)" : isPast ? "var(--text-muted)" : "var(--text-dim)",
                         fontWeight: isActive ? 700 : 400,
                       }}
                     >
                       {s.label}
                     </span>
-                    <span className="text-xs font-mono" style={{ color: "rgb(55,65,81)" }}>
+                    <span className="text-xs font-mono" style={{ color: "var(--text-dim)" }}>
                       {s.threshold}%
                     </span>
                   </div>
@@ -787,7 +785,7 @@ export default async function DashboardPage() {
 
             <p className="text-sm text-gray-400 border-t border-gray-900 pt-4">
               Nexus Corp is at:{" "}
-              <span className="font-bold" style={{ ...syne.style, color: "rgb(255,85,0)" }}>
+              <span className="font-bold" style={{ fontFamily: "var(--font-heading)", color: "var(--af-orange)" }}>
                 {currentStage.label}
               </span>
             </p>
@@ -822,7 +820,7 @@ export default async function DashboardPage() {
                     {m01.completed && <span className="text-xs font-mono" style={{ color: gray }}>✓</span>}
                   </div>
                 </div>
-                <h3 className="text-lg text-white leading-snug" style={{ ...syne.style, fontWeight: 700 }}>
+                <h3 className="text-lg text-gray-900 leading-snug" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
                   {m01.title}
                 </h3>
                 <p className="text-sm text-gray-500 leading-relaxed flex-1">{m01.description}</p>
@@ -912,7 +910,7 @@ export default async function DashboardPage() {
 
           <div
             className="w-full h-1.5 border"
-            style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+            style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)" }}
           >
             <div
               className="h-full"
@@ -920,7 +918,7 @@ export default async function DashboardPage() {
             />
           </div>
 
-          <div className="flex flex-col" style={{ borderColor: "rgb(31,41,55)", border: "1px solid rgb(31,41,55)" }}>
+          <div className="flex flex-col" style={{ borderColor: "var(--border)", border: "1px solid var(--border)" }}>
             {firstWayLog.map((entry, i) => {
               const done     = completedIds.has(entry.id);
               const isNext   = !done && (entry as { nextUp?: boolean }).nextUp;
@@ -941,7 +939,7 @@ export default async function DashboardPage() {
                     {done ? (
                       <div
                         className="w-5 h-5 flex items-center justify-center text-xs font-mono font-bold"
-                        style={{ backgroundColor: "rgba(255,85,0,0.1)", color: "rgb(255,85,0)", border: "1px solid rgba(255,85,0,0.3)" }}
+                        style={{ backgroundColor: "rgba(255,85,0,0.1)", color: "var(--af-orange)", border: "1px solid rgba(255,85,0,0.3)" }}
                       >
                         ✓
                       </div>
@@ -955,7 +953,7 @@ export default async function DashboardPage() {
                     ) : (
                       <div
                         className="w-5 h-5 flex items-center justify-center"
-                        style={{ border: "1px solid rgb(31,41,55)" }}
+                        style={{ border: "1px solid var(--border)" }}
                       />
                     )}
                   </div>
@@ -965,8 +963,8 @@ export default async function DashboardPage() {
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-mono text-gray-700">{entry.id}</span>
                         <h4
-                          className="text-sm text-white"
-                          style={{ ...syne.style, fontWeight: 700, color: done ? "rgb(255,85,0)" : isLocked ? "rgb(75,85,99)" : "white" }}
+                          className="text-sm text-gray-900"
+                          style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em", color: done ? "var(--af-orange)" : isLocked ? "var(--text-muted)" : "var(--text)" }}
                         >
                           {entry.title}
                         </h4>

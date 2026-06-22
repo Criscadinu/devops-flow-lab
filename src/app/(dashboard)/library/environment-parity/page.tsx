@@ -1,13 +1,11 @@
-import { Syne } from "next/font/google"
 import { VideoNotice } from "../_components/VideoNotice"
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 const serif: React.CSSProperties = { fontFamily: "Georgia, 'Times New Roman', serif" }
 
 function SectionLabel({ num, title }: { num: string; title: string }) {
   return (
     <div className="flex items-baseline gap-3 mb-6">
       <span className="text-xs font-mono font-bold tracking-[0.2em] text-gray-400">{num}</span>
-      <h2 className="text-xl text-black tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>{title}</h2>
+      <h2 className="text-xl text-black tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>{title}</h2>
     </div>
   )
 }
@@ -68,7 +66,7 @@ export default function EnvironmentParityPage() {
               <span key={tag} className="text-xs font-mono px-2 py-0.5" style={{ backgroundColor: "#f0fdfa", color: "#0891b2", border: "1px solid #ccfbf1" }}>{tag}</span>
             ))}
           </div>
-          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>Environment Parity</h1>
+          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Environment Parity</h1>
           <p className="text-base leading-relaxed" style={{ color: "#555" }}>Why dev, test, and prod must be identical — and how containers make that guarantee enforceable.</p>
           <div className="flex items-center gap-2 pt-1 flex-wrap">
             <span className="text-xs font-mono text-gray-400 mr-1">Sources:</span>

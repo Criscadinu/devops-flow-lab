@@ -1,13 +1,11 @@
-import { Syne } from "next/font/google"
 import { VideoNotice } from "../_components/VideoNotice"
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 const serif: React.CSSProperties = { fontFamily: "Georgia, 'Times New Roman', serif" }
 
 function SectionLabel({ num, title }: { num: string; title: string }) {
   return (
     <div className="flex items-baseline gap-3 mb-6">
       <span className="text-xs font-mono font-bold tracking-[0.2em] text-gray-400">{num}</span>
-      <h2 className="text-xl text-black tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>{title}</h2>
+      <h2 className="text-xl text-black tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>{title}</h2>
     </div>
   )
 }
@@ -39,7 +37,7 @@ function ImprovementKata() {
       {steps.map(s => (
         <div key={s.step} className="p-5 border border-[#e5e5e5]" style={{ backgroundColor: "#ffffff" }}>
           <div className="flex items-baseline gap-2 mb-2">
-            <span className="text-2xl font-mono font-bold" style={{ ...syne.style, color: "#f0f0f0" }}>{s.step}</span>
+            <span className="text-2xl font-mono font-bold" style={{ fontFamily: "var(--font-heading)", color: "#f0f0f0" }}>{s.step}</span>
             <p className="text-xs font-mono font-bold" style={{ color: s.color }}>{s.title}</p>
           </div>
           <p className="text-xs leading-relaxed" style={{ ...serif, color: "#555" }}>{s.desc}</p>
@@ -69,7 +67,7 @@ export default function LearningCulturePage() {
               <span key={tag} className="text-xs font-mono px-2 py-0.5" style={{ backgroundColor: "#f0fdf4", color: "#15803d", border: "1px solid #bbf7d0" }}>{tag}</span>
             ))}
           </div>
-          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>Learning Culture</h1>
+          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Learning Culture</h1>
           <p className="text-base leading-relaxed" style={{ color: "#555" }}>What makes an organization capable of sustained improvement. Peter Senge's five disciplines, Toyota's improvement kata, and how knowledge spreads across teams.</p>
           <div className="flex items-center gap-2 pt-1 flex-wrap">
             <span className="text-xs font-mono text-gray-400 mr-1">Sources:</span>
@@ -99,7 +97,7 @@ export default function LearningCulturePage() {
               ].map(item => (
                 <div key={item.num} className="p-4 border border-[#e5e5e5]" style={{ backgroundColor: "#ffffff" }}>
                   <div className="flex items-baseline gap-2 mb-1">
-                    <span className="text-xl font-mono font-bold" style={{ ...syne.style, color: "#f0f0f0" }}>{item.num}</span>
+                    <span className="text-xl font-mono font-bold" style={{ fontFamily: "var(--font-heading)", color: "#f0f0f0" }}>{item.num}</span>
                     <p className="text-xs font-mono font-bold" style={{ color: item.color }}>{item.title}</p>
                   </div>
                   <p className="text-xs leading-relaxed" style={{ ...serif, color: "#555" }}>{item.desc}</p>

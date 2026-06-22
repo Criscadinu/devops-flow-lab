@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { auth } from "@/auth"
-import { Syne } from "next/font/google"
 import { Phase3 } from "./Phase3"
 import { completeMission } from "@/app/actions/progress"
 import { prisma } from "@/lib/prisma"
@@ -10,19 +9,18 @@ export const metadata: Metadata = {
   title: "M-27 Chaos Engineering - DevOps Flow Lab",
 }
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 // ─── Shared: Mission Header ───────────────────────────────────────────────────
 
 function MissionHeader({ fase }: { fase: number }) {
   const pct = `${fase * 25}%`
   return (
-    <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "#080808" }}>
+    <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "var(--bg-card)" }}>
       <div className="max-w-5xl mx-auto flex items-center justify-between">
-        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(255,85,0)" }}>
+        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "var(--af-orange)" }}>
           M-27
         </span>
-        <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
+        <span className="text-sm font-bold tracking-tight text-gray-900" style={{ fontFamily: "var(--font-heading)" }}>
           Chaos Engineering
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
@@ -46,7 +44,7 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
       <a
         href={href}
         className="self-start px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-        style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
+        style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}
       >
         {label}
       </a>
@@ -131,8 +129,8 @@ function Phase1() {
 
         <div className="flex flex-col gap-3 max-w-2xl">
           <h2
-            className="text-4xl text-white tracking-tight leading-tight"
-            style={{ ...syne.style, fontWeight: 800 }}
+            className="text-4xl text-gray-900 tracking-tight leading-tight"
+            style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}
           >
             Week fifteen. Nexus Corp.
           </h2>
@@ -147,14 +145,14 @@ function Phase1() {
               key={p.initials}
               className="flex flex-col gap-0 overflow-hidden"
               style={{
-                backgroundColor: "#0a0a0a",
-                border: "1px solid #222",
+                backgroundColor: "var(--bg)",
+                border: "1px solid var(--border)",
                 borderLeft: `3px solid ${p.accent}`,
               }}
             >
               <div
                 className="flex items-center justify-between px-4 py-3 border-b"
-                style={{ borderColor: "#1a1a1a", backgroundColor: "#0d0d0d" }}
+                style={{ borderColor: "#1a1a1a", backgroundColor: "var(--bg-card)" }}
               >
                 <div className="flex items-center gap-3">
                   <div
@@ -168,7 +166,7 @@ function Phase1() {
                     {p.initials}
                   </div>
                   <div className="flex flex-col gap-0">
-                    <span className="text-white text-sm font-semibold leading-tight">{p.name}</span>
+                    <span className="text-gray-900 text-sm font-semibold leading-tight">{p.name}</span>
                     <span className="text-gray-600 text-xs">{p.role}</span>
                   </div>
                 </div>
@@ -185,9 +183,9 @@ function Phase1() {
               </div>
 
               <div className="px-5 py-4 flex flex-col gap-3">
-                <p className="text-gray-300 text-sm leading-relaxed">{p.quote}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">{p.quote}</p>
                 {"outro" in p && p.outro && (
-                  <p className="text-white font-bold text-sm border-t pt-3" style={{ borderColor: "#1a1a1a" }}>
+                  <p className="text-gray-900 font-bold text-sm border-t pt-3" style={{ borderColor: "#1a1a1a" }}>
                     {p.outro}
                   </p>
                 )}
@@ -236,7 +234,7 @@ function Phase2() {
             <span className="text-xs font-mono text-gray-700 tracking-widest">01</span>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             What is chaos engineering
           </h2>
           <p className="text-gray-400 leading-relaxed">
@@ -272,7 +270,7 @@ function Phase2() {
               <div
                 key={col.label}
                 className="flex flex-col gap-3 p-5 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${col.accent}` }}
+                style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)", borderLeft: `3px solid ${col.accent}` }}
               >
                 <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: col.accent }}>
                   {col.label}
@@ -292,7 +290,7 @@ function Phase2() {
             <span className="text-xs font-mono text-gray-700 tracking-widest">02</span>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The chaos experiment lifecycle
           </h2>
           <p className="text-gray-400 leading-relaxed">
@@ -305,13 +303,13 @@ function Phase2() {
               <div
                 key={row.step}
                 className="flex gap-4 px-5 py-4 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+                style={{ backgroundColor: i % 2 === 0 ? "var(--bg-card)" : "var(--bg)" }}
               >
-                <span className="text-xs font-mono font-bold shrink-0 w-5" style={{ color: "rgb(255,85,0)" }}>
+                <span className="text-xs font-mono font-bold shrink-0 w-5" style={{ color: "var(--af-orange)" }}>
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div className="flex flex-col gap-1 flex-1">
-                  <span className="text-sm text-white font-mono">{row.step}</span>
+                  <span className="text-sm text-gray-900 font-mono">{row.step}</span>
                   <span className="text-xs text-gray-500">{row.note}</span>
                 </div>
               </div>
@@ -324,7 +322,7 @@ function Phase2() {
             <span className="text-xs font-mono text-gray-700 tracking-widest">03</span>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Start small: the three beginner experiments
           </h2>
           <p className="text-gray-400 leading-relaxed">
@@ -352,13 +350,13 @@ function Phase2() {
               <div
                 key={item.number}
                 className="flex gap-4 p-5 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: "3px solid rgba(255,85,0,0.4)" }}
+                style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)", borderLeft: "3px solid rgba(255,85,0,0.4)" }}
               >
-                <span className="text-xs font-mono font-bold shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>
+                <span className="text-xs font-mono font-bold shrink-0 mt-0.5" style={{ color: "var(--af-orange)" }}>
                   {item.number}
                 </span>
                 <div className="flex flex-col gap-1">
-                  <span className="text-sm text-white font-mono font-bold">{item.title}</span>
+                  <span className="text-sm text-gray-900 font-mono font-bold">{item.title}</span>
                   <p className="text-sm text-gray-500 leading-relaxed">{item.body}</p>
                 </div>
               </div>
@@ -371,7 +369,7 @@ function Phase2() {
             <span className="text-xs font-mono text-gray-700 tracking-widest">04</span>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The DORA connection
           </h2>
           <p className="text-gray-400 leading-relaxed">
@@ -385,20 +383,20 @@ function Phase2() {
               {
                 label: "CFR target: 1%",
                 note: "Validate that failure rate stays below 1% even when dependencies misbehave. If it does not — fix it now.",
-                color: "rgb(255,85,0)",
+                color: "var(--af-orange)",
               },
               {
                 label: "MTTR target: 30 min",
                 note: "Validate that the documented recovery path gets you back in 30 minutes. If it does not — update the runbook.",
-                color: "rgb(255,85,0)",
+                color: "var(--af-orange)",
               },
             ].map((row, i) => (
               <div
                 key={row.label}
                 className="flex items-start gap-5 px-5 py-4 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+                style={{ backgroundColor: i % 2 === 0 ? "var(--bg-card)" : "var(--bg)" }}
               >
-                <span className="text-sm font-mono font-bold shrink-0" style={{ ...syne.style, color: row.color }}>{row.label}</span>
+                <span className="text-sm font-mono font-bold shrink-0" style={{ fontFamily: "var(--font-heading)", color: row.color }}>{row.label}</span>
                 <span className="text-sm text-gray-500">{row.note}</span>
               </div>
             ))}
@@ -458,10 +456,10 @@ function Phase4() {
       <div className="max-w-5xl mx-auto flex flex-col gap-16">
 
         <div className="flex flex-col gap-4">
-          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(255,85,0)" }}>
+          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "var(--af-orange)" }}>
             Mission Complete - M-27
           </p>
-          <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Nexus Corp Breaks Things On Purpose
           </h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">
@@ -498,7 +496,7 @@ function Phase4() {
                   <span className="text-xs font-mono shrink-0" style={{ color: d.highlight ? "rgb(255,85,0)" : "rgb(34,197,94)" }}>✓</span>
                   <span
                     className="text-lg font-mono font-bold"
-                    style={{ ...syne.style, color: d.highlight ? "rgb(255,85,0)" : "rgb(34,197,94)" }}
+                    style={{ fontFamily: "var(--font-heading)", color: d.highlight ? "rgb(255,85,0)" : "rgb(34,197,94)" }}
                   >
                     {d.value}
                   </span>
@@ -531,12 +529,12 @@ function Phase4() {
           <div
             className="flex flex-col gap-5 p-6 border"
             style={{
-              backgroundColor: "#080808",
+              backgroundColor: "var(--bg-card)",
               borderColor: "rgba(255,85,0,0.2)",
               borderLeft: "3px solid rgb(255,85,0)",
             }}
           >
-            <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(255,85,0)" }}>
+            <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
               Resilience is now tested, not assumed
             </p>
             <div className="flex flex-col gap-3">
@@ -565,12 +563,12 @@ function Phase4() {
           <div
             className="flex flex-col gap-4 p-6 border"
             style={{
-              backgroundColor: "#080808",
+              backgroundColor: "var(--bg-card)",
               borderColor: "rgba(255,85,0,0.2)",
               borderLeft: "3px solid rgb(255,85,0)",
             }}
           >
-            <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(255,85,0)" }}>
+            <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
               End of current mission catalog
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
@@ -585,7 +583,7 @@ function Phase4() {
                 "Third Way: Learning — M-25 through M-27 complete",
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>✓</span>
+                  <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "var(--af-orange)" }}>✓</span>
                   <p className="text-sm text-gray-400">{item}</p>
                 </div>
               ))}
@@ -597,7 +595,7 @@ function Phase4() {
           <a
             href="/dashboard"
             className="self-start px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-            style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
+            style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}
           >
             Back to dashboard →
           </a>
@@ -639,7 +637,7 @@ export default async function M15Page({
   }
 
   return (
-    <main className="min-h-screen text-gray-100 flex flex-col" style={{ backgroundColor: "#000" }}>
+    <main className="min-h-screen text-gray-100 flex flex-col" style={{ backgroundColor: "var(--bg)" }}>
       <MissionHeader fase={phase} />
       {phase === 1 && <Phase1 />}
       {phase === 2 && <Phase2 />}

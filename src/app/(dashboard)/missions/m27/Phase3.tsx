@@ -1,9 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Syne } from "next/font/google"
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 function MobileWarning() {
   const [isMobile, setIsMobile] = useState(false)
@@ -20,7 +18,7 @@ function MobileWarning() {
     <div
       className="flex flex-col gap-3 p-5 border mb-6"
       style={{
-        backgroundColor: "#0a0700",
+        backgroundColor: "var(--bg-card)",
         borderColor: "rgba(251,146,60,0.4)",
         borderLeft: "3px solid rgb(251,146,60)",
       }}
@@ -28,7 +26,7 @@ function MobileWarning() {
       <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
         Desktop required
       </p>
-      <p className="text-sm text-gray-400 leading-relaxed">
+      <p className="text-sm text-gray-600 leading-relaxed">
         This phase requires a terminal, a code editor, and GitHub. These tasks cannot be completed on a mobile device. Open this page on your laptop or desktop to continue.
       </p>
     </div>
@@ -52,7 +50,7 @@ function TaskCard({
     <div
       className="flex flex-col gap-5 p-6 border"
       style={{
-        backgroundColor: locked ? "#050505" : done ? "#060f06" : "#080808",
+        backgroundColor: locked ? "var(--bg-card)" : done ? "rgba(34,197,94,0.08)" : "var(--bg)",
         borderColor: locked
           ? "rgb(31,41,55)"
           : done
@@ -77,7 +75,7 @@ function TaskCard({
           >
             {number}
           </span>
-          <h3 className="text-white text-base" style={{ ...syne.style, fontWeight: 700 }}>
+          <h3 className="text-gray-900 text-base" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             {title}
           </h3>
         </div>
@@ -102,12 +100,12 @@ function MentorNote({ children }: { children: React.ReactNode }) {
     <div
       className="flex gap-3 p-4 border"
       style={{
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "var(--bg)",
         borderColor: "rgba(255,85,0,0.15)",
         borderLeft: "3px solid rgba(255,85,0,0.5)",
       }}
     >
-      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>
+      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "var(--af-orange)" }}>
         //
       </span>
       <div className="flex flex-col gap-1">{children}</div>
@@ -117,7 +115,7 @@ function MentorNote({ children }: { children: React.ReactNode }) {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>
+    <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
       {children}
     </p>
   )
@@ -128,9 +126,9 @@ function CodeBlock({ children }: { children: string }) {
     <pre
       className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
       style={{
-        backgroundColor: "#0d0d0d",
+        backgroundColor: "var(--bg-card)",
         borderLeft: "3px solid rgb(31,41,55)",
-        color: "rgb(156,163,175)",
+        color: "var(--text-muted)",
       }}
     >
       {children}
@@ -157,8 +155,8 @@ export function Phase3() {
         {/* Header */}
         <div className="flex flex-col gap-2">
           <h2
-            className="text-3xl text-white tracking-tight"
-            style={{ ...syne.style, fontWeight: 800 }}
+            className="text-3xl text-gray-900 tracking-tight"
+            style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}
           >
             Your Mission - Break Things Deliberately
           </h2>
@@ -171,7 +169,7 @@ export function Phase3() {
         <div
           className="flex flex-col gap-5 p-6 border"
           style={{
-            backgroundColor: "#0a0700",
+            backgroundColor: "var(--bg-card)",
             borderColor: "rgba(251,146,60,0.3)",
             borderLeft: "3px solid rgb(251,146,60)",
           }}
@@ -188,7 +186,7 @@ export function Phase3() {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
-              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
+              <p className="text-gray-900 text-sm font-bold flex-1" style={{ fontFamily: "var(--font-heading)" }}>
                 Docker Compose with health checks from M-04
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
@@ -201,7 +199,7 @@ export function Phase3() {
 
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
-              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
+              <p className="text-gray-900 text-sm font-bold flex-1" style={{ fontFamily: "var(--font-heading)" }}>
                 /health endpoint and RUNBOOK.md from M-17
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
@@ -215,8 +213,8 @@ export function Phase3() {
         {/* Task 1 */}
         <TaskCard number="01" title="Run experiment 1 — kill the process" done={task1Done} locked={false}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">The simplest chaos experiment is also the most revealing.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">The simplest chaos experiment is also the most revealing.</span>{" "}
               Stop your app while it is running and observe what happens. Does Docker restart it?
               How long does it take? Does your health check catch it? This is the baseline — if your
               app cannot survive a restart, nothing else matters.
@@ -249,7 +247,7 @@ docker kill nexus-corp-app-prod-1
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 Process kill experiment run — restart policy confirmed
               </span>
             </label>
@@ -259,8 +257,8 @@ docker kill nexus-corp-app-prod-1
         {/* Task 2 */}
         <TaskCard number="02" title="Run experiment 2 — slow the dependency" done={task2Done} locked={!task1Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Most outages are not caused by your code — they are caused by a dependency your code trusts too much.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">Most outages are not caused by your code — they are caused by a dependency your code trusts too much.</span>{" "}
               Adding a timeout is the single most important resilience improvement most apps can make.
               Without a timeout, one slow dependency can hang every request.
             </p>
@@ -296,7 +294,7 @@ curl http://localhost:3000/api/alerts`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 Slow dependency experiment run — /health responds independently of slow endpoint
               </span>
             </label>
@@ -306,8 +304,8 @@ curl http://localhost:3000/api/alerts`}</CodeBlock>
         {/* Task 3 */}
         <TaskCard number="03" title="Add timeout configuration" done={task3Done} locked={!task2Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A timeout is a contract: if a dependency does not respond within X milliseconds, give up and fail fast.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">A timeout is a contract: if a dependency does not respond within X milliseconds, give up and fail fast.</span>{" "}
               Failing fast is better than hanging forever — it lets the rest of the system keep working.
               Configure timeouts as environment variables so they can be tuned per environment.
             </p>
@@ -339,7 +337,7 @@ app.use((req, res, next) => {
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 Request timeout configured and wired to environment variable
               </span>
             </label>
@@ -349,8 +347,8 @@ app.use((req, res, next) => {
         {/* Task 4 */}
         <TaskCard number="04" title="Document the failure modes" done={task4Done} locked={!task3Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A chaos experiment that is not documented is just breaking things.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">A chaos experiment that is not documented is just breaking things.</span>{" "}
               Document every failure mode you discover so the runbook is updated with the new knowledge.
               Future on-call engineers will thank you.
             </p>
@@ -386,7 +384,7 @@ app.use((req, res, next) => {
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 Known failure modes documented in RUNBOOK.md
               </span>
             </label>
@@ -396,8 +394,8 @@ app.use((req, res, next) => {
         {/* Task 5 */}
         <TaskCard number="05" title="Commit and push — verify CI is green" done={task5Done} locked={!task4Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Chaos engineering is not a one-time exercise. It is a practice.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">Chaos engineering is not a one-time exercise. It is a practice.</span>{" "}
               Add the slow endpoint and timeout middleware to the codebase so future engineers can run
               these experiments themselves. The failure modes you discovered today are in the runbook.
               The next engineer benefits from your chaos.
@@ -420,8 +418,8 @@ git push`}</CodeBlock>
                   value={actionsUrl}
                   onChange={(e) => setActionsUrl(e.target.value)}
                   placeholder="https://github.com/your-username/nexus-corp-app/actions/runs/..."
-                  className="w-full px-3 py-2 text-sm font-mono text-white outline-none border"
-                  style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+                  className="w-full px-3 py-2 text-sm font-mono text-gray-900 outline-none border"
+                  style={{ backgroundColor: "var(--bg)", borderColor: "var(--border-bright)" }}
                 />
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
@@ -432,7 +430,7 @@ git push`}</CodeBlock>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                   Pipeline is green — chaos engineering is part of the codebase
                 </span>
               </label>
@@ -445,7 +443,7 @@ git push`}</CodeBlock>
           <div
             className="flex flex-col gap-5 border p-6"
             style={{
-              backgroundColor: "#060f06",
+              backgroundColor: "var(--bg-card)",
               borderColor: "rgba(34,197,94,0.3)",
               borderLeft: "3px solid rgb(34,197,94)",
             }}
@@ -456,7 +454,7 @@ git push`}</CodeBlock>
             <a
               href="?phase=4"
               className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
+              style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}
             >
               See your impact →
             </a>

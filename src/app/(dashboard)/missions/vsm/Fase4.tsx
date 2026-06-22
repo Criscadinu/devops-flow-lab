@@ -1,6 +1,4 @@
-import { Syne } from "next/font/google";
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -46,12 +44,12 @@ export function Fase4() {
 
         {/* ── Section 1: Mission Complete ──────────────────────────────────── */}
         <div className="flex flex-col gap-4">
-          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(255,85,0)" }}>
+          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "var(--af-orange)" }}>
             Mission Complete - M-01
           </p>
           <h1
-            className="text-5xl text-white tracking-tight leading-tight"
-            style={{ ...syne.style, fontWeight: 800 }}
+            className="text-5xl text-gray-900 tracking-tight leading-tight"
+            style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}
           >
             Your VSM Analysis
           </h1>
@@ -87,7 +85,7 @@ export function Fase4() {
                           : "2px solid rgb(31,41,55)",
                       }}
                     >
-                      <p className="text-white text-xs font-semibold leading-snug">{s.name}</p>
+                      <p className="text-gray-900 text-xs font-semibold leading-snug">{s.name}</p>
                       <div className="flex flex-col gap-1 mt-1">
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-mono text-gray-700">PT</span>
@@ -132,11 +130,11 @@ export function Fase4() {
           {/* Summary bar */}
           <div
             className="flex flex-wrap items-center gap-x-6 gap-y-2 border px-5 py-3"
-            style={{ backgroundColor: "#090909", borderColor: "rgb(31,41,55)" }}
+            style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)" }}
           >
             <span className="text-xs font-mono text-gray-500">
               Total lead time:{" "}
-              <span className="text-white font-bold">~43 days</span>
+              <span className="text-gray-900 font-bold">~43 days</span>
             </span>
             <span className="text-xs font-mono text-gray-700">-</span>
             <span className="text-xs font-mono text-gray-500">
@@ -178,7 +176,7 @@ export function Fase4() {
                 >
                   {ins.label}
                 </span>
-                <p className="text-gray-300 text-sm leading-relaxed">{ins.body}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">{ins.body}</p>
               </div>
             ))}
           </div>
@@ -197,7 +195,7 @@ export function Fase4() {
           <div
             className="flex flex-col gap-4 p-6 border"
             style={{
-              backgroundColor: "#080808",
+              backgroundColor: "var(--bg-card)",
               borderColor: "rgba(239,68,68,0.2)",
               borderLeft: "3px solid rgb(239,68,68)",
             }}
@@ -219,7 +217,7 @@ export function Fase4() {
                 key={d.code}
                 className="flex flex-col gap-4 border p-6"
                 style={{
-                  backgroundColor: "#080808",
+                  backgroundColor: "var(--bg-card)",
                   borderColor: "rgba(239,68,68,0.2)",
                   borderLeft: "3px solid rgba(239,68,68,0.5)",
                 }}
@@ -230,7 +228,7 @@ export function Fase4() {
                 </div>
                 <span
                   className="text-2xl font-mono font-bold"
-                  style={{ ...syne.style, color: "rgb(239,68,68)" }}
+                  style={{ fontFamily: "var(--font-heading)", color: "rgb(239,68,68)" }}
                 >
                   {d.value}
                 </span>
@@ -258,7 +256,7 @@ export function Fase4() {
             <a
               href="/dashboard"
               className="px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
+              style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}
             >
               Back to dashboard →
             </a>
@@ -267,9 +265,9 @@ export function Fase4() {
               href="/missions/environments"
               className="flex items-center gap-3 px-8 py-4 text-sm font-mono border transition-opacity hover:opacity-80"
               style={{
-                backgroundColor: "#0a0a0a",
+                backgroundColor: "var(--bg)",
                 borderColor: "rgba(255,85,0,0.3)",
-                color: "rgb(255,85,0)",
+                color: "var(--af-orange)",
               }}
             >
               View next mission: On-Demand Environments →

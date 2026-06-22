@@ -1,7 +1,5 @@
-import { Syne } from "next/font/google"
 import { VideoNotice } from "../_components/VideoNotice"
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 const serif: React.CSSProperties = { fontFamily: "Georgia, 'Times New Roman', serif" }
 
@@ -9,7 +7,7 @@ function SectionLabel({ num, title }: { num: string; title: string }) {
   return (
     <div className="flex items-baseline gap-3 mb-6">
       <span className="text-xs font-mono font-bold tracking-[0.2em] text-gray-400">{num}</span>
-      <h2 className="text-xl text-black tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>{title}</h2>
+      <h2 className="text-xl text-black tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>{title}</h2>
     </div>
   )
 }
@@ -115,7 +113,7 @@ export default function TheoryOfConstraintsPage() {
               </span>
             ))}
           </div>
-          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Theory of Constraints
           </h1>
           <p className="text-base leading-relaxed" style={{ color: "#555" }}>
@@ -171,9 +169,9 @@ export default function TheoryOfConstraintsPage() {
             <div className="flex flex-col gap-4">
               {fiveSteps.map((s) => (
                 <div key={s.n} className="flex gap-5 p-5 border border-[#e5e5e5]" style={{ backgroundColor: "#ffffff" }}>
-                  <span className="text-3xl font-mono font-bold shrink-0 leading-none" style={{ ...syne.style, color: "#f0f0f0" }}>{s.n}</span>
+                  <span className="text-3xl font-mono font-bold shrink-0 leading-none" style={{ fontFamily: "var(--font-heading)", color: "#f0f0f0" }}>{s.n}</span>
                   <div>
-                    <p className="text-sm font-bold text-black mb-1" style={{ ...syne.style }}>{s.title}</p>
+                    <p className="text-sm font-bold text-black mb-1" style={{ fontFamily: "var(--font-heading)" }}>{s.title}</p>
                     <p className="text-sm leading-relaxed" style={{ ...serif, color: "#555" }}>{s.desc}</p>
                   </div>
                 </div>

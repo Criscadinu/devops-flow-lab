@@ -1,9 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Syne } from "next/font/google"
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 function MobileWarning() {
   const [isMobile, setIsMobile] = useState(false)
@@ -20,7 +18,7 @@ function MobileWarning() {
     <div
       className="flex flex-col gap-3 p-5 border mb-6"
       style={{
-        backgroundColor: "#0a0700",
+        backgroundColor: "var(--bg-card)",
         borderColor: "rgba(251,146,60,0.4)",
         borderLeft: "3px solid rgb(251,146,60)",
       }}
@@ -28,7 +26,7 @@ function MobileWarning() {
       <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
         Desktop required
       </p>
-      <p className="text-sm text-gray-400 leading-relaxed">
+      <p className="text-sm text-gray-600 leading-relaxed">
         This phase requires a terminal, a code editor, and GitHub. These tasks cannot be completed on a mobile device. Open this page on your laptop or desktop to continue.
       </p>
     </div>
@@ -52,7 +50,7 @@ function TaskCard({
     <div
       className="flex flex-col gap-5 p-6 border"
       style={{
-        backgroundColor: locked ? "#050505" : done ? "#060f06" : "#080808",
+        backgroundColor: locked ? "var(--bg-card)" : done ? "rgba(34,197,94,0.08)" : "var(--bg)",
         borderColor: locked
           ? "rgb(31,41,55)"
           : done
@@ -77,7 +75,7 @@ function TaskCard({
           >
             {number}
           </span>
-          <h3 className="text-white text-base" style={{ ...syne.style, fontWeight: 700 }}>
+          <h3 className="text-gray-900 text-base" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             {title}
           </h3>
         </div>
@@ -102,12 +100,12 @@ function MentorNote({ children }: { children: React.ReactNode }) {
     <div
       className="flex gap-3 p-4 border"
       style={{
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "var(--bg)",
         borderColor: "rgba(255,85,0,0.15)",
         borderLeft: "3px solid rgba(255,85,0,0.5)",
       }}
     >
-      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>
+      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "var(--af-orange)" }}>
         //
       </span>
       <div className="flex flex-col gap-1">{children}</div>
@@ -117,7 +115,7 @@ function MentorNote({ children }: { children: React.ReactNode }) {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>
+    <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
       {children}
     </p>
   )
@@ -128,9 +126,9 @@ function CodeBlock({ children }: { children: string }) {
     <pre
       className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
       style={{
-        backgroundColor: "#0d0d0d",
+        backgroundColor: "var(--bg-card)",
         borderLeft: "3px solid rgb(31,41,55)",
-        color: "rgb(156,163,175)",
+        color: "var(--text-muted)",
       }}
     >
       {children}
@@ -157,8 +155,8 @@ export function Phase3() {
         {/* Header */}
         <div className="flex flex-col gap-2">
           <h2
-            className="text-3xl text-white tracking-tight"
-            style={{ ...syne.style, fontWeight: 800 }}
+            className="text-3xl text-gray-900 tracking-tight"
+            style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}
           >
             Your Mission - Shift Left
           </h2>
@@ -171,7 +169,7 @@ export function Phase3() {
         <div
           className="flex flex-col gap-5 p-6 border"
           style={{
-            backgroundColor: "#0a0700",
+            backgroundColor: "var(--bg-card)",
             borderColor: "rgba(251,146,60,0.3)",
             borderLeft: "3px solid rgb(251,146,60)",
           }}
@@ -188,7 +186,7 @@ export function Phase3() {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
-              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
+              <p className="text-gray-900 text-sm font-bold flex-1" style={{ fontFamily: "var(--font-heading)" }}>
                 nexus-corp-app with a working CI pipeline from M-06
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
@@ -202,8 +200,8 @@ export function Phase3() {
         {/* Task 1 */}
         <TaskCard number="01" title="Add ESLint to the project" done={task1Done} locked={false}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Linting is the fastest feedback loop you can add.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">Linting is the fastest feedback loop you can add.</span>{" "}
               It runs before tests, catches entire categories of errors in milliseconds, and requires no test data or environment setup.
             </p>
           </MentorNote>
@@ -234,7 +232,7 @@ npx eslint --init`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 ESLint is installed and runs without crashing
               </span>
             </label>
@@ -244,8 +242,8 @@ npx eslint --init`}</CodeBlock>
         {/* Task 2 */}
         <TaskCard number="02" title="Write a unit test for a pure function" done={task2Done} locked={!task1Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A unit test tests one function in isolation.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">A unit test tests one function in isolation.</span>{" "}
               No database, no HTTP, no dependencies. Pure input → expected output. These are the tests that should make up 70% of your test suite.
             </p>
           </MentorNote>
@@ -293,7 +291,7 @@ module.exports = { sortOrders }`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 Unit test passes — sortOrders is tested and green
               </span>
             </label>
@@ -303,8 +301,8 @@ module.exports = { sortOrders }`}</CodeBlock>
         {/* Task 3 */}
         <TaskCard number="03" title="Add lint step to the CI pipeline" done={task3Done} locked={!task2Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A lint step that only runs locally is a suggestion. A lint step in CI is a gate.</span>
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">A lint step that only runs locally is a suggestion. A lint step in CI is a gate.</span>
             </p>
           </MentorNote>
 
@@ -327,7 +325,7 @@ module.exports = { sortOrders }`}</CodeBlock>
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 Lint runs in CI before tests
               </span>
             </label>
@@ -337,8 +335,8 @@ module.exports = { sortOrders }`}</CodeBlock>
         {/* Task 4 */}
         <TaskCard number="04" title="Introduce a deliberate bug and watch it get caught" done={task4Done} locked={!task3Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">The best way to trust a safety net is to test it.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">The best way to trust a safety net is to test it.</span>{" "}
               Introduce a deliberate error, commit it, and watch the pipeline catch it.
             </p>
           </MentorNote>
@@ -359,7 +357,7 @@ return [...orders].sort((a, b) => new Date(a.date) - new Date(b.date))`}</CodeBl
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 I introduced a bug, CI caught it, I fixed it
               </span>
             </label>
@@ -369,8 +367,8 @@ return [...orders].sort((a, b) => new Date(a.date) - new Date(b.date))`}</CodeBl
         {/* Task 5 */}
         <TaskCard number="05" title="Commit everything and push" done={task5Done} locked={!task4Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">The lint config, the unit test, and the updated pipeline are now permanent.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">The lint config, the unit test, and the updated pipeline are now permanent.</span>{" "}
               Every future engineer who joins Nexus Corp inherits a project where errors are caught at the earliest possible stage.
             </p>
           </MentorNote>
@@ -391,8 +389,8 @@ git push`}</CodeBlock>
                   value={actionsUrl}
                   onChange={(e) => setActionsUrl(e.target.value)}
                   placeholder="https://github.com/your-username/nexus-corp-app/actions/runs/..."
-                  className="w-full px-3 py-2 text-sm font-mono text-white outline-none border"
-                  style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+                  className="w-full px-3 py-2 text-sm font-mono text-gray-900 outline-none border"
+                  style={{ backgroundColor: "var(--bg)", borderColor: "var(--border-bright)" }}
                 />
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
@@ -403,7 +401,7 @@ git push`}</CodeBlock>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                   Pipeline is green with lint + tests passing
                 </span>
               </label>
@@ -416,7 +414,7 @@ git push`}</CodeBlock>
           <div
             className="flex flex-col gap-5 border p-6"
             style={{
-              backgroundColor: "#060f06",
+              backgroundColor: "var(--bg-card)",
               borderColor: "rgba(34,197,94,0.3)",
               borderLeft: "3px solid rgb(34,197,94)",
             }}
@@ -427,7 +425,7 @@ git push`}</CodeBlock>
             <a
               href="?phase=4"
               className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
+              style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}
             >
               See your impact →
             </a>

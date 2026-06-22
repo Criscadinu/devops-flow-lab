@@ -1,9 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Syne } from "next/font/google"
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 function TaskCard({
   number,
@@ -22,7 +20,7 @@ function TaskCard({
     <div
       className="flex flex-col gap-5 p-6 border"
       style={{
-        backgroundColor: locked ? "#050505" : done ? "#060f06" : "#080808",
+        backgroundColor: locked ? "var(--bg-card)" : done ? "rgba(34,197,94,0.08)" : "var(--bg)",
         borderColor: locked
           ? "rgb(31,41,55)"
           : done
@@ -47,7 +45,7 @@ function TaskCard({
           >
             {number}
           </span>
-          <h3 className="text-white text-base" style={{ ...syne.style, fontWeight: 700 }}>
+          <h3 className="text-gray-900 text-base" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             {title}
           </h3>
         </div>
@@ -72,12 +70,12 @@ function MentorNote({ children }: { children: React.ReactNode }) {
     <div
       className="flex gap-3 p-4 border"
       style={{
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "var(--bg)",
         borderColor: "rgba(255,85,0,0.15)",
         borderLeft: "3px solid rgba(255,85,0,0.5)",
       }}
     >
-      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>
+      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "var(--af-orange)" }}>
         //
       </span>
       <div className="flex flex-col gap-1">{children}</div>
@@ -87,7 +85,7 @@ function MentorNote({ children }: { children: React.ReactNode }) {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>
+    <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
       {children}
     </p>
   )
@@ -98,9 +96,9 @@ function CodeBlock({ children }: { children: string }) {
     <pre
       className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
       style={{
-        backgroundColor: "#0d0d0d",
+        backgroundColor: "var(--bg-card)",
         borderLeft: "3px solid rgb(31,41,55)",
-        color: "rgb(156,163,175)",
+        color: "var(--text-muted)",
       }}
     >
       {children}
@@ -125,8 +123,8 @@ export function Phase3() {
         {/* Header */}
         <div className="flex flex-col gap-2">
           <h2
-            className="text-3xl text-white tracking-tight"
-            style={{ ...syne.style, fontWeight: 800 }}
+            className="text-3xl text-gray-900 tracking-tight"
+            style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}
           >
             Your Mission - Deploy Dark, Release Gradually
           </h2>
@@ -139,7 +137,7 @@ export function Phase3() {
         <div
           className="flex flex-col gap-5 p-6 border"
           style={{
-            backgroundColor: "#0a0700",
+            backgroundColor: "var(--bg-card)",
             borderColor: "rgba(251,146,60,0.3)",
             borderLeft: "3px solid rgb(251,146,60)",
           }}
@@ -156,7 +154,7 @@ export function Phase3() {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
-              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
+              <p className="text-gray-900 text-sm font-bold flex-1" style={{ fontFamily: "var(--font-heading)" }}>
                 Fork from M-04 with green pipeline
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
@@ -169,7 +167,7 @@ export function Phase3() {
 
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
-              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
+              <p className="text-gray-900 text-sm font-bold flex-1" style={{ fontFamily: "var(--font-heading)" }}>
                 Node.js and Docker installed
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
@@ -183,8 +181,8 @@ export function Phase3() {
         {/* Task 1 */}
         <TaskCard number="01" title="Add a feature flag system to the app" done={task1Done} locked={false}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Feature flags are the simplest way to decouple deployment from release.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">Feature flags are the simplest way to decouple deployment from release.</span>{" "}
               You ship the code dark — deployed but not active. Then you enable it for specific
               users or percentages without a new deploy.
             </p>
@@ -216,7 +214,7 @@ app.get('/', (req, res) => {
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 Feature flags are in the code and visible in GET / response
               </span>
             </label>
@@ -226,8 +224,8 @@ app.get('/', (req, res) => {
         {/* Task 2 */}
         <TaskCard number="02" title="Test the feature flag locally" done={task2Done} locked={!task1Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Before shipping, verify the flag actually works.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">Before shipping, verify the flag actually works.</span>{" "}
               Enable it locally and confirm the behavior changes. A flag that does not work is worse
               than no flag — it gives false confidence.
             </p>
@@ -253,7 +251,7 @@ app.get('/', (req, res) => {
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 I have verified the flag enables and disables correctly
               </span>
             </label>
@@ -263,8 +261,8 @@ app.get('/', (req, res) => {
         {/* Task 3 */}
         <TaskCard number="03" title="Add the feature flag to docker-compose.yml" done={task3Done} locked={!task2Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Environment-controlled flags mean you can enable a feature in production without a new deploy.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">Environment-controlled flags mean you can enable a feature in production without a new deploy.</span>{" "}
               Just change an environment variable and restart. The code was already there — dark.
             </p>
           </MentorNote>
@@ -283,7 +281,7 @@ app.get('/', (req, res) => {
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 Feature flags are defined in docker-compose.yml
               </span>
             </label>
@@ -293,8 +291,8 @@ app.get('/', (req, res) => {
         {/* Task 4 */}
         <TaskCard number="04" title="Write a test for the feature flag" done={task4Done} locked={!task3Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Feature flags that are not tested become permanent.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">Feature flags that are not tested become permanent.</span>{" "}
               A test ensures the flag behaves correctly and reminds you the flag exists. The test
               is also the reminder to clean it up once the feature is fully rolled out.
             </p>
@@ -318,7 +316,7 @@ app.get('/', (req, res) => {
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 Feature flag test passes in npm test
               </span>
             </label>
@@ -328,8 +326,8 @@ app.get('/', (req, res) => {
         {/* Task 5 */}
         <TaskCard number="05" title="Ship it dark and verify in CI" done={task5Done} locked={!task4Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">This is the pattern: deploy the code with the flag disabled.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">This is the pattern: deploy the code with the flag disabled.</span>{" "}
               The feature exists in production but no user sees it. When ready, flip the flag. No
               redeploy needed. No risk window. No all-hands-on-deck deploy.
             </p>
@@ -351,8 +349,8 @@ git push`}</CodeBlock>
                   value={actionsUrl}
                   onChange={(e) => setActionsUrl(e.target.value)}
                   placeholder="https://github.com/your-username/nexus-corp-app/actions/runs/..."
-                  className="w-full px-3 py-2 text-sm font-mono text-white outline-none border"
-                  style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+                  className="w-full px-3 py-2 text-sm font-mono text-gray-900 outline-none border"
+                  style={{ backgroundColor: "var(--bg)", borderColor: "var(--border-bright)" }}
                 />
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
@@ -363,7 +361,7 @@ git push`}</CodeBlock>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                   Feature flag code deployed dark — pipeline is green
                 </span>
               </label>
@@ -376,7 +374,7 @@ git push`}</CodeBlock>
           <div
             className="flex flex-col gap-5 border p-6"
             style={{
-              backgroundColor: "#060f06",
+              backgroundColor: "var(--bg-card)",
               borderColor: "rgba(34,197,94,0.3)",
               borderLeft: "3px solid rgb(34,197,94)",
             }}
@@ -387,7 +385,7 @@ git push`}</CodeBlock>
             <a
               href="?phase=4"
               className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
+              style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}
             >
               See your impact →
             </a>

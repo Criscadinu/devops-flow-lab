@@ -1,7 +1,5 @@
-import { Syne } from "next/font/google"
 import { VideoNotice } from "../_components/VideoNotice"
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 const serif: React.CSSProperties = { fontFamily: "Georgia, 'Times New Roman', serif" }
 
@@ -11,7 +9,7 @@ function SectionLabel({ num, title }: { num: string; title: string }) {
   return (
     <div className="flex items-baseline gap-3 mb-6">
       <span className="text-xs font-mono font-bold tracking-[0.2em] text-gray-400">{num}</span>
-      <h2 className="text-xl text-black tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+      <h2 className="text-xl text-black tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
         {title}
       </h2>
     </div>
@@ -141,7 +139,7 @@ export default function PrincipleOfFlowPage() {
               </span>
             ))}
           </div>
-          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The Principle of Flow
           </h1>
           <p className="text-base leading-relaxed" style={{ color: "#555" }}>
@@ -213,9 +211,9 @@ export default function PrincipleOfFlowPage() {
                 { n: "4", title: "Earlier problem detection", body: "Problems found in development cost 10x less to fix than problems found in production. Fast flow pushes problems left, closer to their source." },
               ].map((item) => (
                 <li key={item.n} className="flex gap-5">
-                  <span className="text-2xl font-mono font-bold shrink-0 leading-none" style={{ ...syne.style, color: "#e5e5e5" }}>{item.n}</span>
+                  <span className="text-2xl font-mono font-bold shrink-0 leading-none" style={{ fontFamily: "var(--font-heading)", color: "#e5e5e5" }}>{item.n}</span>
                   <div>
-                    <p className="text-sm font-semibold text-black mb-1" style={{ ...syne.style }}>{item.title}</p>
+                    <p className="text-sm font-semibold text-black mb-1" style={{ fontFamily: "var(--font-heading)" }}>{item.title}</p>
                     <p className="text-sm leading-relaxed" style={{ ...serif, color: "#555" }}>{item.body}</p>
                   </div>
                 </li>

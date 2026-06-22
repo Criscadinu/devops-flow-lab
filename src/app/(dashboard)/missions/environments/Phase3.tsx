@@ -1,10 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Syne } from "next/font/google"
 import { validateFork } from "@/app/actions/validateFork"
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 function TaskCard({
   number,
@@ -23,7 +21,7 @@ function TaskCard({
     <div
       className="flex flex-col gap-5 p-6 border"
       style={{
-        backgroundColor: locked ? "#050505" : done ? "#060f06" : "#080808",
+        backgroundColor: locked ? "var(--bg-card)" : done ? "rgba(34,197,94,0.08)" : "var(--bg)",
         borderColor: locked
           ? "rgb(31,41,55)"
           : done
@@ -52,7 +50,7 @@ function TaskCard({
           >
             {number}
           </span>
-          <h3 className="text-white text-base" style={{ ...syne.style, fontWeight: 700 }}>
+          <h3 className="text-gray-900 text-base" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             {title}
           </h3>
         </div>
@@ -78,12 +76,12 @@ function MentorNote({ children }: { children: React.ReactNode }) {
     <div
       className="flex gap-3 p-4 border"
       style={{
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "var(--bg)",
         borderColor: "rgba(255,85,0,0.15)",
         borderLeft: "3px solid rgba(255,85,0,0.5)",
       }}
     >
-      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>
+      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "var(--af-orange)" }}>
         //
       </span>
       <div className="flex flex-col gap-1">{children}</div>
@@ -93,7 +91,7 @@ function MentorNote({ children }: { children: React.ReactNode }) {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>
+    <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
       {children}
     </p>
   )
@@ -142,7 +140,7 @@ function MachineColumn({
   return (
     <div
       style={{
-        backgroundColor: "#080808",
+        backgroundColor: "var(--bg-card)",
         border: `1px solid ${ok ? "rgba(34,197,94,0.2)" : "rgba(239,68,68,0.2)"}`,
         padding: 14,
         display: "flex",
@@ -150,7 +148,7 @@ function MachineColumn({
         gap: 10,
       }}
     >
-      <p style={{ color: "rgb(107,114,128)", fontFamily: "monospace", fontSize: 11 }}>{name}</p>
+      <p style={{ color: "var(--text-muted)", fontFamily: "monospace", fontSize: 11 }}>{name}</p>
       <span
         style={{
           alignSelf: "flex-start",
@@ -179,8 +177,8 @@ function MachineColumn({
             animationDelay: containerDelay,
           }}
         >
-          <span style={{ color: "rgb(255,85,0)", fontFamily: "monospace", fontSize: 10 }}>Node 20 — locked in</span>
-          <span style={{ color: "rgb(255,85,0)", fontFamily: "monospace", fontSize: 10 }}>Your code — locked in</span>
+          <span style={{ color: "var(--af-orange)", fontFamily: "monospace", fontSize: 10 }}>Node 20 — locked in</span>
+          <span style={{ color: "var(--af-orange)", fontFamily: "monospace", fontSize: 10 }}>Your code — locked in</span>
         </div>
       )}
 
@@ -228,8 +226,8 @@ function DockerExplainer() {
   return (
     <div
       style={{
-        backgroundColor: "#050505",
-        border: "1px solid rgb(31,41,55)",
+        backgroundColor: "var(--bg-card)",
+        border: "1px solid var(--border)",
         padding: 24,
         display: "flex",
         flexDirection: "column",
@@ -256,10 +254,10 @@ function DockerExplainer() {
 
       {/* Header */}
       <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-        <p style={{ color: "rgb(75,85,99)", fontFamily: "monospace", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.15em", margin: 0 }}>
+        <p style={{ color: "var(--text-muted)", fontFamily: "monospace", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.15em", margin: 0 }}>
           How Docker works
         </p>
-        <p style={{ color: "white", fontWeight: 700, fontSize: 15, margin: 0 }}>
+        <p style={{ color: "var(--text)", fontWeight: 700, fontSize: 15, margin: 0 }}>
           {SCENE_TITLES[scene]}
         </p>
       </div>
@@ -293,12 +291,12 @@ function DockerExplainer() {
                 <div key={step} style={{ display: "flex", alignItems: "center" }}>
                   <div
                     style={{
-                      backgroundColor: "#0d0d0d",
+                      backgroundColor: "var(--bg-card)",
                       border: "1px solid rgba(255,85,0,0.3)",
                       padding: "6px 10px",
                       fontFamily: "monospace",
                       fontSize: 10,
-                      color: "rgb(255,85,0)",
+                      color: "var(--af-orange)",
                       whiteSpace: "nowrap",
                     }}
                   >
@@ -311,7 +309,7 @@ function DockerExplainer() {
               ))}
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <p style={{ color: "rgb(75,85,99)", fontFamily: "monospace", fontSize: 11, margin: 0 }}>
+              <p style={{ color: "var(--text-muted)", fontFamily: "monospace", fontSize: 11, margin: 0 }}>
                 docker build -t nexus-corp .
               </p>
               <div
@@ -408,7 +406,7 @@ function DockerExplainer() {
             style={{
               backgroundColor: "transparent",
               border: "1px solid rgb(55,65,81)",
-              color: "rgb(107,114,128)",
+              color: "var(--text-muted)",
               fontFamily: "monospace",
               fontSize: 11,
               padding: "4px 12px",
@@ -460,8 +458,8 @@ export function Phase3() {
         {/* Header */}
         <div className="flex flex-col gap-2">
           <h2
-            className="text-3xl text-white tracking-tight"
-            style={{ ...syne.style, fontWeight: 800 }}
+            className="text-3xl text-gray-900 tracking-tight"
+            style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}
           >
             Your Mission - Containerize Nexus Corp
           </h2>
@@ -477,7 +475,7 @@ export function Phase3() {
         <div
           className="flex flex-col gap-5 p-6 border"
           style={{
-            backgroundColor: "#0a0700",
+            backgroundColor: "var(--bg-card)",
             borderColor: "rgba(251,146,60,0.3)",
             borderLeft: "3px solid rgb(251,146,60)",
           }}
@@ -500,7 +498,7 @@ export function Phase3() {
               >
                 01
               </span>
-              <p className="text-white text-sm font-bold" style={syne.style}>
+              <p className="text-gray-900 text-sm font-bold" style={{ fontFamily: "var(--font-heading)" }}>
                 Docker Desktop installed
               </p>
               {prereq1Done && (
@@ -518,7 +516,7 @@ export function Phase3() {
               target="_blank"
               rel="noopener noreferrer"
               className="self-start px-5 py-2.5 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ backgroundColor: "rgb(251,146,60)", color: "#000", ...syne.style }}
+              style={{ backgroundColor: "rgb(251,146,60)", color: "var(--text)", fontFamily: "var(--font-heading)" }}
             >
               Download Docker Desktop →
             </a>
@@ -530,7 +528,7 @@ export function Phase3() {
                   className="w-4 h-4 cursor-pointer"
                   style={{ accentColor: "rgb(251,146,60)" }}
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                   Docker Desktop is installed and running
                 </span>
               </label>
@@ -548,7 +546,7 @@ export function Phase3() {
               >
                 02
               </span>
-              <p className="text-white text-sm font-bold" style={syne.style}>
+              <p className="text-gray-900 text-sm font-bold" style={{ fontFamily: "var(--font-heading)" }}>
                 Git installed
               </p>
               {prereq2Done && (
@@ -566,7 +564,7 @@ export function Phase3() {
               target="_blank"
               rel="noopener noreferrer"
               className="self-start px-5 py-2.5 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ backgroundColor: "rgb(251,146,60)", color: "#000", ...syne.style }}
+              style={{ backgroundColor: "rgb(251,146,60)", color: "var(--text)", fontFamily: "var(--font-heading)" }}
             >
               Download Git →
             </a>
@@ -578,7 +576,7 @@ export function Phase3() {
                   className="w-4 h-4 cursor-pointer"
                   style={{ accentColor: "rgb(251,146,60)" }}
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                   Git is installed
                 </span>
               </label>
@@ -593,14 +591,14 @@ export function Phase3() {
         <div
           className="flex flex-col gap-4 p-6 border"
           style={{
-            backgroundColor: "#080808",
-            borderColor: "rgb(31,41,55)",
+            backgroundColor: "var(--bg-card)",
+            borderColor: "var(--border)",
             borderLeft: "3px solid rgb(31,41,55)",
           }}
         >
           <div className="flex flex-col gap-1">
             <SectionLabel>The Nexus Corp application</SectionLabel>
-            <p className="text-gray-300 text-sm leading-relaxed">
+            <p className="text-gray-600 text-sm leading-relaxed">
               This is the application that runs Nexus Corp&apos;s order management system. Every
               parcel that gets tracked, every customer order that gets processed, every shipment
               status update - it all goes through this app. When it is down, the business stops.
@@ -628,12 +626,12 @@ export function Phase3() {
         {/* Task 1 */}
         <TaskCard number="01" title="Fork and clone the Nexus Corp repository" done={task1Done} locked={false}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Why fork instead of clone directly?</span> If you cloned
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">Why fork instead of clone directly?</span> If you cloned
               the original repo, you could run the code locally - but you couldn&apos;t push your
               changes anywhere. You don&apos;t have write access to someone else&apos;s repo.
             </p>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm text-gray-600 leading-relaxed">
               Forking creates your own copy of the repo under your GitHub account. You get full
               write access to your fork. You can push freely, experiment, break things, and fix
               them - without touching the original. It&apos;s how open source contribution works too:
@@ -644,16 +642,16 @@ export function Phase3() {
           <div className="flex flex-col gap-2">
             <SectionLabel>Step 1 - Fork</SectionLabel>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Click the button below to open the repository on GitHub. Hit the <span className="text-white">Fork</span> button
+              Click the button below to open the repository on GitHub. Hit the <span className="text-gray-900">Fork</span> button
               in the top right. GitHub will create a copy at{" "}
-              <span className="text-white font-mono">github.com/your-username/nexus-corp-app</span>.
+              <span className="text-gray-900 font-mono">github.com/your-username/nexus-corp-app</span>.
             </p>
             <a
               href="https://github.com/Criscadinu/nexus-corp-app"
               target="_blank"
               rel="noopener noreferrer"
               className="self-start px-5 py-2.5 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style }}
+              style={{ background: "var(--af-gradient)", color: "#fff", borderRadius: "var(--radius)", fontFamily: "var(--font-heading)" }}
             >
               Fork on GitHub →
             </a>
@@ -667,9 +665,9 @@ export function Phase3() {
             <pre
               className="text-xs font-mono p-4 overflow-x-auto"
               style={{
-                backgroundColor: "#0d0d0d",
+                backgroundColor: "var(--bg-card)",
                 borderLeft: "3px solid rgb(31,41,55)",
-                color: "rgb(156,163,175)",
+                color: "var(--text-muted)",
               }}
             >{`git clone https://github.com/your-username/nexus-corp-app
 cd nexus-corp-app`}</pre>
@@ -686,8 +684,8 @@ cd nexus-corp-app`}</pre>
                   value={forkUrl}
                   onChange={(e) => { setForkUrl(e.target.value); setForkError(null) }}
                   placeholder="https://github.com/your-username/nexus-corp-app"
-                  className="flex-1 px-3 py-2 text-sm font-mono text-white outline-none border"
-                  style={{ backgroundColor: "#0d0d0d", borderColor: forkError ? "rgba(239,68,68,0.5)" : "rgb(31,41,55)" }}
+                  className="flex-1 px-3 py-2 text-sm font-mono text-gray-900 outline-none border"
+                  style={{ backgroundColor: "var(--bg-card)", borderColor: forkError ? "rgba(239,68,68,0.5)" : "rgb(31,41,55)" }}
                 />
                 <button
                   onClick={async () => {
@@ -704,7 +702,7 @@ cd nexus-corp-app`}</pre>
                   }}
                   disabled={!forkUrl.trim() || forkChecking}
                   className="px-5 py-2 text-sm font-bold transition-opacity hover:opacity-80 disabled:opacity-30 shrink-0"
-                  style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style }}
+                  style={{ background: "var(--af-gradient)", color: "#fff", borderRadius: "var(--radius)", fontFamily: "var(--font-heading)" }}
                 >
                   {forkChecking ? "Checking..." : "Confirm"}
                 </button>
@@ -727,13 +725,13 @@ cd nexus-corp-app`}</pre>
         <TaskCard number="02" title="Write a Dockerfile" done={task2Done} locked={!task1Done}>
 
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">What is Docker?</span> Think of a container like a
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">What is Docker?</span> Think of a container like a
               shipping container. Before shipping containers, every port loaded cargo differently -
               different cranes, different pallets, different procedures. It was chaos. Then someone
               standardized the box. Now any crane in any port can load any container. Same idea here.
             </p>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm text-gray-600 leading-relaxed">
               A Docker container is a standard box for software. Inside it: your app, the exact
               Node version it needs, its dependencies, and its configuration. You can run that box
               on your laptop, on a teammate&apos;s Linux machine, or on a cloud server - and it
@@ -744,10 +742,10 @@ cd nexus-corp-app`}</pre>
           <div className="flex flex-col gap-2">
             <SectionLabel>What to do</SectionLabel>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Create a file named <span className="text-white font-mono">Dockerfile</span> (no
+              Create a file named <span className="text-gray-900 font-mono">Dockerfile</span> (no
               extension) at the root of the repo. Use the starter below - it&apos;s mostly complete,
               but you need to add the final command that actually starts the app. Check the{" "}
-              <span className="text-white font-mono">package.json</span> in the repo to find the
+              <span className="text-gray-900 font-mono">package.json</span> in the repo to find the
               right start command.
             </p>
           </div>
@@ -757,9 +755,9 @@ cd nexus-corp-app`}</pre>
             <pre
               className="text-xs font-mono leading-loose p-4 overflow-x-auto"
               style={{
-                backgroundColor: "#0d0d0d",
+                backgroundColor: "var(--bg-card)",
                 borderLeft: "3px solid rgb(31,41,55)",
-                color: "rgb(156,163,175)",
+                color: "var(--text-muted)",
               }}
             >{`# Start from the official Node.js 20 image, Alpine variant.
 # Alpine is a minimal Linux distro - the image is ~50MB instead of ~300MB.
@@ -792,14 +790,14 @@ EXPOSE 3000
           </div>
 
           <MentorNote>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              The <span className="text-white font-mono">CMD</span> instruction is what runs when the
+            <p className="text-sm text-gray-600 leading-relaxed">
+              The <span className="text-gray-900 font-mono">CMD</span> instruction is what runs when the
               container starts. It&apos;s the equivalent of typing a command in your terminal. For a
-              Node app with a <span className="text-white font-mono">start</span> script, it would
+              Node app with a <span className="text-gray-900 font-mono">start</span> script, it would
               look like{" "}
-              <span className="text-white font-mono">{`CMD ["npm", "start"]`}</span>. If the app uses{" "}
-              <span className="text-white font-mono">node server.js</span> directly, it would be{" "}
-              <span className="text-white font-mono">{`CMD ["node", "server.js"]`}</span>. Check the
+              <span className="text-gray-900 font-mono">{`CMD ["npm", "start"]`}</span>. If the app uses{" "}
+              <span className="text-gray-900 font-mono">node server.js</span> directly, it would be{" "}
+              <span className="text-gray-900 font-mono">{`CMD ["node", "server.js"]`}</span>. Check the
               repo to know which one applies.
             </p>
           </MentorNote>
@@ -811,7 +809,7 @@ EXPOSE 3000
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 My Dockerfile is complete and{" "}
                 <code className="text-orange-400 font-mono">docker build -t nexus-corp .</code>{" "}
                 succeeds
@@ -828,34 +826,34 @@ EXPOSE 3000
           locked={!task2Done}
         >
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">What is docker-compose?</span> Your Dockerfile defines
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">What is docker-compose?</span> Your Dockerfile defines
               one container. But real apps need more than one thing - a database, a cache, maybe a
               worker process. And you often want to run the same app multiple times with different
               config. Docker Compose handles that.
             </p>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm text-gray-600 leading-relaxed">
               It&apos;s a single file that describes all your services, their ports, their environment
               variables, and how they connect. Instead of running five{" "}
-              <span className="text-white font-mono">docker run</span> commands with long flag lists,
+              <span className="text-gray-900 font-mono">docker run</span> commands with long flag lists,
               you run one:{" "}
-              <span className="text-white font-mono">docker-compose up</span>. Everything starts.
+              <span className="text-gray-900 font-mono">docker-compose up</span>. Everything starts.
             </p>
           </MentorNote>
 
           <div className="flex flex-col gap-2">
             <SectionLabel>Why three environments?</SectionLabel>
             <p className="text-gray-400 text-sm leading-relaxed">
-              <span className="text-white">dev</span> - where you write code. Errors are verbose,
+              <span className="text-gray-900">dev</span> - where you write code. Errors are verbose,
               logging is noisy, hot reload might be on. Speed of feedback matters more than
               performance.
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              <span className="text-white">test</span> - where automated tests run. Config matches
+              <span className="text-gray-900">test</span> - where automated tests run. Config matches
               production closely. No debug noise. Predictable behavior.
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              <span className="text-white">prod</span> - what real users hit. Optimized for
+              <span className="text-gray-900">prod</span> - what real users hit. Optimized for
               performance, minimal logging, hardened config. You never want dev behavior leaking
               here.
             </p>
@@ -868,18 +866,18 @@ EXPOSE 3000
           <div className="flex flex-col gap-2">
             <SectionLabel>docker-compose.yml starter</SectionLabel>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Create <span className="text-white font-mono">docker-compose.yml</span> at the repo
+              Create <span className="text-gray-900 font-mono">docker-compose.yml</span> at the repo
               root. The dev service is provided. Add the test and prod services following the same
               pattern - use ports 3001 and 3002, and set{" "}
-              <span className="text-white font-mono">NODE_ENV</span> and{" "}
-              <span className="text-white font-mono">APP_VERSION</span> appropriately.
+              <span className="text-gray-900 font-mono">NODE_ENV</span> and{" "}
+              <span className="text-gray-900 font-mono">APP_VERSION</span> appropriately.
             </p>
             <pre
               className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
               style={{
-                backgroundColor: "#0d0d0d",
+                backgroundColor: "var(--bg-card)",
                 borderLeft: "3px solid rgb(31,41,55)",
-                color: "rgb(156,163,175)",
+                color: "var(--text-muted)",
               }}
             >{`services:
   dev:
@@ -915,9 +913,9 @@ EXPOSE 3000
               <pre
                 className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
                 style={{
-                  backgroundColor: "#020d0f",
+                  backgroundColor: "var(--bg-card)",
                   borderLeft: "3px solid rgba(255,85,0,0.4)",
-                  color: "rgb(156,163,175)",
+                  color: "var(--text-muted)",
                 }}
               >{`services:
   dev:
@@ -953,7 +951,7 @@ EXPOSE 3000
           <div
             className="flex flex-col gap-2 p-4 border"
             style={{
-              backgroundColor: "#0f0606",
+              backgroundColor: "rgba(239,68,68,0.06)",
               borderColor: "rgba(239,68,68,0.3)",
               borderLeft: "3px solid rgb(239,68,68)",
             }}
@@ -961,22 +959,22 @@ EXPOSE 3000
             <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(239,68,68)" }}>
               Common Mistake
             </span>
-            <p className="text-sm text-gray-300 leading-relaxed">
+            <p className="text-sm text-gray-600 leading-relaxed">
               Do not put all environment variables under one service. Each service — dev, test,
               prod — needs its own block with its own environment section. If you define{" "}
-              <span className="font-mono text-white">NODE_ENV</span> three times under the same
+              <span className="font-mono text-gray-900">NODE_ENV</span> three times under the same
               service, Docker uses only the last value.
             </p>
           </div>
 
           {/* PORT inside vs outside note */}
           <MentorNote>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm text-gray-600 leading-relaxed">
               The container always listens on port 3000 internally. The left side of the{" "}
-              <span className="text-white font-mono">ports</span> mapping (
-              <span className="text-white font-mono">3000:</span>,{" "}
-              <span className="text-white font-mono">3001:</span>,{" "}
-              <span className="text-white font-mono">3002:</span>) is what your browser uses on
+              <span className="text-gray-900 font-mono">ports</span> mapping (
+              <span className="text-gray-900 font-mono">3000:</span>,{" "}
+              <span className="text-gray-900 font-mono">3001:</span>,{" "}
+              <span className="text-gray-900 font-mono">3002:</span>) is what your browser uses on
               the host. This lets all three services run simultaneously without port collisions.
             </p>
           </MentorNote>
@@ -988,7 +986,7 @@ EXPOSE 3000
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 <code className="text-orange-400 font-mono">docker-compose up</code> starts all
                 three services without errors
               </span>
@@ -999,13 +997,13 @@ EXPOSE 3000
         {/* Task 4 */}
         <TaskCard number="04" title="Commit and push to GitHub" done={task4Done} locked={!task3Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">This step matters more than it seems.</span> Right now,
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">This step matters more than it seems.</span> Right now,
               the Dockerfile and docker-compose.yml only exist on your machine. The moment you push
               them to your fork, any developer with access to that repo can clone it and run the
               entire app - with correct environments - in under a minute.
             </p>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm text-gray-600 leading-relaxed">
               That is the shift. The environment is no longer tribal knowledge in someone&apos;s
               head. It is code. It is versioned. It is reviewable. It is the same for everyone.
             </p>
@@ -1016,9 +1014,9 @@ EXPOSE 3000
             <pre
               className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
               style={{
-                backgroundColor: "#0d0d0d",
+                backgroundColor: "var(--bg-card)",
                 borderLeft: "3px solid rgb(31,41,55)",
-                color: "rgb(156,163,175)",
+                color: "var(--text-muted)",
               }}
             >{`git add Dockerfile docker-compose.yml
 git commit -m "feat: add containerized environments"
@@ -1027,7 +1025,7 @@ git push`}</pre>
 
           <p className="text-gray-400 text-sm leading-relaxed">
             Use that exact commit message.{" "}
-            <span className="text-white font-mono">feat:</span> is a conventional commit prefix -
+            <span className="text-gray-900 font-mono">feat:</span> is a conventional commit prefix -
             it signals that this is a new feature addition, not a bug fix or refactor. It becomes
             useful when you automate changelogs or versioning later.
           </p>
@@ -1039,7 +1037,7 @@ git push`}</pre>
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 My fork on GitHub contains Dockerfile and docker-compose.yml
               </span>
             </label>
@@ -1051,7 +1049,7 @@ git push`}</pre>
           <div
             className="flex flex-col gap-5 border p-6"
             style={{
-              backgroundColor: "#060f06",
+              backgroundColor: "var(--bg-card)",
               borderColor: "rgba(34,197,94,0.3)",
               borderLeft: "3px solid rgb(34,197,94)",
             }}
@@ -1062,7 +1060,7 @@ git push`}</pre>
             <a
               href="?phase=4"
               className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
+              style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}
             >
               See your impact →
             </a>

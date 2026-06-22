@@ -1,13 +1,11 @@
-import { Syne } from "next/font/google"
 import { VideoNotice } from "../_components/VideoNotice"
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 const serif: React.CSSProperties = { fontFamily: "Georgia, 'Times New Roman', serif" }
 
 function SectionLabel({ num, title }: { num: string; title: string }) {
   return (
     <div className="flex items-baseline gap-3 mb-6">
       <span className="text-xs font-mono font-bold tracking-[0.2em] text-gray-400">{num}</span>
-      <h2 className="text-xl text-black tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>{title}</h2>
+      <h2 className="text-xl text-black tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>{title}</h2>
     </div>
   )
 }
@@ -36,7 +34,7 @@ function MetricCard({ id, title, desc, elite, high, medium, low, color, bg }: {
     <div className="border border-[#e5e5e5] overflow-hidden">
       <div className="px-5 py-4" style={{ backgroundColor: bg, borderLeft: `3px solid ${color}` }}>
         <p className="text-[10px] font-mono font-bold mb-1" style={{ color }}>{id}</p>
-        <p className="text-sm font-bold text-black" style={{ ...syne.style }}>{title}</p>
+        <p className="text-sm font-bold text-black" style={{ fontFamily: "var(--font-heading)" }}>{title}</p>
         <p className="text-xs mt-1.5 leading-relaxed" style={{ ...serif, color: "#555" }}>{desc}</p>
       </div>
       <div className="grid grid-cols-4 divide-x divide-[#f0f0f0]" style={{ backgroundColor: "#ffffff" }}>
@@ -103,7 +101,7 @@ export default function DoraMetricsPage() {
               <span key={tag} className="text-xs font-mono px-2 py-0.5" style={{ backgroundColor: "#faf5ff", color: "#7c3aed", border: "1px solid #e9d5ff" }}>{tag}</span>
             ))}
           </div>
-          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>DORA Metrics</h1>
+          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>DORA Metrics</h1>
           <p className="text-base leading-relaxed" style={{ color: "#555" }}>The four measures of software delivery performance. What they measure, what good looks like, and how to use them to improve.</p>
           <div className="flex items-center gap-2 pt-1 flex-wrap">
             <span className="text-xs font-mono text-gray-400 mr-1">Sources:</span>
@@ -226,7 +224,7 @@ export default function DoraMetricsPage() {
                 <div key={item.title} className="flex gap-4 p-5 border border-[#e5e5e5]" style={{ backgroundColor: "#ffffff" }}>
                   <div className="w-2 h-2 rounded-full mt-1 shrink-0" style={{ backgroundColor: "#7c3aed" }} />
                   <div>
-                    <p className="text-sm font-bold text-black mb-1" style={{ ...syne.style }}>{item.title}</p>
+                    <p className="text-sm font-bold text-black mb-1" style={{ fontFamily: "var(--font-heading)" }}>{item.title}</p>
                     <p className="text-sm leading-relaxed" style={{ ...serif, color: "#555" }}>{item.body}</p>
                   </div>
                 </div>

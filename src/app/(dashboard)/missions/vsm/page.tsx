@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { Syne } from "next/font/google";
 import { Fase3 } from "./Fase3";
 import { Fase4 } from "./Fase4";
 import { completeMission } from "@/app/actions/progress";
@@ -11,19 +10,18 @@ export const metadata: Metadata = {
   title: "M-01 Value Stream Mapping - DevOps Flow Lab",
 }
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 
 // ─── Shared: Mission Header ───────────────────────────────────────────────────
 
 function MissionHeader({ fase }: { fase: number }) {
   const pct = `${fase * 25}%`;
   return (
-    <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "#080808" }}>
+    <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "var(--bg-card)" }}>
       <div className="max-w-5xl mx-auto flex items-center justify-between">
-        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(255,85,0)" }}>
+        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "var(--af-orange)" }}>
           M-01
         </span>
-        <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
+        <span className="text-sm font-bold tracking-tight text-gray-900" style={{ fontFamily: "var(--font-heading)" }}>
           Value Stream Mapping
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
@@ -47,7 +45,7 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
       <a
         href={href}
         className="self-start px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-        style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
+        style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}
       >
         {label}
       </a>
@@ -168,8 +166,8 @@ function Phase1() {
         {/* Intro */}
         <div className="flex flex-col gap-3 max-w-2xl">
           <h2
-            className="text-4xl text-white tracking-tight leading-tight"
-            style={{ ...syne.style, fontWeight: 800 }}
+            className="text-4xl text-gray-900 tracking-tight leading-tight"
+            style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}
           >
             Day one. Nexus Corp.
           </h2>
@@ -185,15 +183,15 @@ function Phase1() {
               key={p.initials}
               className="flex flex-col gap-0 overflow-hidden"
               style={{
-                backgroundColor: "#0a0a0a",
-                border: "1px solid #222",
+                backgroundColor: "var(--bg)",
+                border: "1px solid var(--border)",
                 borderLeft: `3px solid ${p.accent}`,
               }}
             >
               {/* Panel header */}
               <div
                 className="flex items-center justify-between px-4 py-3 border-b"
-                style={{ borderColor: "#1a1a1a", backgroundColor: "#0d0d0d" }}
+                style={{ borderColor: "#1a1a1a", backgroundColor: "var(--bg-card)" }}
               >
                 <div className="flex items-center gap-3">
                   {/* Avatar */}
@@ -208,7 +206,7 @@ function Phase1() {
                     {p.initials}
                   </div>
                   <div className="flex flex-col gap-0">
-                    <span className="text-white text-sm font-semibold leading-tight">
+                    <span className="text-gray-900 text-sm font-semibold leading-tight">
                       {p.name}
                     </span>
                     <span className="text-gray-600 text-xs">{p.role}</span>
@@ -231,7 +229,7 @@ function Phase1() {
               {/* Quote */}
               <div className="px-5 py-4 flex flex-col gap-3">
                 <p
-                  className="text-gray-300 text-sm leading-relaxed"
+                  className="text-gray-600 text-sm leading-relaxed"
                   style={{
                     // Inline <mark> rendered as cyan mono via global style below
                   }}
@@ -242,7 +240,7 @@ function Phase1() {
                 {/* Player outro */}
                 {"outro" in p && p.outro && (
                   <p
-                    className="text-white font-bold text-sm border-t pt-3"
+                    className="text-gray-900 font-bold text-sm border-t pt-3"
                     style={{ borderColor: "#1a1a1a" }}
                   >
                     {p.outro}
@@ -285,7 +283,7 @@ function Phase2() {
             <span className="text-xs font-mono text-gray-700 tracking-widest">01</span>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             What is a Value Stream?
           </h2>
           <p className="text-gray-400 leading-relaxed">
@@ -300,19 +298,19 @@ function Phase2() {
             <span className="text-xs font-mono text-gray-700 tracking-widest">02</span>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The two types of time
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div
               className="flex flex-col gap-3 p-6 border"
-              style={{ backgroundColor: "#060f06", borderColor: "rgba(34,197,94,0.25)", borderLeft: "3px solid rgb(34,197,94)" }}
+              style={{ backgroundColor: "var(--bg-card)", borderColor: "rgba(34,197,94,0.25)", borderLeft: "3px solid rgb(34,197,94)" }}
             >
               <span className="text-xs font-mono tracking-widest uppercase" style={{ color: "rgb(34,197,94)" }}>
                 Process Time
               </span>
-              <p className="text-white font-medium">The time when real work is being done</p>
+              <p className="text-gray-900 font-medium">The time when real work is being done</p>
               <p className="text-gray-500 text-sm leading-relaxed">
                 A developer writes code, a reviewer looks at a pull request,
                 a pipeline runs tests. Active work that adds value.
@@ -321,12 +319,12 @@ function Phase2() {
 
             <div
               className="flex flex-col gap-3 p-6 border"
-              style={{ backgroundColor: "#0f0606", borderColor: "rgba(239,68,68,0.25)", borderLeft: "3px solid rgb(239,68,68)" }}
+              style={{ backgroundColor: "rgba(239,68,68,0.06)", borderColor: "rgba(239,68,68,0.25)", borderLeft: "3px solid rgb(239,68,68)" }}
             >
               <span className="text-xs font-mono tracking-widest uppercase" style={{ color: "rgb(239,68,68)" }}>
                 Wait Time
               </span>
-              <p className="text-white font-medium">The time when work waits for something or someone</p>
+              <p className="text-gray-900 font-medium">The time when work waits for something or someone</p>
               <p className="text-gray-500 text-sm leading-relaxed">
                 Waiting for a review, an approval, a deployment slot, another team.
                 No value - just time.
@@ -334,9 +332,9 @@ function Phase2() {
             </div>
           </div>
 
-          <div className="border border-gray-800 p-5" style={{ backgroundColor: "#090909" }}>
-            <p className="text-gray-300 text-sm leading-relaxed">
-              <span className="text-white font-semibold">
+          <div className="border border-gray-800 p-5" style={{ backgroundColor: "var(--bg-card)" }}>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              <span className="text-gray-900 font-semibold">
                 In most organizations, 80-90% of lead time is... wait time.
               </span>{" "}
               Not because people are lazy, but because the system is designed that way.
@@ -350,7 +348,7 @@ function Phase2() {
             <span className="text-xs font-mono text-gray-700 tracking-widest">03</span>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The five questions of VSM
           </h2>
 
@@ -367,10 +365,10 @@ function Phase2() {
                 className="flex items-start gap-5 px-6 py-4 border-b border-gray-800 last:border-b-0"
                 style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#050505" }}
               >
-                <span className="text-sm font-mono font-bold shrink-0 w-6 pt-0.5" style={{ color: "rgb(255,85,0)" }}>
+                <span className="text-sm font-mono font-bold shrink-0 w-6 pt-0.5" style={{ color: "var(--af-orange)" }}>
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="text-gray-300 text-sm leading-relaxed">{q}</span>
+                <span className="text-gray-600 text-sm leading-relaxed">{q}</span>
               </li>
             ))}
           </ol>
@@ -429,7 +427,7 @@ export default async function VSMPage({
   }
 
   return (
-    <main className="min-h-screen text-gray-100 flex flex-col" style={{ backgroundColor: "#000" }}>
+    <main className="min-h-screen text-gray-100 flex flex-col" style={{ backgroundColor: "var(--bg)" }}>
       <MissionHeader fase={phase} />
       {phase === 1 && <Phase1 />}
       {phase === 2 && <Phase2 />}

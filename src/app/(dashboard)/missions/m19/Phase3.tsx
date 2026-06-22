@@ -1,9 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Syne } from "next/font/google"
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 function MobileWarning() {
   const [isMobile, setIsMobile] = useState(false)
@@ -15,20 +13,20 @@ function MobileWarning() {
   }, [])
   if (!isMobile) return null
   return (
-    <div className="flex flex-col gap-3 p-5 border mb-6" style={{ backgroundColor: "#0a0700", borderColor: "rgba(251,146,60,0.4)", borderLeft: "3px solid rgb(251,146,60)" }}>
+    <div className="flex flex-col gap-3 p-5 border mb-6" style={{ backgroundColor: "var(--bg-card)", borderColor: "rgba(251,146,60,0.4)", borderLeft: "3px solid rgb(251,146,60)" }}>
       <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>Desktop required</p>
-      <p className="text-sm text-gray-400 leading-relaxed">This phase requires a terminal, a code editor, and GitHub. These tasks cannot be completed on a mobile device. Open this page on your laptop or desktop to continue.</p>
+      <p className="text-sm text-gray-600 leading-relaxed">This phase requires a terminal, a code editor, and GitHub. These tasks cannot be completed on a mobile device. Open this page on your laptop or desktop to continue.</p>
     </div>
   )
 }
 
 function TaskCard({ number, title, done, locked, children }: { number: string; title: string; done: boolean; locked: boolean; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-5 p-6 border" style={{ backgroundColor: locked ? "#050505" : done ? "#060f06" : "#080808", borderColor: locked ? "rgb(31,41,55)" : done ? "rgba(34,197,94,0.4)" : "rgba(255,85,0,0.4)", borderLeft: locked ? "3px solid rgb(31,41,55)" : done ? "3px solid rgb(34,197,94)" : "3px solid rgb(255,85,0)", opacity: locked ? 0.45 : 1, pointerEvents: locked ? "none" : "auto" }}>
+    <div className="flex flex-col gap-5 p-6 border" style={{ backgroundColor: locked ? "var(--bg-card)" : done ? "rgba(34,197,94,0.08)" : "var(--bg)", borderColor: locked ? "var(--border)" : done ? "rgba(34,197,94,0.5)" : "rgba(255,85,0,0.4)", borderLeft: locked ? "3px solid var(--border)" : done ? "3px solid rgb(34,197,94)" : "3px solid var(--af-orange)", opacity: locked ? 0.45 : 1, pointerEvents: locked ? "none" : "auto" }}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="text-xs font-mono font-bold" style={{ color: locked ? "rgb(75,85,99)" : done ? "rgb(34,197,94)" : "rgb(255,85,0)" }}>{number}</span>
-          <h3 className="text-white text-base" style={{ ...syne.style, fontWeight: 700 }}>{title}</h3>
+          <h3 className="text-gray-900 text-base" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>{title}</h3>
         </div>
         <div>
           {done && <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ DONE</span>}
@@ -42,20 +40,20 @@ function TaskCard({ number, title, done, locked, children }: { number: string; t
 
 function MentorNote({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex gap-3 p-4 border" style={{ backgroundColor: "#0a0a0a", borderColor: "rgba(255,85,0,0.15)", borderLeft: "3px solid rgba(255,85,0,0.5)" }}>
-      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>//</span>
+    <div className="flex gap-3 p-4 border" style={{ backgroundColor: "var(--bg)", borderColor: "rgba(255,85,0,0.15)", borderLeft: "3px solid rgba(255,85,0,0.5)" }}>
+      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "var(--af-orange)" }}>//</span>
       <div className="flex flex-col gap-1">{children}</div>
     </div>
   )
 }
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>{children}</p>
+  return <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>{children}</p>
 }
 
 function CodeBlock({ children }: { children: string }) {
   return (
-    <pre className="text-xs font-mono leading-relaxed p-4 overflow-x-auto" style={{ backgroundColor: "#0d0d0d", borderLeft: "3px solid rgb(31,41,55)", color: "rgb(156,163,175)" }}>
+    <pre className="text-xs font-mono leading-relaxed p-4 overflow-x-auto" style={{ backgroundColor: "#1e1e1e", borderLeft: "3px solid var(--af-orange)", color: "rgb(200,200,200)" }}>
       {children}
     </pre>
   )
@@ -76,18 +74,18 @@ export function Phase3() {
         <MobileWarning />
 
         <div className="flex flex-col gap-2">
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>Your Mission - Control the Blast Radius</h2>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Your Mission - Control the Blast Radius</h2>
           <p className="text-gray-500 text-sm leading-relaxed">Implement a canary release, configure blue-green environments, document rollback, and test the canary logic.</p>
         </div>
 
-        <div className="flex flex-col gap-5 p-6 border" style={{ backgroundColor: "#0a0700", borderColor: "rgba(251,146,60,0.3)", borderLeft: "3px solid rgb(251,146,60)" }}>
+        <div className="flex flex-col gap-5 p-6 border" style={{ backgroundColor: "var(--bg-card)", borderColor: "rgba(251,146,60,0.3)", borderLeft: "3px solid rgb(251,146,60)" }}>
           <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>Before you start</p>
           <p className="text-gray-400 text-sm leading-relaxed">This mission builds on M-18. Your pipeline should deploy automatically to staging and require approval for production.</p>
         </div>
 
         <TaskCard number="01" title="Implement a simple canary using percentage routing" done={task1Done} locked={false}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed"><span className="text-white">Start at 0% and roll out gradually.</span>{" "}The new behavior is only active for users whose hash falls within the canary percentage. Consistent per user, no state required, instant rollback by setting to 0.</p>
+            <p className="text-sm text-gray-600 leading-relaxed"><span className="text-gray-900">Start at 0% and roll out gradually.</span>{" "}The new behavior is only active for users whose hash falls within the canary percentage. Consistent per user, no state required, instant rollback by setting to 0.</p>
           </MentorNote>
           <div className="flex flex-col gap-2">
             <SectionLabel>Add to src/index.js</SectionLabel>
@@ -115,14 +113,14 @@ app.get('/api/pricing', (req, res) => {
           {!task1Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask1Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">Canary endpoint implemented — CANARY_PERCENTAGE controls rollout percentage</span>
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Canary endpoint implemented — CANARY_PERCENTAGE controls rollout percentage</span>
             </label>
           )}
         </TaskCard>
 
         <TaskCard number="02" title="Implement blue-green with docker-compose" done={task2Done} locked={!task1Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed"><span className="text-white">Run two versions simultaneously, switch which one serves traffic.</span>{" "}Rollback is instant — switch traffic back to blue. The old environment stays live until you are confident in the new one.</p>
+            <p className="text-sm text-gray-600 leading-relaxed"><span className="text-gray-900">Run two versions simultaneously, switch which one serves traffic.</span>{" "}Rollback is instant — switch traffic back to blue. The old environment stays live until you are confident in the new one.</p>
           </MentorNote>
           <div className="flex flex-col gap-2">
             <SectionLabel>Add to docker-compose.yml</SectionLabel>
@@ -162,14 +160,14 @@ docker compose stop blue`}</CodeBlock>
           {!task2Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask2Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">Blue-green services configured — instant rollback available</span>
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Blue-green services configured — instant rollback available</span>
             </label>
           )}
         </TaskCard>
 
         <TaskCard number="03" title="Add rollback documentation" done={task3Done} locked={!task2Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed"><span className="text-white">A release pattern without a rollback plan is not a release pattern — it is optimism.</span>{" "}Document the rollback procedure before you need it. You will not have time to think clearly during an incident.</p>
+            <p className="text-sm text-gray-600 leading-relaxed"><span className="text-gray-900">A release pattern without a rollback plan is not a release pattern — it is optimism.</span>{" "}Document the rollback procedure before you need it. You will not have time to think clearly during an incident.</p>
           </MentorNote>
           <div className="flex flex-col gap-2">
             <SectionLabel>Add to DEPLOYMENT.md</SectionLabel>
@@ -196,14 +194,14 @@ The pipeline deploys the reverted commit automatically.`}</CodeBlock>
           {!task3Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask3Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">Rollback procedures documented — team knows how to roll back before deploying</span>
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Rollback procedures documented — team knows how to roll back before deploying</span>
             </label>
           )}
         </TaskCard>
 
         <TaskCard number="04" title="Write a canary routing test" done={task4Done} locked={!task3Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed"><span className="text-white">The canary logic should be tested like any other business logic.</span>{" "}A bug in the canary router affects your entire rollout strategy — and it is not obvious until you are mid-rollout.</p>
+            <p className="text-sm text-gray-600 leading-relaxed"><span className="text-gray-900">The canary logic should be tested like any other business logic.</span>{" "}A bug in the canary router affects your entire rollout strategy — and it is not obvious until you are mid-rollout.</p>
           </MentorNote>
           <div className="flex flex-col gap-2">
             <SectionLabel>Add src/__tests__/unit/canary.test.js</SectionLabel>
@@ -235,14 +233,14 @@ describe('canary routing', () => {
           {!task4Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask4Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">Canary routing logic is tested</span>
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Canary routing logic is tested</span>
             </label>
           )}
         </TaskCard>
 
         <TaskCard number="05" title="Commit and push" done={task5Done} locked={!task4Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed"><span className="text-white">The next bad deploy will affect 1% of users, not 100%.</span>{" "}Rollback is a config change, not a crisis. The blast radius is controlled.</p>
+            <p className="text-sm text-gray-600 leading-relaxed"><span className="text-gray-900">The next bad deploy will affect 1% of users, not 100%.</span>{" "}Rollback is a config change, not a crisis. The blast radius is controlled.</p>
           </MentorNote>
           <div className="flex flex-col gap-2">
             <SectionLabel>Commit and push all changes</SectionLabel>
@@ -254,20 +252,20 @@ git push`}</CodeBlock>
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-2">
                 <SectionLabel>Paste your green Actions run URL</SectionLabel>
-                <input type="url" value={actionsUrl} onChange={(e) => setActionsUrl(e.target.value)} placeholder="https://github.com/your-username/nexus-corp-app/actions/runs/..." className="w-full px-3 py-2 text-sm font-mono text-white outline-none border" style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }} />
+                <input type="url" value={actionsUrl} onChange={(e) => setActionsUrl(e.target.value)} placeholder="https://github.com/your-username/nexus-corp-app/actions/runs/..." className="w-full px-3 py-2 text-sm font-mono text-gray-900 outline-none border" style={{ backgroundColor: "var(--bg)", borderColor: "var(--border-bright)" }} />
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <input type="checkbox" onChange={(e) => { if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-                <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">Pipeline is green — release patterns implemented</span>
+                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Pipeline is green — release patterns implemented</span>
               </label>
             </div>
           )}
         </TaskCard>
 
         {allDone && (
-          <div className="flex flex-col gap-5 border p-6" style={{ backgroundColor: "#060f06", borderColor: "rgba(34,197,94,0.3)", borderLeft: "3px solid rgb(34,197,94)" }}>
+          <div className="flex flex-col gap-5 border p-6" style={{ backgroundColor: "var(--bg-card)", borderColor: "rgba(34,197,94,0.5)", borderLeft: "3px solid rgb(34,197,94)" }}>
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>✓ Canary is live at 0%. Blue-green is ready. Rollback is documented. Risk is now a dial, not a switch.</p>
-            <a href="?phase=4" className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80" style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}>See your impact →</a>
+            <a href="?phase=4" className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80" style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}>See your impact →</a>
           </div>
         )}
       </div>

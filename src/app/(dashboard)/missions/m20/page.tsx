@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { auth } from "@/auth"
-import { Syne } from "next/font/google"
 import { Phase3 } from "./Phase3"
 import { completeMission } from "@/app/actions/progress"
 import { prisma } from "@/lib/prisma"
@@ -10,19 +9,18 @@ export const metadata: Metadata = {
   title: "M-20 Architecture for Low-Risk Releases - DevOps Flow Lab",
 }
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 // ─── Shared: Mission Header ───────────────────────────────────────────────────
 
 function MissionHeader({ fase }: { fase: number }) {
   const pct = `${fase * 25}%`
   return (
-    <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "#080808" }}>
+    <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "var(--bg-card)" }}>
       <div className="max-w-5xl mx-auto flex items-center justify-between">
-        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(255,85,0)" }}>
+        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "var(--af-orange)" }}>
           M-20
         </span>
-        <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
+        <span className="text-sm font-bold tracking-tight text-gray-900" style={{ fontFamily: "var(--font-heading)" }}>
           Architecture for Low-Risk Releases
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
@@ -46,7 +44,7 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
       <a
         href={href}
         className="self-start px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-        style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
+        style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}
       >
         {label}
       </a>
@@ -162,8 +160,8 @@ function Phase1() {
 
         <div className="flex flex-col gap-3 max-w-2xl">
           <h2
-            className="text-4xl text-white tracking-tight leading-tight"
-            style={{ ...syne.style, fontWeight: 800 }}
+            className="text-4xl text-gray-900 tracking-tight leading-tight"
+            style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}
           >
             Week seven. Nexus Corp.
           </h2>
@@ -178,14 +176,14 @@ function Phase1() {
               key={p.initials}
               className="flex flex-col gap-0 overflow-hidden"
               style={{
-                backgroundColor: "#0a0a0a",
-                border: "1px solid #222",
+                backgroundColor: "var(--bg)",
+                border: "1px solid var(--border)",
                 borderLeft: `3px solid ${p.accent}`,
               }}
             >
               <div
                 className="flex items-center justify-between px-4 py-3 border-b"
-                style={{ borderColor: "#1a1a1a", backgroundColor: "#0d0d0d" }}
+                style={{ borderColor: "#1a1a1a", backgroundColor: "var(--bg-card)" }}
               >
                 <div className="flex items-center gap-3">
                   <div
@@ -199,7 +197,7 @@ function Phase1() {
                     {p.initials}
                   </div>
                   <div className="flex flex-col gap-0">
-                    <span className="text-white text-sm font-semibold leading-tight">{p.name}</span>
+                    <span className="text-gray-900 text-sm font-semibold leading-tight">{p.name}</span>
                     <span className="text-gray-600 text-xs">{p.role}</span>
                   </div>
                 </div>
@@ -216,9 +214,9 @@ function Phase1() {
               </div>
 
               <div className="px-5 py-4 flex flex-col gap-3">
-                <p className="text-gray-300 text-sm leading-relaxed">{p.quote}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">{p.quote}</p>
                 {"outro" in p && p.outro && (
-                  <p className="text-white font-bold text-sm border-t pt-3" style={{ borderColor: "#1a1a1a" }}>
+                  <p className="text-gray-900 font-bold text-sm border-t pt-3" style={{ borderColor: "#1a1a1a" }}>
                     {p.outro}
                   </p>
                 )}
@@ -297,7 +295,7 @@ function Phase2() {
             <span className="text-xs font-mono text-gray-700 tracking-widest">01</span>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Deployment vs release — the crucial distinction
           </h2>
           <p className="text-gray-400 leading-relaxed">
@@ -319,7 +317,7 @@ function Phase2() {
               <div
                 key={item.word}
                 className="flex flex-col gap-3 p-6 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: `3px solid ${item.accent}` }}
+                style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)", borderLeft: `3px solid ${item.accent}` }}
               >
                 <span className="text-sm font-mono font-bold uppercase tracking-widest" style={{ color: item.accent }}>
                   {item.word}
@@ -339,7 +337,7 @@ function Phase2() {
             <span className="text-xs font-mono text-gray-700 tracking-widest">02</span>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Three patterns for low-risk releases
           </h2>
           <div className="flex flex-col gap-3">
@@ -363,7 +361,7 @@ function Phase2() {
             <span className="text-xs font-mono text-gray-700 tracking-widest">03</span>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The strangler fig pattern
           </h2>
           <p className="text-gray-400 leading-relaxed">
@@ -376,11 +374,11 @@ function Phase2() {
               <div
                 key={s.step}
                 className="flex gap-5 px-5 py-4 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+                style={{ backgroundColor: i % 2 === 0 ? "var(--bg-card)" : "var(--bg)" }}
               >
-                <span className="text-xs font-mono font-bold shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>{s.step}</span>
+                <span className="text-xs font-mono font-bold shrink-0 mt-0.5" style={{ color: "var(--af-orange)" }}>{s.step}</span>
                 <div className="flex flex-col gap-1">
-                  <span className="text-xs font-mono font-bold text-white uppercase tracking-widest">{s.label}</span>
+                  <span className="text-xs font-mono font-bold text-gray-900 uppercase tracking-widest">{s.label}</span>
                   <p className="text-xs text-gray-500 leading-relaxed">{s.body}</p>
                 </div>
               </div>
@@ -393,13 +391,13 @@ function Phase2() {
             <span className="text-xs font-mono text-gray-700 tracking-widest">04</span>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             When to use each pattern
           </h2>
           <div className="border border-gray-800">
             <div
               className="grid grid-cols-12 border-b border-gray-800 px-5 py-3"
-              style={{ backgroundColor: "#0d0d0d" }}
+              style={{ backgroundColor: "var(--bg-card)" }}
             >
               <span className="col-span-3 text-xs font-mono text-gray-600 uppercase tracking-widest">Pattern</span>
               <span className="col-span-4 text-xs font-mono text-gray-600 uppercase tracking-widest">Use case</span>
@@ -410,9 +408,9 @@ function Phase2() {
               <div
                 key={row.pattern}
                 className="grid grid-cols-12 px-5 py-4 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+                style={{ backgroundColor: i % 2 === 0 ? "var(--bg-card)" : "var(--bg)" }}
               >
-                <span className="col-span-3 text-sm font-mono font-bold text-white">{row.pattern}</span>
+                <span className="col-span-3 text-sm font-mono font-bold text-gray-900">{row.pattern}</span>
                 <span className="col-span-4 text-xs text-gray-400 leading-relaxed">{row.useCase}</span>
                 <span
                   className="col-span-2 text-xs font-mono font-bold"
@@ -457,10 +455,10 @@ function Phase4() {
       <div className="max-w-5xl mx-auto flex flex-col gap-16">
 
         <div className="flex flex-col gap-4">
-          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(255,85,0)" }}>
+          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "var(--af-orange)" }}>
             Mission Complete - M-20
           </p>
-          <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Deploy Dark. Release Gradually.
           </h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">
@@ -476,7 +474,7 @@ function Phase4() {
           </div>
 
           <div className="border border-gray-800">
-            <div className="grid grid-cols-2 border-b border-gray-800" style={{ backgroundColor: "#0d0d0d" }}>
+            <div className="grid grid-cols-2 border-b border-gray-800" style={{ backgroundColor: "var(--bg-card)" }}>
               <div className="px-5 py-3 border-r border-gray-800">
                 <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(239,68,68)" }}>Before</span>
               </div>
@@ -488,13 +486,13 @@ function Phase4() {
               <div
                 key={i}
                 className="grid grid-cols-2 border-b border-gray-800 last:border-b-0"
-                style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+                style={{ backgroundColor: i % 2 === 0 ? "var(--bg-card)" : "var(--bg)" }}
               >
                 <div className="px-5 py-4 border-r border-gray-800">
                   <p className="text-sm text-gray-500">{row.before}</p>
                 </div>
                 <div className="px-5 py-4">
-                  <p className="text-sm text-gray-300">{row.after}</p>
+                  <p className="text-sm text-gray-600">{row.after}</p>
                 </div>
               </div>
             ))}
@@ -513,18 +511,18 @@ function Phase4() {
               <div
                 key={d.code}
                 className="flex flex-col gap-4 border p-6"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
+                style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)" }}
               >
                 <div className="flex flex-col gap-1">
                   <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">{d.metric}</span>
                   <span className="text-xs font-mono text-gray-700">DORA - {d.code}</span>
                 </div>
                 <div className="flex items-center gap-3 flex-wrap">
-                  <span className="text-lg font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>
+                  <span className="text-lg font-mono font-bold" style={{ fontFamily: "var(--font-heading)", color: "rgb(239,68,68)" }}>
                     {d.before}
                   </span>
                   <span className="font-mono text-gray-700">→</span>
-                  <span className="text-lg font-mono font-bold" style={{ ...syne.style, color: "rgb(255,85,0)" }}>
+                  <span className="text-lg font-mono font-bold" style={{ fontFamily: "var(--font-heading)", color: "var(--af-orange)" }}>
                     {d.after}
                   </span>
                 </div>
@@ -544,12 +542,12 @@ function Phase4() {
           <div
             className="flex flex-col gap-3 p-6 border"
             style={{
-              backgroundColor: "#080808",
+              backgroundColor: "var(--bg-card)",
               borderColor: "rgba(255,85,0,0.2)",
               borderLeft: "3px solid rgb(255,85,0)",
             }}
           >
-            <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(255,85,0)" }}>
+            <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
               First Way: Flow — Complete
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
@@ -564,13 +562,13 @@ function Phase4() {
             <a
               href="/dashboard"
               className="px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
+              style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}
             >
               Back to dashboard →
             </a>
             <span
               className="flex items-center gap-3 px-8 py-4 text-sm font-mono border cursor-not-allowed"
-              style={{ backgroundColor: "#0a0a0a", borderColor: "rgb(31,41,55)", color: "rgb(55,65,81)" }}
+              style={{ backgroundColor: "var(--bg)", borderColor: "var(--border)", color: "var(--text-dim)" }}
               title="Not yet available"
             >
               <span>⊘</span>
@@ -615,7 +613,7 @@ export default async function M07Page({
   }
 
   return (
-    <main className="min-h-screen text-gray-100 flex flex-col" style={{ backgroundColor: "#000" }}>
+    <main className="min-h-screen text-gray-100 flex flex-col" style={{ backgroundColor: "var(--bg)" }}>
       <MissionHeader fase={phase} />
       {phase === 1 && <Phase1 />}
       {phase === 2 && <Phase2 />}

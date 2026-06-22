@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { auth } from "@/auth"
-import { Syne } from "next/font/google"
 import { Phase3 } from "./Phase3"
 import { completeMission } from "@/app/actions/progress"
 import { prisma } from "@/lib/prisma"
@@ -10,15 +9,14 @@ export const metadata: Metadata = {
   title: "M-13 Dev and Ops Working Together - DevOps Flow Lab",
 }
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 function MissionHeader({ fase }: { fase: number }) {
   const pct = `${fase * 25}%`
   return (
-    <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "#080808" }}>
+    <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "var(--bg-card)" }}>
       <div className="max-w-5xl mx-auto flex items-center justify-between">
-        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(255,85,0)" }}>M-13</span>
-        <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>Dev and Ops Working Together</span>
+        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "var(--af-orange)" }}>M-13</span>
+        <span className="text-sm font-bold tracking-tight text-gray-900" style={{ fontFamily: "var(--font-heading)" }}>Dev and Ops Working Together</span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">Phase {fase} of 4</span>
       </div>
       <div className="max-w-5xl mx-auto mt-3">
@@ -33,7 +31,7 @@ function MissionHeader({ fase }: { fase: number }) {
 function CTA({ href, label, sub }: { href: string; label: string; sub?: string }) {
   return (
     <div className="flex flex-col gap-3 border-t border-gray-900 pt-10">
-      <a href={href} className="self-start px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80" style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}>{label}</a>
+      <a href={href} className="self-start px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80" style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}>{label}</a>
       {sub && <p className="text-xs font-mono text-gray-700">{sub}</p>}
     </div>
   )
@@ -65,7 +63,7 @@ function Phase1() {
     <div className="flex-1 px-6 py-14">
       <div className="max-w-3xl mx-auto flex flex-col gap-12">
         <div className="flex flex-col gap-3 max-w-2xl">
-          <h2 className="text-4xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>Week thirteen. Nexus Corp.</h2>
+          <h2 className="text-4xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Week thirteen. Nexus Corp.</h2>
           <p className="text-gray-400 text-base leading-relaxed">Dev ships. Ops fixes. Nobody talks.</p>
         </div>
         <div className="flex flex-col">
@@ -74,17 +72,17 @@ function Phase1() {
             if (entry.type === "you") return (
               <div key={i} className="flex flex-col gap-4 p-6 mt-2" style={{ backgroundColor: "rgba(255,85,0,0.04)", border: "1px solid rgba(255,85,0,0.2)", borderLeftWidth: "3px", borderLeft: "3px solid rgb(255,85,0)" }}>
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 flex items-center justify-center text-xs font-mono font-bold shrink-0" style={{ backgroundColor: "rgba(255,85,0,0.12)", border: "1px solid rgba(255,85,0,0.4)", color: "rgb(255,85,0)" }}>YOU</div>
-                  <div className="flex flex-col gap-0"><span className="text-white text-xs font-mono font-bold">You</span><span className="text-gray-600 text-xs font-mono">New Engineer</span></div>
+                  <div className="w-8 h-8 flex items-center justify-center text-xs font-mono font-bold shrink-0" style={{ backgroundColor: "rgba(255,85,0,0.12)", border: "1px solid rgba(255,85,0,0.4)", color: "var(--af-orange)" }}>YOU</div>
+                  <div className="flex flex-col gap-0"><span className="text-gray-900 text-xs font-mono font-bold">You</span><span className="text-gray-600 text-xs font-mono">New Engineer</span></div>
                 </div>
-                <p className="text-gray-300 text-sm leading-relaxed">{entry.text}</p>
-                <p className="text-white font-bold text-sm border-t pt-3" style={{ borderColor: "rgba(255,85,0,0.2)" }}>{entry.closing}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">{entry.text}</p>
+                <p className="text-gray-900 font-bold text-sm border-t pt-3" style={{ borderColor: "rgba(255,85,0,0.2)" }}>{entry.closing}</p>
               </div>
             )
             return (
-              <div key={i} className="flex flex-col gap-2 px-5 py-4" style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606", borderLeft: `3px solid ${entry.accent}`, borderBottom: "1px solid rgb(21,28,36)" }}>
+              <div key={i} className="flex flex-col gap-2 px-5 py-4" style={{ backgroundColor: i % 2 === 0 ? "var(--bg-card)" : "var(--bg)", borderLeft: `3px solid ${entry.accent}`, borderBottom: "1px solid var(--border)" }}>
                 <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: entry.accent }}>{entry.name} · {entry.role}</span>
-                <p className="text-gray-300 text-sm leading-relaxed">{entry.text}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">{entry.text}</p>
               </div>
             )
           })}
@@ -101,7 +99,7 @@ function Phase2() {
       <div className="max-w-3xl mx-auto flex flex-col gap-14">
         <div className="flex flex-col gap-2">
           <p className="text-xs font-mono tracking-widest uppercase text-gray-600">AUTOMATED TESTING — Enable fast and reliable automated testing</p>
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>Shared Ownership, Shared Responsibility</h2>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Shared Ownership, Shared Responsibility</h2>
         </div>
         {[
           { num: "01", title: "The wall between Dev and Ops", body: "The traditional separation between development and operations creates a handoff problem. Dev writes code and throws it over the wall. Ops catches it, runs it, and absorbs all the operational pain. Dev never sees the consequences of their code in production. Ops never influences the code that creates their problems. Both teams optimize for their own metrics — and those metrics conflict." },
@@ -111,7 +109,7 @@ function Phase2() {
         ].map((s) => (
           <section key={s.num} className="flex flex-col gap-5">
             <div className="flex items-center gap-4"><span className="text-xs font-mono text-gray-700 tracking-widest">{s.num}</span><div className="flex-1 h-px bg-gray-900" /></div>
-            <h3 className="text-2xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>{s.title}</h3>
+            <h3 className="text-2xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>{s.title}</h3>
             <p className="text-gray-400 leading-relaxed">{s.body}</p>
           </section>
         ))}
@@ -126,17 +124,17 @@ function Phase4() {
     <div className="flex-1 px-6 py-14">
       <div className="max-w-5xl mx-auto flex flex-col gap-16">
         <div className="flex flex-col gap-4">
-          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(255,85,0)" }}>Mission Complete - M-13</p>
-          <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>Nexus Corp Removes the Wall Between Dev and Ops</h1>
+          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "var(--af-orange)" }}>Mission Complete - M-13</p>
+          <h1 className="text-5xl text-gray-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Nexus Corp Removes the Wall Between Dev and Ops</h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">Dev and Ops working together is not a DORA metric. It is the condition that makes all DORA metrics achievable.</p>
         </div>
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4"><span className="text-xs font-mono text-gray-700 tracking-widest uppercase">01</span><h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">Your DORA metrics</h2><div className="flex-1 h-px bg-gray-900" /></div>
           <div
             className="flex flex-col gap-5 p-6 border"
-            style={{ backgroundColor: "#080808", borderColor: "rgba(255,85,0,0.2)", borderLeft: "3px solid rgb(255,85,0)" }}
+            style={{ backgroundColor: "var(--bg-card)", borderColor: "rgba(255,85,0,0.2)", borderLeft: "3px solid rgb(255,85,0)" }}
           >
-            <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(255,85,0)" }}>Foundation — enabling all four metrics</p>
+            <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>Foundation — enabling all four metrics</p>
             <p className="text-sm text-gray-400 leading-relaxed">
               Dev and Ops working together does not show up directly in any single DORA metric. It shows up in all of them.
               Without shared ownership, every metric improvement is temporary — Dev keeps shipping problems Ops absorbs silently,
@@ -152,7 +150,7 @@ function Phase4() {
               ].map((d) => (
                 <div key={d.code} className="flex flex-col gap-2">
                   <span className="text-xs font-mono text-gray-700">DORA - {d.code}</span>
-                  <span className="text-xs font-mono px-2 py-0.5 border self-start" style={{ color: "rgb(107,114,128)", borderColor: "rgb(55,65,81)", backgroundColor: "rgba(75,85,99,0.06)" }}>FOUNDATION</span>
+                  <span className="text-xs font-mono px-2 py-0.5 border self-start" style={{ color: "var(--text-muted)", borderColor: "rgb(55,65,81)", backgroundColor: "rgba(75,85,99,0.06)" }}>FOUNDATION</span>
                   <p className="text-xs font-mono text-gray-600">{d.note}</p>
                 </div>
               ))}
@@ -161,15 +159,15 @@ function Phase4() {
         </section>
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-4"><span className="text-xs font-mono text-gray-700 tracking-widest uppercase">02</span><h2 className="text-sm font-mono text-gray-500 uppercase tracking-widest">What is next</h2><div className="flex-1 h-px bg-gray-900" /></div>
-          <div className="flex flex-col gap-3 p-6 border" style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: "3px solid rgb(31,41,55)" }}>
+          <div className="flex flex-col gap-3 p-6 border" style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)", borderLeft: "3px solid rgb(31,41,55)" }}>
             <p className="text-xs font-mono font-bold uppercase tracking-widest text-gray-500">Next: Enable and practice continuous integration</p>
             <p className="text-gray-500 text-sm leading-relaxed">Small batches, trunk-based development, and committing to trunk multiple times per day. The test suite you built is the safety net that makes continuous integration possible.</p>
           </div>
         </section>
         <section className="flex flex-col gap-4 border-t border-gray-900 pt-10">
           <div className="flex flex-wrap items-center gap-4">
-            <a href="/missions/m14" className="px-8 py-4 text-sm font-bold tracking-wide" style={{ backgroundColor: "rgb(31,41,55)", color: "rgb(107,114,128)", ...syne.style, fontWeight: 700, opacity: 0.6, pointerEvents: "none" as const }}>Continue to M-14 →</a>
-            <a href="/dashboard" className="px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80" style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}>Back to dashboard →</a>
+            <a href="/missions/m14" className="px-8 py-4 text-sm font-bold tracking-wide" style={{ backgroundColor: "var(--bg-card)", color: "var(--text-muted)", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em", opacity: 0.6, pointerEvents: "none" as const }}>Continue to M-14 →</a>
+            <a href="/dashboard" className="px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80" style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}>Back to dashboard →</a>
           </div>
           <p className="text-xs font-mono text-gray-700">M-14 unlocks when you complete AUTOMATED_TESTING</p>
         </section>
@@ -191,7 +189,7 @@ export default async function M13Page({ searchParams }: { searchParams: Promise<
     if (!completed) redirect("?phase=3")
   }
   return (
-    <main className="min-h-screen text-gray-100 flex flex-col" style={{ backgroundColor: "#000" }}>
+    <main className="min-h-screen text-gray-100 flex flex-col" style={{ backgroundColor: "var(--bg)" }}>
       <MissionHeader fase={phase} />
       {phase === 1 && <Phase1 />}
       {phase === 2 && <Phase2 />}

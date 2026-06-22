@@ -1,13 +1,11 @@
-import { Syne } from "next/font/google"
 import { VideoNotice } from "../_components/VideoNotice"
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 const serif: React.CSSProperties = { fontFamily: "Georgia, 'Times New Roman', serif" }
 
 function SectionLabel({ num, title }: { num: string; title: string }) {
   return (
     <div className="flex items-baseline gap-3 mb-6">
       <span className="text-xs font-mono font-bold tracking-[0.2em] text-gray-400">{num}</span>
-      <h2 className="text-xl text-black tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>{title}</h2>
+      <h2 className="text-xl text-black tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>{title}</h2>
     </div>
   )
 }
@@ -115,7 +113,7 @@ export default function FiveIdealsPage() {
               <span key={tag} className="text-xs font-mono px-2 py-0.5" style={{ backgroundColor: "#faf5ff", color: "#7c3aed", border: "1px solid #e9d5ff" }}>{tag}</span>
             ))}
           </div>
-          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>The Five Ideals</h1>
+          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>The Five Ideals</h1>
           <p className="text-base leading-relaxed" style={{ color: "#555" }}>Gene Kim's framework from <em>The Unicorn Project</em>. The conditions that separate organizations where developers love their work from those where they are perpetually firefighting.</p>
           <div className="flex items-center gap-2 pt-1 flex-wrap">
             <span className="text-xs font-mono text-gray-400 mr-1">Sources:</span>
@@ -143,7 +141,7 @@ export default function FiveIdealsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-5 gap-0 border border-[#e5e5e5] overflow-hidden">
               {ideals.map((ideal, i) => (
                 <div key={ideal.num} className="p-4 text-center" style={{ backgroundColor: ideal.bg, borderRight: i < 4 ? "1px solid #e5e5e5" : undefined }}>
-                  <p className="text-2xl font-mono font-bold mb-1" style={{ ...syne.style, color: `${ideal.color}50` }}>{ideal.num}</p>
+                  <p className="text-2xl font-mono font-bold mb-1" style={{ fontFamily: "var(--font-heading)", color: `${ideal.color}50` }}>{ideal.num}</p>
                   <p className="text-xs font-mono font-bold leading-tight" style={{ color: ideal.color }}>{ideal.title}</p>
                 </div>
               ))}
@@ -157,9 +155,9 @@ export default function FiveIdealsPage() {
                 <div key={ideal.num} className="border border-[#e5e5e5] overflow-hidden">
                   <div className="px-6 py-5" style={{ backgroundColor: ideal.bg, borderLeft: `3px solid ${ideal.color}` }}>
                     <div className="flex items-baseline gap-3 mb-2">
-                      <span className="text-3xl font-mono font-bold" style={{ ...syne.style, color: `${ideal.color}30` }}>{ideal.num}</span>
+                      <span className="text-3xl font-mono font-bold" style={{ fontFamily: "var(--font-heading)", color: `${ideal.color}30` }}>{ideal.num}</span>
                       <div>
-                        <p className="text-base font-bold text-black" style={{ ...syne.style }}>{ideal.title}</p>
+                        <p className="text-base font-bold text-black" style={{ fontFamily: "var(--font-heading)" }}>{ideal.title}</p>
                         <p className="text-xs font-mono mt-0.5" style={{ color: ideal.color }}>{ideal.tagline}</p>
                       </div>
                     </div>

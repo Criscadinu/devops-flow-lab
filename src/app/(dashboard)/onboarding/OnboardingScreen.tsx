@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Syne } from "next/font/google";
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 
 type Role = "engineer" | "manager" | "coach";
 
@@ -90,7 +88,7 @@ export function OnboardingScreen() {
 
       <div
         className="min-h-screen flex flex-col items-center justify-center px-6 py-16 relative overflow-hidden"
-        style={{ backgroundColor: "#000" }}
+        style={{ backgroundColor: "var(--bg)" }}
       >
         {/* Scanline sweep */}
         <div
@@ -121,8 +119,8 @@ export function OnboardingScreen() {
           {/* Main heading */}
           <div className="fade-up delay-2 flex flex-col gap-5">
             <h1
-              className="text-6xl sm:text-7xl text-white tracking-tighter leading-none"
-              style={{ ...syne.style, fontWeight: 800 }}
+              className="text-6xl sm:text-7xl text-gray-900 tracking-tighter leading-none"
+              style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}
             >
               You&apos;ve been hired.
             </h1>
@@ -169,8 +167,8 @@ export function OnboardingScreen() {
 
                   <div className="flex flex-col gap-1.5">
                     <span
-                      className="text-white text-lg"
-                      style={{ ...syne.style, fontWeight: 700 }}
+                      className="text-gray-900 text-lg"
+                      style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}
                     >
                       {role.title}
                     </span>

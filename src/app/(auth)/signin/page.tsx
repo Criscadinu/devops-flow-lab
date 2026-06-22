@@ -1,10 +1,8 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { Syne } from "next/font/google";
 import { Github } from "lucide-react";
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 
 function GoogleIcon() {
   return (
@@ -33,7 +31,7 @@ export default function SignInPage() {
   return (
     <main
       className="min-h-screen flex flex-col items-center justify-center px-6"
-      style={{ backgroundColor: "#000" }}
+      style={{ backgroundColor: "var(--bg)" }}
     >
       <div className="w-full max-w-sm flex flex-col items-center gap-8 text-center">
 
@@ -45,8 +43,8 @@ export default function SignInPage() {
         {/* Heading */}
         <div className="flex flex-col gap-3">
           <h1
-            className="text-4xl text-white tracking-tight leading-tight"
-            style={{ ...syne.style, fontWeight: 800 }}
+            className="text-4xl text-gray-900 tracking-tight leading-tight"
+            style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}
           >
             Log in to start your mission.
           </h1>
@@ -59,10 +57,10 @@ export default function SignInPage() {
         <div className="w-full flex flex-col gap-3">
           <button
             onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-            className="w-full flex items-center gap-4 px-5 py-4 text-sm font-medium text-white transition-opacity hover:opacity-80"
+            className="w-full flex items-center gap-4 px-5 py-4 text-sm font-medium text-gray-900 transition-opacity hover:opacity-80"
             style={{
-              backgroundColor: "#111",
-              border: "1px solid rgb(31,41,55)",
+              backgroundColor: "var(--bg-card)",
+              border: "1px solid var(--border)",
               borderLeft: "3px solid rgb(255,85,0)",
             }}
           >
@@ -72,10 +70,10 @@ export default function SignInPage() {
 
           <button
             onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
-            className="w-full flex items-center gap-4 px-5 py-4 text-sm font-medium text-white transition-opacity hover:opacity-80"
+            className="w-full flex items-center gap-4 px-5 py-4 text-sm font-medium text-gray-900 transition-opacity hover:opacity-80"
             style={{
-              backgroundColor: "#111",
-              border: "1px solid rgb(31,41,55)",
+              backgroundColor: "var(--bg-card)",
+              border: "1px solid var(--border)",
               borderLeft: "3px solid rgb(75,85,99)",
             }}
           >

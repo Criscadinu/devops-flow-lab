@@ -1,13 +1,11 @@
-import { Syne } from "next/font/google"
 import { VideoNotice } from "../_components/VideoNotice"
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 const serif: React.CSSProperties = { fontFamily: "Georgia, 'Times New Roman', serif" }
 
 function SectionLabel({ num, title }: { num: string; title: string }) {
   return (
     <div className="flex items-baseline gap-3 mb-6">
       <span className="text-xs font-mono font-bold tracking-[0.2em] text-gray-400">{num}</span>
-      <h2 className="text-xl text-black tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>{title}</h2>
+      <h2 className="text-xl text-black tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>{title}</h2>
     </div>
   )
 }
@@ -47,7 +45,7 @@ export default function ABTestingPage() {
               <span key={tag} className="text-xs font-mono px-2 py-0.5" style={{ backgroundColor: "#faf5ff", color: "#7c3aed", border: "1px solid #e9d5ff" }}>{tag}</span>
             ))}
           </div>
-          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>A/B Testing</h1>
+          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>A/B Testing</h1>
           <p className="text-base leading-relaxed" style={{ color: "#555" }}>Let data decide. How to form a testable hypothesis, run a controlled experiment in production, and avoid the most common statistical traps.</p>
           <div className="flex items-center gap-2 pt-1 flex-wrap">
             <span className="text-xs font-mono text-gray-400 mr-1">Sources:</span>
@@ -81,9 +79,9 @@ export default function ABTestingPage() {
                 { n: "5", title: "Analyze and decide",             body: "If the result is statistically significant at your threshold (typically p < 0.05) and the effect size is practically meaningful, ship the winner. Otherwise, the null hypothesis stands." },
               ].map(item => (
                 <div key={item.n} className="flex gap-5 p-5 border border-[#e5e5e5]" style={{ backgroundColor: "#ffffff" }}>
-                  <span className="text-3xl font-mono font-bold shrink-0 leading-none" style={{ ...syne.style, color: "#f0f0f0" }}>{item.n}</span>
+                  <span className="text-3xl font-mono font-bold shrink-0 leading-none" style={{ fontFamily: "var(--font-heading)", color: "#f0f0f0" }}>{item.n}</span>
                   <div>
-                    <p className="text-sm font-bold text-black mb-1" style={{ ...syne.style }}>{item.title}</p>
+                    <p className="text-sm font-bold text-black mb-1" style={{ fontFamily: "var(--font-heading)" }}>{item.title}</p>
                     <p className="text-sm leading-relaxed" style={{ ...serif, color: "#555" }}>{item.body}</p>
                   </div>
                 </div>

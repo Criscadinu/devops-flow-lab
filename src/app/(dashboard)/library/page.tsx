@@ -1,11 +1,9 @@
 import type { Metadata } from "next"
-import { Syne } from "next/font/google"
 
 export const metadata: Metadata = {
   title: "Learning Library - DevOps Flow Lab",
 }
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -95,7 +93,7 @@ function SectionBand({
         <p className="text-xs font-mono uppercase tracking-[0.2em] mb-2" style={{ color: accent }}>
           Section {num}
         </p>
-        <h2 className="text-2xl text-black tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+        <h2 className="text-2xl text-black tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
           {label}
         </h2>
         <p className="text-sm mt-1" style={{ color: "#777" }}>{subtitle}</p>
@@ -149,7 +147,7 @@ function LibraryCard({
           {source}
         </span>
         <div className="flex flex-col gap-1.5 flex-1">
-          <h3 className="text-sm text-[#bbb] leading-snug" style={{ ...syne.style, fontWeight: 700 }}>{title}</h3>
+          <h3 className="text-sm text-[#bbb] leading-snug" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>{title}</h3>
           <p className="text-xs leading-relaxed" style={{ color: "#ccc" }}>{description}</p>
         </div>
         <div className="flex items-center justify-between">
@@ -175,7 +173,7 @@ function LibraryCard({
         {source}
       </span>
       <div className="flex flex-col gap-1.5 flex-1">
-        <h3 className="text-sm text-black leading-snug" style={{ ...syne.style, fontWeight: 700 }}>{title}</h3>
+        <h3 className="text-sm text-black leading-snug" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>{title}</h3>
         <p className="text-xs leading-relaxed" style={{ color: "#555" }}>{description}</p>
       </div>
       <div className="flex items-center justify-between">
@@ -207,7 +205,7 @@ export default function LibraryPage() {
             <p className="text-xs font-mono uppercase tracking-[0.25em]" style={{ color: "#999" }}>
               Learning Library
             </p>
-            <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
+            <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
               Theory behind DevOps.
             </h1>
             <p className="text-sm leading-relaxed" style={{ color: "#555" }}>

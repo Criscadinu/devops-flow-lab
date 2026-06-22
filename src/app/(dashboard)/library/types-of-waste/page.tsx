@@ -1,7 +1,5 @@
-import { Syne } from "next/font/google"
 import { VideoNotice } from "../_components/VideoNotice"
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 const serif: React.CSSProperties = { fontFamily: "Georgia, 'Times New Roman', serif" }
 
@@ -9,7 +7,7 @@ function SectionLabel({ num, title }: { num: string; title: string }) {
   return (
     <div className="flex items-baseline gap-3 mb-6">
       <span className="text-xs font-mono font-bold tracking-[0.2em] text-gray-400">{num}</span>
-      <h2 className="text-xl text-black tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>{title}</h2>
+      <h2 className="text-xl text-black tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>{title}</h2>
     </div>
   )
 }
@@ -113,7 +111,7 @@ export default function TypesOfWastePage() {
               </span>
             ))}
           </div>
-          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Types of Waste
           </h1>
           <p className="text-base leading-relaxed" style={{ color: "#555" }}>
@@ -160,7 +158,7 @@ export default function TypesOfWastePage() {
                 { term: "Muri", sub: "Overburden",            desc: "Asking people or systems to do more than they can handle. A team with 120% capacity utilization that is permanently in reactive mode.", color: "#7c3aed", bg: "#faf5ff" },
               ].map((c) => (
                 <div key={c.term} className="p-6 border" style={{ backgroundColor: c.bg, borderColor: `${c.color}30`, borderLeft: `3px solid ${c.color}` }}>
-                  <p className="text-base font-mono font-bold mb-0.5" style={{ ...syne.style, color: c.color }}>{c.term}</p>
+                  <p className="text-base font-mono font-bold mb-0.5" style={{ fontFamily: "var(--font-heading)", color: c.color }}>{c.term}</p>
                   <p className="text-xs font-mono font-bold mb-2 text-gray-500">{c.sub}</p>
                   <p className="text-sm leading-relaxed" style={{ ...serif, color: "#333" }}>{c.desc}</p>
                 </div>
@@ -181,7 +179,7 @@ export default function TypesOfWastePage() {
                   <div className="flex items-start gap-4">
                     <span className="text-xs font-mono font-bold text-[#0891b2] w-6 shrink-0 mt-0.5">{i + 1}</span>
                     <div className="flex-1 flex flex-col gap-2">
-                      <p className="text-sm font-bold text-black" style={{ ...syne.style }}>{w.label}</p>
+                      <p className="text-sm font-bold text-black" style={{ fontFamily: "var(--font-heading)" }}>{w.label}</p>
                       <p className="text-sm leading-relaxed" style={{ ...serif, color: "#333" }}>{w.desc}</p>
                       <div className="px-3 py-2 mt-1" style={{ backgroundColor: "#f7f7f5", borderLeft: "2px solid #e5e5e5" }}>
                         <p className="text-xs font-mono text-gray-400 mb-0.5">Example</p>

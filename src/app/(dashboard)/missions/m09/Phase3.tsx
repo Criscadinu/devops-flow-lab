@@ -1,9 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Syne } from "next/font/google"
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 function MobileWarning() {
   const [isMobile, setIsMobile] = useState(false)
@@ -15,20 +13,20 @@ function MobileWarning() {
   }, [])
   if (!isMobile) return null
   return (
-    <div className="flex flex-col gap-3 p-5 border mb-6" style={{ backgroundColor: "#0a0700", borderColor: "rgba(251,146,60,0.4)", borderLeft: "3px solid rgb(251,146,60)" }}>
+    <div className="flex flex-col gap-3 p-5 border mb-6" style={{ backgroundColor: "var(--bg-card)", borderColor: "rgba(251,146,60,0.4)", borderLeft: "3px solid rgb(251,146,60)" }}>
       <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>Desktop required</p>
-      <p className="text-sm text-gray-400 leading-relaxed">This phase requires a terminal, a code editor, and GitHub. These tasks cannot be completed on a mobile device. Open this page on your laptop or desktop to continue.</p>
+      <p className="text-sm text-gray-600 leading-relaxed">This phase requires a terminal, a code editor, and GitHub. These tasks cannot be completed on a mobile device. Open this page on your laptop or desktop to continue.</p>
     </div>
   )
 }
 
 function TaskCard({ number, title, done, locked, children }: { number: string; title: string; done: boolean; locked: boolean; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-5 p-6 border" style={{ backgroundColor: locked ? "#050505" : done ? "#060f06" : "#080808", borderColor: locked ? "rgb(31,41,55)" : done ? "rgba(34,197,94,0.4)" : "rgba(255,85,0,0.4)", borderLeft: locked ? "3px solid rgb(31,41,55)" : done ? "3px solid rgb(34,197,94)" : "3px solid rgb(255,85,0)", opacity: locked ? 0.45 : 1, pointerEvents: locked ? "none" : "auto" }}>
+    <div className="flex flex-col gap-5 p-6 border" style={{ backgroundColor: locked ? "var(--bg-card)" : done ? "rgba(34,197,94,0.08)" : "var(--bg)", borderColor: locked ? "var(--border)" : done ? "rgba(34,197,94,0.5)" : "rgba(255,85,0,0.4)", borderLeft: locked ? "3px solid var(--border)" : done ? "3px solid rgb(34,197,94)" : "3px solid var(--af-orange)", opacity: locked ? 0.45 : 1, pointerEvents: locked ? "none" : "auto" }}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="text-xs font-mono font-bold" style={{ color: locked ? "rgb(75,85,99)" : done ? "rgb(34,197,94)" : "rgb(255,85,0)" }}>{number}</span>
-          <h3 className="text-white text-base" style={{ ...syne.style, fontWeight: 700 }}>{title}</h3>
+          <h3 className="text-gray-900 text-base" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>{title}</h3>
         </div>
         <div>
           {done && <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ DONE</span>}
@@ -42,20 +40,20 @@ function TaskCard({ number, title, done, locked, children }: { number: string; t
 
 function MentorNote({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex gap-3 p-4 border" style={{ backgroundColor: "#0a0a0a", borderColor: "rgba(255,85,0,0.15)", borderLeft: "3px solid rgba(255,85,0,0.5)" }}>
-      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>//</span>
+    <div className="flex gap-3 p-4 border" style={{ backgroundColor: "var(--bg)", borderColor: "rgba(255,85,0,0.15)", borderLeft: "3px solid rgba(255,85,0,0.5)" }}>
+      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "var(--af-orange)" }}>//</span>
       <div className="flex flex-col gap-1">{children}</div>
     </div>
   )
 }
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>{children}</p>
+  return <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>{children}</p>
 }
 
 function CodeBlock({ children }: { children: string }) {
   return (
-    <pre className="text-xs font-mono leading-relaxed p-4 overflow-x-auto" style={{ backgroundColor: "#0d0d0d", borderLeft: "3px solid rgb(31,41,55)", color: "rgb(156,163,175)" }}>
+    <pre className="text-xs font-mono leading-relaxed p-4 overflow-x-auto" style={{ backgroundColor: "#1e1e1e", borderLeft: "3px solid var(--af-orange)", color: "rgb(200,200,200)" }}>
       {children}
     </pre>
   )
@@ -76,18 +74,18 @@ export function Phase3() {
         <MobileWarning />
 
         <div className="flex flex-col gap-2">
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>Your Mission - Red, Green, Refactor</h2>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Your Mission - Red, Green, Refactor</h2>
           <p className="text-gray-500 text-sm leading-relaxed">Write the test first. Watch it fail. Make it pass. Refactor. Wire the verified function into the app.</p>
         </div>
 
-        <div className="flex flex-col gap-5 p-6 border" style={{ backgroundColor: "#0a0700", borderColor: "rgba(251,146,60,0.3)", borderLeft: "3px solid rgb(251,146,60)" }}>
+        <div className="flex flex-col gap-5 p-6 border" style={{ backgroundColor: "var(--bg-card)", borderColor: "rgba(251,146,60,0.3)", borderLeft: "3px solid rgb(251,146,60)" }}>
           <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>Before you start</p>
           <p className="text-gray-400 text-sm leading-relaxed">This mission builds on M-08. Your tests should be split into unit/ and integration/ categories and running in parallel in CI.</p>
         </div>
 
         <TaskCard number="01" title="Write a failing test first" done={task1Done} locked={false}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed"><span className="text-white">Start with red.</span>{" "}The test should describe the behavior you want, not the code you plan to write. Edge cases are requirements — write them now, before you forget them.</p>
+            <p className="text-sm text-gray-600 leading-relaxed"><span className="text-gray-900">Start with red.</span>{" "}The test should describe the behavior you want, not the code you plan to write. Edge cases are requirements — write them now, before you forget them.</p>
           </MentorNote>
           <div className="flex flex-col gap-2">
             <SectionLabel>Add src/__tests__/unit/discount.test.js</SectionLabel>
@@ -115,14 +113,14 @@ describe('applyDiscount', () => {
           {!task1Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask1Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">Failing tests written — I see red</span>
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Failing tests written — I see red</span>
             </label>
           )}
         </TaskCard>
 
         <TaskCard number="02" title="Write the minimum code to pass" done={task2Done} locked={!task1Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed"><span className="text-white">Green means passing.</span>{" "}Write only what is needed to make the tests pass — nothing more. Resist the urge to add features the tests do not require.</p>
+            <p className="text-sm text-gray-600 leading-relaxed"><span className="text-gray-900">Green means passing.</span>{" "}Write only what is needed to make the tests pass — nothing more. Resist the urge to add features the tests do not require.</p>
           </MentorNote>
           <div className="flex flex-col gap-2">
             <SectionLabel>Create src/discount.js</SectionLabel>
@@ -138,14 +136,14 @@ module.exports = { applyDiscount }`}</CodeBlock>
           {!task2Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask2Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">All tests pass — I see green</span>
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">All tests pass — I see green</span>
             </label>
           )}
         </TaskCard>
 
         <TaskCard number="03" title="Refactor without breaking tests" done={task3Done} locked={!task2Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed"><span className="text-white">Refactor means improve the structure without changing the behavior.</span>{" "}The tests tell you if you broke something — run them after every change.</p>
+            <p className="text-sm text-gray-600 leading-relaxed"><span className="text-gray-900">Refactor means improve the structure without changing the behavior.</span>{" "}The tests tell you if you broke something — run them after every change.</p>
           </MentorNote>
           <div className="flex flex-col gap-2">
             <SectionLabel>Update src/discount.js with input validation</SectionLabel>
@@ -167,14 +165,14 @@ module.exports = { applyDiscount }`}</CodeBlock>
           {!task3Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask3Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">Refactor complete — tests still green</span>
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Refactor complete — tests still green</span>
             </label>
           )}
         </TaskCard>
 
         <TaskCard number="04" title="Add the discount endpoint to the app" done={task4Done} locked={!task3Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed"><span className="text-white">Now wire the tested function into the application.</span>{" "}The function is already verified — the integration is all that remains. No surprises.</p>
+            <p className="text-sm text-gray-600 leading-relaxed"><span className="text-gray-900">Now wire the tested function into the application.</span>{" "}The function is already verified — the integration is all that remains. No surprises.</p>
           </MentorNote>
           <div className="flex flex-col gap-2">
             <SectionLabel>Add to src/index.js</SectionLabel>
@@ -193,14 +191,14 @@ app.post('/api/orders/discount', (req, res) => {
           {!task4Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
               <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask4Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">Discount endpoint wired — uses the TDD-verified function</span>
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Discount endpoint wired — uses the TDD-verified function</span>
             </label>
           )}
         </TaskCard>
 
         <TaskCard number="05" title="Commit and push" done={task5Done} locked={!task4Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed"><span className="text-white">The discount module was built test-first. The 150% discount bug cannot exist here.</span>{" "}It was ruled out before a single line of implementation was written.</p>
+            <p className="text-sm text-gray-600 leading-relaxed"><span className="text-gray-900">The discount module was built test-first. The 150% discount bug cannot exist here.</span>{" "}It was ruled out before a single line of implementation was written.</p>
           </MentorNote>
           <div className="flex flex-col gap-2">
             <SectionLabel>Commit and push</SectionLabel>
@@ -212,20 +210,20 @@ git push`}</CodeBlock>
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-2">
                 <SectionLabel>Paste your green Actions run URL</SectionLabel>
-                <input type="url" value={actionsUrl} onChange={(e) => setActionsUrl(e.target.value)} placeholder="https://github.com/your-username/nexus-corp-app/actions/runs/..." className="w-full px-3 py-2 text-sm font-mono text-white outline-none border" style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }} />
+                <input type="url" value={actionsUrl} onChange={(e) => setActionsUrl(e.target.value)} placeholder="https://github.com/your-username/nexus-corp-app/actions/runs/..." className="w-full px-3 py-2 text-sm font-mono text-gray-900 outline-none border" style={{ backgroundColor: "var(--bg)", borderColor: "var(--border-bright)" }} />
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <input type="checkbox" onChange={(e) => { if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
-                <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">Pipeline is green</span>
+                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Pipeline is green</span>
               </label>
             </div>
           )}
         </TaskCard>
 
         {allDone && (
-          <div className="flex flex-col gap-5 border p-6" style={{ backgroundColor: "#060f06", borderColor: "rgba(34,197,94,0.3)", borderLeft: "3px solid rgb(34,197,94)" }}>
+          <div className="flex flex-col gap-5 border p-6" style={{ backgroundColor: "var(--bg-card)", borderColor: "rgba(34,197,94,0.5)", borderLeft: "3px solid rgb(34,197,94)" }}>
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>✓ Red, green, refactor. The test defined the behavior. The code satisfied it. The endpoint uses it. No surprises.</p>
-            <a href="?phase=4" className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80" style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}>See your impact →</a>
+            <a href="?phase=4" className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80" style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}>See your impact →</a>
           </div>
         )}
       </div>

@@ -20,10 +20,10 @@ function getInitials(name?: string | null, email?: string | null): string {
 }
 
 const navLinks = [
-  { href: "/#how-it-works", label: "How it works", icon: Info,            iconColor: "text-gray-400",   authOnly: false, missionsLink: false },
-  { href: "/#missions",     label: "Missions",     icon: Map,             iconColor: "text-orange-500", authOnly: false, missionsLink: true  },
-  { href: "/library",       label: "Library",      icon: BookOpen,        iconColor: "text-amber-400",  authOnly: false, missionsLink: false },
-  { href: "/dashboard",     label: "Dashboard",    icon: LayoutDashboard, iconColor: "text-orange-500", authOnly: true,  missionsLink: false },
+  { href: "/#how-it-works", label: "How it works", icon: Info,            authOnly: false, missionsLink: false },
+  { href: "/#missions",     label: "Missions",     icon: Map,             authOnly: false, missionsLink: true  },
+  { href: "/library",       label: "Library",      icon: BookOpen,        authOnly: false, missionsLink: false },
+  { href: "/dashboard",     label: "Dashboard",    icon: LayoutDashboard, authOnly: true,  missionsLink: false },
 ]
 
 export default function Navbar({ user }: NavbarProps) {
@@ -48,39 +48,26 @@ export default function Navbar({ user }: NavbarProps) {
 
   return (
     <nav
-      className="w-full sticky top-0 z-50 px-6 py-4 backdrop-blur-md border-b border-gray-900"
-      style={{ backgroundColor: "rgba(0, 0, 0, 0.80)" }}
+      className="w-full sticky top-0 z-50 px-6 py-4 backdrop-blur-md"
+      style={{ backgroundColor: "rgba(255,255,255,0.92)", borderBottom: "1px solid var(--border)" }}
     >
       <div className="max-w-5xl mx-auto flex items-center justify-between">
 
         {/* Logo */}
         <div className="flex items-center gap-2.5 shrink-0">
           <a href="/" className="flex items-center gap-2.5">
-            <span
-              className="w-0.5 h-5 shrink-0"
-              style={{ background: "linear-gradient(180deg, #FF0000 0%, #FF8C00 100%)" }}
-              aria-hidden
-            />
-            <span className="text-white font-bold text-lg tracking-tight whitespace-nowrap">
-              DevOps{" "}
-              <span style={{
-                background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}>
-                Flow
+            <span className="w-0.5 h-5 shrink-0" style={{ background: "var(--af-gradient)" }} aria-hidden />
+            <span className="font-bold text-lg tracking-tight whitespace-nowrap" style={{ fontFamily: "var(--font-heading)", color: "var(--text)" }}>
+              DEVOPS{" "}
+              <span style={{ background: "var(--af-gradient)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                FLOW
               </span>
-              {" "}Lab
+              {" "}LAB
             </span>
           </a>
           <span
-            className="font-mono text-[10px] uppercase tracking-widest px-1.5 py-0.5"
-            style={{
-              color: "rgb(255,85,0)",
-              backgroundColor: "rgba(255,85,0,0.1)",
-              border: "1px solid rgba(255,85,0,0.3)",
-            }}
+            className="text-[10px] uppercase tracking-widest px-2 py-0.5"
+            style={{ fontFamily: "var(--font-heading)", fontWeight: 700, color: "var(--af-orange)", backgroundColor: "rgba(255,85,0,0.08)", border: "1px solid var(--af-orange)", borderRadius: "20px" }}
           >
             BETA
           </span>
@@ -96,9 +83,10 @@ export default function Navbar({ user }: NavbarProps) {
               <a
                 key={link.label}
                 href={href}
-                className={`flex items-center gap-1.5 text-sm transition-colors ${active ? "text-orange-400" : "text-gray-400 hover:text-white"}`}
+                className="flex items-center gap-1.5 text-sm transition-colors"
+                style={{ fontFamily: "var(--font-heading)", fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase", color: active ? "var(--af-orange)" : "var(--text-muted)" }}
               >
-                <Icon size={16} strokeWidth={1.75} className={`shrink-0 ${link.iconColor}`} />
+                <Icon size={16} strokeWidth={1.75} className="shrink-0" />
                 <span className="hidden md:inline">{link.label}</span>
               </a>
             )
@@ -108,12 +96,8 @@ export default function Navbar({ user }: NavbarProps) {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setDropdownOpen((v) => !v)}
-                className="flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold font-mono transition-opacity hover:opacity-80 focus:outline-none"
-                style={{
-                  backgroundColor: "rgba(255,85,0,0.15)",
-                  border: "1px solid rgba(255,85,0,0.35)",
-                  color: "rgb(255,140,60)",
-                }}
+                className="flex items-center justify-center w-8 h-8 text-xs font-bold transition-opacity hover:opacity-80 focus:outline-none"
+                style={{ background: "var(--af-gradient)", color: "#fff", borderRadius: "50%", fontFamily: "var(--font-heading)" }}
                 aria-label="User menu"
               >
                 {getInitials(user.name, user.email)}
@@ -122,29 +106,17 @@ export default function Navbar({ user }: NavbarProps) {
               {dropdownOpen && (
                 <div
                   className="absolute right-0 mt-2 w-44 py-1 z-50"
-                  style={{
-                    backgroundColor: "#0a0a0a",
-                    border: "1px solid rgb(31,41,55)",
-                    boxShadow: "0 8px 24px rgba(0,0,0,0.6)",
-                  }}
+                  style={{ backgroundColor: "var(--bg)", border: "1px solid var(--border)", borderRadius: "var(--radius)", boxShadow: "0 4px 20px rgba(0,0,0,0.12)" }}
                 >
-                  <div className="px-4 py-2.5 border-b border-gray-800 flex items-center gap-2">
-                    <User size={13} className="text-gray-600 shrink-0" />
-                    <p className="text-xs font-mono text-gray-400 truncate">{user.name ?? user.email}</p>
+                  <div className="px-4 py-2.5 border-b flex items-center gap-2" style={{ borderColor: "var(--border)" }}>
+                    <User size={13} className="text-gray-400 shrink-0" />
+                    <p className="text-xs font-mono text-gray-500 truncate">{user.name ?? user.email}</p>
                   </div>
-                  <a
-                    href="/dashboard"
-                    className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-900 transition-colors"
-                    onClick={() => setDropdownOpen(false)}
-                  >
+                  <a href="/dashboard" className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors" onClick={() => setDropdownOpen(false)}>
                     <LayoutDashboard size={14} className="shrink-0" />
                     Dashboard
                   </a>
-                  <a
-                    href="/api/auth/signout"
-                    className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-500 hover:text-gray-300 hover:bg-gray-900 transition-colors"
-                    onClick={() => setDropdownOpen(false)}
-                  >
+                  <a href="/api/auth/signout" className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-400 hover:text-gray-700 hover:bg-gray-50 transition-colors" onClick={() => setDropdownOpen(false)}>
                     <LogOut size={14} className="shrink-0" />
                     Sign out
                   </a>
@@ -154,8 +126,8 @@ export default function Navbar({ user }: NavbarProps) {
           ) : (
             <a
               href="/api/auth/signin"
-              className="text-white text-sm font-bold px-5 py-2 transition-opacity hover:opacity-80"
-              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)" }}
+              className="text-sm transition-opacity hover:opacity-80"
+              style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", borderRadius: "var(--radius)", padding: "8px 20px" }}
             >
               Start for free
             </a>

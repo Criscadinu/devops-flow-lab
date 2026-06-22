@@ -1,7 +1,5 @@
-import { Syne } from "next/font/google"
 import { VideoNotice } from "../_components/VideoNotice"
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 const serif: React.CSSProperties = { fontFamily: "Georgia, 'Times New Roman', serif" }
 
@@ -11,7 +9,7 @@ function SectionLabel({ num, title }: { num: string; title: string }) {
   return (
     <div className="flex items-baseline gap-3 mb-6">
       <span className="text-xs font-mono font-bold tracking-[0.2em] text-gray-400">{num}</span>
-      <h2 className="text-xl text-black tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>{title}</h2>
+      <h2 className="text-xl text-black tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>{title}</h2>
     </div>
   )
 }
@@ -220,7 +218,7 @@ export default function ValueStreamMappingToolPage() {
               </span>
             ))}
           </div>
-          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Value Stream Mapping
           </h1>
           <p className="text-base leading-relaxed" style={{ color: "#555" }}>
@@ -280,9 +278,9 @@ export default function ValueStreamMappingToolPage() {
             <ol className="flex flex-col gap-5">
               {steps.map((s) => (
                 <li key={s.n} className="flex gap-5">
-                  <span className="text-2xl font-mono font-bold shrink-0 leading-none" style={{ ...syne.style, color: "#e5e5e5" }}>{s.n}</span>
+                  <span className="text-2xl font-mono font-bold shrink-0 leading-none" style={{ fontFamily: "var(--font-heading)", color: "#e5e5e5" }}>{s.n}</span>
                   <div>
-                    <p className="text-sm font-semibold text-black mb-1" style={{ ...syne.style }}>{s.title}</p>
+                    <p className="text-sm font-semibold text-black mb-1" style={{ fontFamily: "var(--font-heading)" }}>{s.title}</p>
                     <p className="text-sm leading-relaxed" style={{ ...serif, color: "#555" }}>{s.body}</p>
                   </div>
                 </li>
@@ -311,7 +309,7 @@ export default function ValueStreamMappingToolPage() {
               {warnings.map((w) => (
                 <div key={w.title} className="p-6 border" style={{ backgroundColor: "#fffbeb", borderColor: "#fcd34d", borderLeft: "3px solid #b45309" }}>
                   <p className="text-xs font-mono font-bold mb-2" style={{ color: "#b45309" }}>Warning</p>
-                  <p className="text-sm font-semibold text-black mb-1.5" style={{ ...syne.style }}>{w.title}</p>
+                  <p className="text-sm font-semibold text-black mb-1.5" style={{ fontFamily: "var(--font-heading)" }}>{w.title}</p>
                   <p className="text-sm leading-relaxed" style={{ ...serif, color: "#555" }}>{w.body}</p>
                 </div>
               ))}

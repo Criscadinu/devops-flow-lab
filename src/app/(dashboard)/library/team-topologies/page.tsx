@@ -1,13 +1,11 @@
-import { Syne } from "next/font/google"
 import { VideoNotice } from "../_components/VideoNotice"
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 const serif: React.CSSProperties = { fontFamily: "Georgia, 'Times New Roman', serif" }
 
 function SectionLabel({ num, title }: { num: string; title: string }) {
   return (
     <div className="flex items-baseline gap-3 mb-6">
       <span className="text-xs font-mono font-bold tracking-[0.2em] text-gray-400">{num}</span>
-      <h2 className="text-xl text-black tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>{title}</h2>
+      <h2 className="text-xl text-black tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>{title}</h2>
     </div>
   )
 }
@@ -114,7 +112,7 @@ export default function TeamTopologiesPage() {
               <span key={tag} className="text-xs font-mono px-2 py-0.5" style={{ backgroundColor: "#faf5ff", color: "#7c3aed", border: "1px solid #e9d5ff" }}>{tag}</span>
             ))}
           </div>
-          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>Team Topologies</h1>
+          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>Team Topologies</h1>
           <p className="text-base leading-relaxed" style={{ color: "#555" }}>Matthew Skelton and Manuel Pais's framework for organizing software teams. Four team types, three interaction modes, and why Conway's Law means team structure is architecture.</p>
           <div className="flex items-center gap-2 pt-1 flex-wrap">
             <span className="text-xs font-mono text-gray-400 mr-1">Sources:</span>
@@ -145,7 +143,7 @@ export default function TeamTopologiesPage() {
                   <div className="px-6 py-5" style={{ backgroundColor: team.bg, borderLeft: `3px solid ${team.color}` }}>
                     <div className="flex items-baseline gap-3 mb-2">
                       <span className="text-xs font-mono font-bold px-2 py-0.5 border" style={{ color: team.color, borderColor: `${team.color}40`, backgroundColor: `${team.color}10` }}>{team.id}</span>
-                      <p className="text-sm font-bold text-black" style={{ ...syne.style }}>{team.title}</p>
+                      <p className="text-sm font-bold text-black" style={{ fontFamily: "var(--font-heading)" }}>{team.title}</p>
                       <p className="text-xs font-mono" style={{ color: team.color }}>{team.tagline}</p>
                     </div>
                     <p className="text-sm leading-relaxed" style={{ ...serif, color: "#333" }}>{team.desc}</p>

@@ -1,31 +1,47 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
   --af-red: #FF0000;
   --af-orange: #FF5500;
   --af-amber: #FF8C00;
   --af-gradient: linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%);
   --af-gradient-h: linear-gradient(90deg, #FF0000 0%, #FF8C00 100%);
-}
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --bg: #FFFFFF;
+  --bg-card: #F5F5F5;
+  --bg-card-hover: #EBEBEB;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --border: #DEDEDE;
+  --border-bright: #CCCCCC;
+
+  --text: #111111;
+  --text-muted: #666666;
+  --text-dim: #AAAAAA;
+
+  --green: #22C55E;
+  --green-dim: #16A34A;
+  --yellow: #EAB308;
+  --orange-warn: #F97316;
+  --red-burn: #EF4444;
+  --red-burn-dim: #B91C1C;
+  --blue: #3B82F6;
+
+  --radius: 8px;
+  --radius-lg: 14px;
+  --gap: 16px;
+  --trans: 0.18s ease;
+
+  --font-heading: 'Barlow Condensed', sans-serif;
+  --font-body: 'Barlow', sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
 }
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 2px; }

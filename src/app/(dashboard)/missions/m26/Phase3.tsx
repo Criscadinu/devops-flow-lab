@@ -1,9 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Syne } from "next/font/google"
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 function MobileWarning() {
   const [isMobile, setIsMobile] = useState(false)
@@ -20,7 +18,7 @@ function MobileWarning() {
     <div
       className="flex flex-col gap-3 p-5 border mb-6"
       style={{
-        backgroundColor: "#0a0700",
+        backgroundColor: "var(--bg-card)",
         borderColor: "rgba(251,146,60,0.4)",
         borderLeft: "3px solid rgb(251,146,60)",
       }}
@@ -28,7 +26,7 @@ function MobileWarning() {
       <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
         Desktop required
       </p>
-      <p className="text-sm text-gray-400 leading-relaxed">
+      <p className="text-sm text-gray-600 leading-relaxed">
         This phase requires a terminal, a code editor, and GitHub. These tasks cannot be completed on a mobile device. Open this page on your laptop or desktop to continue.
       </p>
     </div>
@@ -52,7 +50,7 @@ function TaskCard({
     <div
       className="flex flex-col gap-5 p-6 border"
       style={{
-        backgroundColor: locked ? "#050505" : done ? "#060f06" : "#080808",
+        backgroundColor: locked ? "var(--bg-card)" : done ? "rgba(34,197,94,0.08)" : "var(--bg)",
         borderColor: locked
           ? "rgb(31,41,55)"
           : done
@@ -77,7 +75,7 @@ function TaskCard({
           >
             {number}
           </span>
-          <h3 className="text-white text-base" style={{ ...syne.style, fontWeight: 700 }}>
+          <h3 className="text-gray-900 text-base" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             {title}
           </h3>
         </div>
@@ -102,12 +100,12 @@ function MentorNote({ children }: { children: React.ReactNode }) {
     <div
       className="flex gap-3 p-4 border"
       style={{
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "var(--bg)",
         borderColor: "rgba(255,85,0,0.15)",
         borderLeft: "3px solid rgba(255,85,0,0.5)",
       }}
     >
-      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>
+      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "var(--af-orange)" }}>
         //
       </span>
       <div className="flex flex-col gap-1">{children}</div>
@@ -117,7 +115,7 @@ function MentorNote({ children }: { children: React.ReactNode }) {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>
+    <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
       {children}
     </p>
   )
@@ -128,9 +126,9 @@ function CodeBlock({ children }: { children: string }) {
     <pre
       className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
       style={{
-        backgroundColor: "#0d0d0d",
+        backgroundColor: "var(--bg-card)",
         borderLeft: "3px solid rgb(31,41,55)",
-        color: "rgb(156,163,175)",
+        color: "var(--text-muted)",
       }}
     >
       {children}
@@ -157,8 +155,8 @@ export function Phase3() {
         {/* Header */}
         <div className="flex flex-col gap-2">
           <h2
-            className="text-3xl text-white tracking-tight"
-            style={{ ...syne.style, fontWeight: 800 }}
+            className="text-3xl text-gray-900 tracking-tight"
+            style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}
           >
             Your Mission - Build the Learning Culture
           </h2>
@@ -171,7 +169,7 @@ export function Phase3() {
         <div
           className="flex flex-col gap-5 p-6 border"
           style={{
-            backgroundColor: "#0a0700",
+            backgroundColor: "var(--bg-card)",
             borderColor: "rgba(251,146,60,0.3)",
             borderLeft: "3px solid rgb(251,146,60)",
           }}
@@ -188,7 +186,7 @@ export function Phase3() {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
-              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
+              <p className="text-gray-900 text-sm font-bold flex-1" style={{ fontFamily: "var(--font-heading)" }}>
                 Postmortem process in place from M-25
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
@@ -201,7 +199,7 @@ export function Phase3() {
 
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>02</span>
-              <p className="text-white text-sm font-bold flex-1" style={syne.style}>
+              <p className="text-gray-900 text-sm font-bold flex-1" style={{ fontFamily: "var(--font-heading)" }}>
                 docs/ folder already exists with postmortems and runbook
               </p>
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
@@ -215,8 +213,8 @@ export function Phase3() {
         {/* Task 1 */}
         <TaskCard number="01" title="Write your first TIL" done={task1Done} locked={false}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A TIL does not need to be profound. It needs to be written.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">A TIL does not need to be profound. It needs to be written.</span>{" "}
               The discipline of writing down what you learned — even something small — is what separates
               teams that compound knowledge from teams that repeat mistakes.
             </p>
@@ -266,7 +264,7 @@ If the operation is not atomic, it is not safe under concurrent load.`}</CodeBlo
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 docs/til/2024-01-race-condition-orders.md is created
               </span>
             </label>
@@ -276,8 +274,8 @@ If the operation is not atomic, it is not safe under concurrent load.`}</CodeBlo
         {/* Task 2 */}
         <TaskCard number="02" title="Write an ADR for a past decision" done={task2Done} locked={!task1Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">An ADR captures the why behind a technical decision.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">An ADR captures the why behind a technical decision.</span>{" "}
               Without it, future engineers see the what but not the why — and they will reverse good decisions
               because they do not understand the tradeoffs that were already considered.
             </p>
@@ -323,7 +321,7 @@ Traffic exceeds 10,000 daily active users or when per-user targeting is needed.`
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 docs/adr/001-use-environment-variables-for-feature-flags.md is created
               </span>
             </label>
@@ -333,8 +331,8 @@ Traffic exceeds 10,000 daily active users or when per-user targeting is needed.`
         {/* Task 3 */}
         <TaskCard number="03" title="Add a learning practices section to the runbook" done={task3Done} locked={!task2Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">A learning culture needs a home.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">A learning culture needs a home.</span>{" "}
               Adding a weekly learning practice to the runbook makes it a process, not a suggestion.
               The runbook is where the team&apos;s agreements live — if it is not there, it is optional.
             </p>
@@ -365,7 +363,7 @@ Future engineers should never have to guess why something was built the way it w
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 Learning practices section added to RUNBOOK.md
               </span>
             </label>
@@ -375,8 +373,8 @@ Future engineers should never have to guess why something was built the way it w
         {/* Task 4 */}
         <TaskCard number="04" title="Add a /api/learning endpoint" done={task4Done} locked={!task3Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Making the team&apos;s learning artifacts discoverable via API means they can be surfaced in dashboards and tooling.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">Making the team&apos;s learning artifacts discoverable via API means they can be surfaced in dashboards and tooling.</span>{" "}
               It also signals that learning is a first-class engineering output — not something that happens
               in a Slack thread and disappears.
             </p>
@@ -419,7 +417,7 @@ app.get('/api/learning', (req, res) => {
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 GET /api/learning returns learning artifacts
               </span>
             </label>
@@ -429,8 +427,8 @@ app.get('/api/learning', (req, res) => {
         {/* Task 5 */}
         <TaskCard number="05" title="Commit and push — verify CI is green" done={task5Done} locked={!task4Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Learning artifacts in version control are learning artifacts that cannot be lost.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">Learning artifacts in version control are learning artifacts that cannot be lost.</span>{" "}
               Every engineer who joins the team in the future starts with the accumulated knowledge
               of everyone who came before them.
             </p>
@@ -452,8 +450,8 @@ git push`}</CodeBlock>
                   value={actionsUrl}
                   onChange={(e) => setActionsUrl(e.target.value)}
                   placeholder="https://github.com/your-username/nexus-corp-app/actions/runs/..."
-                  className="w-full px-3 py-2 text-sm font-mono text-white outline-none border"
-                  style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+                  className="w-full px-3 py-2 text-sm font-mono text-gray-900 outline-none border"
+                  style={{ backgroundColor: "var(--bg)", borderColor: "var(--border-bright)" }}
                 />
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
@@ -464,7 +462,7 @@ git push`}</CodeBlock>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                   Pipeline is green — learning culture is version controlled
                 </span>
               </label>
@@ -477,7 +475,7 @@ git push`}</CodeBlock>
           <div
             className="flex flex-col gap-5 border p-6"
             style={{
-              backgroundColor: "#060f06",
+              backgroundColor: "var(--bg-card)",
               borderColor: "rgba(34,197,94,0.3)",
               borderLeft: "3px solid rgb(34,197,94)",
             }}
@@ -488,7 +486,7 @@ git push`}</CodeBlock>
             <a
               href="?phase=4"
               className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
+              style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}
             >
               See your impact →
             </a>

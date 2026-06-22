@@ -18,9 +18,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Syne } from "next/font/google";
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -115,14 +113,14 @@ function DragCard({ id }: { id: Step }) {
     <div
       className="flex items-center gap-3 px-4 py-3 border shadow-2xl"
       style={{
-        backgroundColor: "#0f1a1a",
+        backgroundColor: "var(--bg-card)",
         borderColor: "rgb(255,85,0)",
         borderLeft: "3px solid rgb(255,85,0)",
         rotate: "1.5deg",
       }}
     >
       <span className="text-gray-500 text-base font-mono">⠿</span>
-      <span className="text-white text-sm">{id}</span>
+      <span className="text-gray-900 text-sm">{id}</span>
     </div>
   );
 }
@@ -180,7 +178,7 @@ function Part1({ onComplete }: { onComplete: () => void }) {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <h3 className="text-xl text-white" style={{ ...syne.style, fontWeight: 700 }}>
+        <h3 className="text-xl text-gray-900" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
           Step 1 - Sort the steps in the correct order
         </h3>
         <p className="text-gray-500 text-sm leading-relaxed">
@@ -208,7 +206,7 @@ function Part1({ onComplete }: { onComplete: () => void }) {
                     if (wrongIds.size > 0) setWrongIds(new Set())
                   }}
                   disabled={index === 0}
-                  className="text-gray-600 hover:text-gray-300 disabled:opacity-20 font-mono text-xs px-1"
+                  className="text-gray-600 hover:text-gray-600 disabled:opacity-20 font-mono text-xs px-1"
                 >
                   ▲
                 </button>
@@ -219,7 +217,7 @@ function Part1({ onComplete }: { onComplete: () => void }) {
                     if (wrongIds.size > 0) setWrongIds(new Set())
                   }}
                   disabled={index === items.length - 1}
-                  className="text-gray-600 hover:text-gray-300 disabled:opacity-20 font-mono text-xs px-1"
+                  className="text-gray-600 hover:text-gray-600 disabled:opacity-20 font-mono text-xs px-1"
                 >
                   ▼
                 </button>
@@ -259,7 +257,7 @@ function Part1({ onComplete }: { onComplete: () => void }) {
           <button
             onClick={checkOrder}
             className="px-6 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-            style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style }}
+            style={{ background: "var(--af-gradient)", color: "#fff", borderRadius: "var(--radius)", fontFamily: "var(--font-heading)" }}
           >
             Check order
           </button>
@@ -389,16 +387,16 @@ function Part2({ onComplete }: { onComplete: () => void }) {
   }
 
   function cellStyle(correct: boolean | null) {
-    if (correct === null) return { backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" };
+    if (correct === null) return { backgroundColor: "var(--bg-card)", borderColor: "var(--border)" };
     return correct
-      ? { backgroundColor: "#061206", borderColor: "rgba(34,197,94,0.5)" }
-      : { backgroundColor: "#130606", borderColor: "rgba(239,68,68,0.5)" };
+      ? { backgroundColor: "rgba(34,197,94,0.08)", borderColor: "rgba(34,197,94,0.5)" }
+      : { backgroundColor: "rgba(239,68,68,0.06)", borderColor: "rgba(239,68,68,0.5)" };
   }
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <h3 className="text-xl text-white" style={{ ...syne.style, fontWeight: 700 }}>
+        <h3 className="text-xl text-gray-900" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
           Step 2 - Fill in the process time and wait time per step
         </h3>
         <p className="text-gray-500 text-sm leading-relaxed">
@@ -410,7 +408,7 @@ function Part2({ onComplete }: { onComplete: () => void }) {
       <div className="overflow-x-auto">
         <table className="w-full border-collapse border border-gray-800 text-sm">
           <thead>
-            <tr style={{ backgroundColor: "#0d0d0d" }}>
+            <tr style={{ backgroundColor: "var(--bg-card)" }}>
               <th className="text-left px-4 py-3 border border-gray-800 text-gray-500 font-mono text-xs tracking-widest uppercase font-normal">
                 Step
               </th>
@@ -432,10 +430,10 @@ function Part2({ onComplete }: { onComplete: () => void }) {
                 <tr
                   key={step}
                   className="border border-gray-800"
-                  style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#060606" }}
+                  style={{ backgroundColor: i % 2 === 0 ? "var(--bg-card)" : "var(--bg)" }}
                 >
-                  <td className="px-4 py-3 border border-gray-800 text-gray-300 text-sm whitespace-nowrap">
-                    <span className="font-mono text-xs mr-2" style={{ color: "rgb(255,85,0)" }}>
+                  <td className="px-4 py-3 border border-gray-800 text-gray-600 text-sm whitespace-nowrap">
+                    <span className="font-mono text-xs mr-2" style={{ color: "var(--af-orange)" }}>
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     {step}
@@ -450,7 +448,7 @@ function Part2({ onComplete }: { onComplete: () => void }) {
                       value={row.ptValue}
                       onChange={(e) => updateRow(i, { ptValue: e.target.value })}
                       placeholder="0"
-                      className="w-20 px-2 py-1.5 text-sm font-mono text-white outline-none border"
+                      className="w-20 px-2 py-1.5 text-sm font-mono text-gray-900 outline-none border"
                       style={ptStyle}
                     />
                   </td>
@@ -460,8 +458,8 @@ function Part2({ onComplete }: { onComplete: () => void }) {
                     <select
                       value={row.ptUnit}
                       onChange={(e) => updateRow(i, { ptUnit: e.target.value as Unit })}
-                      className="px-2 py-1.5 text-sm font-mono text-gray-300 outline-none border"
-                      style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+                      className="px-2 py-1.5 text-sm font-mono text-gray-600 outline-none border"
+                      style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)" }}
                     >
                       <option value="dagen">days</option>
                       <option value="uren">hours</option>
@@ -477,7 +475,7 @@ function Part2({ onComplete }: { onComplete: () => void }) {
                       value={row.wtValue}
                       onChange={(e) => updateRow(i, { wtValue: e.target.value })}
                       placeholder="0"
-                      className="w-20 px-2 py-1.5 text-sm font-mono text-white outline-none border"
+                      className="w-20 px-2 py-1.5 text-sm font-mono text-gray-900 outline-none border"
                       style={wtStyle}
                     />
                   </td>
@@ -487,8 +485,8 @@ function Part2({ onComplete }: { onComplete: () => void }) {
                     <select
                       value={row.wtUnit}
                       onChange={(e) => updateRow(i, { wtUnit: e.target.value as Unit })}
-                      className="px-2 py-1.5 text-sm font-mono text-gray-300 outline-none border"
-                      style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+                      className="px-2 py-1.5 text-sm font-mono text-gray-600 outline-none border"
+                      style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)" }}
                     >
                       <option value="dagen">days</option>
                       <option value="uren">hours</option>
@@ -506,7 +504,7 @@ function Part2({ onComplete }: { onComplete: () => void }) {
         <button
           onClick={calculate}
           className="px-6 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-          style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style }}
+          style={{ background: "var(--af-gradient)", color: "#fff", borderRadius: "var(--radius)", fontFamily: "var(--font-heading)" }}
         >
           Calculate
         </button>
@@ -520,7 +518,7 @@ function Part2({ onComplete }: { onComplete: () => void }) {
           <div className="flex flex-col gap-0 border border-gray-800">
             <div
               className="px-4 py-3 border-b border-gray-800"
-              style={{ backgroundColor: "#0d0d0d" }}
+              style={{ backgroundColor: "var(--bg-card)" }}
             >
               <span className="text-xs font-mono text-gray-500 uppercase tracking-widest">
                 Answer review
@@ -538,7 +536,7 @@ function Part2({ onComplete }: { onComplete: () => void }) {
                   key={step}
                   className="flex flex-col gap-3 px-4 py-4 border-b border-gray-800 last:border-b-0"
                   style={{
-                    backgroundColor: allOk ? "#060f06" : i % 2 === 0 ? "#080808" : "#060606",
+                    backgroundColor: allOk ? "#060f06" : i % 2 === 0 ? "var(--bg-card)" : "var(--bg)",
                     borderLeft: `3px solid ${allOk ? "rgb(34,197,94)" : "rgb(239,68,68)"}`,
                   }}
                 >
@@ -550,7 +548,7 @@ function Part2({ onComplete }: { onComplete: () => void }) {
                     >
                       {allOk ? "✓" : "✗"}
                     </span>
-                    <span className="text-sm font-mono font-bold text-white">{step}</span>
+                    <span className="text-sm font-mono font-bold text-gray-900">{step}</span>
                   </div>
 
                   {/* PT result */}
@@ -572,7 +570,7 @@ function Part2({ onComplete }: { onComplete: () => void }) {
                         <span className="text-xs font-mono text-gray-500">PT</span>
                         <span className="text-xs font-mono text-gray-400">
                           Expected:{" "}
-                          <span className="text-white">{meta.ptLabel}</span>
+                          <span className="text-gray-900">{meta.ptLabel}</span>
                           {" — "}You entered:{" "}
                           <span style={{ color: "rgb(239,68,68)" }}>
                             {formatEntry(row.ptValue, row.ptUnit)}
@@ -602,7 +600,7 @@ function Part2({ onComplete }: { onComplete: () => void }) {
                         <span className="text-xs font-mono text-gray-500">WT</span>
                         <span className="text-xs font-mono text-gray-400">
                           Expected:{" "}
-                          <span className="text-white">{meta.wtLabel}</span>
+                          <span className="text-gray-900">{meta.wtLabel}</span>
                           {" — "}You entered:{" "}
                           <span style={{ color: "rgb(239,68,68)" }}>
                             {formatEntry(row.wtValue, row.wtUnit)}
@@ -623,9 +621,9 @@ function Part2({ onComplete }: { onComplete: () => void }) {
               onClick={fillCorrectAnswers}
               className="self-start px-5 py-2.5 text-sm font-mono font-bold border transition-opacity hover:opacity-80"
               style={{
-                backgroundColor: "#0a0a0a",
+                backgroundColor: "var(--bg)",
                 borderColor: "rgba(255,85,0,0.4)",
-                color: "rgb(255,85,0)",
+                color: "var(--af-orange)",
               }}
             >
               Show correct answers
@@ -636,14 +634,14 @@ function Part2({ onComplete }: { onComplete: () => void }) {
           <div
             className="flex flex-col gap-5 border p-6"
             style={{
-              backgroundColor: "#080808",
-              borderColor: "rgb(31,41,55)",
+              backgroundColor: "var(--bg-card)",
+              borderColor: "var(--border)",
               borderLeft: "3px solid rgb(255,85,0)",
             }}
           >
             <p
               className="text-xs font-mono font-bold uppercase tracking-widest"
-              style={{ color: "rgb(255,85,0)" }}
+              style={{ color: "var(--af-orange)" }}
             >
               The correct numbers — Nexus Corp value stream
             </p>
@@ -652,19 +650,19 @@ function Part2({ onComplete }: { onComplete: () => void }) {
             <div className="grid grid-cols-3 gap-4">
               <div className="flex flex-col gap-1">
                 <p className="text-xs font-mono text-gray-600 uppercase tracking-widest">Total PT</p>
-                <p className="text-2xl font-mono font-bold" style={{ ...syne.style, color: "rgb(34,197,94)" }}>
+                <p className="text-2xl font-mono font-bold" style={{ fontFamily: "var(--font-heading)", color: "rgb(34,197,94)" }}>
                   7.5 days
                 </p>
               </div>
               <div className="flex flex-col gap-1">
                 <p className="text-xs font-mono text-gray-600 uppercase tracking-widest">Total WT</p>
-                <p className="text-2xl font-mono font-bold" style={{ ...syne.style, color: "rgb(239,68,68)" }}>
+                <p className="text-2xl font-mono font-bold" style={{ fontFamily: "var(--font-heading)", color: "rgb(239,68,68)" }}>
                   34 days
                 </p>
               </div>
               <div className="flex flex-col gap-1">
                 <p className="text-xs font-mono text-gray-600 uppercase tracking-widest">Lead Time</p>
-                <p className="text-2xl font-mono font-bold" style={{ ...syne.style, color: "rgb(255,85,0)" }}>
+                <p className="text-2xl font-mono font-bold" style={{ fontFamily: "var(--font-heading)", color: "var(--af-orange)" }}>
                   41.5 days
                 </p>
               </div>
@@ -673,17 +671,17 @@ function Part2({ onComplete }: { onComplete: () => void }) {
             {/* Flow efficiency highlight */}
             <div
               className="flex items-center gap-4 p-4 border"
-              style={{ backgroundColor: "#0a0a0a", borderColor: "rgb(31,41,55)" }}
+              style={{ backgroundColor: "var(--bg)", borderColor: "var(--border)" }}
             >
               <div className="flex flex-col gap-1">
                 <p className="text-xs font-mono text-gray-600 uppercase tracking-widest">Flow Efficiency</p>
-                <p className="text-4xl font-mono font-bold" style={{ ...syne.style, color: "rgb(255,85,0)" }}>
+                <p className="text-4xl font-mono font-bold" style={{ fontFamily: "var(--font-heading)", color: "var(--af-orange)" }}>
                   18%
                 </p>
               </div>
               <p className="text-sm text-gray-500 leading-relaxed flex-1">
-                Only <span className="text-white font-semibold">18%</span> of the total lead time is
-                actual work. The other <span className="text-white font-semibold">82%</span> is pure waiting.
+                Only <span className="text-gray-900 font-semibold">18%</span> of the total lead time is
+                actual work. The other <span className="text-gray-900 font-semibold">82%</span> is pure waiting.
               </p>
             </div>
 
@@ -692,7 +690,7 @@ function Part2({ onComplete }: { onComplete: () => void }) {
               <p className="text-xs font-mono text-gray-600 uppercase tracking-widest">How it was calculated</p>
               <div
                 className="p-4 font-mono text-xs leading-relaxed"
-                style={{ backgroundColor: "#0d0d0d", borderLeft: "3px solid rgb(31,41,55)", color: "rgb(156,163,175)" }}
+                style={{ backgroundColor: "#1e1e1e", borderLeft: "3px solid var(--af-orange)", color: "rgb(200,200,200)" }}
               >
                 <p>PT  = 2d + 3d + 4h + 2d + 1d + 4h  = 7.5 days</p>
                 <p>WT  = 5d + 3d + 1d + 5d + 8d + 12d = 34 days</p>
@@ -706,7 +704,7 @@ function Part2({ onComplete }: { onComplete: () => void }) {
           <a
             href="?phase=4"
             className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-            style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
+            style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}
           >
             View your results →
           </a>
@@ -762,15 +760,15 @@ function ContextPanel() {
   return (
     <div
       className="border"
-      style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
+      style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)" }}
     >
       <button
         onClick={() => setOpen((v) => !v)}
         className="w-full flex items-center justify-between px-5 py-4 transition-colors hover:bg-[#0d0d0d]"
       >
         <div className="flex items-center gap-3">
-          <span className="text-xs font-mono" style={{ color: "rgb(255,85,0)" }}>//</span>
-          <span className="text-sm font-mono font-bold text-white tracking-wide">
+          <span className="text-xs font-mono" style={{ color: "var(--af-orange)" }}>//</span>
+          <span className="text-sm font-mono font-bold text-gray-900 tracking-wide">
             Context — What the team told you
           </span>
         </div>
@@ -782,7 +780,7 @@ function ContextPanel() {
       {open && (
         <div
           className="flex flex-col gap-0 border-t"
-          style={{ borderColor: "rgb(31,41,55)" }}
+          style={{ borderColor: "var(--border)" }}
         >
           {contextCards.map((c, i) => (
             <div
@@ -791,7 +789,7 @@ function ContextPanel() {
               style={{
                 borderBottom: i < contextCards.length - 1 ? "1px solid rgb(21,31,43)" : undefined,
                 borderLeft: `3px solid ${c.accent}`,
-                backgroundColor: i % 2 === 0 ? "#080808" : "#060606",
+                backgroundColor: i % 2 === 0 ? "var(--bg-card)" : "var(--bg)",
               }}
             >
               <div
@@ -806,7 +804,7 @@ function ContextPanel() {
               </div>
               <div className="flex flex-col gap-1">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-xs font-mono font-bold text-white">{c.name}</span>
+                  <span className="text-xs font-mono font-bold text-gray-900">{c.name}</span>
                   <span className="text-xs text-gray-600">{c.role}</span>
                 </div>
                 <p className="text-sm text-gray-400 leading-relaxed">&ldquo;{c.quote}&rdquo;</p>
@@ -827,7 +825,7 @@ function ReferencePanel() {
   return (
     <div
       className="border"
-      style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
+      style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)" }}
     >
       <button
         onClick={() => setOpen((v) => !v)}
@@ -835,7 +833,7 @@ function ReferencePanel() {
       >
         <div className="flex items-center gap-3">
           <span className="text-xs font-mono" style={{ color: "rgb(167,139,250)" }}>//</span>
-          <span className="text-sm font-mono font-bold text-white tracking-wide">
+          <span className="text-sm font-mono font-bold text-gray-900 tracking-wide">
             Quick reference — Process time vs Wait time
           </span>
         </div>
@@ -845,12 +843,12 @@ function ReferencePanel() {
       </button>
 
       {open && (
-        <div className="border-t flex flex-col gap-0" style={{ borderColor: "rgb(31,41,55)" }}>
+        <div className="border-t flex flex-col gap-0" style={{ borderColor: "var(--border)" }}>
 
           {/* PT */}
           <div
             className="flex gap-4 px-5 py-5"
-            style={{ borderBottom: "1px solid rgb(21,31,43)", borderLeft: "3px solid rgb(34,197,94)", backgroundColor: "#060606" }}
+            style={{ borderBottom: "1px solid rgb(21,31,43)", borderLeft: "3px solid rgb(34,197,94)", backgroundColor: "var(--bg-card)" }}
           >
             <div className="shrink-0 mt-0.5">
               <span
@@ -865,7 +863,7 @@ function ReferencePanel() {
                 Process Time
               </span>
               <p className="text-sm text-gray-400 leading-relaxed">
-                The time work is <span className="text-white">actively being done</span>. Someone is working on it right now.
+                The time work is <span className="text-gray-900">actively being done</span>. Someone is working on it right now.
               </p>
               <p className="text-xs font-mono text-gray-600 mt-1">
                 Examples: writing code, reviewing a PR, running a test, deploying.
@@ -876,7 +874,7 @@ function ReferencePanel() {
           {/* WT */}
           <div
             className="flex gap-4 px-5 py-5"
-            style={{ borderBottom: "1px solid rgb(21,31,43)", borderLeft: "3px solid rgb(239,68,68)", backgroundColor: "#080808" }}
+            style={{ borderBottom: "1px solid rgb(21,31,43)", borderLeft: "3px solid rgb(239,68,68)", backgroundColor: "var(--bg-card)" }}
           >
             <div className="shrink-0 mt-0.5">
               <span
@@ -891,7 +889,7 @@ function ReferencePanel() {
                 Wait Time
               </span>
               <p className="text-sm text-gray-400 leading-relaxed">
-                The time work <span className="text-white">sits idle</span>. Nobody is actively working on it.
+                The time work <span className="text-gray-900">sits idle</span>. Nobody is actively working on it.
               </p>
               <p className="text-xs font-mono text-gray-600 mt-1">
                 Examples: waiting for a developer to pick up a ticket, waiting for a code review, waiting for the test environment, waiting for the release window.
@@ -902,18 +900,18 @@ function ReferencePanel() {
           {/* Flow Efficiency */}
           <div
             className="flex gap-4 px-5 py-5"
-            style={{ borderBottom: "1px solid rgb(21,31,43)", borderLeft: "3px solid rgb(255,85,0)", backgroundColor: "#060606" }}
+            style={{ borderBottom: "1px solid rgb(21,31,43)", borderLeft: "3px solid rgb(255,85,0)", backgroundColor: "var(--bg-card)" }}
           >
             <div className="shrink-0 mt-0.5">
               <span
                 className="text-xs font-mono font-bold px-1.5 py-0.5"
-                style={{ backgroundColor: "rgba(255,85,0,0.08)", border: "1px solid rgba(255,85,0,0.3)", color: "rgb(255,85,0)" }}
+                style={{ backgroundColor: "rgba(255,85,0,0.08)", border: "1px solid rgba(255,85,0,0.3)", color: "var(--af-orange)" }}
               >
                 FE
               </span>
             </div>
             <div className="flex flex-col gap-2">
-              <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(255,85,0)" }}>
+              <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "var(--af-orange)" }}>
                 Flow Efficiency
               </span>
               <p className="text-sm text-gray-400 leading-relaxed">
@@ -921,12 +919,12 @@ function ReferencePanel() {
               </p>
               <div
                 className="px-4 py-3 font-mono text-sm"
-                style={{ backgroundColor: "#0d0d0d", borderLeft: "3px solid rgb(31,41,55)", color: "rgb(156,163,175)" }}
+                style={{ backgroundColor: "#1e1e1e", borderLeft: "3px solid var(--af-orange)", color: "rgb(200,200,200)" }}
               >
                 PT / (PT + WT) × 100%
               </div>
               <p className="text-xs text-gray-600 leading-relaxed">
-                Example: a step with 3 days of work and 7 days of waiting → 3/(3+7) × 100% = <span className="text-white font-mono">30%</span>
+                Example: a step with 3 days of work and 7 days of waiting → 3/(3+7) × 100% = <span className="text-gray-900 font-mono">30%</span>
               </p>
             </div>
           </div>
@@ -934,7 +932,7 @@ function ReferencePanel() {
           {/* Goal */}
           <div
             className="flex gap-4 px-5 py-5"
-            style={{ borderLeft: "3px solid rgb(234,179,8)", backgroundColor: "#080808" }}
+            style={{ borderLeft: "3px solid rgb(234,179,8)", backgroundColor: "var(--bg-card)" }}
           >
             <div className="shrink-0 mt-0.5">
               <span
@@ -970,7 +968,7 @@ export function Fase3() {
       <div className="max-w-3xl mx-auto flex flex-col gap-14">
 
         <div className="flex flex-col gap-2">
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Your VSM Analysis
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed">
@@ -1008,7 +1006,7 @@ export function Fase3() {
         {/* Parts */}
         <div
           className="border p-6 flex flex-col gap-6"
-          style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
+          style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)" }}
         >
           {part === 1 && <Part1 onComplete={() => setPart(2)} />}
           {part === 2 && <Part2 onComplete={() => {}} />}

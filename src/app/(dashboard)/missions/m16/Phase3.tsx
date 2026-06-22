@@ -1,9 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Syne } from "next/font/google"
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 function TaskCard({
   number,
@@ -22,7 +20,7 @@ function TaskCard({
     <div
       className="flex flex-col gap-5 p-6 border"
       style={{
-        backgroundColor: locked ? "#050505" : done ? "#060f06" : "#080808",
+        backgroundColor: locked ? "var(--bg-card)" : done ? "rgba(34,197,94,0.08)" : "var(--bg)",
         borderColor: locked
           ? "rgb(31,41,55)"
           : done
@@ -47,7 +45,7 @@ function TaskCard({
           >
             {number}
           </span>
-          <h3 className="text-white text-base" style={{ ...syne.style, fontWeight: 700 }}>
+          <h3 className="text-gray-900 text-base" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             {title}
           </h3>
         </div>
@@ -72,12 +70,12 @@ function MentorNote({ children }: { children: React.ReactNode }) {
     <div
       className="flex gap-3 p-4 border"
       style={{
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "var(--bg)",
         borderColor: "rgba(255,85,0,0.15)",
         borderLeft: "3px solid rgba(255,85,0,0.5)",
       }}
     >
-      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>
+      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "var(--af-orange)" }}>
         //
       </span>
       <div className="flex flex-col gap-1">{children}</div>
@@ -87,7 +85,7 @@ function MentorNote({ children }: { children: React.ReactNode }) {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>
+    <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
       {children}
     </p>
   )
@@ -97,12 +95,12 @@ function PlatformNote({ name, children }: { name: string; children: React.ReactN
   return (
     <div
       className="flex flex-col gap-1 p-4 border"
-      style={{ backgroundColor: "#0a0a0a", borderColor: "rgb(31,41,55)" }}
+      style={{ backgroundColor: "var(--bg)", borderColor: "var(--border)" }}
     >
       <span className="text-xs font-mono font-bold text-gray-500 uppercase tracking-widest">
         {name}
       </span>
-      <p className="text-sm text-gray-400 leading-relaxed">{children}</p>
+      <p className="text-sm text-gray-600 leading-relaxed">{children}</p>
     </div>
   )
 }
@@ -128,8 +126,8 @@ export function Phase3() {
         {/* Header */}
         <div className="flex flex-col gap-2">
           <h2
-            className="text-3xl text-white tracking-tight"
-            style={{ ...syne.style, fontWeight: 800 }}
+            className="text-3xl text-gray-900 tracking-tight"
+            style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}
           >
             Your Mission - Deploy on Every Green Build
           </h2>
@@ -142,7 +140,7 @@ export function Phase3() {
         <div
           className="flex flex-col gap-5 p-6 border"
           style={{
-            backgroundColor: "#0a0700",
+            backgroundColor: "var(--bg-card)",
             borderColor: "rgba(251,146,60,0.3)",
             borderLeft: "3px solid rgb(251,146,60)",
           }}
@@ -160,7 +158,7 @@ export function Phase3() {
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
-              <p className="text-white text-sm font-bold" style={syne.style}>
+              <p className="text-gray-900 text-sm font-bold" style={{ fontFamily: "var(--font-heading)" }}>
                 M-05 fork with a green pipeline
               </p>
               <span className="text-xs font-mono ml-auto" style={{ color: "rgb(34,197,94)" }}>
@@ -183,7 +181,7 @@ export function Phase3() {
               >
                 02
               </span>
-              <p className="text-white text-sm font-bold" style={syne.style}>
+              <p className="text-gray-900 text-sm font-bold" style={{ fontFamily: "var(--font-heading)" }}>
                 Free account on a deployment platform
               </p>
               {prereqDone && (
@@ -208,7 +206,7 @@ export function Phase3() {
                   rel="noopener noreferrer"
                   className="px-4 py-2 text-xs font-mono font-bold border transition-opacity hover:opacity-80"
                   style={{
-                    backgroundColor: "#0d0d0d",
+                    backgroundColor: "var(--bg-card)",
                     borderColor: "rgba(251,146,60,0.3)",
                     color: "rgb(251,146,60)",
                   }}
@@ -225,7 +223,7 @@ export function Phase3() {
                   className="w-4 h-4 cursor-pointer"
                   style={{ accentColor: "rgb(251,146,60)" }}
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                   I have created a free account on Render, Railway, or Fly.io
                 </span>
               </label>
@@ -239,8 +237,8 @@ export function Phase3() {
         {/* Task 1 */}
         <TaskCard number="01" title="Deploy the Nexus Corp app manually first" done={task1Done} locked={false}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Before you automate anything, do it manually once.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">Before you automate anything, do it manually once.</span>{" "}
               This confirms the app works on the platform and gives you a mental model of what the
               automation will replicate. Never automate something you have not done by hand first.
             </p>
@@ -264,8 +262,8 @@ export function Phase3() {
                 value={liveUrl}
                 onChange={(e) => setLiveUrl(e.target.value)}
                 placeholder="https://nexus-corp.onrender.com"
-                className="flex-1 px-3 py-2 text-sm font-mono text-white outline-none border"
-                style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+                className="flex-1 px-3 py-2 text-sm font-mono text-gray-900 outline-none border"
+                style={{ backgroundColor: "var(--bg)", borderColor: "var(--border-bright)" }}
               />
             </div>
             {liveUrl && !liveUrl.startsWith("https://") && (
@@ -284,7 +282,7 @@ export function Phase3() {
                 }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 My app is live and accessible at the URL above
               </span>
             </label>
@@ -294,8 +292,8 @@ export function Phase3() {
         {/* Task 2 */}
         <TaskCard number="02" title="Verify the app is running correctly" done={task2Done} locked={!task1Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Always verify a deployment before automating it.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">Always verify a deployment before automating it.</span>{" "}
               If the manual deploy is broken, the automated one will be too. Verify the three
               endpoints now - this also means you have a known-good baseline to compare against
               after future deploys.
@@ -312,9 +310,9 @@ export function Phase3() {
             <pre
               className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
               style={{
-                backgroundColor: "#0d0d0d",
+                backgroundColor: "var(--bg-card)",
                 borderLeft: "3px solid rgb(31,41,55)",
-                color: "rgb(156,163,175)",
+                color: "var(--text-muted)",
               }}
             >{`GET /           - should return  company: "Nexus Corp"
 GET /health     - should return  status: "ok"
@@ -328,7 +326,7 @@ GET /api/orders - should return  3 orders`}</pre>
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 All three endpoints return the correct responses
               </span>
             </label>
@@ -338,8 +336,8 @@ GET /api/orders - should return  3 orders`}</pre>
         {/* Task 3 */}
         <TaskCard number="03" title="Enable automatic deployment on every push" done={task3Done} locked={!task2Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">This is the CD switch.</span> From this point on, every
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">This is the CD switch.</span> From this point on, every
               push to main that passes tests will automatically deploy to production. No manual
               steps, no Marco, no deployment meeting. The platform watches your GitHub repo and
               acts the moment a new commit lands.
@@ -375,7 +373,7 @@ GET /api/orders - should return  3 orders`}</pre>
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 Automatic deployment is enabled
               </span>
             </label>
@@ -385,8 +383,8 @@ GET /api/orders - should return  3 orders`}</pre>
         {/* Task 4 */}
         <TaskCard number="04" title="Add a deploy step to your GitHub Actions workflow" done={task4Done} locked={!task3Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Some platforms require an explicit deploy step in your pipeline.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">Some platforms require an explicit deploy step in your pipeline.</span>{" "}
               Even if yours does not, understanding this pattern matters - explicit deploy steps
               give you control, visibility, and the ability to add conditions like only deploying
               from main, or only deploying after all checks pass.
@@ -398,9 +396,9 @@ GET /api/orders - should return  3 orders`}</pre>
             <pre
               className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
               style={{
-                backgroundColor: "#0d0d0d",
+                backgroundColor: "var(--bg-card)",
                 borderLeft: "3px solid rgb(31,41,55)",
-                color: "rgb(156,163,175)",
+                color: "var(--text-muted)",
               }}
             >{`      - name: Deploy to production
         if: github.ref == 'refs/heads/main' && success()
@@ -410,17 +408,17 @@ GET /api/orders - should return  3 orders`}</pre>
           <div
             className="flex gap-3 p-4 border"
             style={{
-              backgroundColor: "#0a0800",
+              backgroundColor: "rgba(255,85,0,0.06)",
               borderColor: "rgba(234,179,8,0.2)",
               borderLeft: "3px solid rgba(234,179,8,0.6)",
             }}
           >
             <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(234,179,8)" }}>!</span>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              For <strong className="text-white">Render</strong> and{" "}
-              <strong className="text-white">Railway</strong>, automatic deployment from GitHub is
+            <p className="text-sm text-gray-600 leading-relaxed">
+              For <strong className="text-gray-900">Render</strong> and{" "}
+              <strong className="text-gray-900">Railway</strong>, automatic deployment from GitHub is
               enough - you do not need this step. For{" "}
-              <strong className="text-white">Fly.io</strong>, replace the echo with:{" "}
+              <strong className="text-gray-900">Fly.io</strong>, replace the echo with:{" "}
               <code className="text-orange-400 font-mono">flyctl deploy --remote-only</code>
             </p>
           </div>
@@ -432,7 +430,7 @@ GET /api/orders - should return  3 orders`}</pre>
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 I understand the deploy step (added it or confirmed my platform handles it automatically)
               </span>
             </label>
@@ -442,8 +440,8 @@ GET /api/orders - should return  3 orders`}</pre>
         {/* Task 5 */}
         <TaskCard number="05" title="Make a change and watch it deploy automatically" done={task5Done} locked={!task4Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">This is the moment.</span> Make a real change, push it,
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">This is the moment.</span> Make a real change, push it,
               watch the pipeline run, and see it live in production - automatically. No Marco. No
               meeting. No checklist. This is what CD feels like.
             </p>
@@ -459,9 +457,9 @@ GET /api/orders - should return  3 orders`}</pre>
             <pre
               className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
               style={{
-                backgroundColor: "#0d0d0d",
+                backgroundColor: "var(--bg-card)",
                 borderLeft: "3px solid rgb(31,41,55)",
-                color: "rgb(156,163,175)",
+                color: "var(--text-muted)",
               }}
             >{`// In src/index.js, add to the GET / route:
 deployedAt: new Date().toISOString()`}</pre>
@@ -471,20 +469,20 @@ deployedAt: new Date().toISOString()`}</pre>
             <pre
               className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
               style={{
-                backgroundColor: "#0d0d0d",
+                backgroundColor: "var(--bg-card)",
                 borderLeft: "3px solid rgb(31,41,55)",
-                color: "rgb(156,163,175)",
+                color: "var(--text-muted)",
               }}
             >{`git add src/index.js
 git commit -m 'feat: add deployedAt field'
 git push`}</pre>
             <MentorNote>
-              <p className="text-sm text-gray-300 leading-relaxed">
+              <p className="text-sm text-gray-600 leading-relaxed">
                 This triggers both GitHub Actions and your Render auto-deploy automatically.
               </p>
             </MentorNote>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Go to the <strong className="text-white">Actions</strong> tab on GitHub and watch the
+              Go to the <strong className="text-gray-900">Actions</strong> tab on GitHub and watch the
               pipeline run. When it turns green, open your live URL - the{" "}
               <code className="text-orange-400 font-mono">deployedAt</code> field should be there.
             </p>
@@ -499,8 +497,8 @@ git push`}</pre>
                   value={actionsUrl}
                   onChange={(e) => setActionsUrl(e.target.value)}
                   placeholder="https://github.com/your-username/nexus-corp-app/actions/runs/..."
-                  className="w-full px-3 py-2 text-sm font-mono text-white outline-none border"
-                  style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+                  className="w-full px-3 py-2 text-sm font-mono text-gray-900 outline-none border"
+                  style={{ backgroundColor: "var(--bg)", borderColor: "var(--border-bright)" }}
                 />
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
@@ -511,7 +509,7 @@ git push`}</pre>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                   My change is live in production automatically
                 </span>
               </label>
@@ -524,7 +522,7 @@ git push`}</pre>
           <div
             className="flex flex-col gap-5 border p-6"
             style={{
-              backgroundColor: "#060f06",
+              backgroundColor: "var(--bg-card)",
               borderColor: "rgba(34,197,94,0.3)",
               borderLeft: "3px solid rgb(34,197,94)",
             }}
@@ -535,7 +533,7 @@ git push`}</pre>
             <a
               href="?phase=4"
               className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
+              style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}
             >
               See your impact →
             </a>

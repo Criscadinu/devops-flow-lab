@@ -1,9 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Syne } from "next/font/google"
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 function MobileWarning() {
   const [isMobile, setIsMobile] = useState(false)
@@ -20,7 +18,7 @@ function MobileWarning() {
     <div
       className="flex flex-col gap-3 p-5 border mb-6"
       style={{
-        backgroundColor: "#0a0700",
+        backgroundColor: "var(--bg-card)",
         borderColor: "rgba(251,146,60,0.4)",
         borderLeft: "3px solid rgb(251,146,60)",
       }}
@@ -28,7 +26,7 @@ function MobileWarning() {
       <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(251,146,60)" }}>
         Desktop required
       </p>
-      <p className="text-sm text-gray-400 leading-relaxed">
+      <p className="text-sm text-gray-600 leading-relaxed">
         This phase requires a terminal, a code editor, and GitHub. These tasks cannot be completed on a mobile device. Open this page on your laptop or desktop to continue.
       </p>
     </div>
@@ -52,7 +50,7 @@ function TaskCard({
     <div
       className="flex flex-col gap-5 p-6 border"
       style={{
-        backgroundColor: locked ? "#050505" : done ? "#060f06" : "#080808",
+        backgroundColor: locked ? "var(--bg-card)" : done ? "rgba(34,197,94,0.08)" : "var(--bg)",
         borderColor: locked
           ? "rgb(31,41,55)"
           : done
@@ -77,7 +75,7 @@ function TaskCard({
           >
             {number}
           </span>
-          <h3 className="text-white text-base" style={{ ...syne.style, fontWeight: 700 }}>
+          <h3 className="text-gray-900 text-base" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             {title}
           </h3>
         </div>
@@ -102,12 +100,12 @@ function MentorNote({ children }: { children: React.ReactNode }) {
     <div
       className="flex gap-3 p-4 border"
       style={{
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "var(--bg)",
         borderColor: "rgba(255,85,0,0.15)",
         borderLeft: "3px solid rgba(255,85,0,0.5)",
       }}
     >
-      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>
+      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "var(--af-orange)" }}>
         //
       </span>
       <div className="flex flex-col gap-1">{children}</div>
@@ -117,7 +115,7 @@ function MentorNote({ children }: { children: React.ReactNode }) {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(75,85,99)" }}>
+    <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
       {children}
     </p>
   )
@@ -128,9 +126,9 @@ function CodeBlock({ children }: { children: string }) {
     <pre
       className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
       style={{
-        backgroundColor: "#0d0d0d",
+        backgroundColor: "var(--bg-card)",
         borderLeft: "3px solid rgb(31,41,55)",
-        color: "rgb(156,163,175)",
+        color: "var(--text-muted)",
       }}
     >
       {children}
@@ -157,8 +155,8 @@ export function Phase3() {
         {/* Header */}
         <div className="flex flex-col gap-2">
           <h2
-            className="text-3xl text-white tracking-tight"
-            style={{ ...syne.style, fontWeight: 800 }}
+            className="text-3xl text-gray-900 tracking-tight"
+            style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}
           >
             Your Mission - Get on the Trunk
           </h2>
@@ -171,7 +169,7 @@ export function Phase3() {
         <div
           className="flex flex-col gap-5 p-6 border"
           style={{
-            backgroundColor: "#0a0700",
+            backgroundColor: "var(--bg-card)",
             borderColor: "rgba(251,146,60,0.3)",
             borderLeft: "3px solid rgb(251,146,60)",
           }}
@@ -186,7 +184,7 @@ export function Phase3() {
           </div>
           <div className="flex items-center gap-3">
             <span className="text-xs font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>01</span>
-            <p className="text-white text-sm font-bold flex-1" style={syne.style}>
+            <p className="text-gray-900 text-sm font-bold flex-1" style={{ fontFamily: "var(--font-heading)" }}>
               nexus-corp-app with CONTRIBUTING.md and commit convention from M-14
             </p>
             <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
@@ -196,8 +194,8 @@ export function Phase3() {
         {/* Task 1 */}
         <TaskCard number="01" title="Audit your current branches" done={task1Done} locked={false}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Before changing how you branch, understand what you have.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">Before changing how you branch, understand what you have.</span>{" "}
               List every branch, its age, and what is blocking it from merging.
             </p>
           </MentorNote>
@@ -228,7 +226,7 @@ Are any branches older than 1 day? What is blocking them from merging?`}</CodeBl
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 Branch audit complete
               </span>
             </label>
@@ -238,8 +236,8 @@ Are any branches older than 1 day? What is blocking them from merging?`}</CodeBl
         {/* Task 2 */}
         <TaskCard number="02" title="Enable branch protection on main" done={task2Done} locked={!task1Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">Trunk-based development does not mean unprotected main.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">Trunk-based development does not mean unprotected main.</span>{" "}
               It means fast, frequent, protected merges. Branch protection ensures every commit to main has passed CI.
             </p>
           </MentorNote>
@@ -248,7 +246,7 @@ Are any branches older than 1 day? What is blocking them from merging?`}</CodeBl
             <SectionLabel>On GitHub: Settings → Branches → Add rule</SectionLabel>
             <div
               className="flex flex-col gap-3 p-4 border"
-              style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+              style={{ backgroundColor: "var(--bg)", borderColor: "var(--border-bright)" }}
             >
               {[
                 "Branch name pattern: main",
@@ -257,7 +255,7 @@ Are any branches older than 1 day? What is blocking them from merging?`}</CodeBl
                 "Do not allow bypassing the above settings: ✓",
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>→</span>
+                  <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "var(--af-orange)" }}>→</span>
                   <p className="text-xs font-mono text-gray-400">{item}</p>
                 </div>
               ))}
@@ -271,7 +269,7 @@ Are any branches older than 1 day? What is blocking them from merging?`}</CodeBl
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 Branch protection enabled — nothing merges to main without green CI
               </span>
             </label>
@@ -281,8 +279,8 @@ Are any branches older than 1 day? What is blocking them from merging?`}</CodeBl
         {/* Task 3 */}
         <TaskCard number="03" title="Create a short-lived branch, commit, and merge within the hour" done={task3Done} locked={!task2Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">The discipline of trunk-based development is practiced, not declared.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">The discipline of trunk-based development is practiced, not declared.</span>{" "}
               Create a branch, make one change, open a PR, merge it. The whole cycle should take less than an hour.
             </p>
           </MentorNote>
@@ -307,7 +305,7 @@ git push origin feat/add-order-count-endpoint
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 Branch created, PR opened, CI green, merged to main — all within one hour
               </span>
             </label>
@@ -317,8 +315,8 @@ git push origin feat/add-order-count-endpoint
         {/* Task 4 */}
         <TaskCard number="04" title="Add a feature flag to hide incomplete work" done={task4Done} locked={!task3Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">If you have work in progress that is not ready for users, it should be behind a flag — not on a branch.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">If you have work in progress that is not ready for users, it should be behind a flag — not on a branch.</span>{" "}
               Commit it to main, hide it with a flag, finish it safely.
             </p>
           </MentorNote>
@@ -343,7 +341,7 @@ if (process.env.ENABLE_ORDER_EXPORT === 'true') {
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
                 className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
-              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+              <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                 Incomplete feature is behind a flag, not a branch
               </span>
             </label>
@@ -353,8 +351,8 @@ if (process.env.ENABLE_ORDER_EXPORT === 'true') {
         {/* Task 5 */}
         <TaskCard number="05" title="Commit and push" done={task5Done} locked={!task4Done}>
           <MentorNote>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              <span className="text-white">The branch audit, the protection rules, and the feature flag are now permanent.</span>{" "}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              <span className="text-gray-900">The branch audit, the protection rules, and the feature flag are now permanent.</span>{" "}
               Nexus Corp is on one trunk. Long-lived branches are no longer the default.
             </p>
           </MentorNote>
@@ -375,8 +373,8 @@ git push`}</CodeBlock>
                   value={actionsUrl}
                   onChange={(e) => setActionsUrl(e.target.value)}
                   placeholder="https://github.com/your-username/nexus-corp-app/actions/runs/..."
-                  className="w-full px-3 py-2 text-sm font-mono text-white outline-none border"
-                  style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }}
+                  className="w-full px-3 py-2 text-sm font-mono text-gray-900 outline-none border"
+                  style={{ backgroundColor: "var(--bg)", borderColor: "var(--border-bright)" }}
                 />
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
@@ -387,7 +385,7 @@ git push`}</CodeBlock>
                   }}
                   className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
-                <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                <span className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">
                   Pipeline is green
                 </span>
               </label>
@@ -400,7 +398,7 @@ git push`}</CodeBlock>
           <div
             className="flex flex-col gap-5 border p-6"
             style={{
-              backgroundColor: "#060f06",
+              backgroundColor: "var(--bg-card)",
               borderColor: "rgba(34,197,94,0.3)",
               borderLeft: "3px solid rgb(34,197,94)",
             }}
@@ -411,7 +409,7 @@ git push`}</CodeBlock>
             <a
               href="?phase=4"
               className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
+              style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}
             >
               See your impact →
             </a>

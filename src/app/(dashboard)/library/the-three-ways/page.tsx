@@ -1,13 +1,11 @@
-import { Syne } from "next/font/google"
 import { VideoNotice } from "../_components/VideoNotice"
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 const serif: React.CSSProperties = { fontFamily: "Georgia, 'Times New Roman', serif" }
 
 function SectionLabel({ num, title }: { num: string; title: string }) {
   return (
     <div className="flex items-baseline gap-3 mb-6">
       <span className="text-xs font-mono font-bold tracking-[0.2em] text-gray-400">{num}</span>
-      <h2 className="text-xl text-black tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>{title}</h2>
+      <h2 className="text-xl text-black tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>{title}</h2>
     </div>
   )
 }
@@ -62,9 +60,9 @@ function ThreeWaysDiagram() {
       {ways.map((w, i) => (
         <div key={w.num} className="p-6" style={{ backgroundColor: w.bg, borderRight: i < 2 ? "1px solid #e5e5e5" : undefined }}>
           <div className="flex items-baseline gap-2 mb-3">
-            <span className="text-2xl font-mono font-bold" style={{ ...syne.style, color: `${w.color}40` }}>{w.num}</span>
+            <span className="text-2xl font-mono font-bold" style={{ fontFamily: "var(--font-heading)", color: `${w.color}40` }}>{w.num}</span>
             <div>
-              <p className="text-sm font-bold" style={{ ...syne.style, color: w.color }}>{w.title}</p>
+              <p className="text-sm font-bold" style={{ fontFamily: "var(--font-heading)", color: w.color }}>{w.title}</p>
               <p className="text-[10px] font-mono" style={{ color: w.color }}>{w.subtitle}</p>
             </div>
           </div>
@@ -144,7 +142,7 @@ export default function TheThreeWaysPage() {
               <span key={tag} className="text-xs font-mono px-2 py-0.5" style={{ backgroundColor: "#faf5ff", color: "#7c3aed", border: "1px solid #e9d5ff" }}>{tag}</span>
             ))}
           </div>
-          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>The Three Ways</h1>
+          <h1 className="text-4xl text-black tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>The Three Ways</h1>
           <p className="text-base leading-relaxed" style={{ color: "#555" }}>Gene Kim's framework for DevOps thinking. The principles that underpin every tool and practice in this library.</p>
           <div className="flex items-center gap-2 pt-1 flex-wrap">
             <span className="text-xs font-mono text-gray-400 mr-1">Sources:</span>

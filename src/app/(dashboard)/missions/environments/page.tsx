@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { auth } from "@/auth"
-import { Syne } from "next/font/google"
 import { Phase3 } from "./Phase3"
 import { MissionFAQ } from "@/components/MissionFAQ"
 import { completeMission } from "@/app/actions/progress"
@@ -11,19 +10,18 @@ export const metadata: Metadata = {
   title: "M-02 On-Demand Environments - DevOps Flow Lab",
 }
 
-const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] })
 
 // ─── Shared: Mission Header ───────────────────────────────────────────────────
 
 function MissionHeader({ fase }: { fase: number }) {
   const pct = `${fase * 25}%`
   return (
-    <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "#080808" }}>
+    <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "var(--bg-card)" }}>
       <div className="max-w-5xl mx-auto flex items-center justify-between">
-        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(255,85,0)" }}>
+        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "var(--af-orange)" }}>
           M-02
         </span>
-        <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
+        <span className="text-sm font-bold tracking-tight text-gray-900" style={{ fontFamily: "var(--font-heading)" }}>
           On-Demand Environments
         </span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">
@@ -47,7 +45,7 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
       <a
         href={href}
         className="self-start px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-        style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
+        style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}
       >
         {label}
       </a>
@@ -154,13 +152,13 @@ function DialogueLine({ line, index }: { line: SceneLine; index: number }) {
       >
         <span
           className="text-xs font-mono tracking-widest uppercase"
-          style={{ color: "rgb(255,85,0)" }}
+          style={{ color: "var(--af-orange)" }}
         >
           You &middot; New Engineer
         </span>
         <p className="text-gray-200 text-base leading-relaxed">{line.text}</p>
         <p
-          className="text-white font-bold text-sm border-t pt-4"
+          className="text-gray-900 font-bold text-sm border-t pt-4"
           style={{ borderColor: "rgba(255,85,0,0.15)" }}
         >
           {line.coda}
@@ -184,7 +182,7 @@ function DialogueLine({ line, index }: { line: SceneLine; index: number }) {
       >
         {line.name} &middot; {line.role}
       </span>
-      <p className="text-gray-300 text-base leading-relaxed">
+      <p className="text-gray-600 text-base leading-relaxed">
         &ldquo;{line.text}&rdquo;
       </p>
     </div>
@@ -198,8 +196,8 @@ function Phase1() {
 
         <div className="flex flex-col gap-3">
           <h2
-            className="text-4xl text-white tracking-tight leading-tight"
-            style={{ ...syne.style, fontWeight: 800 }}
+            className="text-4xl text-gray-900 tracking-tight leading-tight"
+            style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}
           >
             Week two. Nexus Corp.
           </h2>
@@ -267,7 +265,7 @@ function Phase2() {
             <span className="text-xs font-mono text-gray-700 tracking-widest">01</span>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Why environments break everything
           </h2>
           <p className="text-gray-400 leading-relaxed">
@@ -282,7 +280,7 @@ function Phase2() {
             <span className="text-xs font-mono text-gray-700 tracking-widest">02</span>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             Three principles
           </h2>
 
@@ -314,7 +312,7 @@ function Phase2() {
             <span className="text-xs font-mono text-gray-700 tracking-widest">03</span>
             <div className="flex-1 h-px bg-gray-900" />
           </div>
-          <h2 className="text-3xl text-white tracking-tight" style={{ ...syne.style, fontWeight: 800 }}>
+          <h2 className="text-3xl text-gray-900 tracking-tight" style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}>
             The four environment questions
           </h2>
 
@@ -327,11 +325,11 @@ function Phase2() {
               >
                 <span
                   className="text-sm font-mono font-bold shrink-0 w-6 pt-0.5"
-                  style={{ color: "rgb(255,85,0)" }}
+                  style={{ color: "var(--af-orange)" }}
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="text-gray-300 text-sm leading-relaxed">{q}</span>
+                <span className="text-gray-600 text-sm leading-relaxed">{q}</span>
               </li>
             ))}
           </ol>
@@ -393,18 +391,18 @@ function BenefitCard({
     <div
       className="flex flex-col gap-4"
       style={{
-        backgroundColor: "#080808",
-        border: "1px solid rgb(31,41,55)",
+        backgroundColor: "var(--bg-card)",
+        border: "1px solid var(--border)",
         borderLeft: "3px solid rgb(255,85,0)",
         padding: "24px",
       }}
     >
       <span className="text-xs font-mono text-gray-700">{number}</span>
-      <h3 className="text-white text-base leading-snug" style={{ ...syne.style, fontWeight: 700 }}>
+      <h3 className="text-gray-900 text-base leading-snug" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
         {title}
       </h3>
       <p className="text-gray-400 text-sm leading-relaxed">{explanation}</p>
-      <div style={{ border: "1px solid rgb(31,41,55)" }}>{children}</div>
+      <div style={{ border: "1px solid var(--border)" }}>{children}</div>
       <p className="text-xs font-mono">
         <span style={{ color: "rgb(239,68,68)" }}>{metric.before}</span>
         <span className="text-gray-700"> → </span>
@@ -430,13 +428,13 @@ function Phase4() {
         <div className="flex flex-col gap-4">
           <p
             className="text-xs font-mono tracking-[0.25em] uppercase"
-            style={{ color: "rgb(255,85,0)" }}
+            style={{ color: "var(--af-orange)" }}
           >
             Mission Complete - M-02
           </p>
           <h1
-            className="text-5xl text-white tracking-tight leading-tight"
-            style={{ ...syne.style, fontWeight: 800 }}
+            className="text-5xl text-gray-900 tracking-tight leading-tight"
+            style={{ fontFamily: "var(--font-heading)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.02em" }}
           >
             Environments Established.
           </h1>
@@ -603,7 +601,7 @@ function Phase4() {
               <div
                 key={d.code}
                 className="flex flex-col sm:flex-row items-start sm:items-center gap-5 border p-6"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)" }}
+                style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)" }}
               >
                 <div className="flex flex-col gap-1 shrink-0">
                   <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">
@@ -614,14 +612,14 @@ function Phase4() {
                 <div className="flex items-center gap-4">
                   <span
                     className="text-xl font-mono font-bold"
-                    style={{ ...syne.style, color: "rgb(239,68,68)" }}
+                    style={{ fontFamily: "var(--font-heading)", color: "rgb(239,68,68)" }}
                   >
                     {d.before}
                   </span>
                   <span className="font-mono text-gray-700">→</span>
                   <span
                     className="text-xl font-mono font-bold"
-                    style={{ ...syne.style, color: "rgb(255,85,0)" }}
+                    style={{ fontFamily: "var(--font-heading)", color: "var(--af-orange)" }}
                   >
                     {d.after}
                   </span>
@@ -644,8 +642,8 @@ function Phase4() {
           <div
             className="flex flex-col gap-3 p-6 border"
             style={{
-              backgroundColor: "#080808",
-              borderColor: "rgb(31,41,55)",
+              backgroundColor: "var(--bg-card)",
+              borderColor: "var(--border)",
               borderLeft: "3px solid rgb(31,41,55)",
             }}
           >
@@ -662,16 +660,16 @@ function Phase4() {
             <a
               href="/dashboard"
               className="px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
+              style={{ background: "var(--af-gradient)", color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--radius)" }}
             >
               Back to dashboard →
             </a>
             <span
               className="flex items-center gap-3 px-8 py-4 text-sm font-mono border cursor-not-allowed"
               style={{
-                backgroundColor: "#0a0a0a",
-                borderColor: "rgb(31,41,55)",
-                color: "rgb(55,65,81)",
+                backgroundColor: "var(--bg)",
+                borderColor: "var(--border)",
+                color: "var(--text-dim)",
               }}
               title="Not yet available"
             >
@@ -717,7 +715,7 @@ export default async function PipelinePage({
   }
 
   return (
-    <main className="min-h-screen text-gray-100 flex flex-col" style={{ backgroundColor: "#000" }}>
+    <main className="min-h-screen text-gray-100 flex flex-col" style={{ backgroundColor: "var(--bg)" }}>
       <MissionHeader fase={phase} />
       {phase === 1 && <Phase1 />}
       {phase === 2 && <Phase2 />}

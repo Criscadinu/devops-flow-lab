@@ -27,8 +27,8 @@ export function MissionFAQ({ items, title = "Frequently Asked Questions" }: Miss
         onClick={() => { setOpen((v) => !v); setExpanded(null) }}
         className="flex items-center justify-between w-full px-5 py-3 text-left"
         style={{
-          backgroundColor: "#080808",
-          border: "1px solid rgb(31,41,55)",
+          backgroundColor: "var(--bg-card)",
+          border: "1px solid var(--border)",
         }}
       >
         <div className="flex items-center gap-3">
@@ -61,7 +61,7 @@ export function MissionFAQ({ items, title = "Frequently Asked Questions" }: Miss
                       : "3px solid rgb(31,41,55)",
                   }}
                 >
-                  <span className="text-sm text-white leading-snug">{item.question}</span>
+                  <span className="text-sm text-gray-900 leading-snug">{item.question}</span>
                   <span
                     className="text-xs font-mono shrink-0 pt-0.5"
                     style={{ color: isExpanded ? "rgb(255,85,0)" : "rgb(75,85,99)" }}
@@ -74,7 +74,7 @@ export function MissionFAQ({ items, title = "Frequently Asked Questions" }: Miss
                   <div
                     className="px-5 pb-5 pt-1"
                     style={{
-                      backgroundColor: "#0a0a0a",
+                      backgroundColor: "var(--bg)",
                       borderLeft: "3px solid rgb(255,85,0)",
                     }}
                   >
