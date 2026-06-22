@@ -17,13 +17,13 @@ function MissionHeader({ fase }: { fase: number }) {
   return (
     <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "#080808" }}>
       <div className="max-w-5xl mx-auto flex items-center justify-between">
-        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(6,182,212)" }}>M-12</span>
+        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(255,85,0)" }}>M-12</span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>Integrate Non-Functional Requirements Testing</span>
         <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">Phase {fase} of 4</span>
       </div>
       <div className="max-w-5xl mx-auto mt-3">
         <div className="w-full h-px bg-gray-800">
-          <div className="h-px transition-all" style={{ width: pct, backgroundColor: "rgb(6,182,212)" }} />
+          <div className="h-px transition-all" style={{ width: pct, background: "linear-gradient(90deg, #FF0000 0%, #FF8C00 100%)" }} />
         </div>
       </div>
     </header>
@@ -33,7 +33,7 @@ function MissionHeader({ fase }: { fase: number }) {
 function CTA({ href, label, sub }: { href: string; label: string; sub?: string }) {
   return (
     <div className="flex flex-col gap-3 border-t border-gray-900 pt-10">
-      <a href={href} className="self-start px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80" style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}>{label}</a>
+      <a href={href} className="self-start px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80" style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}>{label}</a>
       {sub && <p className="text-xs font-mono text-gray-700">{sub}</p>}
     </div>
   )
@@ -72,13 +72,13 @@ function Phase1() {
           {dialogue.map((entry, i) => {
             if (entry.type === "beat") return <div key={i} className="py-6 text-center"><em className="text-sm text-gray-600 italic">{entry.text}</em></div>
             if (entry.type === "you") return (
-              <div key={i} className="flex flex-col gap-4 p-6 mt-2" style={{ backgroundColor: "rgba(6,182,212,0.04)", border: "1px solid rgba(6,182,212,0.2)", borderLeftWidth: "3px", borderLeft: "3px solid rgb(6,182,212)" }}>
+              <div key={i} className="flex flex-col gap-4 p-6 mt-2" style={{ backgroundColor: "rgba(255,85,0,0.04)", border: "1px solid rgba(255,85,0,0.2)", borderLeftWidth: "3px", borderLeft: "3px solid rgb(255,85,0)" }}>
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 flex items-center justify-center text-xs font-mono font-bold shrink-0" style={{ backgroundColor: "rgba(6,182,212,0.12)", border: "1px solid rgba(6,182,212,0.4)", color: "rgb(6,182,212)" }}>YOU</div>
+                  <div className="w-8 h-8 flex items-center justify-center text-xs font-mono font-bold shrink-0" style={{ backgroundColor: "rgba(255,85,0,0.12)", border: "1px solid rgba(255,85,0,0.4)", color: "rgb(255,85,0)" }}>YOU</div>
                   <div className="flex flex-col gap-0"><span className="text-white text-xs font-mono font-bold">You</span><span className="text-gray-600 text-xs font-mono">New Engineer</span></div>
                 </div>
                 <p className="text-gray-300 text-sm leading-relaxed">{entry.text}</p>
-                <p className="text-white font-bold text-sm border-t pt-3" style={{ borderColor: "rgba(6,182,212,0.2)" }}>{entry.closing}</p>
+                <p className="text-white font-bold text-sm border-t pt-3" style={{ borderColor: "rgba(255,85,0,0.2)" }}>{entry.closing}</p>
               </div>
             )
             return (
@@ -135,7 +135,7 @@ function Phase4() {
     <div className="flex-1 px-6 py-14">
       <div className="max-w-5xl mx-auto flex flex-col gap-16">
         <div className="flex flex-col gap-4">
-          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(6,182,212)" }}>Mission Complete - M-12</p>
+          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(255,85,0)" }}>Mission Complete - M-12</p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>Nexus Corp Enforces Quality Standards Automatically</h1>
           <p className="text-gray-400 text-base max-w-xl leading-relaxed">The six-month-old vulnerability would have been caught on day one. Security, coverage, and secret hygiene are now enforced on every commit.</p>
         </div>
@@ -161,7 +161,7 @@ function Phase4() {
         <section className="flex flex-col gap-4 border-t border-gray-900 pt-10">
           <div className="flex flex-wrap items-center gap-4">
             <a href="/missions/m13" className="px-8 py-4 text-sm font-bold tracking-wide" style={{ backgroundColor: "rgb(31,41,55)", color: "rgb(107,114,128)", ...syne.style, fontWeight: 700, opacity: 0.6, pointerEvents: "none" as const }}>Continue to M-13 →</a>
-            <a href="/dashboard" className="px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80" style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}>Back to dashboard →</a>
+            <a href="/dashboard" className="px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80" style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}>Back to dashboard →</a>
           </div>
           <p className="text-xs font-mono text-gray-700">M-13 unlocks when you complete AUTOMATED_TESTING</p>
         </section>

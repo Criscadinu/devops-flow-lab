@@ -8,7 +8,6 @@ export const metadata: Metadata = {
 
 const syne = Syne({ subsets: ["latin"], weight: ["700", "800"] });
 
-// Shared heading style helper
 const H = syne.style;
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
@@ -23,8 +22,8 @@ function Hero({ authenticated }: { authenticated: boolean }) {
         }
         .hero-grid {
           background-image:
-            linear-gradient(rgba(0,255,255,0.035) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,255,255,0.035) 1px, transparent 1px);
+            linear-gradient(rgba(255,85,0,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,85,0,0.04) 1px, transparent 1px);
           background-size: 48px 48px;
           animation: gridDrift 14s linear infinite;
         }
@@ -39,23 +38,32 @@ function Hero({ authenticated }: { authenticated: boolean }) {
           aria-hidden
           className="pointer-events-none absolute inset-0 flex items-end justify-center pb-0"
         >
-          <div className="w-[900px] h-[300px] rounded-full bg-cyan-500/10 blur-[80px]" />
+          <div className="w-[900px] h-[300px] rounded-full blur-[80px]"
+            style={{ backgroundColor: "rgba(255,85,0,0.08)" }} />
         </div>
 
         {/* Top-left corner accent */}
         <div
           aria-hidden
-          className="pointer-events-none absolute top-0 left-0 w-64 h-64 border-r border-b border-cyan-900/40"
+          className="pointer-events-none absolute top-0 left-0 w-64 h-64"
+          style={{ borderRight: "1px solid rgba(255,85,0,0.15)", borderBottom: "1px solid rgba(255,85,0,0.15)" }}
         />
         {/* Bottom-right corner accent */}
         <div
           aria-hidden
-          className="pointer-events-none absolute bottom-0 right-0 w-64 h-64 border-l border-t border-cyan-900/40"
+          className="pointer-events-none absolute bottom-0 right-0 w-64 h-64"
+          style={{ borderLeft: "1px solid rgba(255,85,0,0.15)", borderTop: "1px solid rgba(255,85,0,0.15)" }}
         />
 
         <div className="relative max-w-4xl mx-auto text-center flex flex-col items-center gap-10">
-          <div className="inline-flex items-center gap-2 border border-cyan-800/70 text-cyan-400 text-xs font-mono uppercase tracking-widest px-4 py-2"
-            style={{ backgroundColor: "rgba(0,255,255,0.04)" }}>
+          <div
+            className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest px-4 py-2"
+            style={{
+              border: "1px solid rgba(255,85,0,0.4)",
+              color: "rgb(255,140,60)",
+              backgroundColor: "rgba(255,85,0,0.05)",
+            }}
+          >
             ▸ Hands-on DevOps learning
           </div>
 
@@ -64,7 +72,14 @@ function Hero({ authenticated }: { authenticated: boolean }) {
             style={{ ...H, fontWeight: 800 }}
           >
             Reading about DevOps<br />
-            <span className="text-cyan-400">is not the same</span><br />
+            <span style={{
+              background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}>
+              is not the same
+            </span><br />
             as feeling it.
           </h1>
 
@@ -76,7 +91,8 @@ function Hero({ authenticated }: { authenticated: boolean }) {
           <div className="flex flex-col sm:flex-row gap-4">
             <a
               href={authenticated ? "/dashboard" : "/api/auth/signin"}
-              className="bg-cyan-500 hover:bg-cyan-400 text-black font-bold px-8 py-4 transition-colors text-sm tracking-wide"
+              className="font-bold px-8 py-4 text-sm tracking-wide transition-opacity hover:opacity-80"
+              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff" }}
             >
               {authenticated ? "Go to Dashboard →" : "Start for free →"}
             </a>
@@ -101,8 +117,8 @@ const audiences = [
     role: "Engineers",
     headline: "Build real pipelines",
     body: "No tutorials with fake repos. You work on a fictional but realistic company, with legacy code, silos, and pressure from above. Exactly what it feels like for real.",
-    accent: "text-cyan-400",
-    borderLeft: "4px solid rgb(6 182 212)",
+    accent: "text-orange-400",
+    borderLeft: "4px solid rgb(255,85,0)",
   },
   {
     role: "Managers",
@@ -189,7 +205,7 @@ function HowItWorks() {
         </h2>
 
         <div className="flex flex-col">
-          {steps.map((s, i) => (
+          {steps.map((s) => (
             <div
               key={s.n}
               className="flex gap-8 border-t border-gray-800 py-10 first:border-t-0"
@@ -267,7 +283,6 @@ function DoraSection() {
           These are the numbers when you join. You are going to change them.
         </p>
 
-        {/* Sharp 4-column grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border border-gray-800">
           {doraMetrics.map((d, i) => (
             <div
@@ -284,16 +299,13 @@ function DoraSection() {
 
               <p className="text-xs text-gray-500 leading-snug">{d.metric}</p>
 
-              {/* Bad value - Nexus Corp */}
               <div>
                 <p className="text-xs text-gray-700 uppercase tracking-widest font-mono mb-1">Nexus Corp</p>
                 <p className="text-2xl font-mono font-bold text-red-500 leading-none">{d.nexusCorp}</p>
               </div>
 
-              {/* Divider */}
               <div className="border-t border-gray-800" />
 
-              {/* Target */}
               <div>
                 <p className="text-xs text-gray-700 uppercase tracking-widest font-mono mb-1">Elite</p>
                 <p className="text-sm text-gray-400">{d.target}</p>
@@ -388,7 +400,7 @@ const missions = [
     id: "M-01",
     title: "Value Stream Mapping",
     tag: "Flow",
-    tagColor: "text-cyan-400 border-cyan-900",
+    tagColor: "text-orange-400 border-orange-900",
     description:
       "Map the value stream of Nexus Corp. Where is the waste? What is blocking the flow? You make the bottlenecks visible.",
     meta: "Based on The DevOps Handbook - Part I",
@@ -437,10 +449,9 @@ function MissionsTeaser() {
               className="relative flex flex-col gap-4 p-6 overflow-hidden group border border-gray-800"
               style={{
                 backgroundColor: "#0a0a0a",
-                borderLeft: "3px solid rgb(6 182 212)",
+                borderLeft: "3px solid rgb(255,85,0)",
               }}
             >
-              {/* Locked overlay */}
               <div
                 className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10"
                 style={{ backgroundColor: "rgba(0,0,0,0.75)", backdropFilter: "blur(3px)" }}
@@ -481,8 +492,7 @@ function FinalCTA({ authenticated }: { authenticated: boolean }) {
   return (
     <section className="py-32 px-6 border-t border-gray-900" style={{ backgroundColor: "#000" }}>
       <div className="max-w-2xl mx-auto text-center flex flex-col items-center gap-8">
-        {/* Decorative top line */}
-        <div className="w-px h-16 bg-gradient-to-b from-transparent to-cyan-500/50" />
+        <div className="w-px h-16" style={{ background: "linear-gradient(to bottom, transparent, rgba(255,85,0,0.5))" }} />
 
         <h2
           className="text-5xl text-white leading-tight tracking-tight"
@@ -497,7 +507,8 @@ function FinalCTA({ authenticated }: { authenticated: boolean }) {
         </p>
         <a
           href={authenticated ? "/dashboard" : "/api/auth/signin"}
-          className="bg-cyan-500 hover:bg-cyan-400 text-black font-bold px-10 py-4 transition-colors text-base tracking-wide"
+          className="font-bold px-10 py-4 text-base tracking-wide transition-opacity hover:opacity-80"
+          style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff" }}
         >
           {authenticated ? "Go to Dashboard →" : "Start for free with Google →"}
         </a>

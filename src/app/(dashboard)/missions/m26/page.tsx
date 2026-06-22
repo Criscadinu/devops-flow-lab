@@ -19,7 +19,7 @@ function MissionHeader({ fase }: { fase: number }) {
   return (
     <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "#080808" }}>
       <div className="max-w-5xl mx-auto flex items-center justify-between">
-        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(255,85,0)" }}>
           M-26
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
@@ -31,7 +31,7 @@ function MissionHeader({ fase }: { fase: number }) {
       </div>
       <div className="max-w-5xl mx-auto mt-3">
         <div className="w-full h-px bg-gray-800">
-          <div className="h-px transition-all" style={{ width: pct, backgroundColor: "rgb(6,182,212)" }} />
+          <div className="h-px transition-all" style={{ width: pct, background: "linear-gradient(90deg, #FF0000 0%, #FF8C00 100%)" }} />
         </div>
       </div>
     </header>
@@ -46,7 +46,7 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
       <a
         href={href}
         className="self-start px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-        style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+        style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
       >
         {label}
       </a>
@@ -108,9 +108,9 @@ const panels = [
     name: "You",
     role: "New Engineer",
     badge: "PLAYER",
-    accent: "rgb(6,182,212)",
-    badgeBg: "rgba(6,182,212,0.08)",
-    badgeBorder: "rgba(6,182,212,0.3)",
+    accent: "rgb(255,85,0)",
+    badgeBg: "rgba(255,85,0,0.08)",
+    badgeBorder: "rgba(255,85,0,0.3)",
     isPlayer: true,
     quote: (
       <>
@@ -204,7 +204,7 @@ function Phase1() {
       <style>{`
         mark {
           background: none;
-          color: rgb(6,182,212);
+          color: rgb(255,85,0);
           font-family: monospace;
           font-weight: 700;
         }
@@ -294,7 +294,7 @@ function Phase2() {
                 label: "TIL",
                 title: "Today I Learned",
                 note: "A short note, 3–5 sentences, written the same day. What was the problem, what was the fix, what should you remember next time.",
-                accent: "rgb(6,182,212)",
+                accent: "rgb(255,85,0)",
               },
               {
                 label: "ADR",
@@ -355,7 +355,7 @@ function Phase2() {
               <div
                 key={item.title}
                 className="flex flex-col gap-2 p-5 border"
-                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: "3px solid rgba(6,182,212,0.4)" }}
+                style={{ backgroundColor: "#080808", borderColor: "rgb(31,41,55)", borderLeft: "3px solid rgba(255,85,0,0.4)" }}
               >
                 <span className="text-sm text-white font-mono font-bold">{item.title}</span>
                 <p className="text-sm text-gray-500 leading-relaxed">{item.body}</p>
@@ -380,9 +380,9 @@ function Phase2() {
           </p>
           <div
             className="flex flex-col gap-3 p-5 border"
-            style={{ backgroundColor: "#080808", borderColor: "rgba(6,182,212,0.2)", borderLeft: "3px solid rgba(6,182,212,0.4)" }}
+            style={{ backgroundColor: "#080808", borderColor: "rgba(255,85,0,0.2)", borderLeft: "3px solid rgba(255,85,0,0.4)" }}
           >
-            <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+            <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(255,85,0)" }}>
               What this mission does
             </span>
             <p className="text-sm text-gray-400 leading-relaxed">
@@ -438,7 +438,7 @@ function Phase4() {
       <div className="max-w-5xl mx-auto flex flex-col gap-16">
 
         <div className="flex flex-col gap-4">
-          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(6,182,212)" }}>
+          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(255,85,0)" }}>
             Mission Complete - M-26
           </p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
@@ -463,11 +463,11 @@ function Phase4() {
             className="flex flex-col gap-5 p-6 border"
             style={{
               backgroundColor: "#080808",
-              borderColor: "rgba(6,182,212,0.2)",
-              borderLeft: "3px solid rgb(6,182,212)",
+              borderColor: "rgba(255,85,0,0.2)",
+              borderLeft: "3px solid rgb(255,85,0)",
             }}
           >
-            <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+            <p className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(255,85,0)" }}>
               The system now learns from itself
             </p>
             <p className="text-sm text-gray-400 leading-relaxed">
@@ -551,11 +551,11 @@ function Phase4() {
             className="flex flex-col gap-3 p-6 border"
             style={{
               backgroundColor: "#080808",
-              borderColor: "rgba(6,182,212,0.2)",
-              borderLeft: "3px solid rgb(6,182,212)",
+              borderColor: "rgba(255,85,0,0.2)",
+              borderLeft: "3px solid rgb(255,85,0)",
             }}
           >
-            <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+            <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(255,85,0)" }}>
               Coming next — Chaos Engineering
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
@@ -571,7 +571,7 @@ function Phase4() {
             <a
               href="/dashboard"
               className="px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
             >
               Back to dashboard →
             </a>

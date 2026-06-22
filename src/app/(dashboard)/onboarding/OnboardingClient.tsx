@@ -87,7 +87,7 @@ export function OnboardingClient() {
 
           {/* Label */}
           <p className="fade-up delay-1 text-xs font-mono tracking-[0.3em] uppercase"
-            style={{ color: "rgb(6,182,212)" }}>
+            style={{ color: "rgb(255,85,0)" }}>
             DevOps Flow Lab
           </p>
 
@@ -116,10 +116,10 @@ export function OnboardingClient() {
                   disabled={submitting || isComingSoon}
                   className="relative flex flex-col items-start gap-5 p-6 text-left transition-all duration-150 border"
                   style={{
-                    backgroundColor: isSelected ? "rgba(6,182,212,0.07)" : "rgba(255,255,255,0.02)",
-                    borderColor: isSelected ? "rgb(6,182,212)" : "rgb(31,41,55)",
+                    backgroundColor: isSelected ? "rgba(255,85,0,0.07)" : "rgba(255,255,255,0.02)",
+                    borderColor: isSelected ? "rgb(255,85,0)" : "rgb(31,41,55)",
                     borderLeft: isSelected
-                      ? "3px solid rgb(6,182,212)"
+                      ? "3px solid rgb(255,85,0)"
                       : "3px solid rgba(255,255,255,0.04)",
                     cursor: isComingSoon || submitting ? "default" : "pointer",
                     opacity: isComingSoon ? 0.5 : submitting && !isSelected ? 0.4 : 1,
@@ -135,7 +135,7 @@ export function OnboardingClient() {
                   ) : (
                     <Icon
                       size={22}
-                      style={{ color: isSelected ? "rgb(6,182,212)" : "rgb(75,85,99)" }}
+                      style={{ color: isSelected ? "rgb(255,85,0)" : "rgb(75,85,99)" }}
                       strokeWidth={1.5}
                     />
                   )}
@@ -156,7 +156,7 @@ export function OnboardingClient() {
                     <div className="mt-auto pt-1">
                       <span
                         className="text-xs font-mono tracking-widest"
-                        style={{ color: isSelected ? "rgb(6,182,212)" : "rgb(55,65,81)" }}
+                        style={{ color: isSelected ? "rgb(255,85,0)" : "rgb(55,65,81)" }}
                       >
                         {isSelected ? "▸ Selected" : "▸ Choose"}
                       </span>
@@ -174,10 +174,10 @@ export function OnboardingClient() {
               disabled={!selected || submitting}
               className="w-full py-4 text-sm font-mono tracking-widest uppercase transition-opacity duration-150"
               style={{
-                backgroundColor: selected && !submitting ? "rgb(6,182,212)" : "rgb(17,24,39)",
+                backgroundColor: selected && !submitting ? "rgb(255,85,0)" : "rgb(17,24,39)",
                 color: selected && !submitting ? "#000" : "rgb(55,65,81)",
                 border: "1px solid",
-                borderColor: selected && !submitting ? "rgb(6,182,212)" : "rgb(31,41,55)",
+                borderColor: selected && !submitting ? "rgb(255,85,0)" : "rgb(31,41,55)",
                 cursor: !selected || submitting ? "not-allowed" : "pointer",
                 fontWeight: 700,
               }}

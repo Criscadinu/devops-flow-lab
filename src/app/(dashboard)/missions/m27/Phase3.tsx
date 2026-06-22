@@ -57,12 +57,12 @@ function TaskCard({
           ? "rgb(31,41,55)"
           : done
           ? "rgba(34,197,94,0.4)"
-          : "rgba(6,182,212,0.4)",
+          : "rgba(255,85,0,0.4)",
         borderLeft: locked
           ? "3px solid rgb(31,41,55)"
           : done
           ? "3px solid rgb(34,197,94)"
-          : "3px solid rgb(6,182,212)",
+          : "3px solid rgb(255,85,0)",
         opacity: locked ? 0.45 : 1,
         pointerEvents: locked ? "none" : "auto",
       }}
@@ -72,7 +72,7 @@ function TaskCard({
           <span
             className="text-xs font-mono font-bold"
             style={{
-              color: locked ? "rgb(75,85,99)" : done ? "rgb(34,197,94)" : "rgb(6,182,212)",
+              color: locked ? "rgb(75,85,99)" : done ? "rgb(34,197,94)" : "rgb(255,85,0)",
             }}
           >
             {number}
@@ -103,11 +103,11 @@ function MentorNote({ children }: { children: React.ReactNode }) {
       className="flex gap-3 p-4 border"
       style={{
         backgroundColor: "#0a0a0a",
-        borderColor: "rgba(6,182,212,0.15)",
-        borderLeft: "3px solid rgba(6,182,212,0.5)",
+        borderColor: "rgba(255,85,0,0.15)",
+        borderLeft: "3px solid rgba(255,85,0,0.5)",
       }}
     >
-      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(6,182,212)" }}>
+      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>
         //
       </span>
       <div className="flex flex-col gap-1">{children}</div>
@@ -247,7 +247,7 @@ docker kill nexus-corp-app-prod-1
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 Process kill experiment run — restart policy confirmed
@@ -294,7 +294,7 @@ curl http://localhost:3000/api/alerts`}</CodeBlock>
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 Slow dependency experiment run — /health responds independently of slow endpoint
@@ -337,7 +337,7 @@ app.use((req, res, next) => {
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 Request timeout configured and wired to environment variable
@@ -384,7 +384,7 @@ app.use((req, res, next) => {
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 Known failure modes documented in RUNBOOK.md
@@ -430,7 +430,7 @@ git push`}</CodeBlock>
                   onChange={(e) => {
                     if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true)
                   }}
-                  className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                  className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                   Pipeline is green — chaos engineering is part of the codebase
@@ -456,7 +456,7 @@ git push`}</CodeBlock>
             <a
               href="?phase=4"
               className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
             >
               See your impact →
             </a>

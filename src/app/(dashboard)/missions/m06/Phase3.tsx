@@ -27,12 +27,12 @@ function TaskCard({
           ? "rgb(31,41,55)"
           : done
           ? "rgba(34,197,94,0.4)"
-          : "rgba(6,182,212,0.4)",
+          : "rgba(255,85,0,0.4)",
         borderLeft: locked
           ? "3px solid rgb(31,41,55)"
           : done
           ? "3px solid rgb(34,197,94)"
-          : "3px solid rgb(6,182,212)",
+          : "3px solid rgb(255,85,0)",
         opacity: locked ? 0.45 : 1,
         pointerEvents: locked ? "none" : "auto",
       }}
@@ -42,7 +42,7 @@ function TaskCard({
           <span
             className="text-xs font-mono font-bold"
             style={{
-              color: locked ? "rgb(75,85,99)" : done ? "rgb(34,197,94)" : "rgb(6,182,212)",
+              color: locked ? "rgb(75,85,99)" : done ? "rgb(34,197,94)" : "rgb(255,85,0)",
             }}
           >
             {number}
@@ -73,11 +73,11 @@ function MentorNote({ children }: { children: React.ReactNode }) {
       className="flex gap-3 p-4 border"
       style={{
         backgroundColor: "#0a0a0a",
-        borderColor: "rgba(6,182,212,0.15)",
-        borderLeft: "3px solid rgba(6,182,212,0.5)",
+        borderColor: "rgba(255,85,0,0.15)",
+        borderLeft: "3px solid rgba(255,85,0,0.5)",
       }}
     >
-      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(6,182,212)" }}>
+      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>
         //
       </span>
       <div className="flex flex-col gap-1">{children}</div>
@@ -178,7 +178,7 @@ export function Phase3() {
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
               You need Node.js to run the test suite locally. Verify with{" "}
-              <code className="text-cyan-400 font-mono">node --version</code>.
+              <code className="text-orange-400 font-mono">node --version</code>.
             </p>
           </div>
         </div>
@@ -196,9 +196,9 @@ export function Phase3() {
           <div className="flex flex-col gap-2">
             <SectionLabel>How to audit</SectionLabel>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Open <code className="text-cyan-400 font-mono">src/index.test.js</code>. List the
+              Open <code className="text-orange-400 font-mono">src/index.test.js</code>. List the
               endpoints that exist in{" "}
-              <code className="text-cyan-400 font-mono">src/index.js</code> but have no tests.
+              <code className="text-orange-400 font-mono">src/index.js</code> but have no tests.
             </p>
             <CodeBlock>{`GET /           - tested
 GET /health     - tested
@@ -211,7 +211,7 @@ GET /api/metrics - NOT tested`}</CodeBlock>
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 I have identified the untested endpoints
@@ -255,7 +255,7 @@ GET /api/metrics - NOT tested`}</CodeBlock>
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 npm test shows the new metrics tests passing
@@ -289,7 +289,7 @@ GET /api/metrics - NOT tested`}</CodeBlock>
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 I have added at least 2 error case tests and they pass
@@ -316,7 +316,7 @@ GET /api/metrics - NOT tested`}</CodeBlock>
           <div className="flex flex-col gap-2">
             <SectionLabel>Run it</SectionLabel>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Run <code className="text-cyan-400 font-mono">npm run test:coverage</code>. Look at
+              Run <code className="text-orange-400 font-mono">npm run test:coverage</code>. Look at
               the coverage report. Find the lowest-covered file.
             </p>
           </div>
@@ -326,7 +326,7 @@ GET /api/metrics - NOT tested`}</CodeBlock>
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 I have run coverage and seen the report
@@ -375,7 +375,7 @@ git push`}</CodeBlock>
                   onChange={(e) => {
                     if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true)
                   }}
-                  className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                  className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                   All tests pass in CI
@@ -401,7 +401,7 @@ git push`}</CodeBlock>
             <a
               href="?phase=4"
               className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
             >
               See your impact →
             </a>

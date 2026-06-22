@@ -46,7 +46,7 @@ export function Fase4() {
 
         {/* ── Section 1: Mission Complete ──────────────────────────────────── */}
         <div className="flex flex-col gap-4">
-          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(6,182,212)" }}>
+          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(255,85,0)" }}>
             Mission Complete - M-01
           </p>
           <h1
@@ -118,7 +118,7 @@ export function Fase4() {
                     {i < steps.length - 1 && (
                       <div
                         className="w-6 text-center text-sm font-mono shrink-0"
-                        style={{ color: "rgba(6,182,212,0.4)" }}
+                        style={{ color: "rgba(255,85,0,0.4)" }}
                       >
                         →
                       </div>
@@ -258,7 +258,7 @@ export function Fase4() {
             <a
               href="/dashboard"
               className="px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
             >
               Back to dashboard →
             </a>
@@ -268,8 +268,8 @@ export function Fase4() {
               className="flex items-center gap-3 px-8 py-4 text-sm font-mono border transition-opacity hover:opacity-80"
               style={{
                 backgroundColor: "#0a0a0a",
-                borderColor: "rgba(6,182,212,0.3)",
-                color: "rgb(6,182,212)",
+                borderColor: "rgba(255,85,0,0.3)",
+                color: "rgb(255,85,0)",
               }}
             >
               View next mission: On-Demand Environments →

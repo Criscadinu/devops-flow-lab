@@ -57,14 +57,14 @@ export function MissionFAQ({ items, title = "Frequently Asked Questions" }: Miss
                   style={{
                     backgroundColor: isExpanded ? "#0a0a0a" : "transparent",
                     borderLeft: isExpanded
-                      ? "3px solid rgb(6,182,212)"
+                      ? "3px solid rgb(255,85,0)"
                       : "3px solid rgb(31,41,55)",
                   }}
                 >
                   <span className="text-sm text-white leading-snug">{item.question}</span>
                   <span
                     className="text-xs font-mono shrink-0 pt-0.5"
-                    style={{ color: isExpanded ? "rgb(6,182,212)" : "rgb(75,85,99)" }}
+                    style={{ color: isExpanded ? "rgb(255,85,0)" : "rgb(75,85,99)" }}
                   >
                     {isExpanded ? "−" : "+"}
                   </span>
@@ -75,7 +75,7 @@ export function MissionFAQ({ items, title = "Frequently Asked Questions" }: Miss
                     className="px-5 pb-5 pt-1"
                     style={{
                       backgroundColor: "#0a0a0a",
-                      borderLeft: "3px solid rgb(6,182,212)",
+                      borderLeft: "3px solid rgb(255,85,0)",
                     }}
                   >
                     <p className="text-sm text-gray-400 leading-relaxed">{item.answer}</p>

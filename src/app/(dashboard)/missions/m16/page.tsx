@@ -19,7 +19,7 @@ function MissionHeader({ fase }: { fase: number }) {
   return (
     <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "#080808" }}>
       <div className="max-w-5xl mx-auto flex items-center justify-between">
-        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(255,85,0)" }}>
           M-16
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
@@ -31,7 +31,7 @@ function MissionHeader({ fase }: { fase: number }) {
       </div>
       <div className="max-w-5xl mx-auto mt-3">
         <div className="w-full h-px bg-gray-800">
-          <div className="h-px transition-all" style={{ width: pct, backgroundColor: "rgb(6,182,212)" }} />
+          <div className="h-px transition-all" style={{ width: pct, background: "linear-gradient(90deg, #FF0000 0%, #FF8C00 100%)" }} />
         </div>
       </div>
     </header>
@@ -46,7 +46,7 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
       <a
         href={href}
         className="self-start px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-        style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+        style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
       >
         {label}
       </a>
@@ -63,9 +63,9 @@ const panels = [
     name: "Sarah",
     role: "Engineering Manager",
     badge: "MANAGEMENT",
-    accent: "rgb(6,182,212)",
-    badgeBg: "rgba(6,182,212,0.08)",
-    badgeBorder: "rgba(6,182,212,0.3)",
+    accent: "rgb(255,85,0)",
+    badgeBg: "rgba(255,85,0,0.08)",
+    badgeBorder: "rgba(255,85,0,0.3)",
     quote: (
       <>
         &ldquo;The tests pass automatically now. But Marco still deploys manually. Every deploy is
@@ -139,9 +139,9 @@ const panels = [
     name: "You",
     role: "New Engineer",
     badge: "PLAYER",
-    accent: "rgb(6,182,212)",
-    badgeBg: "rgba(6,182,212,0.08)",
-    badgeBorder: "rgba(6,182,212,0.3)",
+    accent: "rgb(255,85,0)",
+    badgeBg: "rgba(255,85,0,0.08)",
+    badgeBorder: "rgba(255,85,0,0.3)",
     isPlayer: true,
     quote: (
       <>
@@ -235,7 +235,7 @@ function Phase1() {
       <style>{`
         mark {
           background: none;
-          color: rgb(6,182,212);
+          color: rgb(255,85,0);
           font-family: monospace;
           font-weight: 700;
         }
@@ -257,9 +257,9 @@ const ciVsCd = [
   {
     title: "Continuous Deployment",
     body: "Every green build is automatically deployed. No human in the loop. Code goes from commit to production without anyone pressing a button.",
-    accent: "rgb(6,182,212)",
+    accent: "rgb(255,85,0)",
     bg: "#020d0f",
-    border: "rgba(6,182,212,0.25)",
+    border: "rgba(255,85,0,0.25)",
   },
 ]
 
@@ -274,9 +274,9 @@ const cdPrereqs = [
   {
     title: "Fast pipeline",
     body: "If your pipeline takes 30 minutes, every deploy blocks the next one. CD pipelines should complete in under 10 minutes.",
-    accent: "rgb(6,182,212)",
+    accent: "rgb(255,85,0)",
     bg: "#020d0f",
-    border: "rgba(6,182,212,0.25)",
+    border: "rgba(255,85,0,0.25)",
   },
   {
     title: "Easy rollback",
@@ -404,7 +404,7 @@ function Phase2() {
               >
                 <span
                   className="text-sm font-bold uppercase tracking-widest"
-                  style={{ ...syne.style, color: "rgb(6,182,212)" }}
+                  style={{ ...syne.style, color: "rgb(255,85,0)" }}
                 >
                   {p.name}
                 </span>
@@ -448,7 +448,7 @@ function Phase4() {
       <div className="max-w-5xl mx-auto flex flex-col gap-16">
 
         <div className="flex flex-col gap-4">
-          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(6,182,212)" }}>
+          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(255,85,0)" }}>
             Mission Complete - M-16
           </p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
@@ -515,7 +515,7 @@ function Phase4() {
                     {d.before}
                   </span>
                   <span className="font-mono text-gray-700">→</span>
-                  <span className="text-xl font-mono font-bold" style={{ ...syne.style, color: "rgb(6,182,212)" }}>
+                  <span className="text-xl font-mono font-bold" style={{ ...syne.style, color: "rgb(255,85,0)" }}>
                     {d.after}
                   </span>
                 </div>
@@ -552,7 +552,7 @@ function Phase4() {
             <a
               href="/dashboard"
               className="px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
             >
               Back to dashboard →
             </a>

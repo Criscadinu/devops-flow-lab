@@ -98,7 +98,7 @@ export function OnboardingScreen() {
           className="scanline pointer-events-none absolute inset-x-0 top-0"
           style={{
             height: "80px",
-            background: "linear-gradient(to bottom, transparent, rgba(0,255,255,0.12), transparent)",
+            background: "linear-gradient(to bottom, transparent, rgba(255,85,0,0.10), transparent)",
           }}
         />
 
@@ -114,7 +114,7 @@ export function OnboardingScreen() {
         <div className="relative max-w-3xl w-full flex flex-col items-center gap-10 text-center">
 
           {/* Classification label */}
-          <p className="fade-up delay-1 text-xs font-mono tracking-[0.3em] text-cyan-700 uppercase">
+          <p className="fade-up delay-1 text-xs font-mono tracking-[0.3em] text-orange-700 uppercase">
             Nexus Corp - Classified Briefing
           </p>
 
@@ -155,11 +155,11 @@ export function OnboardingScreen() {
                   className="group flex flex-col items-start gap-5 p-6 text-left transition-all duration-200 border"
                   style={{
                     backgroundColor: isSelected
-                      ? "rgba(6,182,212,0.07)"
+                      ? "rgba(255,85,0,0.07)"
                       : "rgba(255,255,255,0.02)",
-                    borderColor: isSelected ? "rgb(6,182,212)" : "rgb(31,41,55)",
+                    borderColor: isSelected ? "rgb(255,85,0)" : "rgb(31,41,55)",
                     borderLeft: isSelected
-                      ? "3px solid rgb(6,182,212)"
+                      ? "3px solid rgb(255,85,0)"
                       : "3px solid rgba(255,255,255,0.04)",
                     opacity: isDisabled ? 0.35 : 1,
                     cursor: isDisabled ? "not-allowed" : "pointer",
@@ -181,11 +181,11 @@ export function OnboardingScreen() {
 
                   <div className="mt-auto pt-2">
                     {isSelected ? (
-                      <span className="text-xs font-mono text-cyan-500 tracking-widest">
+                      <span className="text-xs font-mono text-orange-500 tracking-widest">
                         ▸ Loading...
                       </span>
                     ) : (
-                      <span className="text-xs font-mono text-gray-800 group-hover:text-cyan-700 transition-colors tracking-widest">
+                      <span className="text-xs font-mono text-gray-800 group-hover:text-orange-700 transition-colors tracking-widest">
                         ▸ Choose this role
                       </span>
                     )}

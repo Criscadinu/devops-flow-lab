@@ -20,7 +20,7 @@ function MissionHeader({ fase }: { fase: number }) {
   return (
     <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "#080808" }}>
       <div className="max-w-5xl mx-auto flex items-center justify-between">
-        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(255,85,0)" }}>
           M-01
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
@@ -32,7 +32,7 @@ function MissionHeader({ fase }: { fase: number }) {
       </div>
       <div className="max-w-5xl mx-auto mt-3">
         <div className="w-full h-px bg-gray-800">
-          <div className="h-px transition-all" style={{ width: pct, backgroundColor: "rgb(6,182,212)" }} />
+          <div className="h-px transition-all" style={{ width: pct, background: "linear-gradient(90deg, #FF0000 0%, #FF8C00 100%)" }} />
         </div>
       </div>
     </header>
@@ -47,7 +47,7 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
       <a
         href={href}
         className="self-start px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-        style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+        style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
       >
         {label}
       </a>
@@ -64,9 +64,9 @@ const panels = [
     name: "Sarah",
     role: "Engineering Manager",
     badge: "MANAGEMENT",
-    accent: "rgb(6,182,212)",
-    badgeBg: "rgba(6,182,212,0.08)",
-    badgeBorder: "rgba(6,182,212,0.3)",
+    accent: "rgb(255,85,0)",
+    badgeBg: "rgba(255,85,0,0.08)",
+    badgeBorder: "rgba(255,85,0,0.3)",
     quote: (
       <>
         &ldquo;Welcome. We deploy once a month. A feature takes an average of{" "}
@@ -146,9 +146,9 @@ const panels = [
     name: "You",
     role: "New Engineer",
     badge: "PLAYER",
-    accent: "rgb(6,182,212)",
-    badgeBg: "rgba(6,182,212,0.08)",
-    badgeBorder: "rgba(6,182,212,0.3)",
+    accent: "rgb(255,85,0)",
+    badgeBg: "rgba(255,85,0,0.08)",
+    badgeBorder: "rgba(255,85,0,0.3)",
     isPlayer: true,
     quote: (
       <>
@@ -264,7 +264,7 @@ function Phase1() {
       <style>{`
         mark {
           background: none;
-          color: rgb(6,182,212);
+          color: rgb(255,85,0);
           font-family: monospace;
           font-weight: 700;
         }
@@ -367,7 +367,7 @@ function Phase2() {
                 className="flex items-start gap-5 px-6 py-4 border-b border-gray-800 last:border-b-0"
                 style={{ backgroundColor: i % 2 === 0 ? "#080808" : "#050505" }}
               >
-                <span className="text-sm font-mono font-bold shrink-0 w-6 pt-0.5" style={{ color: "rgb(6,182,212)" }}>
+                <span className="text-sm font-mono font-bold shrink-0 w-6 pt-0.5" style={{ color: "rgb(255,85,0)" }}>
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="text-gray-300 text-sm leading-relaxed">{q}</span>

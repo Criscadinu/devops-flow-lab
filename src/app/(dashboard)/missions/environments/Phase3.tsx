@@ -28,12 +28,12 @@ function TaskCard({
           ? "rgb(31,41,55)"
           : done
           ? "rgba(34,197,94,0.4)"
-          : "rgba(6,182,212,0.4)",
+          : "rgba(255,85,0,0.4)",
         borderLeft: locked
           ? "3px solid rgb(31,41,55)"
           : done
           ? "3px solid rgb(34,197,94)"
-          : "3px solid rgb(6,182,212)",
+          : "3px solid rgb(255,85,0)",
         opacity: locked ? 0.45 : 1,
         pointerEvents: locked ? "none" : "auto",
       }}
@@ -47,7 +47,7 @@ function TaskCard({
                 ? "rgb(75,85,99)"
                 : done
                 ? "rgb(34,197,94)"
-                : "rgb(6,182,212)",
+                : "rgb(255,85,0)",
             }}
           >
             {number}
@@ -79,11 +79,11 @@ function MentorNote({ children }: { children: React.ReactNode }) {
       className="flex gap-3 p-4 border"
       style={{
         backgroundColor: "#0a0a0a",
-        borderColor: "rgba(6,182,212,0.15)",
-        borderLeft: "3px solid rgba(6,182,212,0.5)",
+        borderColor: "rgba(255,85,0,0.15)",
+        borderLeft: "3px solid rgba(255,85,0,0.5)",
       }}
     >
-      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(6,182,212)" }}>
+      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>
         //
       </span>
       <div className="flex flex-col gap-1">{children}</div>
@@ -169,8 +169,8 @@ function MachineColumn({
         <div
           key={sceneKey}
           style={{
-            backgroundColor: "rgba(6,182,212,0.06)",
-            border: "1px solid rgba(6,182,212,0.25)",
+            backgroundColor: "rgba(255,85,0,0.06)",
+            border: "1px solid rgba(255,85,0,0.25)",
             padding: "8px 10px",
             display: "flex",
             flexDirection: "column",
@@ -179,8 +179,8 @@ function MachineColumn({
             animationDelay: containerDelay,
           }}
         >
-          <span style={{ color: "rgb(6,182,212)", fontFamily: "monospace", fontSize: 10 }}>Node 20 — locked in</span>
-          <span style={{ color: "rgb(6,182,212)", fontFamily: "monospace", fontSize: 10 }}>Your code — locked in</span>
+          <span style={{ color: "rgb(255,85,0)", fontFamily: "monospace", fontSize: 10 }}>Node 20 — locked in</span>
+          <span style={{ color: "rgb(255,85,0)", fontFamily: "monospace", fontSize: 10 }}>Your code — locked in</span>
         </div>
       )}
 
@@ -294,18 +294,18 @@ function DockerExplainer() {
                   <div
                     style={{
                       backgroundColor: "#0d0d0d",
-                      border: "1px solid rgba(6,182,212,0.3)",
+                      border: "1px solid rgba(255,85,0,0.3)",
                       padding: "6px 10px",
                       fontFamily: "monospace",
                       fontSize: 10,
-                      color: "rgb(6,182,212)",
+                      color: "rgb(255,85,0)",
                       whiteSpace: "nowrap",
                     }}
                   >
                     {step}
                   </div>
                   {i < DOCKERFILE_STEPS.length - 1 && (
-                    <span style={{ color: "rgba(6,182,212,0.5)", fontFamily: "monospace", fontSize: 13, padding: "0 4px" }}>→</span>
+                    <span style={{ color: "rgba(255,85,0,0.5)", fontFamily: "monospace", fontSize: 13, padding: "0 4px" }}>→</span>
                   )}
                 </div>
               ))}
@@ -393,7 +393,7 @@ function DockerExplainer() {
                 width: 8,
                 height: 8,
                 borderRadius: "50%",
-                backgroundColor: i === scene ? "rgb(6,182,212)" : "rgb(55,65,81)",
+                backgroundColor: i === scene ? "rgb(255,85,0)" : "rgb(55,65,81)",
                 border: "none",
                 cursor: "pointer",
                 padding: 0,
@@ -416,8 +416,8 @@ function DockerExplainer() {
             }}
             onMouseEnter={(e) => {
               const b = e.currentTarget
-              b.style.borderColor = "rgb(6,182,212)"
-              b.style.color = "rgb(6,182,212)"
+              b.style.borderColor = "rgb(255,85,0)"
+              b.style.color = "rgb(255,85,0)"
             }}
             onMouseLeave={(e) => {
               const b = e.currentTarget
@@ -653,7 +653,7 @@ export function Phase3() {
               target="_blank"
               rel="noopener noreferrer"
               className="self-start px-5 py-2.5 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style }}
+              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style }}
             >
               Fork on GitHub →
             </a>
@@ -704,7 +704,7 @@ cd nexus-corp-app`}</pre>
                   }}
                   disabled={!forkUrl.trim() || forkChecking}
                   className="px-5 py-2 text-sm font-bold transition-opacity hover:opacity-80 disabled:opacity-30 shrink-0"
-                  style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style }}
+                  style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style }}
                 >
                   {forkChecking ? "Checking..." : "Confirm"}
                 </button>
@@ -809,11 +809,11 @@ EXPOSE 3000
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 My Dockerfile is complete and{" "}
-                <code className="text-cyan-400 font-mono">docker build -t nexus-corp .</code>{" "}
+                <code className="text-orange-400 font-mono">docker build -t nexus-corp .</code>{" "}
                 succeeds
               </span>
             </label>
@@ -902,9 +902,9 @@ EXPOSE 3000
               onClick={() => setShowSolution3((v) => !v)}
               className="self-start text-xs font-mono uppercase tracking-widest px-3 py-1.5 transition-colors"
               style={{
-                color: showSolution3 ? "rgb(6,182,212)" : "rgb(75,85,99)",
+                color: showSolution3 ? "rgb(255,85,0)" : "rgb(75,85,99)",
                 border: "1px solid",
-                borderColor: showSolution3 ? "rgba(6,182,212,0.3)" : "rgb(31,41,55)",
+                borderColor: showSolution3 ? "rgba(255,85,0,0.3)" : "rgb(31,41,55)",
                 backgroundColor: "transparent",
               }}
             >
@@ -916,7 +916,7 @@ EXPOSE 3000
                 className="text-xs font-mono leading-relaxed p-4 overflow-x-auto"
                 style={{
                   backgroundColor: "#020d0f",
-                  borderLeft: "3px solid rgba(6,182,212,0.4)",
+                  borderLeft: "3px solid rgba(255,85,0,0.4)",
                   color: "rgb(156,163,175)",
                 }}
               >{`services:
@@ -986,10 +986,10 @@ EXPOSE 3000
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                <code className="text-cyan-400 font-mono">docker-compose up</code> starts all
+                <code className="text-orange-400 font-mono">docker-compose up</code> starts all
                 three services without errors
               </span>
             </label>
@@ -1037,7 +1037,7 @@ git push`}</pre>
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 My fork on GitHub contains Dockerfile and docker-compose.yml
@@ -1062,7 +1062,7 @@ git push`}</pre>
             <a
               href="?phase=4"
               className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
             >
               See your impact →
             </a>

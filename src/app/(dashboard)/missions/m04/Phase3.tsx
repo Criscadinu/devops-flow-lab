@@ -27,12 +27,12 @@ function TaskCard({
           ? "rgb(31,41,55)"
           : done
           ? "rgba(34,197,94,0.4)"
-          : "rgba(6,182,212,0.4)",
+          : "rgba(255,85,0,0.4)",
         borderLeft: locked
           ? "3px solid rgb(31,41,55)"
           : done
           ? "3px solid rgb(34,197,94)"
-          : "3px solid rgb(6,182,212)",
+          : "3px solid rgb(255,85,0)",
         opacity: locked ? 0.45 : 1,
         pointerEvents: locked ? "none" : "auto",
       }}
@@ -42,7 +42,7 @@ function TaskCard({
           <span
             className="text-xs font-mono font-bold"
             style={{
-              color: locked ? "rgb(75,85,99)" : done ? "rgb(34,197,94)" : "rgb(6,182,212)",
+              color: locked ? "rgb(75,85,99)" : done ? "rgb(34,197,94)" : "rgb(255,85,0)",
             }}
           >
             {number}
@@ -73,11 +73,11 @@ function MentorNote({ children }: { children: React.ReactNode }) {
       className="flex gap-3 p-4 border"
       style={{
         backgroundColor: "#0a0a0a",
-        borderColor: "rgba(6,182,212,0.15)",
-        borderLeft: "3px solid rgba(6,182,212,0.5)",
+        borderColor: "rgba(255,85,0,0.15)",
+        borderLeft: "3px solid rgba(255,85,0,0.5)",
       }}
     >
-      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(6,182,212)" }}>
+      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>
         //
       </span>
       <div className="flex flex-col gap-1">{children}</div>
@@ -175,7 +175,7 @@ export function Phase3() {
               <span className="text-xs font-mono" style={{ color: "rgb(34,197,94)" }}>✓ READY</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pl-6">
-              Verify with <code className="text-cyan-400 font-mono">docker --version</code>. Docker Desktop or Docker Engine both work.
+              Verify with <code className="text-orange-400 font-mono">docker --version</code>. Docker Desktop or Docker Engine both work.
             </p>
           </div>
         </div>
@@ -193,7 +193,7 @@ export function Phase3() {
           <div className="flex flex-col gap-2">
             <SectionLabel>What to look for</SectionLabel>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Open your fork. Look at the <code className="text-cyan-400 font-mono">docker-compose.yml</code>.
+              Open your fork. Look at the <code className="text-orange-400 font-mono">docker-compose.yml</code>.
               What is missing? What environment variables are hardcoded? What is not defined anywhere?
             </p>
           </div>
@@ -203,7 +203,7 @@ export function Phase3() {
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask1Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 I have reviewed the docker-compose.yml and identified at least 2 things that are not defined as code
@@ -218,7 +218,7 @@ export function Phase3() {
             <p className="text-sm text-gray-300 leading-relaxed">
               <span className="text-white">Environment variables are infrastructure too.</span>{" "}
               If they are not documented, new developers cannot run the app.{" "}
-              <code className="text-cyan-400 font-mono">.env.example</code> is the IaC for your
+              <code className="text-orange-400 font-mono">.env.example</code> is the IaC for your
               configuration — it tells every developer exactly what variables they need.
             </p>
           </MentorNote>
@@ -235,7 +235,7 @@ PORT=3000`}</CodeBlock>
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 .env.example committed and pushed to GitHub
@@ -276,7 +276,7 @@ PORT=3000`}</CodeBlock>
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 docker-compose up runs with health checks passing
@@ -291,8 +291,8 @@ PORT=3000`}</CodeBlock>
             <p className="text-sm text-gray-300 leading-relaxed">
               <span className="text-white">A Makefile is the simplest form of IaC for developer workflows.</span>{" "}
               Instead of remembering{" "}
-              <code className="text-cyan-400 font-mono">docker-compose up --build</code>, you run{" "}
-              <code className="text-cyan-400 font-mono">make dev</code>. Every team member gets the
+              <code className="text-orange-400 font-mono">docker-compose up --build</code>, you run{" "}
+              <code className="text-orange-400 font-mono">make dev</code>. Every team member gets the
               same commands, documented and version-controlled.
             </p>
           </MentorNote>
@@ -336,7 +336,7 @@ clean:
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 make dev starts the app successfully
@@ -381,7 +381,7 @@ git push`}</CodeBlock>
                   onChange={(e) => {
                     if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true)
                   }}
-                  className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                  className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                   Pipeline is green with all IaC files committed
@@ -407,7 +407,7 @@ git push`}</CodeBlock>
             <a
               href="?phase=4"
               className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
             >
               See your impact →
             </a>

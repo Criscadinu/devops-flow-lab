@@ -24,10 +24,10 @@ function MobileWarning() {
 
 function TaskCard({ number, title, done, locked, children }: { number: string; title: string; done: boolean; locked: boolean; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-5 p-6 border" style={{ backgroundColor: locked ? "#050505" : done ? "#060f06" : "#080808", borderColor: locked ? "rgb(31,41,55)" : done ? "rgba(34,197,94,0.4)" : "rgba(6,182,212,0.4)", borderLeft: locked ? "3px solid rgb(31,41,55)" : done ? "3px solid rgb(34,197,94)" : "3px solid rgb(6,182,212)", opacity: locked ? 0.45 : 1, pointerEvents: locked ? "none" : "auto" }}>
+    <div className="flex flex-col gap-5 p-6 border" style={{ backgroundColor: locked ? "#050505" : done ? "#060f06" : "#080808", borderColor: locked ? "rgb(31,41,55)" : done ? "rgba(34,197,94,0.4)" : "rgba(255,85,0,0.4)", borderLeft: locked ? "3px solid rgb(31,41,55)" : done ? "3px solid rgb(34,197,94)" : "3px solid rgb(255,85,0)", opacity: locked ? 0.45 : 1, pointerEvents: locked ? "none" : "auto" }}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="text-xs font-mono font-bold" style={{ color: locked ? "rgb(75,85,99)" : done ? "rgb(34,197,94)" : "rgb(6,182,212)" }}>{number}</span>
+          <span className="text-xs font-mono font-bold" style={{ color: locked ? "rgb(75,85,99)" : done ? "rgb(34,197,94)" : "rgb(255,85,0)" }}>{number}</span>
           <h3 className="text-white text-base" style={{ ...syne.style, fontWeight: 700 }}>{title}</h3>
         </div>
         <div>
@@ -42,8 +42,8 @@ function TaskCard({ number, title, done, locked, children }: { number: string; t
 
 function MentorNote({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex gap-3 p-4 border" style={{ backgroundColor: "#0a0a0a", borderColor: "rgba(6,182,212,0.15)", borderLeft: "3px solid rgba(6,182,212,0.5)" }}>
-      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(6,182,212)" }}>//</span>
+    <div className="flex gap-3 p-4 border" style={{ backgroundColor: "#0a0a0a", borderColor: "rgba(255,85,0,0.15)", borderLeft: "3px solid rgba(255,85,0,0.5)" }}>
+      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>//</span>
       <div className="flex flex-col gap-1">{children}</div>
     </div>
   )
@@ -114,7 +114,7 @@ app.get('/api/pricing', (req, res) => {
           </div>
           {!task1Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
-              <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask1Done(true) }} className="w-4 h-4 accent-cyan-400 cursor-pointer" />
+              <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask1Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">Canary endpoint implemented — CANARY_PERCENTAGE controls rollout percentage</span>
             </label>
           )}
@@ -161,7 +161,7 @@ docker compose stop blue`}</CodeBlock>
           </div>
           {!task2Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
-              <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask2Done(true) }} className="w-4 h-4 accent-cyan-400 cursor-pointer" />
+              <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask2Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">Blue-green services configured — instant rollback available</span>
             </label>
           )}
@@ -195,7 +195,7 @@ The pipeline deploys the reverted commit automatically.`}</CodeBlock>
           </div>
           {!task3Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
-              <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask3Done(true) }} className="w-4 h-4 accent-cyan-400 cursor-pointer" />
+              <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask3Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">Rollback procedures documented — team knows how to roll back before deploying</span>
             </label>
           )}
@@ -234,7 +234,7 @@ describe('canary routing', () => {
           </div>
           {!task4Done && (
             <label className="flex items-center gap-3 cursor-pointer group">
-              <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask4Done(true) }} className="w-4 h-4 accent-cyan-400 cursor-pointer" />
+              <input type="checkbox" onChange={(e) => { if (e.target.checked) setTask4Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">Canary routing logic is tested</span>
             </label>
           )}
@@ -257,7 +257,7 @@ git push`}</CodeBlock>
                 <input type="url" value={actionsUrl} onChange={(e) => setActionsUrl(e.target.value)} placeholder="https://github.com/your-username/nexus-corp-app/actions/runs/..." className="w-full px-3 py-2 text-sm font-mono text-white outline-none border" style={{ backgroundColor: "#0d0d0d", borderColor: "rgb(31,41,55)" }} />
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
-                <input type="checkbox" onChange={(e) => { if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true) }} className="w-4 h-4 accent-cyan-400 cursor-pointer" />
+                <input type="checkbox" onChange={(e) => { if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true) }} className="w-4 h-4 accent-orange-500 cursor-pointer" />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">Pipeline is green — release patterns implemented</span>
               </label>
             </div>
@@ -267,7 +267,7 @@ git push`}</CodeBlock>
         {allDone && (
           <div className="flex flex-col gap-5 border p-6" style={{ backgroundColor: "#060f06", borderColor: "rgba(34,197,94,0.3)", borderLeft: "3px solid rgb(34,197,94)" }}>
             <p className="text-sm font-mono font-bold" style={{ color: "rgb(34,197,94)" }}>✓ Canary is live at 0%. Blue-green is ready. Rollback is documented. Risk is now a dial, not a switch.</p>
-            <a href="?phase=4" className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80" style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}>See your impact →</a>
+            <a href="?phase=4" className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80" style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}>See your impact →</a>
           </div>
         )}
       </div>

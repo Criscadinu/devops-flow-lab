@@ -19,7 +19,7 @@ function MissionHeader({ fase }: { fase: number }) {
   return (
     <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "#080808" }}>
       <div className="max-w-5xl mx-auto flex items-center justify-between">
-        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(255,85,0)" }}>
           M-15
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
@@ -31,7 +31,7 @@ function MissionHeader({ fase }: { fase: number }) {
       </div>
       <div className="max-w-5xl mx-auto mt-3">
         <div className="w-full h-px bg-gray-800">
-          <div className="h-px transition-all" style={{ width: pct, backgroundColor: "rgb(6,182,212)" }} />
+          <div className="h-px transition-all" style={{ width: pct, background: "linear-gradient(90deg, #FF0000 0%, #FF8C00 100%)" }} />
         </div>
       </div>
     </header>
@@ -46,7 +46,7 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
       <a
         href={href}
         className="self-start px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-        style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+        style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
       >
         {label}
       </a>
@@ -187,9 +187,9 @@ function Phase1() {
                   key={i}
                   className="flex flex-col gap-4 p-6 mt-2"
                   style={{
-                    backgroundColor: "rgba(6,182,212,0.04)",
-                    borderLeft: "3px solid rgb(6,182,212)",
-                    border: "1px solid rgba(6,182,212,0.2)",
+                    backgroundColor: "rgba(255,85,0,0.04)",
+                    borderLeft: "3px solid rgb(255,85,0)",
+                    border: "1px solid rgba(255,85,0,0.2)",
                     borderLeftWidth: "3px",
                   }}
                 >
@@ -197,9 +197,9 @@ function Phase1() {
                     <div
                       className="w-8 h-8 flex items-center justify-center text-xs font-mono font-bold shrink-0"
                       style={{
-                        backgroundColor: "rgba(6,182,212,0.12)",
-                        border: "1px solid rgba(6,182,212,0.4)",
-                        color: "rgb(6,182,212)",
+                        backgroundColor: "rgba(255,85,0,0.12)",
+                        border: "1px solid rgba(255,85,0,0.4)",
+                        color: "rgb(255,85,0)",
                       }}
                     >
                       YOU
@@ -210,7 +210,7 @@ function Phase1() {
                     </div>
                   </div>
                   <p className="text-gray-300 text-sm leading-relaxed">{entry.text}</p>
-                  <p className="text-white font-bold text-sm border-t pt-3" style={{ borderColor: "rgba(6,182,212,0.2)" }}>
+                  <p className="text-white font-bold text-sm border-t pt-3" style={{ borderColor: "rgba(255,85,0,0.2)" }}>
                     {entry.closing}
                   </p>
                 </div>
@@ -333,9 +333,9 @@ function Phase2() {
           </p>
           <div
             className="flex flex-col gap-3 p-5 border"
-            style={{ backgroundColor: "#080808", borderColor: "rgba(6,182,212,0.2)", borderLeft: "3px solid rgba(6,182,212,0.4)" }}
+            style={{ backgroundColor: "#080808", borderColor: "rgba(255,85,0,0.2)", borderLeft: "3px solid rgba(255,85,0,0.4)" }}
           >
-            <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+            <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(255,85,0)" }}>
               The pattern
             </span>
             <p className="text-sm text-gray-400 leading-relaxed">
@@ -392,7 +392,7 @@ function Phase4() {
       <div className="max-w-5xl mx-auto flex flex-col gap-16">
 
         <div className="flex flex-col gap-4">
-          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(6,182,212)" }}>
+          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(255,85,0)" }}>
             Mission Complete - M-15
           </p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
@@ -501,7 +501,7 @@ function Phase4() {
             <a
               href="/dashboard"
               className="px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
             >
               Back to dashboard →
             </a>

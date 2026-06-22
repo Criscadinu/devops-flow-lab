@@ -19,7 +19,7 @@ function MissionHeader({ fase }: { fase: number }) {
   return (
     <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "#080808" }}>
       <div className="max-w-5xl mx-auto flex items-center justify-between">
-        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(255,85,0)" }}>
           M-05
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
@@ -31,7 +31,7 @@ function MissionHeader({ fase }: { fase: number }) {
       </div>
       <div className="max-w-5xl mx-auto mt-3">
         <div className="w-full h-px bg-gray-800">
-          <div className="h-px transition-all" style={{ width: pct, backgroundColor: "rgb(6,182,212)" }} />
+          <div className="h-px transition-all" style={{ width: pct, background: "linear-gradient(90deg, #FF0000 0%, #FF8C00 100%)" }} />
         </div>
       </div>
     </header>
@@ -46,7 +46,7 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
       <a
         href={href}
         className="self-start px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-        style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+        style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
       >
         {label}
       </a>
@@ -144,18 +144,18 @@ function DialogueLine({ line, index }: { line: SceneLine; index: number }) {
       <div
         className="flex flex-col gap-4 px-6 py-5 mt-2"
         style={{
-          backgroundColor: "rgba(6,182,212,0.03)",
-          borderLeft: "3px solid rgb(6,182,212)",
-          borderTop: "1px solid rgba(6,182,212,0.2)",
-          borderBottom: "1px solid rgba(6,182,212,0.2)",
-          borderRight: "1px solid rgba(6,182,212,0.1)",
+          backgroundColor: "rgba(255,85,0,0.03)",
+          borderLeft: "3px solid rgb(255,85,0)",
+          borderTop: "1px solid rgba(255,85,0,0.2)",
+          borderBottom: "1px solid rgba(255,85,0,0.2)",
+          borderRight: "1px solid rgba(255,85,0,0.1)",
         }}
       >
-        <span className="text-xs font-mono tracking-widest uppercase" style={{ color: "rgb(6,182,212)" }}>
+        <span className="text-xs font-mono tracking-widest uppercase" style={{ color: "rgb(255,85,0)" }}>
           You &middot; New Engineer
         </span>
         <p className="text-gray-200 text-base leading-relaxed">{line.text}</p>
-        <p className="text-white font-bold text-sm border-t pt-4" style={{ borderColor: "rgba(6,182,212,0.15)" }}>
+        <p className="text-white font-bold text-sm border-t pt-4" style={{ borderColor: "rgba(255,85,0,0.15)" }}>
           {line.coda}
         </p>
       </div>
@@ -224,9 +224,9 @@ const ciRules = [
   {
     title: "Tests are the safety net",
     body: "Automated tests are not optional. Without them, CI is just automated building. Tests are what make the pipeline meaningful.",
-    accent: "rgb(6,182,212)",
+    accent: "rgb(255,85,0)",
     bg: "#020d0f",
-    border: "rgba(6,182,212,0.25)",
+    border: "rgba(255,85,0,0.25)",
   },
   {
     title: "Fix it or revert",
@@ -315,7 +315,7 @@ function Phase2() {
               >
                 <span
                   className="text-sm font-mono font-bold shrink-0 w-6 pt-0.5"
-                  style={{ color: "rgb(6,182,212)" }}
+                  style={{ color: "rgb(255,85,0)" }}
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
@@ -358,7 +358,7 @@ function Phase4() {
         <div className="flex flex-col gap-4">
           <p
             className="text-xs font-mono tracking-[0.25em] uppercase"
-            style={{ color: "rgb(6,182,212)" }}
+            style={{ color: "rgb(255,85,0)" }}
           >
             Mission Complete - M-05
           </p>
@@ -447,7 +447,7 @@ function Phase4() {
                   <span className="font-mono text-gray-700">→</span>
                   <span
                     className="text-xl font-mono font-bold"
-                    style={{ ...syne.style, color: "rgb(6,182,212)" }}
+                    style={{ ...syne.style, color: "rgb(255,85,0)" }}
                   >
                     {d.after}
                   </span>
@@ -489,7 +489,7 @@ function Phase4() {
             <a
               href="/dashboard"
               className="px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
             >
               Back to dashboard →
             </a>

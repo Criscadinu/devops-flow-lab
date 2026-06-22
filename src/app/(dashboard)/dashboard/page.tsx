@@ -495,8 +495,8 @@ export default async function DashboardPage() {
 
   // ── Inline components (server-safe — no hooks) ───────────────────────────
   function MissionCard({ m }: { m: typeof missions[number] }) {
-    const borderColor = m.completed ? "rgb(6,182,212)" : m.unlocked ? "rgba(6,182,212,0.5)" : "rgb(31,41,55)";
-    const borderLeft  = m.completed ? "3px solid rgb(6,182,212)" : m.unlocked ? "3px solid rgba(6,182,212,0.5)" : "3px solid rgb(31,41,55)";
+    const borderColor = m.completed ? "rgb(255,85,0)" : m.unlocked ? "rgba(255,85,0,0.5)" : "rgb(31,41,55)";
+    const borderLeft  = m.completed ? "3px solid rgb(255,85,0)" : m.unlocked ? "3px solid rgba(255,85,0,0.5)" : "3px solid rgb(31,41,55)";
     const bg          = m.completed ? "#060d0f" : m.unlocked ? "#090909" : "#050505";
     const card = (
       <div
@@ -510,14 +510,14 @@ export default async function DashboardPage() {
               className="text-xs font-mono px-1.5 py-0.5 border"
               style={
                 m.unlocked || m.completed
-                  ? { color: "rgb(6,182,212)", borderColor: "rgba(6,182,212,0.25)", backgroundColor: "rgba(6,182,212,0.05)" }
+                  ? { color: "rgb(255,85,0)", borderColor: "rgba(255,85,0,0.25)", backgroundColor: "rgba(255,85,0,0.05)" }
                   : { color: "rgb(75,85,99)", borderColor: "rgb(31,41,55)" }
               }
             >
               {m.category}
             </span>
             {!m.unlocked && !m.completed && <span className="text-gray-700 text-sm">⊘</span>}
-            {m.completed && <span className="text-xs font-mono" style={{ color: "rgb(6,182,212)" }}>✓</span>}
+            {m.completed && <span className="text-xs font-mono" style={{ color: "rgb(255,85,0)" }}>✓</span>}
           </div>
         </div>
         <h3 className="text-lg text-white leading-snug" style={{ ...syne.style, fontWeight: 700 }}>
@@ -526,9 +526,9 @@ export default async function DashboardPage() {
         <p className="text-sm text-gray-500 leading-relaxed flex-1">{m.description}</p>
         <div className="border-t border-gray-900 pt-3">
           {m.completed ? (
-            <span className="text-xs font-mono tracking-widest" style={{ color: "rgb(6,182,212)" }}>✓ COMPLETED</span>
+            <span className="text-xs font-mono tracking-widest" style={{ color: "rgb(255,85,0)" }}>✓ COMPLETED</span>
           ) : m.unlocked ? (
-            <span className="text-xs font-mono tracking-widest" style={{ color: "rgb(6,182,212)" }}>▸ START MISSION</span>
+            <span className="text-xs font-mono tracking-widest" style={{ color: "rgb(255,85,0)" }}>▸ START MISSION</span>
           ) : (
             <span className="text-xs font-mono text-gray-700 tracking-widest">⊘ LOCKED</span>
           )}
@@ -577,11 +577,11 @@ export default async function DashboardPage() {
       <div className="flex items-center gap-4 py-2">
         <div
           className="w-1 h-7 shrink-0"
-          style={{ backgroundColor: active ? "rgb(6,182,212)" : "rgb(31,41,55)" }}
+          style={{ backgroundColor: active ? "rgb(255,85,0)" : "rgb(31,41,55)" }}
         />
         <span
           className="text-sm font-mono tracking-widest uppercase font-bold"
-          style={{ color: active ? "rgb(6,182,212)" : "rgb(75,85,99)" }}
+          style={{ color: active ? "rgb(255,85,0)" : "rgb(75,85,99)" }}
         >
           {label}
         </span>
@@ -622,7 +622,7 @@ export default async function DashboardPage() {
           <div className="h-0.5 w-full" style={{ backgroundColor: "rgb(21,28,36)" }}>
             <div
               className="h-full transition-all"
-              style={{ width: `${pct}%`, backgroundColor: prog.isComplete ? "rgb(6,182,212)" : "rgba(6,182,212,0.5)" }}
+              style={{ width: `${pct}%`, background: prog.isComplete ? "linear-gradient(90deg, #FF0000 0%, #FF8C00 100%)" : "rgba(255,85,0,0.5)" }}
             />
           </div>
 
@@ -656,7 +656,7 @@ export default async function DashboardPage() {
         {/* ── Top bar ───────────────────────────────────────────────────────── */}
         <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-gray-800 pb-6">
           <div className="flex items-center gap-4">
-            <div className="w-2 h-6 shrink-0" style={{ backgroundColor: "rgb(6,182,212)" }} />
+            <div className="w-2 h-6 shrink-0" style={{ backgroundColor: "rgb(255,85,0)" }} />
             <span className="text-xs font-mono tracking-[0.25em] text-gray-400 uppercase">
               Nexus Corp - Command Center
             </span>
@@ -667,9 +667,9 @@ export default async function DashboardPage() {
               <span
                 className="text-xs font-mono px-2 py-0.5 border"
                 style={{
-                  color: "rgb(6,182,212)",
-                  borderColor: "rgba(6,182,212,0.3)",
-                  backgroundColor: "rgba(6,182,212,0.06)",
+                  color: "rgb(255,85,0)",
+                  borderColor: "rgba(255,85,0,0.3)",
+                  backgroundColor: "rgba(255,85,0,0.06)",
                 }}
               >
                 {roleLabel.toUpperCase()}
@@ -739,7 +739,7 @@ export default async function DashboardPage() {
               <div className="flex items-center gap-3">
                 <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">Chaos</span>
                 <div className="w-16 h-px" style={{ backgroundColor: "rgb(31,41,55)" }} />
-                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "rgb(255,85,0)" }}>
                   Elite DevOps
                 </span>
               </div>
@@ -754,7 +754,7 @@ export default async function DashboardPage() {
             >
               <div
                 className="h-full"
-                style={{ width: `${maturityPct}%`, backgroundColor: "rgb(6,182,212)" }}
+                style={{ width: `${maturityPct}%`, background: "linear-gradient(90deg, #FF0000 0%, #FF8C00 100%)" }}
               />
             </div>
 
@@ -766,12 +766,12 @@ export default async function DashboardPage() {
                   <div key={s.label} className="flex flex-col items-center gap-1" style={{ width: "20%" }}>
                     <div
                       className="w-1.5 h-1.5"
-                      style={{ backgroundColor: isPast ? "rgb(6,182,212)" : "rgb(31,41,55)" }}
+                      style={{ backgroundColor: isPast ? "rgb(255,85,0)" : "rgb(31,41,55)" }}
                     />
                     <span
                       className="text-xs font-mono text-center leading-tight"
                       style={{
-                        color: isActive ? "rgb(6,182,212)" : isPast ? "rgb(75,85,99)" : "rgb(55,65,81)",
+                        color: isActive ? "rgb(255,85,0)" : isPast ? "rgb(75,85,99)" : "rgb(55,65,81)",
                         fontWeight: isActive ? 700 : 400,
                       }}
                     >
@@ -787,7 +787,7 @@ export default async function DashboardPage() {
 
             <p className="text-sm text-gray-400 border-t border-gray-900 pt-4">
               Nexus Corp is at:{" "}
-              <span className="font-bold" style={{ ...syne.style, color: "rgb(6,182,212)" }}>
+              <span className="font-bold" style={{ ...syne.style, color: "rgb(255,85,0)" }}>
                 {currentStage.label}
               </span>
             </p>
@@ -916,7 +916,7 @@ export default async function DashboardPage() {
           >
             <div
               className="h-full"
-              style={{ width: `${firstWayPct}%`, backgroundColor: "rgb(6,182,212)" }}
+              style={{ width: `${firstWayPct}%`, background: "linear-gradient(90deg, #FF0000 0%, #FF8C00 100%)" }}
             />
           </div>
 
@@ -941,16 +941,16 @@ export default async function DashboardPage() {
                     {done ? (
                       <div
                         className="w-5 h-5 flex items-center justify-center text-xs font-mono font-bold"
-                        style={{ backgroundColor: "rgba(6,182,212,0.1)", color: "rgb(6,182,212)", border: "1px solid rgba(6,182,212,0.3)" }}
+                        style={{ backgroundColor: "rgba(255,85,0,0.1)", color: "rgb(255,85,0)", border: "1px solid rgba(255,85,0,0.3)" }}
                       >
                         ✓
                       </div>
                     ) : isNext ? (
                       <div
                         className="w-5 h-5 flex items-center justify-center"
-                        style={{ border: "1px solid rgba(6,182,212,0.4)" }}
+                        style={{ border: "1px solid rgba(255,85,0,0.4)" }}
                       >
-                        <div className="w-1.5 h-1.5" style={{ backgroundColor: "rgba(6,182,212,0.5)" }} />
+                        <div className="w-1.5 h-1.5" style={{ backgroundColor: "rgba(255,85,0,0.5)" }} />
                       </div>
                     ) : (
                       <div
@@ -966,7 +966,7 @@ export default async function DashboardPage() {
                         <span className="text-xs font-mono text-gray-700">{entry.id}</span>
                         <h4
                           className="text-sm text-white"
-                          style={{ ...syne.style, fontWeight: 700, color: done ? "rgb(6,182,212)" : isLocked ? "rgb(75,85,99)" : "white" }}
+                          style={{ ...syne.style, fontWeight: 700, color: done ? "rgb(255,85,0)" : isLocked ? "rgb(75,85,99)" : "white" }}
                         >
                           {entry.title}
                         </h4>
@@ -974,7 +974,7 @@ export default async function DashboardPage() {
                       <span
                         className="text-xs font-mono tracking-widest shrink-0"
                         style={{
-                          color: done ? "rgb(6,182,212)" : isNext ? "rgb(234,179,8)" : "rgb(55,65,81)",
+                          color: done ? "rgb(255,85,0)" : isNext ? "rgb(234,179,8)" : "rgb(55,65,81)",
                         }}
                       >
                         {done ? "COMPLETED" : isNext ? "NEXT UP" : "LOCKED"}

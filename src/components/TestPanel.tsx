@@ -94,7 +94,7 @@ export function TestPanel({ email }: { email: string }) {
             right: 24,
             zIndex: 9999,
             backgroundColor: '#0a0a0a',
-            border: '1px solid rgba(6,182,212,0.45)',
+            border: '1px solid rgba(255,85,0,0.45)',
             boxShadow: '0 8px 40px rgba(0,0,0,0.85)',
             padding: '16px 18px',
             display: 'flex',
@@ -105,7 +105,7 @@ export function TestPanel({ email }: { email: string }) {
         >
           {/* Header */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 2 }}>
-            <span style={{ color: 'rgb(6,182,212)', fontFamily: 'monospace', fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase' }}>
+            <span style={{ color: 'rgb(255,85,0)', fontFamily: 'monospace', fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase' }}>
               ▸ Test Panel
             </span>
             <button
@@ -140,8 +140,8 @@ export function TestPanel({ email }: { email: string }) {
               }}
               onMouseEnter={(e) => {
                 if (!pending) {
-                  e.currentTarget.style.borderColor = 'rgba(6,182,212,0.5)'
-                  e.currentTarget.style.color = 'rgb(6,182,212)'
+                  e.currentTarget.style.borderColor = 'rgba(255,85,0,0.5)'
+                  e.currentTarget.style.color = 'rgb(255,85,0)'
                 }
               }}
               onMouseLeave={(e) => {

@@ -63,7 +63,7 @@ export default function SignInPage() {
             style={{
               backgroundColor: "#111",
               border: "1px solid rgb(31,41,55)",
-              borderLeft: "3px solid rgb(6,182,212)",
+              borderLeft: "3px solid rgb(255,85,0)",
             }}
           >
             <GoogleIcon />

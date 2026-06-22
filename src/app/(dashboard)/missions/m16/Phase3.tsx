@@ -27,12 +27,12 @@ function TaskCard({
           ? "rgb(31,41,55)"
           : done
           ? "rgba(34,197,94,0.4)"
-          : "rgba(6,182,212,0.4)",
+          : "rgba(255,85,0,0.4)",
         borderLeft: locked
           ? "3px solid rgb(31,41,55)"
           : done
           ? "3px solid rgb(34,197,94)"
-          : "3px solid rgb(6,182,212)",
+          : "3px solid rgb(255,85,0)",
         opacity: locked ? 0.45 : 1,
         pointerEvents: locked ? "none" : "auto",
       }}
@@ -42,7 +42,7 @@ function TaskCard({
           <span
             className="text-xs font-mono font-bold"
             style={{
-              color: locked ? "rgb(75,85,99)" : done ? "rgb(34,197,94)" : "rgb(6,182,212)",
+              color: locked ? "rgb(75,85,99)" : done ? "rgb(34,197,94)" : "rgb(255,85,0)",
             }}
           >
             {number}
@@ -73,11 +73,11 @@ function MentorNote({ children }: { children: React.ReactNode }) {
       className="flex gap-3 p-4 border"
       style={{
         backgroundColor: "#0a0a0a",
-        borderColor: "rgba(6,182,212,0.15)",
-        borderLeft: "3px solid rgba(6,182,212,0.5)",
+        borderColor: "rgba(255,85,0,0.15)",
+        borderLeft: "3px solid rgba(255,85,0,0.5)",
       }}
     >
-      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(6,182,212)" }}>
+      <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgb(255,85,0)" }}>
         //
       </span>
       <div className="flex flex-col gap-1">{children}</div>
@@ -282,7 +282,7 @@ export function Phase3() {
                 onChange={(e) => {
                   if (e.target.checked && liveUrl.startsWith("https://")) setTask1Done(true)
                 }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 My app is live and accessible at the URL above
@@ -306,7 +306,7 @@ export function Phase3() {
             <SectionLabel>Check these three endpoints</SectionLabel>
             <p className="text-gray-400 text-sm leading-relaxed">
               Open your live URL in a browser or use{" "}
-              <code className="text-cyan-400 font-mono">curl</code>. Each should return the values
+              <code className="text-orange-400 font-mono">curl</code>. Each should return the values
               shown below.
             </p>
             <pre
@@ -326,7 +326,7 @@ GET /api/orders - should return  3 orders`}</pre>
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask2Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 All three endpoints return the correct responses
@@ -373,7 +373,7 @@ GET /api/orders - should return  3 orders`}</pre>
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask3Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 Automatic deployment is enabled
@@ -421,7 +421,7 @@ GET /api/orders - should return  3 orders`}</pre>
               <strong className="text-white">Railway</strong>, automatic deployment from GitHub is
               enough - you do not need this step. For{" "}
               <strong className="text-white">Fly.io</strong>, replace the echo with:{" "}
-              <code className="text-cyan-400 font-mono">flyctl deploy --remote-only</code>
+              <code className="text-orange-400 font-mono">flyctl deploy --remote-only</code>
             </p>
           </div>
 
@@ -430,7 +430,7 @@ GET /api/orders - should return  3 orders`}</pre>
               <input
                 type="checkbox"
                 onChange={(e) => { if (e.target.checked) setTask4Done(true) }}
-                className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                className="w-4 h-4 accent-orange-500 cursor-pointer"
               />
               <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 I understand the deploy step (added it or confirmed my platform handles it automatically)
@@ -453,7 +453,7 @@ GET /api/orders - should return  3 orders`}</pre>
             <SectionLabel>Make a small change and push to main</SectionLabel>
             <p className="text-gray-400 text-sm leading-relaxed">
               Add a new field to the{" "}
-              <code className="text-cyan-400 font-mono">GET /</code> response in your app so you
+              <code className="text-orange-400 font-mono">GET /</code> response in your app so you
               can visually confirm the new version is live.
             </p>
             <pre
@@ -486,7 +486,7 @@ git push`}</pre>
             <p className="text-gray-400 text-sm leading-relaxed">
               Go to the <strong className="text-white">Actions</strong> tab on GitHub and watch the
               pipeline run. When it turns green, open your live URL - the{" "}
-              <code className="text-cyan-400 font-mono">deployedAt</code> field should be there.
+              <code className="text-orange-400 font-mono">deployedAt</code> field should be there.
             </p>
           </div>
 
@@ -509,7 +509,7 @@ git push`}</pre>
                   onChange={(e) => {
                     if (e.target.checked && actionsUrl.includes("github.com")) setTask5Done(true)
                   }}
-                  className="w-4 h-4 accent-cyan-400 cursor-pointer"
+                  className="w-4 h-4 accent-orange-500 cursor-pointer"
                 />
                 <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                   My change is live in production automatically
@@ -535,7 +535,7 @@ git push`}</pre>
             <a
               href="?phase=4"
               className="self-start px-8 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
             >
               See your impact →
             </a>

@@ -3,6 +3,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --af-red: #FF0000;
+  --af-orange: #FF5500;
+  --af-amber: #FF8C00;
+  --af-gradient: linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%);
+  --af-gradient-h: linear-gradient(90deg, #FF0000 0%, #FF8C00 100%);
 }
 
 @theme inline {

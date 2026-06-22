@@ -19,7 +19,7 @@ function MissionHeader({ fase }: { fase: number }) {
   return (
     <header className="border-b border-gray-800 px-6 py-4" style={{ backgroundColor: "#080808" }}>
       <div className="max-w-5xl mx-auto flex items-center justify-between">
-        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+        <span className="text-sm font-mono font-bold tracking-widest" style={{ color: "rgb(255,85,0)" }}>
           M-24
         </span>
         <span className="text-sm font-bold tracking-tight text-white" style={syne.style}>
@@ -31,7 +31,7 @@ function MissionHeader({ fase }: { fase: number }) {
       </div>
       <div className="max-w-5xl mx-auto mt-3">
         <div className="w-full h-px bg-gray-800">
-          <div className="h-px transition-all" style={{ width: pct, backgroundColor: "rgb(6,182,212)" }} />
+          <div className="h-px transition-all" style={{ width: pct, background: "linear-gradient(90deg, #FF0000 0%, #FF8C00 100%)" }} />
         </div>
       </div>
     </header>
@@ -46,7 +46,7 @@ function CTA({ href, label, sub }: { href: string; label: string; sub?: string }
       <a
         href={href}
         className="self-start px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-        style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+        style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
       >
         {label}
       </a>
@@ -108,9 +108,9 @@ const panels = [
     name: "You",
     role: "New Engineer",
     badge: "PLAYER",
-    accent: "rgb(6,182,212)",
-    badgeBg: "rgba(6,182,212,0.08)",
-    badgeBorder: "rgba(6,182,212,0.3)",
+    accent: "rgb(255,85,0)",
+    badgeBg: "rgba(255,85,0,0.08)",
+    badgeBorder: "rgba(255,85,0,0.3)",
     isPlayer: true,
     quote: (
       <>
@@ -204,7 +204,7 @@ function Phase1() {
       <style>{`
         mark {
           background: none;
-          color: rgb(6,182,212);
+          color: rgb(255,85,0);
           font-family: monospace;
           font-weight: 700;
         }
@@ -229,7 +229,7 @@ const alertProperties = [
     num: "01",
     title: "Actionable",
     body: "Every alert should have a clear response. If you do not know what to do when it fires, it should not be an alert. Alerts are not notifications — they are calls to action.",
-    accent: "rgb(6,182,212)",
+    accent: "rgb(255,85,0)",
   },
   {
     num: "02",
@@ -401,7 +401,7 @@ function Phase2() {
           <div className="flex flex-col gap-0 border border-gray-800">
             {[
               { label: "Current MTTR",      value: "4 hours", color: "rgb(239,68,68)",  note: "Metrics exist but require manual checking. Someone has to notice." },
-              { label: "Target after M-24", value: "1 hour",  color: "rgb(6,182,212)", note: "Automated alerts fire when thresholds are crossed. Detection is now instant." },
+              { label: "Target after M-24", value: "1 hour",  color: "rgb(255,85,0)", note: "Automated alerts fire when thresholds are crossed. Detection is now instant." },
             ].map((row, i) => (
               <div
                 key={row.label}
@@ -478,7 +478,7 @@ function Phase4() {
       <div className="max-w-5xl mx-auto flex flex-col gap-16">
 
         <div className="flex flex-col gap-4">
-          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(6,182,212)" }}>
+          <p className="text-xs font-mono tracking-[0.25em] uppercase" style={{ color: "rgb(255,85,0)" }}>
             Mission Complete - M-24
           </p>
           <h1 className="text-5xl text-white tracking-tight leading-tight" style={{ ...syne.style, fontWeight: 800 }}>
@@ -536,8 +536,8 @@ function Phase4() {
                 className="flex flex-col gap-4 border p-6"
                 style={{
                   backgroundColor: d.highlight ? "#020d0f" : "#080808",
-                  borderColor: d.highlight ? "rgba(6,182,212,0.3)" : "rgb(31,41,55)",
-                  borderLeft: d.highlight ? "3px solid rgb(6,182,212)" : "3px solid rgb(31,41,55)",
+                  borderColor: d.highlight ? "rgba(255,85,0,0.3)" : "rgb(31,41,55)",
+                  borderLeft: d.highlight ? "3px solid rgb(255,85,0)" : "3px solid rgb(31,41,55)",
                 }}
               >
                 <div className="flex flex-col gap-1">
@@ -554,7 +554,7 @@ function Phase4() {
                   <span className="font-mono text-gray-700">→</span>
                   <span
                     className="text-lg font-mono font-bold"
-                    style={{ ...syne.style, color: d.highlight ? "rgb(6,182,212)" : "rgb(75,85,99)" }}
+                    style={{ ...syne.style, color: d.highlight ? "rgb(255,85,0)" : "rgb(75,85,99)" }}
                   >
                     {d.after}
                   </span>
@@ -588,11 +588,11 @@ function Phase4() {
             className="flex flex-col gap-3 p-6 border"
             style={{
               backgroundColor: "#080808",
-              borderColor: "rgba(6,182,212,0.2)",
-              borderLeft: "3px solid rgb(6,182,212)",
+              borderColor: "rgba(255,85,0,0.2)",
+              borderLeft: "3px solid rgb(255,85,0)",
             }}
           >
-            <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(6,182,212)" }}>
+            <p className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: "rgb(255,85,0)" }}>
               Second Way: Feedback — In Progress
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
@@ -607,7 +607,7 @@ function Phase4() {
             <a
               href="/dashboard"
               className="px-8 py-4 text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
-              style={{ backgroundColor: "rgb(6,182,212)", color: "#000", ...syne.style, fontWeight: 700 }}
+              style={{ background: "linear-gradient(135deg, #FF0000 0%, #FF5500 50%, #FF8C00 100%)", color: "#fff", ...syne.style, fontWeight: 700 }}
             >
               Back to dashboard →
             </a>
